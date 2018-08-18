@@ -1,0 +1,1125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.StatisticsMapper">
+
+	<select id="findDeday"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.id,a.name , ifnull(b.addw,0)
+		addw,ifnull(b.adddh,0)
+		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
+		addqt,ifnull(b.addg,0)
+		addg,ifnull(b.addz,0) addz,ifnull(c.vis,0)
+		vis,ifnull(d.dea,0)
+		dea,ifnull(e.follow,0) follow,day(#{choiceday})
+		days FROM
+
+		(SELECT * FROM ogdepartment WHERE parentId in (12,13,14,15,4))
+		as a left
+		JOIN
+
+		(SELECT
+		c.name,
+		c.department,
+		COUNT(if(c.source=1 and
+		c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN
+		(0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz
+		FROM
+		(SELECT a.*, cudata.cusource FROM (SELECT cuadd.*,oguser.department
+		,ogdepartment.`name` from cuadd LEFT JOIN oguser ON
+		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cuadd.addDate,
+		'%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d')) as a LEFT JOIN
+		cudata
+		ON
+		cudata.id =a.customerId) AS c GROUP BY c.name) as b ON
+		b.department=a.id left JOIN
+
+		(SELECT
+		d.name,
+		d.department,
+		COUNT(
+		d.customerId or null) vis
+		FROM
+		(SELECT cuvisit.*,oguser.department
+		,ogdepartment.`name`
+		from cuvisit LEFT JOIN oguser ON
+		cuvisit.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cuvisit.visitDate,
+		'%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d')
+		) AS d GROUP BY d.name )
+		as c
+		ON c.department=a.id LEFT JOIN
+
+		(SELECT e.name,e.department,COUNT(
+		e.customerId or null) dea FROM
+		(SELECT cudeal.*,oguser.department
+		,ogdepartment.`name`
+		from cudeal LEFT JOIN oguser ON
+		cudeal.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cudeal.dealDate,
+		'%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d'))
+		AS e GROUP BY e.name )
+		AS d ON
+		d.department=a.id LEFT JOIN
+
+
+		(SELECT f.name,f.department,COUNT(
+		f.customerId or null) follow FROM
+		(SELECT cufollow.*,oguser.department
+		,ogdepartment.`name`
+		from cufollow LEFT JOIN oguser ON
+		cufollow.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cufollow.CreateDate, '%Y%m%d' )=DATE_FORMAT(#{choiceday},
+		'%Y%m%d')) AS f GROUP BY f.name) as e ON e.department=a.id
+
+		ORDER BY
+		a.parentId,a.id
+	</select>
+	<!-- 日报表统计 -->
+	<select id="findSumDeday"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT
+		"9999" as id,
+		"合计" as name,
+		day(#{choiceday}) days,
+		COUNT(if(c.source=1 and
+		c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN
+		(0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz,
+		(SELECT
+		COUNT(*) FROM cufollow WHERE
+		DATE_FORMAT(cufollow.CreateDate,
+		'%Y%m%d' )=DATE_FORMAT(#{choiceday},
+		'%Y%m%d') ) follow,
+		(SELECT
+		COUNT(*) FROM cuvisit WHERE
+		DATE_FORMAT(cuvisit.visitDate,
+		'%Y%m%d' )=DATE_FORMAT(#{choiceday},
+		'%Y%m%d'))vis ,
+		(SELECT
+		COUNT(*) FROM cudeal WHERE
+		DATE_FORMAT(cudeal.dealDate,
+		'%Y%m%d' )=DATE_FORMAT(#{choiceday},
+		'%Y%m%d')
+		) dea
+		FROM
+		(SELECT a.*, cudata.cusource FROM (SELECT cuadd.*
+		FROM cuadd
+		WHERE
+		DATE_FORMAT(cuadd.addDate,
+		'%Y%m%d'
+		)=DATE_FORMAT(#{choiceday},
+		'%Y%m%d')) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c
+	</select>
+
+	<select id="findDeweek"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.id,a.name , ifnull(b.addw,0)
+		addw,ifnull(b.adddh,0)
+		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
+		addqt,ifnull(b.addg,0)
+		addg,ifnull(b.addz,0) addz,ifnull(c.vis,0)
+		vis,ifnull(d.dea,0)
+		dea,ifnull(e.follow,0) follow FROM
+
+		(SELECT * FROM
+		ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
+
+		(SELECT
+		c.name,
+		c.department,
+		COUNT(if(c.source=1 and c.cusource=9,true,null))
+		adddh,
+		COUNT(if(c.source=1 and c.cusource IN (0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN (1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz
+		FROM (SELECT a.*, cudata.cusource FROM
+		(SELECT cuadd.*,oguser.department
+		,ogdepartment.`name` from cuadd LEFT
+		JOIN oguser ON
+		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		cuadd.addDate between
+		#{departweeks} and #{departweeke}) as
+		a LEFT JOIN
+		cudata ON cudata.id
+		=a.customerId) AS c GROUP BY c.name) as
+		b ON
+		b.department=a.id left JOIN
+
+		(SELECT
+		d.name,
+		d.department,
+		COUNT(
+		d.customerId or null) vis
+		FROM
+		(SELECT
+		cuvisit.*,oguser.department
+		,ogdepartment.`name`
+		from cuvisit LEFT JOIN
+		oguser ON
+		cuvisit.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		cuvisit.visitDate between
+		#{departweeks} and #{departweeke})
+		AS d GROUP BY d.name ) as c ON
+		c.department=a.id LEFT JOIN
+
+		(SELECT
+		e.name,e.department,COUNT(
+		e.customerId or null) dea FROM
+		(SELECT
+		cudeal.*,oguser.department
+		,ogdepartment.`name`
+		from cudeal LEFT JOIN
+		oguser ON
+		cudeal.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		cudeal.dealDate between
+		#{departweeks} and #{departweeke})
+		AS e GROUP BY e.name ) AS d ON
+		d.department=a.id LEFT JOIN
+
+
+		(SELECT
+		f.name,f.department,COUNT(
+		f.customerId or null) follow FROM
+		(SELECT
+		cufollow.*,oguser.department
+		,ogdepartment.`name`
+		from cufollow LEFT
+		JOIN oguser ON
+		cufollow.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		cufollow.createDate between
+		#{departweeks} and #{departweeke})
+		AS f GROUP BY f.name) as e ON
+		e.department=a.id
+
+		ORDER
+		BY a.parentId,a.id
+	</select>
+	<!-- 周报表统计 -->
+	<select id="findSumDeweek"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT
+		"9999" as id,
+		"合计" as name,
+		COUNT(if(c.source=1 and
+		c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN
+		(0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz,
+		(SELECT
+		COUNT(*) FROM cufollow WHERE
+		cufollow.createDate between
+		#{departweeks} and #{departweeke} ) follow,
+		(SELECT
+		COUNT(*)
+		FROM cuvisit WHERE
+		cuvisit.visitDate between
+		#{departweeks} and #{departweeke})vis ,
+		(SELECT
+		COUNT(*) FROM
+		cudeal WHERE
+		cudeal.dealDate between
+		#{departweeks} and #{departweeke}
+		) dea
+		FROM
+		(SELECT a.*,
+		cudata.cusource FROM (SELECT cuadd.*
+		FROM cuadd WHERE
+		cuadd.addDate
+		between
+		#{departweeks} and #{departweeke}) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c
+	</select>
+
+	<select id="findDe"
+		resultType="com.first.entity.StatisticsFormMap">
+
+		SELECT a.id,a.name , ifnull(b.addw,0)
+		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
+		addqt,ifnull(b.addg,0) addg,ifnull(b.addz,0) addz,ifnull(c.vis,0)
+		vis,ifnull(d.dea,0) dea,ifnull(e.follow,0)
+		follow,MONTH(#{choicemonth}) months
+		FROM
+
+		(SELECT * FROM ogdepartment
+		WHERE parentId in (12,13,14,15,4)) as a
+		left JOIN
+
+		(SELECT
+		c.name,
+		c.department,
+		COUNT(if(c.source=1 and
+		c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN
+		(0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz
+		FROM
+		(SELECT a.*, cudata.cusource FROM
+		(SELECT cuadd.*,oguser.department
+		,ogdepartment.`name` from cuadd LEFT
+		JOIN oguser ON
+		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cuadd.addDate,
+		'%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m')) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c GROUP BY c.name) as b ON
+		b.department=a.id left
+		JOIN
+
+		(SELECT
+		d.name,
+		d.department,
+		COUNT(
+		d.customerId or null) vis
+		FROM
+		(SELECT cuvisit.*,oguser.department
+		,ogdepartment.`name`
+		from cuvisit
+		LEFT JOIN oguser ON
+		cuvisit.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cuvisit.visitDate,
+		'%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m') )
+		AS d GROUP BY d.name )
+		as c ON
+		c.department=a.id LEFT JOIN
+
+		(SELECT e.name,e.department,COUNT(
+		e.customerId or null) dea FROM
+		(SELECT cudeal.*,oguser.department
+		,ogdepartment.`name`
+		from cudeal LEFT JOIN oguser ON
+		cudeal.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cudeal.dealDate,
+		'%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m')) AS e
+		GROUP BY e.name ) AS
+		d ON
+		d.department=a.id LEFT JOIN
+
+
+		(SELECT f.name,f.department,COUNT(
+		f.customerId or null) follow FROM
+		(SELECT cufollow.*,oguser.department
+		,ogdepartment.`name`
+		from cufollow LEFT JOIN oguser ON
+		cufollow.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cufollow.CreateDate, '%Y%m' )=DATE_FORMAT(#{choicemonth},
+		'%Y%m'))
+		AS f GROUP BY f.name) as e ON e.department=a.id
+
+		ORDER BY
+		a.parentId,a.id
+
+	</select>
+
+	<!-- 月报表统计 -->
+	<select id="findSumDemonth"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT
+		"9999" as id,
+		"合计" as name,
+		MONTH(#{choicemonth})
+		months,
+		COUNT(if(c.source=1 and
+		c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN
+		(0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz,
+		(SELECT
+		COUNT(*) FROM cufollow WHERE
+		DATE_FORMAT(cufollow.CreateDate,
+		'%Y%m'
+		)=DATE_FORMAT(#{choicemonth},
+		'%Y%m') ) follow,
+		(SELECT
+		COUNT(*) FROM
+		cuvisit WHERE
+		DATE_FORMAT(cuvisit.visitDate,
+		'%Y%m'
+		)=DATE_FORMAT(#{choicemonth},
+		'%Y%m'))vis ,
+		(SELECT
+		COUNT(*) FROM
+		cudeal WHERE
+		DATE_FORMAT(cudeal.dealDate,
+		'%Y%m'
+		)=DATE_FORMAT(#{choicemonth},
+		'%Y%m')
+		) dea
+		FROM
+		(SELECT a.*,
+		cudata.cusource FROM (SELECT cuadd.* FROM
+		cuadd
+		WHERE
+		DATE_FORMAT(cuadd.addDate,
+		'%Y%m'
+		)=DATE_FORMAT(#{choicemonth},
+		'%Y%m')) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c
+
+	</select>
+	<!-- 部门当月每天报表 -->
+	<select id="findDedays"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.id,a.name , ifnull(b.addw,0)
+		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
+		addqt,ifnull(b.addg,0) addg,ifnull(b.addz,0) addz,ifnull(c.vis,0)
+		vis,ifnull(d.dea,0) dea,ifnull(e.follow,0) follow,
+		a.days FROM
+
+		(SELECT
+		a.id ,a.`name` ,a.parentId,b.days FROM ogdepartment a
+		,cuday b WHERE
+		b.days &lt;=day(NOW())and parentId in (12,13,14,15,4)) as
+		a left JOIN
+
+		(SELECT
+		c.name,
+		c.department,
+
+		COUNT(if(c.source=1 and
+		c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN
+		(0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz ,
+		c.days
+		FROM (SELECT a.*, cudata.cusource FROM
+		(SELECT
+		cuadd.*,day(cuadd.addDate) as days,oguser.department
+		,ogdepartment.`name` from cuadd LEFT JOIN oguser ON
+		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cuadd.addDate,
+		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')) as a LEFT JOIN
+		cudata ON cudata.id
+		=a.customerId) AS c GROUP BY c.name,c.days) as b ON
+		b.department=a.id
+		AND a.days=b.days left JOIN
+
+		(SELECT
+		d.name,
+		d.department,
+		d.days,
+		COUNT(
+		d.customerId or null) vis
+		FROM
+		(SELECT cuvisit.*,day(cuvisit.visitDate)
+		as days,oguser.department
+		,ogdepartment.`name`
+		from cuvisit LEFT JOIN
+		oguser ON cuvisit.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department
+		WHERE
+		DATE_FORMAT(cuvisit.visitDate,
+		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')
+		) AS d GROUP BY d.name ,d.days ) as
+		c ON c.department=a.id AND
+		a.days=c.days LEFT JOIN
+
+		(SELECT
+		e.name,
+		e.department,
+		e.days ,
+		COUNT( e.customerId or null) dea
+		FROM
+		((SELECT
+		cudeal.*,
+		day(cudeal.dealDate) as days,
+		oguser.department ,
+		ogdepartment.`name`
+		from cudeal LEFT JOIN oguser ON
+		cudeal.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department
+		WHERE
+		DATE_FORMAT(cudeal.dealDate,
+		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')
+		)) AS e GROUP BY e.name ,e.days) AS
+		d ON d.department=a.id AND
+		a.days=d.days LEFT JOIN
+
+		(SELECT f.name,
+		f.department,
+		COUNT( f.customerId or null) follow ,
+		f.days
+		FROM
+		(SELECT
+		cufollow.*,
+		oguser.department ,
+		day(cufollow.CreateDate) as days,
+		ogdepartment.`name`
+		from cufollow LEFT JOIN oguser ON
+		cufollow.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department
+		WHERE
+		DATE_FORMAT(cufollow.CreateDate, '%Y%m' )=DATE_FORMAT(now(),'%Y%m'))
+		AS f GROUP BY f.name,f.days) as e ON e.department=a.id AND
+		a.days=e.days
+		ORDER BY a.parentId,a.id ,a.days
+	</select>
+
+	<select id="findRankPerAddMonth"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.userName ,a.name,ifnull(b.addw,0) addw FROM
+		(SELECT oguser.id,oguser.userName,ogdepartment.name FROM oguser LEFT
+		JOIN ogdepartment ON ogdepartment.id=oguser.department WHERE
+		oguser.locked=1 and ogdepartment.parentId in (12,13,14,15,4)) as a LEFT
+		JOIN
+
+		(SELECT cuadd.userId, cuadd.userName,COUNT( customerId or null)
+		addw FROM
+		cuadd where cuadd.source=1 and DATE_FORMAT(addDate, '%Y%m'
+		)=DATE_FORMAT(now(), '%Y%m' ) GROUP BY userId ) as b
+		ON b.userId=a.id
+
+		ORDER BY addw desc LIMIT 5
+	</select>
+	<select id="findRankPerFollowMonth"
+		resultType="com.first.entity.StatisticsFormMap">
+
+		SELECT a.userName ,a.name,ifnull(b.follow,0)follow FROM
+		(SELECT oguser.id,oguser.userName,ogdepartment.name FROM oguser LEFT
+		JOIN ogdepartment ON ogdepartment.id=oguser.department WHERE
+		oguser.locked=1 and ogdepartment.parentId in (12,13,14,15,4)) as a LEFT
+		JOIN
+
+		(SELECT cufollow.userId, cufollow.userName,COUNT( customerId or
+		null) follow
+		FROM cufollow where DATE_FORMAT(CreateDate, '%Y%m'
+		)=DATE_FORMAT(now(), '%Y%m' ) GROUP BY userId ) as b
+		ON b.userId=a.id
+
+		ORDER BY follow desc LIMIT 5
+	</select>
+	<select id="findRankPerVisMonth"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.userName ,a.name,ifnull(b.vis,0)vis FROM
+		(SELECT
+		oguser.id,oguser.userName,ogdepartment.name FROM oguser LEFT JOIN
+		ogdepartment ON ogdepartment.id=oguser.department WHERE
+		oguser.locked=1 and ogdepartment.parentId in (12,13,14,15,4)) as a LEFT
+		JOIN
+
+		(SELECT cuvisit.userId, cuvisit.userName,COUNT( customerId or
+		null) vis FROM
+		cuvisit where DATE_FORMAT(visitDate, '%Y%m'
+		)=DATE_FORMAT(now(),
+		'%Y%m' ) GROUP BY userId ) as b
+		ON b.userId=a.id
+
+		ORDER BY vis desc LIMIT 5
+	</select>
+	<select id="findRankPerDeaMonth"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.userName ,a.name,ifnull(b.dea,0)dea FROM
+		(SELECT
+		oguser.id,oguser.userName,ogdepartment.name FROM oguser LEFT JOIN
+		ogdepartment ON ogdepartment.id=oguser.department WHERE
+		oguser.locked=1 and ogdepartment.parentId in (12,13,14,15,4)) as a LEFT
+		JOIN
+
+		(SELECT cudeal.userId, cudeal.userName,COUNT( customerId or null)
+		dea FROM
+		cudeal where DATE_FORMAT(dealDate, '%Y%m' )=DATE_FORMAT(now(),
+		'%Y%m'
+		) GROUP BY userId ) as b
+		ON b.userId=a.id
+
+		ORDER BY dea desc LIMIT
+		5
+	</select>
+
+	<select id="findRankDeAddMonth"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.id,a.name ,ifnull(b.addw,0) addw FROM
+		(SELECT *
+		FROM ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
+
+		(SELECT
+		c.name,
+		c.department,
+
+		COUNT(c.source=1 or null)addw
+
+		FROM (SELECT
+		a.*, cudata.cusource FROM (SELECT cuadd.*,oguser.department
+		,ogdepartment.`name` from cuadd LEFT JOIN oguser ON
+		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cuadd.addDate,
+		'%Y%m%d' )=DATE_FORMAT(now(), '%Y%m%d')) as a LEFT JOIN
+		cudata ON
+		cudata.id =a.customerId) AS c GROUP BY c.name) as b ON
+		b.department=a.id
+		ORDER BY addw desc LIMIT 5
+	</select>
+	<select id="findRankDeFollowMonth"
+		resultType="com.first.entity.StatisticsFormMap">
+
+		SELECT a.id,a.name ,ifnull(e.follow,0) follow FROM
+		(SELECT *
+		FROM ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
+
+		(SELECT f.name,f.department,COUNT( f.customerId or null) follow FROM
+		(SELECT cufollow.*,oguser.department ,ogdepartment.`name`
+		from cufollow
+		LEFT JOIN oguser ON cufollow.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cufollow.CreateDate, '%Y%m' )=DATE_FORMAT(now(),
+		'%Y%m'))
+		AS f GROUP BY f.name) as e ON e.department=a.id
+		ORDER BY follow desc
+		LIMIT 5
+	</select>
+	<select id="findRankDeVisMonth"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.id,a.name ,ifnull(c.vis,0) vis FROM
+		(SELECT * FROM
+		ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
+
+
+		(SELECT
+		d.name,
+		d.department,
+		COUNT( d.customerId or null) vis
+		FROM
+		(SELECT
+		cuvisit.*,oguser.department ,ogdepartment.`name`
+		from cuvisit LEFT JOIN
+		oguser ON cuvisit.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cuvisit.visitDate,
+		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')
+		) AS d GROUP BY d.name ) as c ON
+		c.department=a.id
+		ORDER BY vis desc LIMIT 5
+	</select>
+	<select id="findRankDeDeaMonth"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.id,a.name ,ifnull(d.dea,0) dea FROM
+		(SELECT * FROM
+		ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
+
+
+		(SELECT
+		e.name,e.department,COUNT( e.customerId or null) dea FROM
+		(SELECT
+		cudeal.*,oguser.department ,ogdepartment.`name`
+		from cudeal LEFT JOIN
+		oguser ON cudeal.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		DATE_FORMAT(cudeal.dealDate,
+		'Y%m' )=DATE_FORMAT(now(), '%Y%m'))
+		AS e GROUP BY e.name ) AS d ON
+		d.department=a.id
+		ORDER BY dea desc LIMIT 5
+	</select>
+
+	<!-- 部门个人日报表 -->
+	<select id="findpeday"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.id,a.userName ,a.did,a.name,ifnull(b.addw,0)
+		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
+		addqt,ifnull(b.addg,0) addg,ifnull(b.addz,0) addz,ifnull(e.follow,0)
+		follow,ifnull(c.vis,0) vis,ifnull(d.dea,0) dea,day(#{choiceday}) days
+		FROM
+		(SELECT oguser.id,oguser.userName,ogdepartment.id as did
+		,ogdepartment.name
+		FROM oguser LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE oguser.locked=1 and
+		ogdepartment.parentId in (12,13,14,15,4)) as a LEFT JOIN
+
+		(SELECT
+		c.userId
+		,
+		c.userName ,
+		COUNT(if(c.source=1 and c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN (0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN (1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz
+		FROM (SELECT b.*, cudata.cusource FROM
+		(SELECT cuadd.* FROM cuadd where DATE_FORMAT(addDate, '%Y%m%d'
+		)=DATE_FORMAT(#{choiceday}, '%Y%m%d' ) ) as b LEFT JOIN
+		cudata ON
+		cudata.id =b.customerId) AS c GROUP BY c.userId ) as b
+		ON b.userId=a.id
+		left JOIN
+
+		(SELECT
+		b.userId ,
+		b.userName,
+		COUNT( b.customerId or null) vis
+		FROM(SELECT cuvisit.* FROM cuvisit where DATE_FORMAT(visitDate,
+		'%Y%m%d'
+		)=DATE_FORMAT(#{choiceday}, '%Y%m%d' ) ) as b GROUP BY
+		b.userId) as c
+		ON c.userId=a.id left JOIN
+
+		(SELECT
+		b.userId ,
+		b.userName,
+		COUNT( b.customerId or null) dea
+		FROM(SELECT cudeal.* FROM cudeal where
+		DATE_FORMAT(dealDate, '%Y%m%d'
+		)=DATE_FORMAT(#{choiceday}, '%Y%m%d' ) )
+		as b GROUP BY b.userId) as d
+		ON d.userId=a.id left JOIN
+
+		(SELECT
+		b.userId
+		,
+		b.userName,
+		COUNT( b.customerId or null) follow
+		FROM(SELECT cufollow.*
+		FROM cufollow where DATE_FORMAT(CreateDate, '%Y%m%d'
+		)=DATE_FORMAT(#{choiceday}, '%Y%m%d' ) ) as b GROUP BY b.userId) as e
+		ON e.userId=a.id
+		WHERE a.did=#{deId}
+
+	</select>
+	<!-- 部门个人周报表 -->
+	<select id="findpeweek"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.id,a.userName ,a.did,a.name,ifnull(b.addw,0)
+		addw,ifnull(b.adddh,0)
+		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
+		addqt,ifnull(b.addg,0)
+		addg,ifnull(b.addz,0) addz,ifnull(e.follow,0)
+		follow,ifnull(c.vis,0)
+		vis,ifnull(d.dea,0) dea
+		FROM
+		(SELECT
+		oguser.id,oguser.userName,ogdepartment.id as did
+		,ogdepartment.name
+		FROM oguser LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE oguser.locked=1 and
+		ogdepartment.parentId in (12,13,14,15,4)) as a LEFT JOIN
+
+		(SELECT
+		c.userId
+		,
+		c.userName ,
+		COUNT(if(c.source=1 and c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN (0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN (1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz
+		FROM (SELECT b.*, cudata.cusource FROM
+		(SELECT cuadd.* FROM cuadd where cuadd.addDate between
+		#{departweeks} and #{departweeke}) as b LEFT JOIN
+		cudata ON
+		cudata.id =b.customerId)
+		AS c GROUP BY c.userId ) as b
+		ON b.userId=a.id
+		left JOIN
+
+		(SELECT
+		b.userId
+		,
+		b.userName,
+		COUNT( b.customerId or null) vis
+		FROM(SELECT cuvisit.* FROM
+		cuvisit where cuvisit.visitDate between
+		#{departweeks} and
+		#{departweeke}) as b GROUP BY
+		b.userId) as c
+		ON c.userId=a.id left JOIN
+
+		(SELECT
+		b.userId ,
+		b.userName,
+		COUNT( b.customerId or null) dea
+		FROM(SELECT cudeal.* FROM cudeal where
+		cudeal.dealDate between
+		#{departweeks} and #{departweeke} )
+		as b GROUP BY b.userId) as
+		d
+		ON d.userId=a.id left JOIN
+
+		(SELECT
+		b.userId
+		,
+		b.userName,
+		COUNT(
+		b.customerId or null) follow
+		FROM(SELECT cufollow.*
+		FROM cufollow where
+		cufollow.createDate between
+		#{departweeks} and #{departweeke} ) as b GROUP BY b.userId) as e
+		ON e.userId=a.id
+		WHERE a.did=#{deId}
+	</select>
+	<!-- 部门个人月报表 -->
+	<select id="findpemonth"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT a.id,a.userName ,a.did,a.name,ifnull(b.addw,0)
+		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
+		addqt,ifnull(b.addg,0) addg,ifnull(b.addz,0) addz,ifnull(e.follow,0)
+		follow,ifnull(c.vis,0) vis,ifnull(d.dea,0)
+		dea,month(#{choicemonth})months
+		FROM
+		(SELECT
+		oguser.id,oguser.userName,ogdepartment.id as did
+		,ogdepartment.name
+		FROM oguser LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE oguser.locked=1 and
+		ogdepartment.parentId in (12,13,14,15,4)) as a LEFT JOIN
+
+		(SELECT
+		c.userId
+		,
+		c.userName ,
+		COUNT(if(c.source=1 and c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN (0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN (1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz
+		FROM (SELECT b.*, cudata.cusource FROM
+		(SELECT cuadd.* FROM cuadd where DATE_FORMAT(addDate, '%Y%m'
+		)=DATE_FORMAT(#{choicemonth}, '%Y%m' ) ) as b LEFT JOIN
+		cudata ON
+		cudata.id =b.customerId) AS c GROUP BY c.userId ) as b
+		ON b.userId=a.id
+		left JOIN
+
+		(SELECT
+		b.userId ,
+		b.userName,
+		COUNT( b.customerId or null) vis
+		FROM(SELECT cuvisit.* FROM cuvisit where DATE_FORMAT(visitDate,
+		'%Y%m'
+		)=DATE_FORMAT(#{choicemonth}, '%Y%m' ) ) as b GROUP BY
+		b.userId) as c
+		ON c.userId=a.id left JOIN
+
+		(SELECT
+		b.userId ,
+		b.userName,
+		COUNT(
+		b.customerId or null) dea
+		FROM(SELECT cudeal.* FROM cudeal where
+		DATE_FORMAT(dealDate, '%Y%m'
+		)=DATE_FORMAT(#{choicemonth}, '%Y%m' ) )
+		as b GROUP BY b.userId) as d
+		ON d.userId=a.id left JOIN
+
+		(SELECT
+		b.userId
+		,
+		b.userName,
+		COUNT( b.customerId or null) follow
+		FROM(SELECT cufollow.*
+		FROM cufollow where DATE_FORMAT(CreateDate, '%Y%m'
+		)=DATE_FORMAT(#{choicemonth}, '%Y%m' ) ) as b GROUP BY b.userId) as e
+		ON e.userId=a.id
+		WHERE a.did=#{deId}
+
+	</select>
+	<!-- 网络日报表 -->
+	<select id="findSumInday"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT * FROM
+
+		(SELECT
+		"9999" as id,
+		"合计" as name,
+		day(#{choiceday}) days,
+
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
+		COUNT(if(c.source=1 and c.cusource =1,true,null)) addwlad,
+		COUNT(if(c.source=1 and c.cusource =2,true,null)) addwl5d,
+		COUNT(if(c.source=1 and c.cusource =3,true,null)) addwlfd,
+		COUNT(if(c.source=1 and c.cusource =4,true,null)) addwlag,
+		COUNT(if(c.source=1 and c.cusource =5,true,null)) addwl5g,
+		COUNT(if(c.source=1 and c.cusource =6,true,null)) addwlfg
+
+
+		FROM
+		(SELECT a.*, cudata.cusource
+		FROM (SELECT cuadd.*
+		FROM cuadd
+		WHERE
+		DATE_FORMAT(cuadd.addDate,
+		'%Y%m%d'
+		)=DATE_FORMAT(#{choiceday},
+		'%Y%m%d')) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c) as a,
+		(SELECT
+
+		COUNT(if(c.cusource IN (1,2,3,4,5,6),true,null)) viswl,
+		COUNT(if( c.cusource =1,true,null)) viswlad,
+		COUNT(if(c.cusource =2,true,null)) viswl5d,
+		COUNT(if( c.cusource =3,true,null)) viswlfd,
+		COUNT(if( c.cusource =4,true,null)) viswlag,
+		COUNT(if(c.cusource =5,true,null)) viswl5g,
+		COUNT(if(c.cusource =6,true,null)) viswlfg
+		FROM
+		(SELECT a.*, cudata.cusource FROM (SELECT cuvisit.*
+		FROM cuvisit
+		WHERE
+		DATE_FORMAT(cuvisit.visitDate,
+		'%Y%m%d'
+		)=DATE_FORMAT(#{choiceday},
+		'%Y%m%d')) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) as c) as v,
+
+		(SELECT
+
+
+		COUNT(if(c.cusource IN
+		(1,2,3,4,5,6),true,null)) deawl,
+		COUNT(if(c.cusource =1,true,null)) deawlad,
+		COUNT(if(c.cusource =2,true,null)) deawl5d,
+		COUNT(if(c.cusource =3,true,null)) deawlfd,
+		COUNT(if(c.cusource =4,true,null)) deawlag,
+		COUNT(if(c.cusource =5,true,null)) deawl5g,
+		COUNT(if(c.cusource =6,true,null)) deawlfg
+
+
+		FROM
+		(SELECT a.*, cudata.cusource FROM (SELECT
+		cudeal.*
+		FROM cudeal
+		WHERE
+		DATE_FORMAT(cudeal.dealDate,
+		'%Y%m%d'
+		)=DATE_FORMAT(#{choiceday},
+		'%Y%m%d')) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c) as d
+
+
+	</select>
+	<!-- 网络周报表 -->
+	<select id="findSumInweek"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT * FROM
+
+		(SELECT
+		"9999" as id,
+		"合计" as name,
+		
+
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
+		COUNT(if(c.source=1 and c.cusource =1,true,null)) addwlad,
+		COUNT(if(c.source=1 and c.cusource =2,true,null)) addwl5d,
+		COUNT(if(c.source=1 and c.cusource =3,true,null)) addwlfd,
+		COUNT(if(c.source=1 and c.cusource =4,true,null)) addwlag,
+		COUNT(if(c.source=1 and c.cusource =5,true,null)) addwl5g,
+		COUNT(if(c.source=1 and c.cusource =6,true,null)) addwlfg
+
+
+		FROM
+		(SELECT a.*, cudata.cusource
+		FROM (SELECT cuadd.*
+		FROM cuadd
+		WHERE
+		cuadd.addDate
+		between
+		#{departweeks} and #{departweeke}) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c) as a,
+		(SELECT
+
+		COUNT(if(c.cusource IN (1,2,3,4,5,6),true,null)) viswl,
+		COUNT(if( c.cusource =1,true,null)) viswlad,
+		COUNT(if(c.cusource =2,true,null)) viswl5d,
+		COUNT(if( c.cusource =3,true,null)) viswlfd,
+		COUNT(if( c.cusource =4,true,null)) viswlag,
+		COUNT(if(c.cusource =5,true,null)) viswl5g,
+		COUNT(if(c.cusource =6,true,null)) viswlfg
+		FROM
+		(SELECT a.*, cudata.cusource FROM (SELECT cuvisit.*
+		FROM cuvisit
+		WHERE
+		cuvisit.visitDate
+		between
+		#{departweeks} and #{departweeke}) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) as c) as v,
+
+		(SELECT
+
+
+		COUNT(if(c.cusource IN
+		(1,2,3,4,5,6),true,null)) deawl,
+		COUNT(if(c.cusource =1,true,null)) deawlad,
+		COUNT(if(c.cusource =2,true,null)) deawl5d,
+		COUNT(if(c.cusource =3,true,null)) deawlfd,
+		COUNT(if(c.cusource =4,true,null)) deawlag,
+		COUNT(if(c.cusource =5,true,null)) deawl5g,
+		COUNT(if(c.cusource =6,true,null)) deawlfg
+
+
+		FROM
+		(SELECT a.*, cudata.cusource FROM (SELECT
+		cudeal.*
+		FROM cudeal
+		WHERE
+		cudeal.dealDate
+		between
+		#{departweeks} and #{departweeke}) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c) as d
+
+
+	</select>
+	<!-- 网络月报表 -->
+	<select id="findSumInmonth"
+		resultType="com.first.entity.StatisticsFormMap">
+		SELECT * FROM
+
+		(SELECT
+		"9999" as id,
+		"合计" as name,
+		month(#{choicemonth}) months,
+
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
+		COUNT(if(c.source=1 and c.cusource =1,true,null)) addwlad,
+		COUNT(if(c.source=1 and c.cusource =2,true,null)) addwl5d,
+		COUNT(if(c.source=1 and c.cusource =3,true,null)) addwlfd,
+		COUNT(if(c.source=1 and c.cusource =4,true,null)) addwlag,
+		COUNT(if(c.source=1 and c.cusource =5,true,null)) addwl5g,
+		COUNT(if(c.source=1 and c.cusource =6,true,null)) addwlfg
+
+
+		FROM
+		(SELECT a.*, cudata.cusource
+		FROM (SELECT cuadd.*
+		FROM cuadd
+		WHERE
+		DATE_FORMAT(cuadd.addDate,
+		'%Y%m'
+		)=DATE_FORMAT(#{choicemonth},
+		'%Y%m')) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c) as a,
+		(SELECT
+
+		COUNT(if(c.cusource IN (1,2,3,4,5,6),true,null)) viswl,
+		COUNT(if( c.cusource =1,true,null)) viswlad,
+		COUNT(if(c.cusource =2,true,null)) viswl5d,
+		COUNT(if( c.cusource =3,true,null)) viswlfd,
+		COUNT(if( c.cusource =4,true,null)) viswlag,
+		COUNT(if(c.cusource =5,true,null)) viswl5g,
+		COUNT(if(c.cusource =6,true,null)) viswlfg
+		FROM
+		(SELECT a.*, cudata.cusource FROM (SELECT cuvisit.*
+		FROM cuvisit
+		WHERE
+		DATE_FORMAT(cuvisit.visitDate,
+		'%Y%m'
+		)=DATE_FORMAT(#{choicemonth},
+		'%Y%m')) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) as c) as v,
+
+		(SELECT
+
+
+		COUNT(if(c.cusource IN
+		(1,2,3,4,5,6),true,null)) deawl,
+		COUNT(if(c.cusource =1,true,null)) deawlad,
+		COUNT(if(c.cusource =2,true,null)) deawl5d,
+		COUNT(if(c.cusource =3,true,null)) deawlfd,
+		COUNT(if(c.cusource =4,true,null)) deawlag,
+		COUNT(if(c.cusource =5,true,null)) deawl5g,
+		COUNT(if(c.cusource =6,true,null)) deawlfg
+
+
+		FROM
+		(SELECT a.*, cudata.cusource FROM (SELECT
+		cudeal.*
+		FROM cudeal
+		WHERE
+		DATE_FORMAT(cudeal.dealDate,
+		'%Y%m'
+		)=DATE_FORMAT(#{choicemonth},
+		'%Y%m')) as a LEFT JOIN
+		cudata ON
+		cudata.id
+		=a.customerId) AS c) as d
+
+
+	</select>
+</mapper>

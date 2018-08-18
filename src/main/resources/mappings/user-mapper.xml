@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.UserMapper">
+	<!--mybatis ehcache缓存配置 -->
+	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 <cache type="org.mybatis.caches.ehcache.LoggingEhcache" 
+		/> -->
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		id ,
+		accountName,
+		userName,
+		(select group_concat(roleName) from ogrole
+		where ogrole.id
+		in (SELECT roleId FROM oguser_role WHERE
+		userId=oguser.id) ) roleName,
+		password,
+		credentialsSalt,
+		(select name  from ogdepartment
+		where id=department) departmentName,
+		(select parentId  from ogdepartment
+		where  id=department) parentId,
+		department,
+		
+		gender,
+		email,
+		telephone,
+		locked,
+		createDate,
+		description
+		
+	</sql>
+
+	<!-- 登录 -->
+	<select id="findByNames" resultType="com.first.entity.UserFormMap">
+		select
+		<include refid="selectId" />
+		from oguser 
+		where 
+		<if test=" accountName != null">
+		 accountName=#{accountName}
+		 </if>
+		
+	</select>
+		<select id="findByUser" resultType="com.first.entity.UserFormMap">
+		select
+		a.id,a.accountName,a.userName,b.name as department,a.telephone,a.description as image
+		from oguser as a LEFT JOIN ogdepartment as b ON b.id=a.department 
+		where 
+		<if test=" accountName != null">
+		 accountName=#{accountName}
+		 </if>
+		
+	</select>
+	
+		<!--员工列表 -->
+	<select id="findUserPage" resultType="com.first.entity.UserFormMap">
+		select
+			id ,
+		accountName,
+		userName,
+		(select group_concat(roleName) from ogrole
+		where ogrole.id
+		in (SELECT roleId FROM oguser_role WHERE
+		userId=oguser.id) ) roleName,
+		department,
+		gender,
+		email,
+		telephone,
+		locked,
+		(select name  from ogdepartment
+		where id=department)departmentName,
+		description
+		from oguser  
+		where 1=1 
+		<if test="userName != null  and  userName != ''">
+		 and userName=#{userName}
+		 </if>
+		and  id!=1
+		
+	</select>
+	<!-- 添加用戶 -->
+	<insert id="addEntity"
+		>
+		INSERT INTO 
+			oguser 	
+		VALUES 
+		(
+			null,
+			#{accountName},
+			#{userName},
+			#{password},
+			#{credentialsSalt},
+			#{department},
+			#{gender},
+			#{email},
+			#{telephone},
+			#{locked},
+			#{createDate},
+			#{description}
+			
+		)
+	</insert> 
+	
+	<!--验证用户是否存在 -->
+	<select id="findbyFrist" resultType="com.first.entity.UserFormMap">
+		select
+		id,
+		accountName
+		
+		from oguser 
+		where
+		<if test=" accountName != null">
+		 accountName=#{accountName}
+		 </if>
+	</select>
+	
+	<!--添加用户职位表 -->
+	<insert id="addUREntity"
+		>
+		INSERT INTO 
+			oguser_role 	
+		VALUES 
+		(			
+			#{userId},
+			#{roleId}	 	
+		)
+	</insert> 
+		<!--修改用户 -->
+	<select id="findbyeditUI" resultType="com.first.entity.UserFormMap">
+		select
+		id,
+		accountName,
+		userName,
+		locked,
+		department,
+		gender,
+		telephone
+		from oguser 
+		where
+		<if test=" id != null">
+		 id=#{id}
+		 </if>
+	</select>
+	<!-- 编辑用户 -->
+		<update id="editEntity">
+		update oguser 
+			<set>
+		<if  test=" userName != null and userName != '' ">
+			userName=#{userName},
+		 </if> 
+		
+ 		 <if  test="  telephone != null and  telephone != ''  ">
+			 telephone=#{telephone},
+		 </if> 
+		 <if  test=" locked != null and locked != '' ">
+			locked=#{locked},
+		 </if> 
+		  <if  test=" password != null and password != ''  ">
+			password=#{password},
+			
+		 </if> 
+		   <if  test=" gender != null and gender != ''  ">
+			gender=#{gender},
+			
+		 </if> 
+		  <if  test=" credentialsSalt != null and credentialsSalt != ''  ">
+			credentialsSalt=#{credentialsSalt},
+			
+		 </if> 
+	
+		 </set>
+		
+		where id=#{id};
+	</update>
+		<!-- 删除角色职位 -->
+	<delete id="deleteByUR">
+		delete from oguser_role  where 
+		 userId=#{id}
+		
+	</delete>
+	<!-- 个性展示 -->
+	<select id="findshows" resultType="com.first.entity.UserFormMap">
+	SELECT * FROM peshows where state=1
+	</select>
+
+</mapper>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.MonthStartMapper">
+	<insert id="addreportdsum">
+		INSERT INTO cureportdsum
+		(id,did,name,addw,adddh,addwl,addqt,addg,addz,vis,dea,follow,date)
+		SELECT null,a.id,a.name , ifnull(b.addw,0) addw,ifnull(b.adddh,0)
+		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0) addqt,ifnull(b.addg,0)
+		addg,ifnull(b.addz,0) addz,ifnull(c.vis,0) vis,ifnull(d.dea,0)
+		dea,ifnull(e.follow,0) follow,date_format(DATE_SUB(curdate(), INTERVAL
+		1 MONTH), '%Y%m') dates FROM
+
+		(SELECT * FROM
+		ogdepartment WHERE parentId in (12,13,14,15)) as a left JOIN
+
+		(SELECT
+		c.name,
+		c.department,
+		COUNT(if(c.source=1 and c.cusource=9,true,null))
+		adddh,
+		COUNT(if(c.source=1 and c.cusource IN (0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN (1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz
+		FROM (SELECT a.*, cudata.cusource FROM
+		(SELECT cuadd.*,oguser.department
+		,ogdepartment.`name` from cuadd LEFT
+		JOIN oguser ON
+		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		PERIOD_DIFF( date_format( now(
+		) , '%Y%m' ) , date_format(cuadd.addDate, '%Y%m' )
+		) =1) as a LEFT JOIN
+		cudata ON cudata.id =a.customerId) AS c GROUP BY c.name) as b ON
+		b.department=a.id left JOIN
+
+		(SELECT
+		d.name,
+		d.department,
+		COUNT(
+		d.customerId or null) vis
+		FROM
+		(SELECT cuvisit.*,oguser.department
+		,ogdepartment.`name`
+		from cuvisit LEFT JOIN oguser ON
+		cuvisit.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		PERIOD_DIFF( date_format( now(
+		) , '%Y%m' ) , date_format(cuvisit.visitDate,
+		'%Y%m' ) ) =1 ) AS d
+		GROUP BY d.name ) as c ON c.department=a.id LEFT
+		JOIN
+
+		(SELECT
+		e.name,e.department,COUNT( e.customerId or null) dea FROM
+		(SELECT
+		cudeal.*,oguser.department ,ogdepartment.`name`
+		from cudeal LEFT JOIN
+		oguser ON cudeal.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		PERIOD_DIFF( date_format( now(
+		) , '%Y%m' ) , date_format(cudeal.dealDate, '%Y%m'
+		) ) =1) AS e GROUP
+		BY e.name ) AS d ON d.department=a.id LEFT JOIN
+
+
+		(SELECT
+		f.name,f.department,COUNT( f.customerId or null) follow FROM
+		(SELECT
+		cufollow.*,oguser.department ,ogdepartment.`name`
+		from cufollow LEFT
+		JOIN oguser ON cufollow.userId=oguser.id LEFT JOIN
+		ogdepartment ON
+		ogdepartment.id=oguser.department WHERE
+		PERIOD_DIFF( date_format( now(
+		) , '%Y%m' ) , date_format( cufollow.CreateDate,
+		'%Y%m' ) ) =1) AS f
+		GROUP BY f.name) as e ON e.department=a.id
+
+		ORDER BY a.parentId,a.id
+	</insert>
+
+	<insert id="addreportpsum">
+		INSERT INTO cureportpsum
+		(id,pid,userName,name,addw,adddh,addwl,addqt,addg,addz,vis,dea,follow,date)
+		SELECT null,a.id as pid,a.userName ,a.name,ifnull(b.addw,0)
+		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
+		addqt,ifnull(b.addg,0) addg,ifnull(b.addz,0) addz,ifnull(c.vis,0)
+		vis,ifnull(d.dea,0) dea,ifnull(e.follow,0)
+		follow,date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH), '%Y%m')
+		dates
+		FROM
+		(SELECT
+		oguser.id,oguser.userName,ogdepartment.id as did ,ogdepartment.name
+		FROM oguser LEFT JOIN ogdepartment ON
+		ogdepartment.id=oguser.department WHERE oguser.locked=1 and
+		ogdepartment.parentId in (12,13,14,15)) as a LEFT JOIN
+
+		(SELECT
+		c.userId
+		,
+		c.userName ,
+		COUNT(if(c.source=1 and c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN (0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN (1,2,3,4,5,6),true,null)) addwl,
+		COUNT(c.source=1 or null)addw,
+		COUNT(c.source=2 or null) addg,
+		COUNT(c.source=3 OR NULL) addz
+		FROM (SELECT b.*, cudata.cusource FROM
+		(SELECT cuadd.* FROM cuadd where PERIOD_DIFF( date_format( now( ) ,
+		'%Y%m' )
+		, date_format(cuadd.addDate, '%Y%m' ) ) =1) as b LEFT JOIN
+		cudata ON cudata.id =b.customerId) AS c GROUP BY c.userId ) as b
+		ON
+		b.userId=a.id left JOIN
+
+		(SELECT
+		b.userId ,
+		b.userName,
+		COUNT( b.customerId
+		or null) vis
+		FROM(SELECT cuvisit.* FROM cuvisit where PERIOD_DIFF(
+		date_format( now( ) ,
+		'%Y%m' ) , date_format(cuvisit.visitDate, '%Y%m'
+		) ) =1 ) as b GROUP
+		BY b.userId) as c
+		ON c.userId=a.id left JOIN
+
+		(SELECT
+		b.userId ,
+		b.userName,
+		COUNT( b.customerId or null) dea
+		FROM(SELECT
+		cudeal.* FROM cudeal where PERIOD_DIFF( date_format( now( ) , '%Y%m'
+		)
+		, date_format(cudeal.dealDate, '%Y%m' ) ) =1 ) as b GROUP BY
+		b.userId)
+		as d
+		ON d.userId=a.id left JOIN
+
+		(SELECT
+		b.userId ,
+		b.userName,
+		COUNT(
+		b.customerId or null) follow
+		FROM(SELECT cufollow.* FROM cufollow where
+		PERIOD_DIFF( date_format( now( ) ,
+		'%Y%m' ) , date_format(
+		cufollow.CreateDate, '%Y%m' ) ) =1 ) as b
+		GROUP BY b.userId) as e
+		ON
+		e.userId=a.id
+
+		ORDER BY a.did
+	</insert>
+	<delete id="deletelogin">
+		delete from oguserlogin where
+		loginTime &lt;=DATE_SUB(NOW(),INTERVAL 1 MONTH)
+	</delete>
+
+	<delete id="deletelog">
+		delete from oglog where
+		operTime &lt;=DATE_SUB(NOW(),INTERVAL 1 MONTH)
+	</delete>
+	<!-- 删除3月前更进 -->
+	<delete id="deletefollow">
+		delete from cufollow where
+		CreateDate &lt;=DATE_SUB(NOW(),INTERVAL 3 MONTH)
+	</delete>
+	<!-- 删除3月前新增 -->
+	<delete id="deleteadd">
+		delete from cuadd where
+		addDate &lt;=DATE_SUB(NOW(),INTERVAL 3 MONTH)
+	</delete>
+
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.RoleMapper">
+	<!--mybatis ehcache缓存配置 -->
+	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 <cache type="org.mybatis.caches.ehcache.LoggingEhcache" 
+		/> -->
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+	<!-- 以下与实体类的中字段一致 -->
+	<!-- 部门角色 -->
+	<sql id="selectId">
+		id,
+		roleName name,
+		roleCode,
+		state,
+		roleKey,
+		createDate,
+		description
+	</sql>
+	<!-- 查询职位 -->
+	<select id="seletUserRole" resultType="com.first.entity.RoleFormMap">
+	select 
+	id,
+	roleName name  
+	 from ogrole 
+	
+		where ogrole.id
+		in (SELECT roleId FROM oguser_role WHERE
+
+		userId=#{userId})
+		
+		
+	</select>
+	
+	<select id="findByWhere" resultType="com.first.entity.RoleFormMap">
+	select 
+	<include refid="selectId"/>
+	 from ogrole  
+	   where 
+	   id!=1
+	 <if test=" ugid != null">
+	
+	and  id not in ( ${ugid})
+		
+		 </if>
+	</select>
+	<!--查询登录 -->
+	<select id="findRloePage" resultType="com.first.entity.RoleFormMap">
+		select 
+		* 
+		from ogrole  
+		WHERE 1=1 
+		<if  test=" roleName != null and  roleName != '' ">
+		and  roleName=#{roleName}
+		 </if>
+		
+	</select>
+	
+		<!-- 添加职位 -->
+		<insert id="addEntity"
+		>
+		INSERT INTO 
+			ogrole	
+		VALUES 
+		(	null,	
+			#{roleName},
+			#{roleCode},
+			#{roleKey},
+			#{state},
+			#{createDate},
+			#{description} 
+				
+		)
+	</insert> 
+	
+	<!-- 修改职位 -->
+	<select id="findbyeditUI" resultType="com.first.entity.RoleFormMap">
+		select
+		<include refid="selectId"/>
+		from ogrole 
+		where
+		<if test=" id != null">
+		 id=#{id}
+		 </if>
+	</select>
+
+		<update id="editEntity">
+			update ogrole
+ 			<set>
+		<if  test=" roleName != null and roleName != '' ">
+			 roleName=#{roleName},
+		 </if> 
+		 <if  test=" roleCode != null and  roleCode != '' ">
+			roleCode=#{roleCode},
+		 </if>
+ 		 <if  test=" roleKey != null and roleKey != '' ">
+			 roleKey=#{roleKey},
+		 </if> 
+		 <if  test=" state != null and state != ''">
+			 state=#{state},
+		 </if> 
+		  <if  test=" description != null and description != ''">
+			description=#{description},
+		 </if> 
+		 </set>
+			 where id=#{id};
+	</update>
+	
+		<!-- 删除职位 -->
+	<delete id="deleteEntity">
+		delete from ogrole  where 
+		 id=#{id}	
+	</delete>
+	
+	
+	<!-- 清空职位权限 -->
+		<delete id="deleteByRoRe">
+		delete from ogrole_res  where 
+		roleId=#{roleId}
+		
+	</delete>
+	<!-- 批量添加职位权限 -->
+		<insert id="addRREntity"
+		>
+		INSERT INTO 
+			ogrole_res 	
+		VALUES 
+		(			
+			#{roleId},
+			#{resId}	 	
+		)
+	</insert> 
+	
+</mapper>

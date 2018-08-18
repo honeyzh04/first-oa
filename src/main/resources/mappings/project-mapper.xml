@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.ProjectMapper">
+
+	<sql id="selectId">
+		id,
+		projectName,
+		projectPosition,
+		region,
+		type,
+		concat (
+		areas,'-',areae,'㎡') as area,
+		concat (
+		prices,'-',pricee,'元') as
+		price,
+		concat (
+		pricess,'-',pricese,'万') as
+		prices,
+		lease,
+		latitude ,
+		state,
+		firstPerson,
+		projectPerson,
+		projectTelephone,
+		createDate,
+		description
+
+	</sql>
+
+	<!-- 项目选择 -->
+	<select id="getProject"
+		resultType="com.first.entity.ProjectFormMap">
+		select
+		<include refid="selectId" />
+		from prdata
+		where 1=1
+
+	</select>
+	<!-- 查看项目 -->
+	<select id="findProject"
+		resultType="com.first.entity.ProjectFormMap" parameterType="hashmap">
+		select
+		<include refid="selectId" />
+		from prdata
+		where 1=1
+		<if test="projectName != null and projectName != '' ">
+			AND projectName LIKE
+			CONCAT(CONCAT('%',#{projectName}),'%')
+
+		</if>
+		<if test="region != null and region != '' ">
+			and region=#{region}
+		</if>
+		<if test="type != null and type != '' ">
+			AND type LIKE CONCAT(CONCAT('%',#{type}),'%')
+
+		</if>
+		<if
+			test="areas != null and  areas != '' and areae != null and  areae != ''">
+			and ((${areas} &lt;= areas AND areas &lt;= ${areae})
+
+			or (${areas}
+			&lt;= areae AND areas &lt;= ${areae}))
+
+		</if>
+		<if
+			test="pricess != null and pricess != '' and pricese != null and pricese != ''">
+			and ( (${pricess} &lt;= pricess AND pricess &lt;= ${pricese})
+			or
+			(${pricess} &lt;= pricese AND pricess &lt;= ${pricese}))
+		</if>
+	</select>
+
+
+	<!-- 添加项目 -->
+	<insert id="addProject">
+		INSERT INTO
+		prdata
+		VALUES
+		(
+		#{id},
+		#{projectName},
+		#{projectPosition},
+		#{region},
+		#{type},
+		#{areas},
+		#{areae},
+		#{prices},
+		#{pricee},
+		#{pricess},
+		#{pricese},
+		#{lease},
+		#{latitude },
+		#{commission},
+		#{firstPerson},
+		#{projectPerson},
+		#{projectTelephone},
+		#{state},
+		#{createDate},
+		#{description}
+
+
+		)
+	</insert>
+	<!-- 项目修改 -->
+	<select id="findbyProject"
+		resultType="com.first.entity.ProjectFormMap">
+		select
+		*
+		from prdata
+		where 1=1
+		<if test="id != null and id != '' and id != 0">
+			and id=#{id}
+		</if>
+	</select>
+	<!-- 修改项目 -->
+	<update id="editProject">
+		update prdata
+		<set>
+			<if test=" projectName != null and projectName != '' ">
+				projectName=#{projectName},
+			</if>
+			<if test=" projectPosition != null and  projectPosition != '' ">
+				projectPosition=#{projectPosition},
+			</if>
+			<if test=" region != null and region != '' ">
+				region=#{region},
+			</if>
+			<if test=" type != null and type != ''">
+				type=#{type},
+			</if>
+			<if test=" areas != null and areas != ''">
+				areas=#{areas},
+			</if>
+			<if test=" areae != null and areae != ''">
+				areae=#{areae},
+			</if>
+			<if test=" prices != null and prices != ''">
+				prices=#{prices},
+			</if>
+			<if test=" pricee != null and pricee != ''">
+				pricee=#{pricee},
+			</if>
+			<if test=" pricess != null and pricess != ''">
+				pricess=#{pricess},
+			</if>
+			<if test=" pricese != null and pricese != ''">
+				pricese=#{pricese},
+			</if>
+			<if test=" lease != null and lease != ''">
+				lease=#{lease},
+			</if>
+			<if test=" latitude != null and latitude != ''">
+				latitude=#{latitude},
+			</if>
+			<if test=" commission != null and commission != ''">
+				commission=#{commission},
+			</if>
+			<if test=" firstPerson != null and  firstPerson != ''">
+				firstPerson=#{firstPerson},
+			</if>
+			<if test=" projectPerson != null and projectPerson != ''">
+				projectPerson=#{projectPerson},
+			</if>
+			<if test=" projectTelephone != null and projectTelephone != ''">
+				projectTelephone=#{projectTelephone},
+			</if>
+			<if test=" state != null and state != ''">
+				state=#{state},
+			</if>
+			<if test=" description != null and description != ''">
+				description=#{description},
+			</if>
+		</set>
+		where id=#{id};
+	</update>
+	<!-- 删除项目 -->
+	<delete id="deleteEntity">
+		delete from prdata where
+		id=#{id}
+
+	</delete>
+	<!-- 匹配项目 -->
+	<select id="findcuProject"
+		resultType="com.first.entity.ProjectFormMap" parameterType="hashmap">
+		select
+		<include refid="selectId" />
+		from prdata
+		where 
+		1=1
+		<choose>
+			<when test="id != null and id !=''">
+				<if test="apartment != null and apartment != '' ">
+					AND type=#{apartment}
+
+				</if>
+		
+				<if test="totalPrice != null and totalPrice != '' ">
+					and (pricess &lt;= ${totalPrice} AND ${totalPrice} &lt;= pricese)
+
+				</if>
+			</when>
+			<otherwise>
+				and 1=0
+			</otherwise>
+		</choose>
+
+
+	</select>
+
+	<select id="findMaxId"
+		resultType="String">
+		
+		select
+		max(id) id
+		from prdata
+
+	</select>
+	<select id="findProjecttest"
+		resultType="com.first.entity.ProjectFormMap">
+		select
+		*
+		from prdata
+		where id IN(1,2,3)
+	</select>
+</mapper>
