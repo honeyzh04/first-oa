@@ -43,12 +43,12 @@ public class JsonInterface {
 	    }
 	  }
 
-	  public static void main(String[] args) throws IOException, JSONException {
-		/*
+	  public void show1 () throws IOException {
+
 		  	String ip = "113.57.244.100";  
 		    	String url = "http://win.firstjia.com/first-oa/TVreport/test.shtml";  
 	 		    JSONObject json = JsonInterface.readJsonFromUrl(url);  
-	 		    System.out.println(json.toString()); */
+	 		    System.out.println(json.toString());
 	 	
 	 		 List<Map<String, Object>> x= JsonUtils.getListByUrl("http://win.firstjia.com/first-oa/TVreport/test1.shtml"); 
 	 		 System.err.println("asd"+x);
