@@ -15,7 +15,7 @@ $(function() {
 								
 							parent.layer.close(parent.pageii);
 							
-							//parent.find();
+							parent.find();
 							return false;
 						});
 						$("#form")[0].reset();

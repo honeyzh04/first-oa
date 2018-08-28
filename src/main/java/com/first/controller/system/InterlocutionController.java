@@ -23,15 +23,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 /**
- * 客户报表统计 Copyright (C), 2018-2022, ChengDu First Real estate agency
- * 
- * @author zhaoh
- * @date 2018年6月26日
- * @version 1.00
+ * 销售百问
  */
 @Controller
 @RequestMapping("/interlocution/")
 public class InterlocutionController extends BaseController {
+
 	@Inject
 	private InterlocutionMapper interlocutionMapper;
 

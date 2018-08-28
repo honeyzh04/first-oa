@@ -12,9 +12,9 @@ $(function() {
 							icon : 6,
 							title : '提示'
 						}, function(index) {
-							
+
 							parent.layer.close(parent.pageii);
-							parent.find();
+
 							return false;
 						});
 						$("#form")[0].reset();
@@ -33,13 +33,13 @@ $(function() {
 		
 		},
 		messages : {
-			
-			"interlocutionFormMap.question" : {
-				required : "请输入问题"
-				
-			},
-			
-			"interlocutionFormMap.answer" : {
+
+                "interlocutionFormMap.question" : {
+                    required : "请输入问题"
+
+                },
+
+                "interlocutionFormMap.answer" : {
 				required : "请输入答案"
 				
 			},

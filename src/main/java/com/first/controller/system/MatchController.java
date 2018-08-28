@@ -8,7 +8,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import com.first.service.system.ProjectService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -35,18 +37,18 @@ public class MatchController extends BaseController{
 	private CustomerMapper customerMapper;
 	@Inject
 	private ProjectMapper projectMapper;
-	
+	@Inject
+	private ProjectService projectService;
+
 	/**
-	 * 房发现客户
-	 * @param request
-	 * @param model
+	 * 匹配项目
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("customermatchtUI")
 	public String fangfaxianlistUI() throws Exception {
 		
-		System.err.println("23");
+
 		return Common.BACKGROUND_PATH + "/system/match/prmatch";
 	}
 	
@@ -87,6 +89,48 @@ public class MatchController extends BaseController{
 	        map.put("data", data);  
 	       
 	        return map; 
+	}
+	/**
+	 *匹配客户
+	 *
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("matchingCustomer")
+	public String matchingCustomer(Model model) throws Exception {
+		String id = getPara("id");
+		System.err.println("客户" + id);
+		model.addAttribute("project",id);
+		return Common.BACKGROUND_PATH + "/system/project/matchingCustomer";
+	}
+	@ResponseBody
+	@RequestMapping("findPrMatch")
+	public Object findPrMatch(HttpServletRequest request, int draw, int start, int length) throws Exception {
+		String userId=getuserId();
+		String id=request.getParameter("projectId");
+		ProjectFormMap mps=projectService.findbyProject(id);
+		System.err.println(mps);
+		mps.put("userId",userId);
+		PageHelper.startPage((start/length)+1, length);
+
+		List<CustomerFormMap> p = customerMapper.findMatchCustomer(mps);
+
+		PageInfo<CustomerFormMap> pageinfo = new PageInfo<CustomerFormMap>(p);
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Object> data = new ArrayList<Object>();
+		for (CustomerFormMap a : pageinfo.getList()) {
+
+			data.add(a);
+
+		}
+
+		map.put("draw", draw);
+		map.put("recordsTotal", pageinfo.getTotal());
+		map.put("recordsFiltered", pageinfo.getTotal());
+		map.put("data", data);
+
+		return map;
 	}
 }
 

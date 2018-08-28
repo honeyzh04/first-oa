@@ -915,4 +915,30 @@
 
 		)
 	</insert>
+
+	<!--匹配客户-->
+	<select id="findMatchCustomer"
+			resultType="com.first.entity.CustomerFormMap">
+		select
+		<include refid="selectId" />
+
+		from cudata
+		where
+		resources=1
+		<if test="userId != null and  userId != '' and  userId != 0">
+			and userId=#{userId}
+		</if>
+		<if test="apartment != null and apartment != '' ">
+			AND type=#{apartment}
+
+		</if>
+
+		<if test="pricess != null and pricess != ''and pricese != null and pricese != '' ">
+			and (${pricess} &lt;= totalPrice AND totalPrice &lt;= ${pricese})
+
+		</if>
+
+
+	</select>
+
 </mapper>

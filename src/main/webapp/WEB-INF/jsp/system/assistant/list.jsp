@@ -11,6 +11,11 @@ ol {
 #question {
 	list-style: disc;
 }
+
+h4:hover{
+	color: red;
+}
+
 </style>
 
 
@@ -229,7 +234,7 @@ ol {
 						console.log(obj);
 						for (i = 0; i < obj.list.length; i++) {
 							console.log(obj.list[i].question);
-							var str = '<li id="question"><h4><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span data-url="b" data-title="选项b"  data-id="45" class="site-demo-active" data-type="tabAdd">'
+							var str = '<li id="question"><h4  onclick="seeanswer(this);"   value='+obj.list[i].id+'><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span data-url="b" data-title="选项b"  data-id="45" class="site-demo-active" data-type="tabAdd">'
 									+ obj.list[i].question
 									+ '</span></h4><a  href="#" onclick="seeanswer(this);" value='
 									+ obj.list[i].id

@@ -60,9 +60,10 @@ public interface CustomerMapper {
 	 * @throws Exception
 	 */
 	public void addCu(Object formMap) throws Exception;
+
 	/**
-	 * 个人查询客户
-	 * @param userFormMap
+	 * 查看客户
+	 * @param searchMapMap
 	 * @return
 	 */
 	public List<CustomerFormMap> findCustomerPage( Map searchMapMap);
@@ -72,21 +73,24 @@ public interface CustomerMapper {
 	 * @return
 	 */
 	public List<CustomerFormMap> finddCustomerPage( Map searchMapMap);
+
 	/**
 	 * 查看所有客户
-	 * @param userFormMap
+	 * @param searchMapMap
 	 * @return
 	 */
 	public List<CustomerFormMap> findaCustomerPage( Map searchMapMap);
+
 	/**
 	 * 部门资源池查询客户
-	 * @param userFormMap
+	 * @param searchMap
 	 * @return
 	 */
 	public List<CustomerFormMap> findcCustomerPage( Map searchMap);
+
 	/**
 	 * 公司资源池查询客户
-	 * @param userFormMap
+	 * @param searchMap
 	 * @return
 	 */
 	public List<CustomerFormMap> findcAllPage( Map searchMap);
@@ -132,55 +136,55 @@ public interface CustomerMapper {
 	public void addpreEntity(Object formMap) throws Exception;
 	/**
 	 *定时客户调入部门公共池
-	 * @param formMap
+	 *
 	 * @throws Exception
 	 */
 	public void autocDiscard() throws Exception;
 	/**
 	 *定时客户调入公司公共池
-	 * @param formMap
+	 *
 	 * @throws Exception
 	 */
 	public void autoaDiscard() throws Exception;
 	/**
 	 *昨日跟进
-	 * @param formMap
+	 *
 	 * @throws Exception
 	 */
 	public void auto0Discard() throws Exception;
 	/**
 	 *一日未跟
-	 * @param formMap
+	 *
 	 * @throws Exception
 	 */
 	public void auto1Discard() throws Exception;
 	/**
 	 *2日未跟
-	 * @param formMap
+	 *
 	 * @throws Exception
 	 */
 	public void auto2Discard() throws Exception;
 	/**
 	 *3日未跟
-	 * @param formMap
+	 *
 	 * @throws Exception
 	 */
 	public void auto3Discard() throws Exception;
 	/**
 	 *4日未跟
-	 * @param formMap
+	 *
 	 * @throws Exception
 	 */
 	public void auto4Discard() throws Exception;
 	/**
 	 *5日未跟
-	 * @param formMap
+	 *
 	 * @throws Exception
 	 */
 	public void auto5Discard() throws Exception;
 	/**
 	 *6日未跟
-	 * @param formMap
+	 *
 	 * @throws Exception
 	 */
 	public void auto6Discard() throws Exception;
@@ -196,10 +200,10 @@ public interface CustomerMapper {
 	 * @throws Exception
 	 */
 	public void editExtend(ExtendFormMap formMap) throws Exception;
-	
+
 	/**
 	 * 房发现客户
-	 * @param userFormMap
+	 * @param searchMapMap
 	 * @return
 	 */
 	public List<CustomerFormMap> findffxCustomerPage( Map searchMapMap);
@@ -229,5 +233,12 @@ public interface CustomerMapper {
 	 * @return
 	 */
 	public String findbyproject(@Param("id")String id );
+
+	/**
+	 * 项目匹配客户
+	 * @param searchMapMap
+	 * @return
+	 */
+	public List<CustomerFormMap> findMatchCustomer( Map searchMapMap);
 	
 }

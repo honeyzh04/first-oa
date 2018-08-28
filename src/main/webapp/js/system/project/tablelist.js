@@ -165,8 +165,8 @@ $(function() {
 			                        
 			                        "render": function(data, type, full){  
 			                            return  "<div class='btn-group'>"+
-			    		        				"<button id='editRow' onclick='discardCustomer(this);' class='btn btn-warning btn-s' type='button'>详情</button>"+
-			    		        				"<button id='editRow' onclick='discardCustomer(this);' class='btn btn-danger btn-d' type='button'>匹配客户</button>"+
+			    		        				"<button id='editRow' onclick='detailsCustomer(this);' class='btn btn-warning btn-s' type='button'>详情</button>"+
+			    		        				"<button id='editRow' onclick='matchingCustomer(this);' class='btn btn-danger btn-d' type='button'>匹配客户</button>"+
 			    		        				"</div>" 
 			                        }  
 				                },
@@ -364,5 +364,47 @@ function updateAccount() {
 
 
 }
+/**
+ *
+ * 项目详情
+ * @param _this
+ */
+function detailsCustomer(_this) {
+    var nRow = $(_this).parents('tr')[0];// 得到这一行
+    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var cuId = aData.id;
+    var customerName = aData.customerName;
+
+    pageii = layer.open({
+        title : "客户扩展",
+        resize : false,
+        type : 2,
+        area : [ "530px", "520px" ],
+        content : './customer/extendUI.shtml?id=' + cuId + '&customerName='
+            + customerName,
+
+    });
+
+}
+
+/**
+ *
+ * 匹配客户
+ * @param _this
+ */
+function matchingCustomer(_this) {
+    var nRow = $(_this).parents('tr')[0];// 得到这一行
+    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var Id = aData.id;
 
 
+    pageii = layer.open({
+        title : "匹配客户",
+        resize : false,
+        type : 2,
+        area : ["60%","70%"],
+        content : './match/matchingCustomer.shtml?id=' + Id
+
+    });
+
+}

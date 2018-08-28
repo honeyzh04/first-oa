@@ -352,7 +352,7 @@
 			  $("#purpose option[value='"+purpose+"']").attr("selected","selected"); 
 			
 			
-			  $("#intention option[value='"+intention+"']").attr("selected","selected"); 
+			  $("#intention option[value='"+intention+"']").attr("selected","selected");
 			
 			
 			  $("#apartment option[value='"+apartment+"']").attr("selected","selected"); 

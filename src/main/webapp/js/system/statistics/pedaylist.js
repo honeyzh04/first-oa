@@ -11,6 +11,7 @@ $(function() {
 						processing : true,// 载入数据的时候是否显示“载入中”
 						serverSide : true,// 开启服务器模式。分页，取数据等等的都放到服务端去
 						"aLengthMenu" : [ 10, 20, 30 ], // 更改显示记录数选项
+
 						paging : true,
 						info : true,
 						"bStateSave" : false,

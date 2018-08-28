@@ -13,10 +13,8 @@ $(function() {
 });
 
 
-
 /**
- * 添加
- * @returns
+ * 添加问题
  */
 function addAccount() {
 	pageii = layer.open({

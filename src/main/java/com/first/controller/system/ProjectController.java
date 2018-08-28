@@ -38,7 +38,7 @@ public class ProjectController extends BaseController{
 	@Inject
 	private ProjectMapper projectMapper;
 	@Inject
-	private  ProjectService projectservice;
+	private  ProjectService projectService;
 	@RequestMapping("tablelist")
 	public String listUI(Model model) throws Exception {
 		model.addAttribute("res", findByRes());
@@ -170,7 +170,7 @@ public class ProjectController extends BaseController{
 		System.err.println("asd" + id);
 		if (Common.isNotEmpty(id)) {
 			System.err.println("asd2" );
-			ProjectFormMap mps=projectservice.findbyProject(id);
+			ProjectFormMap mps=projectService.findbyProject(id);
 			
 			System.err.println("1"+mps);
 			model.addAttribute("project", mps);
@@ -185,7 +185,7 @@ public class ProjectController extends BaseController{
 	public String editEntity(String txtGroupsSelect) throws Exception {
 		ProjectFormMap projectFormMap = getFormMap(ProjectFormMap.class);
 		
-		 projectservice.editEntity(projectFormMap);
+		 projectService.editEntity(projectFormMap);
 	
 		System.err.println("c测试2");
 
@@ -206,7 +206,7 @@ public class ProjectController extends BaseController{
 		String Ids = getPara("ids");
 		 String []ids=Ids.split(",");
 		for (String id : ids) {
-			projectservice.deleteEntity(id);
+			projectService.deleteEntity(id);
 			System.err.println("asd" + id);
 		
 		}
@@ -224,11 +224,11 @@ public class ProjectController extends BaseController{
 	@SystemLog(module = "项目管理", methods = "项目管理-更新项目") // 凡需要处理业务逻辑的.都需要记录操作日志
 	public String updateEntity() throws Exception {
 			System.err.println("genx");
-			projectservice.addproject();
+			projectService.addproject();
 		
 		return "success";
 	}
-	
+
 }
 
 

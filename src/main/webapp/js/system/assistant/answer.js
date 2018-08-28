@@ -2,7 +2,10 @@ var myTable = null;
 var pageii = null;
 
 
-
+/**
+ * 追加问答
+ * @param _this
+ */
 function interlocutionaddLayer (_this){
 	
 	var id = $(_this).attr("value");
@@ -13,12 +16,16 @@ function interlocutionaddLayer (_this){
  	 pageii=layer.open({
 		title : "完善问题库",
 		type : 2,
+		//offset: "100px",
 		area : [ "600px", "430px" ],
-		content : [ '../interlocution/addaUI.shtml?id=' + id]
+		content : [ '../interlocution/addaUI.shtml?id=' + id],
+		 end: function () {
+             location.reload();
+         }
 	});
 	//关闭加载效果
- 	window.location.reload();
- 	alert("dsaasd");
+
+
 
 }
 
@@ -33,11 +40,12 @@ function interlocutioneditLayer (_this){
 		title : "修改答案",
 		type : 2,
 		area : [ "600px", "430px" ],
-		content : [ '../interlocution/etidUI.shtml?aId=' + id]
+		content : [ '../interlocution/etidUI.shtml?aId=' + id],
+         end: function () {
+             location.reload();
+         }
 	});
-	//关闭加载效果
- 	
-	layer.close(index);
+
 }
 function interlocutiondeleLayer (_this){
 	var id = $(_this).attr("value");
@@ -53,10 +61,13 @@ function interlocutiondeleLayer (_this){
 
 				layer.msg('删除成功', {
 					icon : 1,
-					time : 1000
+					time : 1000,
+                    end: function () {
+                        location.reload();
+                    }
 				// 2秒关闭（如果不配置，默认是3秒）
 				});
-				parent.find();
+
 			},
 			error : function(er) {
 				layer.msg('删除失败');
