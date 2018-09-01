@@ -247,7 +247,7 @@ function addAccount() {
 	pageii = layer.open({
 		title : "添加项目",
 		type : 2,
-		area : [ "60%", "80%" ],
+		area : [ "1000px", "80%" ],
 		content : './project/addUI.shtml'
 	});
 }
@@ -271,7 +271,7 @@ function editAccount() {
 	pageii = layer.open({
 		title : "编辑项目",
 		type : 2,
-		area : [ "600px", "80%" ],
+        area : [ "1000px", "80%" ],
 		content : './project/editUI.shtml?id=' + id,
 
 	});
@@ -372,16 +372,15 @@ function updateAccount() {
 function detailsCustomer(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
     var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
-    var cuId = aData.id;
-    var customerName = aData.customerName;
+    var prId = aData.id;
+
 
     pageii = layer.open({
-        title : "客户扩展",
+        title : "楼盘详情",
         resize : false,
         type : 2,
-        area : [ "530px", "520px" ],
-        content : './customer/extendUI.shtml?id=' + cuId + '&customerName='
-            + customerName,
+        area : [ "1000px", "80%" ],
+        content : './project/housedetail.shtml?id=' + prId
 
     });
 

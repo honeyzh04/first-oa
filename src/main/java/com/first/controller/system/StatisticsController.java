@@ -684,4 +684,15 @@ public class StatisticsController extends BaseController {
 		return null;
 	
 	};
+
+	/**
+	 * 竞价报表
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("extensionUI")
+	public String extensionUI() throws Exception {
+
+		return Common.BACKGROUND_PATH + "/system/statistics/extension";
+	}
 }

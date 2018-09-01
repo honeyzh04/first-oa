@@ -178,7 +178,7 @@ public class ProjectController extends BaseController{
 		return Common.BACKGROUND_PATH + "/system/project/edit";
 	}
 
-	@ResponseBody
+/*	@ResponseBody
 	@RequestMapping("editEntity")
 	@Transactional(readOnly = false) // 需要事务操作必须加入此注解
 	@SystemLog(module = "项目管理", methods = "项目管理-修改项目") // 凡需要处理业务逻辑的.都需要记录操作日志
@@ -190,7 +190,7 @@ public class ProjectController extends BaseController{
 		System.err.println("c测试2");
 
 		return "success";
-	}
+	}*/
 	/**
 	 * 删除项目
 	 * 
@@ -228,6 +228,28 @@ public class ProjectController extends BaseController{
 		
 		return "success";
 	}
+
+	/**
+	 * 楼盘详情
+	 * @param model
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "housedetail")
+	public String housedetailUI(Model model,@RequestParam("id") String id){
+
+		System.err.println("asd" + id);
+		if (Common.isNotEmpty(id)) {
+
+			ProjectFormMap mps=projectService.findbyProject(id);
+
+
+			//model.addAttribute("project", mps);
+		}
+		return Common.BACKGROUND_PATH + "/system/project/housedetail";
+	}
+
 
 }
 

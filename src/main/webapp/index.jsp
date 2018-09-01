@@ -357,7 +357,7 @@
 
                         <li>
                             <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                <img src="img/avatar-mini.jpg" alt="">${userFormMap.accountName}
+                                <img src="img/avatar-mini.png" alt="">${userFormMap.accountName}
                               
                                 <span class=" fa fa-angle-down"></span>
                             </a>

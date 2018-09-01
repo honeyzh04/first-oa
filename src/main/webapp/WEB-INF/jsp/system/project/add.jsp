@@ -140,7 +140,7 @@
 				
 		</div>
 			<div class="form-group clearfix">
-							<button  type="button" id="btn-test" class="btn btn-info pull-right">保存 &nbsp;&nbsp;<span class="glyphicon glyphicon-save-file" aria-hidden="true"></span></button>
+							<button  type="button" id="btn-test" class="btn btn-info pull-right">保存</button>
 						</div>
 
 
@@ -177,7 +177,7 @@
 
 			}
 
-			//			Gid('s_county').setAttribute('onchange', 'showArea()');
+
 		</script>
 
 	</body>

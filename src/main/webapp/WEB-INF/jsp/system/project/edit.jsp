@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@include file="/common/common.jspf"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>	
 <html>
@@ -107,9 +107,9 @@
 				</div>
 				<div class="col-md-6">
 					<span>项目类型：</span>
-					<input type="radio" name="projectFormMap.type" id="" value="" />&nbsp;商铺
-					<input type="radio" name="projectFormMap.type" id="" value="" />&nbsp;公寓
-					<input type="radio" name="projectFormMap.type" id="" value="" />&nbsp;写字楼
+					<input type="radio" name="projectFormMap.type" id="" value="1" />&nbsp;商铺
+					<input type="radio" name="projectFormMap.type" id="" value="2" />&nbsp;公寓
+					<input type="radio" name="projectFormMap.type" id="" value="3" />&nbsp;写字楼
 				</div>
 			</div>
 			<div class="row mt10">
@@ -133,20 +133,20 @@
 			<div class="row mt10">
 				<div class="col-md-12">
 					<p>项目描述：</p>
-					<textarea style="resize:none" id="contenta" class="checkacc" name="customerFormMap.content" rows="10" cols="120" onpropertychange="if(this.scrollHeight>80) this.style.posHeight=this.scrollHeight+5" placeholder="请输入跟进内容"></textarea>
+					<textarea style="resize:none" id="description" class="checkacc" name="projectFormMap.description" rows="10" cols="120" onpropertychange="if(this.scrollHeight>80) this.style.posHeight=this.scrollHeight+5" placeholder="请输入跟进内容"></textarea>
 		
 				</div>
 			</div>
 				
 		</div>
 			<div class="form-group clearfix">
-							<button  type="button" id="btn-test" class="btn btn-info pull-right">保存 &nbsp;&nbsp;<span class="glyphicon glyphicon-save-file" aria-hidden="true"></span></button>
+							<button  type="button" id="btn-test" class="btn btn-info pull-right">保存</button>
 						</div>
 
 
 		
 		</form>
-	<script type="text/javascript" src="${ctx}/js/system/project/area.js"> 
+	<script type="text/javascript" src="${ctx}/js/system/project/address.js"> 
 	</script>
 		<script type="text/javascript">
 			_init_area();
@@ -158,14 +158,12 @@
 			    setTimeout("$('#btn-test').removeAttr('disabled')",3000); //设置三秒后提交按钮 显示
 			     
 			})
-		
+	
+            var content = $("#form textarea").val();
+            content = content.replace(/\n|\r\n/g,"<br>");
+  
 		</script>
 		<script type="text/javascript">
-			//console.log($("#s_province").text()) ;
-			//console.log($("#s_city").text());
-			//console.log($("#s_county").val());
-			//var a = $("#s_province option:selected").val();
-			//console.log(a)
 
 			var Gid = document.getElementById;
 
@@ -179,7 +177,7 @@
 
 			}
 
-			//			Gid('s_county').setAttribute('onchange', 'showArea()');
+
 		</script>
 
 	</body>
