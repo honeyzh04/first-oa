@@ -321,7 +321,7 @@ public class JsonUtils {
         try {  
             //通过HTTP获取JSON数据  
             InputStream in = new URL(url).openStream();  
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));  
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in,"utf-8"));
             StringBuilder sb = new StringBuilder();  
             String line;  
             while((line=reader.readLine())!=null){  

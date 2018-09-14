@@ -163,6 +163,22 @@
 
 		)
 	</insert>
+	<!--房发现客户具体来源-->
+	<insert id="addSource">
+
+			INSERT INTO
+		cuffxsource
+		VALUES
+		(
+		null,
+		#{id},
+		#{telephone},
+		#{ffxcusource},
+		#{createDate}
+
+		)
+	</insert>
+
 	<!-- 添加客户统计 -->
 	<insert id="addCu">
 		INSERT INTO
@@ -302,16 +318,15 @@
 		</if>
 
 		<if test="customerName != null and  customerName != ''">
-
-			AND customerName LIKE
-			CONCAT(CONCAT('%',#{customerName}),'%')
+			and customerName=#{customerName}
+			<!---AND customerName LIKE CONCAT(CONCAT('%',#{customerName}),'%')-->
 		</if>
 		<if test="telephone != null and  telephone != ''">
+			and telephone=#{telephone}
 
-			and telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
 		</if>
 		<if test="followa != null and  followa != ''">
-			AND content LIKE CONCAT(CONCAT('%',#{followa}),'%')
+			and content LIKE CONCAT(CONCAT('%',#{followa}),'%')
 
 		</if>
 		<if
@@ -373,13 +388,12 @@
 			</foreach>
 		</if>
 		<if test="customerName != null and  customerName != ''">
+			and customerName=#{customerName}
 
-			AND customerName LIKE
-			CONCAT(CONCAT('%',#{customerName}),'%')
 		</if>
-			<if test="telephone != null and  telephone != ''">
+		<if test="telephone != null and  telephone != ''">
+			and telephone=#{telephone}
 
-			and telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
 		</if>
 		<if test="followa != null and  followa != ''">
 			AND content LIKE CONCAT(CONCAT('%',#{followa}),'%')
@@ -434,13 +448,12 @@
 		<!-- <if test="id != null and id != '' and id != 0"> and userId=#{id} </if> -->
 
 		<if test="customerName != null and  customerName != ''">
+			and customerName=#{customerName}
 
-			AND customerName LIKE
-			CONCAT(CONCAT('%',#{customerName}),'%')
 		</if>
-			<if test="telephone != null and  telephone != ''">
+		<if test="telephone != null and  telephone != ''">
+			and telephone=#{telephone}
 
-			and telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
 		</if>
 		<if test="followa != null and  followa != ''">
 			AND content LIKE CONCAT(CONCAT('%',#{followa}),'%')
@@ -524,12 +537,12 @@
 			and department=#{department}
 		</if>
 		<if test="customerName != null and  customerName != ''">
-			AND customerName LIKE
-			CONCAT(CONCAT('%',#{customerName}),'%')
+			and customerName=#{customerName}
+
 		</if>
 		<if test="telephone != null and  telephone != ''">
-			and
-			telephone=#{telephone}
+			and telephone=#{telephone}
+
 		</if>
 		<if test="userId != null and  userId != ''and userId != 0">
 			and
@@ -591,11 +604,12 @@
 					and userId=#{userId}
 				</if>
 				<if test="customerName != null and  customerName != ''">
-					AND customerName LIKE
-					CONCAT(CONCAT('%',#{customerName}),'%')
+					and customerName=#{customerName}
+
 				</if>
-				<if test="telephone != null and  telephone != ''   ">
-					and telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
+				<if test="telephone != null and  telephone != ''">
+					and telephone=#{telephone}
+
 				</if>
 
 				<if
@@ -739,13 +753,13 @@
 
 
 	<!--定时放入部门公共池 -->
-	<update id="autocDiscard">
+	<update id="autobDiscard">
 		update cudata
 		set resources=2
 		where
 		resources=1 and
-		state !=4 and
-		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) >7
+		state !=4 and department !=16  and department !=20 and department !=21  and department !=26 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) &gt;7
 	</update>
 
 	<!--定时放入公司公共池 -->
@@ -754,7 +768,7 @@
 		set resources=3
 		where
 		resources=2 and
-		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) >15
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) &gt;15
 	</update>
 	<!--昨日跟进 -->
 	<update id="auto0Discard">

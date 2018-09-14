@@ -48,7 +48,7 @@ public class CustomerController extends BaseController {
 	@Inject
 	private DepartMapper departMapper;
 	@Inject
-	private ShareCustomerService sharecustomerservice;
+	private ShareCustomerService shareCustomerService;
 
 	/**
 	 * 账号查询
@@ -248,6 +248,12 @@ public class CustomerController extends BaseController {
 			customerMapper.addLFollow(customerFormMap);// 跟进客户长期保存
 
 			customerMapper.addExtend(customerFormMap);// 扩展客户
+			String source=customerFormMap.get("cusource").toString();
+			System.out.println("AD"+source);
+			if(source.equals("3")||source.equals("6")){
+				System.err.println("fangfaxiankehu");
+				customerMapper.addSource(customerFormMap);// 房发现客户具体来源
+			}
 
 			customerFormMap.put("source", "1");
 			customerMapper.addCu(customerFormMap);// 新增客户统计
@@ -529,7 +535,7 @@ public class CustomerController extends BaseController {
 		customerFormMap.put("state", "1");
 		System.err.println(customerFormMap);
 		List<String> list = new ArrayList<String>();
-		list = sharecustomerservice.findOldUser(customerFormMap);
+		list = shareCustomerService.findOldUser(customerFormMap);
 		String userId = customerFormMap.get("userId").toString();
 		// String str=String.join(",", list);
 		// System.err.println(str);
@@ -552,9 +558,6 @@ public class CustomerController extends BaseController {
 
 	/**
 	 * 房发现客户
-	 * 
-	 * @param request
-	 * @param model
 	 * @return
 	 * @throws Exception
 	 */

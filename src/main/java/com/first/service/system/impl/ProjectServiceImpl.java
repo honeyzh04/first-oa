@@ -3,6 +3,7 @@
  */
 package com.first.service.system.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -58,19 +59,30 @@ public class ProjectServiceImpl implements ProjectService  {
 		projectMapper.deleteEntity(id);
 		
 	}
+	/**
+	 * 删除所有项目
+	 */
+	@Override
+	public void deletesEntity() {
+		projectMapper.deletesEntity();
+
+	}
 
 
 
 	
 	public void addproject() {
-	 String id=projectMapper.findMaxId();
-		  System.err.println("Asd"+id);
-		 List<Map<String, Object>> x= JsonUtils.getListByUrl("http://bd.fangfaxian.com/prdc/GetPrDCBigList/"+id); 
+
+
+		 List<Map<String, Object>> x= JsonUtils.getListByUrl("http://bd.fangfaxian.com/PrDC/GetPrInfoList/");
 		 System.err.println("cxa"+x);
-		
+		deletesEntity();
+		System.out.println("a1");
 		 for (Map b:x) {
-			 b= JsonUtils.nullToEmpty(b);
-			 System.err.println("cxa"+b);
+			b= JsonUtils.nullToEmpty(b);
+
+			// String c = new String(b.toString().getBytes("GBK"),"utf-8");
+			 System.err.println("cxa3"+b);
 			 addEntity(b);
 			
 			

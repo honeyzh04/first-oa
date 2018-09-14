@@ -3,6 +3,7 @@
  */
 package com.first.service.system;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -38,16 +39,20 @@ public interface ProjectService {
 	 */
 	public void editEntity(ProjectFormMap formMap) ;
 	/**
-	 * 修改项目
+	 * 删除项目
 	 */
 	public void deleteEntity(String id) ;
+
+	/**
+	 * 删除所有
+	 */
+	public void deletesEntity();
 	/**
 	 * 添加项目
-	 * @param searchMap
 	 * @return
 	 */
 
-	public void addproject() ;
+	public void addproject() throws UnsupportedEncodingException;
 
-	
+
 }

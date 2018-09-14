@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,8 +46,10 @@ public class StatisticsController extends BaseController {
 
 		return Common.BACKGROUND_PATH + "/system/statistics/list";
 	}
+
 	/**
 	 * 图形报表
+	 *
 	 * @param model
 	 * @return
 	 * @throws Exception
@@ -56,9 +59,10 @@ public class StatisticsController extends BaseController {
 
 		return Common.BACKGROUND_PATH + "/system/statistics/echarts_list";
 	}
+
 	/**
 	 * 部门日报表
-	 * 
+	 *
 	 * @param request
 	 * @param draw
 	 * @param start
@@ -101,11 +105,13 @@ public class StatisticsController extends BaseController {
 		map.put("data", data);
 
 		return map;
-	};
+	}
+
+	;
 
 	/**
 	 * 部门周报表
-	 * 
+	 *
 	 * @param request
 	 * @param draw
 	 * @param start
@@ -182,11 +188,13 @@ public class StatisticsController extends BaseController {
 		map.put("data", data);
 
 		return map;
-	};
+	}
+
+	;
 
 	/**
 	 * 部门月报表
-	 * 
+	 *
 	 * @param request
 	 * @param draw
 	 * @param start
@@ -229,11 +237,13 @@ public class StatisticsController extends BaseController {
 		map.put("data", data);
 
 		return map;
-	};
+	}
+
+	;
 
 	/**
 	 * 查看各部门个人日报表
-	 * 
+	 *
 	 * @param model
 	 * @return
 	 * @throws Exception
@@ -248,7 +258,7 @@ public class StatisticsController extends BaseController {
 
 	/**
 	 * 部门日报表
-	 * 
+	 *
 	 * @param request
 	 * @param draw
 	 * @param start
@@ -292,11 +302,13 @@ public class StatisticsController extends BaseController {
 		map.put("data", data);
 
 		return map;
-	};
+	}
+
+	;
 
 	/**
 	 * 查看各部门个人周报表
-	 * 
+	 *
 	 * @param model
 	 * @return
 	 * @throws Exception
@@ -311,7 +323,7 @@ public class StatisticsController extends BaseController {
 
 	/**
 	 * 查看各部门个人周报表
-	 * 
+	 *
 	 * @param request
 	 * @param draw
 	 * @param start
@@ -391,11 +403,13 @@ public class StatisticsController extends BaseController {
 		map.put("data", data);
 
 		return map;
-	};
+	}
+
+	;
 
 	/**
 	 * 查看各部门个人月报表
-	 * 
+	 *
 	 * @param model
 	 * @return
 	 * @throws Exception
@@ -410,7 +424,7 @@ public class StatisticsController extends BaseController {
 
 	/**
 	 * 查看各部门个人月报表
-	 * 
+	 *
 	 * @param request
 	 * @param draw
 	 * @param start
@@ -456,11 +470,13 @@ public class StatisticsController extends BaseController {
 		map.put("data", data);
 
 		return map;
-	};
+	}
+
+	;
 
 	/**
 	 * 网络部报表
-	 * 
+	 *
 	 * @param model
 	 * @return
 	 * @throws Exception
@@ -473,7 +489,7 @@ public class StatisticsController extends BaseController {
 
 	/**
 	 * 网络日报表
-	 * 
+	 *
 	 * @param request
 	 * @param draw
 	 * @param start
@@ -516,10 +532,13 @@ public class StatisticsController extends BaseController {
 		map.put("data", data);
 
 		return map;
-	};
+	}
+
+	;
+
 	/**
 	 * 网络周报表
-	 * 
+	 *
 	 * @param request
 	 * @param draw
 	 * @param start
@@ -596,10 +615,13 @@ public class StatisticsController extends BaseController {
 		map.put("data", data);
 
 		return map;
-	};
+	}
+
+	;
+
 	/**
 	 * 网络月报表
-	 * 
+	 *
 	 * @param request
 	 * @param draw
 	 * @param start
@@ -642,15 +664,14 @@ public class StatisticsController extends BaseController {
 		map.put("data", data);
 
 		return map;
-	};
-	
+	}
+
+	;
+
 	/**
 	 * 个人周报表
-	 * 
+	 *
 	 * @param request
-	 * @param draw
-	 * @param start
-	 * @param length
 	 * @return
 	 * @throws Exception
 	 */
@@ -674,25 +695,129 @@ public class StatisticsController extends BaseController {
 			week = week - 3;
 		}
 		System.err.println("，阿达" + week);
-		
-			searchMap.put("departweeke", new Date());
-			cal.add(Calendar.DAY_OF_YEAR, -week);
-			Date dt1 = cal.getTime();
-			String reStr = sdf.format(dt1);
-			searchMap.put("departweeks", reStr);
-			System.err.println("，阿达" +searchMap);
+
+		searchMap.put("departweeke", new Date());
+		cal.add(Calendar.DAY_OF_YEAR, -week);
+		Date dt1 = cal.getTime();
+		String reStr = sdf.format(dt1);
+		searchMap.put("departweeks", reStr);
+		System.err.println("，阿达" + searchMap);
 		return null;
-	
-	};
+
+	}
+
+	;
 
 	/**
 	 * 竞价报表
+	 *
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("extensionUI")
-	public String extensionUI() throws Exception {
-
+	public String extensionUI(Model model) throws Exception {
+		model.addAttribute("res", findByRes());
 		return Common.BACKGROUND_PATH + "/system/statistics/extension";
 	}
+
+	@ResponseBody
+	@RequestMapping("findByExtension")
+	public Object findByExtension(HttpServletRequest request, int draw, int start, int length) throws Exception {
+
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+
+		String ab = request.getParameter("monthDate");
+		if (ab == null || "".equals(ab)) {
+			searchMap.put("monthDate", new Date());
+		} else {
+			searchMap.put("monthDate", ab + "-00");
+		}
+		System.err.println("查询32131" + searchMap);
+		PageHelper.startPage((start / length) + 1, length);
+
+		List<StatisticsFormMap> p = statisticsservice.findByExtension(searchMap);
+
+		PageInfo<StatisticsFormMap> pageinfo = new PageInfo<StatisticsFormMap>(p);
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Object> data = new ArrayList<Object>();
+		for (StatisticsFormMap a : pageinfo.getList()) {
+
+			data.add(a);
+
+		}
+
+		map.put("draw", draw);
+		map.put("recordsTotal", pageinfo.getTotal());
+		map.put("recordsFiltered", pageinfo.getTotal());
+		map.put("data", data);
+
+		return map;
+	}
+
+	/**
+	 * 具体来源
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("sourceUI")
+	public String sourceUI(Model model) {
+		String createDate = getPara("createDate");
+		System.err.println("项目1" +createDate);
+		String format = "yyyy-MM-dd";
+
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		String c=sdf.format(new Date(Long.valueOf(createDate)));
+		model.addAttribute("createDate",c );
+
+		return Common.BACKGROUND_PATH + "/system/statistics/source";
+	}
+	@ResponseBody
+	@RequestMapping("Source")
+	public Map<String, Object> Source(HttpServletRequest request) throws Exception {
+		String createDate = getPara("createDate");
+
+
+		System.out.println("DA1"+ createDate);
+		Map<String, Object> source =statisticsservice.findSource(createDate);
+		return source;
+	}
+	/**
+	 * 添加报表
+	 *
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("addUI")
+	public String addUI(Model model) throws Exception {
+		return Common.BACKGROUND_PATH + "/system/statistics/add";
+	}
+
+	@ResponseBody
+	@RequestMapping("addOther")
+	public Map<String, Object> addOther(HttpServletRequest request) throws Exception {
+		String createDate=request.getParameter("createDate");
+		System.err.println("SJ"+createDate);
+		Map<String, Object> sourceMap=statisticsservice.findAddOther(createDate);
+		int vis=statisticsservice.findVis(createDate);
+		Map<String, Object> deaMap=statisticsservice.findDea(createDate);
+		sourceMap.put("vis",vis);
+		sourceMap.putAll(deaMap);
+		System.err.println(sourceMap);
+		System.out.println("ASD"+sourceMap);
+		System.out.println("ASD"+vis);
+		System.out.println("ASD"+deaMap);
+		return sourceMap;
+	}
+    @ResponseBody
+    @RequestMapping("addEntity")
+    @Transactional(readOnly = false) // 需要事务操作必须加入此注解
+    public String addEntity() throws Exception {
+        StatisticsFormMap  statisticsFormMap = getFormMap(StatisticsFormMap.class);
+		System.out.println(statisticsFormMap);
+        statisticsservice.addEntity( statisticsFormMap);
+        return "success";
+    }
+
 }

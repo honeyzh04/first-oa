@@ -19,15 +19,54 @@ public interface StatisticsService {
 	/**
 	 * 查看网络日报表
 	 */
-	public List<StatisticsFormMap> findSumInday( Map searchMap);
+	List<StatisticsFormMap> findSumInday( Map searchMap);
 	/**
 	 * 查看网络周报表
 	 * @param searchMap
 	 * @return
 	 */
-	public  List<StatisticsFormMap> findSumInweek( Map searchMap);
+	List<StatisticsFormMap> findSumInweek( Map searchMap);
 	/**
 	 * 查看网络月报表
 	 */
-	public List<StatisticsFormMap> findSumInmonth( Map searchMap);
+	 List<StatisticsFormMap> findSumInmonth( Map searchMap);
+
+	/**
+	 * 竞价报表
+	 * @param searchMap
+	 * @return
+	 */
+	List<StatisticsFormMap> findByExtension( Map searchMap);
+
+	/**
+	 * 新增数据
+	 * @param createDate
+	 * @return
+	 */
+	Map<String, Object> findAddOther(String createDate);
+
+	/**
+	 * 带访数据
+	 * @param createDate
+	 * @return
+	 */
+	Integer findVis(String createDate);
+	/**
+	 * 成交数据
+	 */
+	Map<String, Object> findDea(String createDate);
+
+	/**
+	 * 添加竞价报表
+	 * @param formMap
+	 */
+	void addEntity(Map formMap) ;
+
+	/**
+	 * 具体来源
+	 * @param createDate
+	 * @return
+	 */
+	Map<String, Object> findSource(String createDate);
+
 }

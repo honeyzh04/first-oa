@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.first.mapper.StatisticsMapper">
 
-	<select id="findDeday"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findDeday"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.name , ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0)
 		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
@@ -89,9 +89,9 @@
 		ORDER BY
 		a.parentId,a.id
 	</select>
-	<!-- 日报表统计 -->
-	<select id="findSumDeday"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 日报表统计 -->
+    <select id="findSumDeday"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT
 		"9999" as id,
 		"合计" as name,
@@ -134,8 +134,8 @@
 		=a.customerId) AS c
 	</select>
 
-	<select id="findDeweek"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findDeweek"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.name , ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0)
 		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
@@ -226,9 +226,9 @@
 		ORDER
 		BY a.parentId,a.id
 	</select>
-	<!-- 周报表统计 -->
-	<select id="findSumDeweek"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 周报表统计 -->
+    <select id="findSumDeweek"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT
 		"9999" as id,
 		"合计" as name,
@@ -268,8 +268,8 @@
 		=a.customerId) AS c
 	</select>
 
-	<select id="findDe"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findDe"
+            resultType="com.first.entity.StatisticsFormMap">
 
 		SELECT a.id,a.name , ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
@@ -360,9 +360,9 @@
 
 	</select>
 
-	<!-- 月报表统计 -->
-	<select id="findSumDemonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 月报表统计 -->
+    <select id="findSumDemonth"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT
 		"9999" as id,
 		"合计" as name,
@@ -412,9 +412,9 @@
 		=a.customerId) AS c
 
 	</select>
-	<!-- 部门当月每天报表 -->
-	<select id="findDedays"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 部门当月每天报表 -->
+    <select id="findDedays"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.name , ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
 		addqt,ifnull(b.addg,0) addg,ifnull(b.addz,0) addz,ifnull(c.vis,0)
@@ -518,8 +518,8 @@
 		ORDER BY a.parentId,a.id ,a.days
 	</select>
 
-	<select id="findRankPerAddMonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findRankPerAddMonth"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.userName ,a.name,ifnull(b.addw,0) addw FROM
 		(SELECT oguser.id,oguser.userName,ogdepartment.name FROM oguser LEFT
 		JOIN ogdepartment ON ogdepartment.id=oguser.department WHERE
@@ -534,8 +534,8 @@
 
 		ORDER BY addw desc LIMIT 5
 	</select>
-	<select id="findRankPerFollowMonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findRankPerFollowMonth"
+            resultType="com.first.entity.StatisticsFormMap">
 
 		SELECT a.userName ,a.name,ifnull(b.follow,0)follow FROM
 		(SELECT oguser.id,oguser.userName,ogdepartment.name FROM oguser LEFT
@@ -551,8 +551,8 @@
 
 		ORDER BY follow desc LIMIT 5
 	</select>
-	<select id="findRankPerVisMonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findRankPerVisMonth"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.userName ,a.name,ifnull(b.vis,0)vis FROM
 		(SELECT
 		oguser.id,oguser.userName,ogdepartment.name FROM oguser LEFT JOIN
@@ -569,8 +569,8 @@
 
 		ORDER BY vis desc LIMIT 5
 	</select>
-	<select id="findRankPerDeaMonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findRankPerDeaMonth"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.userName ,a.name,ifnull(b.dea,0)dea FROM
 		(SELECT
 		oguser.id,oguser.userName,ogdepartment.name FROM oguser LEFT JOIN
@@ -589,8 +589,8 @@
 		5
 	</select>
 
-	<select id="findRankDeAddMonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findRankDeAddMonth"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.name ,ifnull(b.addw,0) addw FROM
 		(SELECT *
 		FROM ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
@@ -613,8 +613,8 @@
 		b.department=a.id
 		ORDER BY addw desc LIMIT 5
 	</select>
-	<select id="findRankDeFollowMonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findRankDeFollowMonth"
+            resultType="com.first.entity.StatisticsFormMap">
 
 		SELECT a.id,a.name ,ifnull(e.follow,0) follow FROM
 		(SELECT *
@@ -632,8 +632,8 @@
 		ORDER BY follow desc
 		LIMIT 5
 	</select>
-	<select id="findRankDeVisMonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findRankDeVisMonth"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.name ,ifnull(c.vis,0) vis FROM
 		(SELECT * FROM
 		ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
@@ -656,8 +656,8 @@
 		c.department=a.id
 		ORDER BY vis desc LIMIT 5
 	</select>
-	<select id="findRankDeDeaMonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <select id="findRankDeDeaMonth"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.name ,ifnull(d.dea,0) dea FROM
 		(SELECT * FROM
 		ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
@@ -678,9 +678,9 @@
 		ORDER BY dea desc LIMIT 5
 	</select>
 
-	<!-- 部门个人日报表 -->
-	<select id="findpeday"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 部门个人日报表 -->
+    <select id="findpeday"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.userName ,a.did,a.name,ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
 		addqt,ifnull(b.addg,0) addg,ifnull(b.addz,0) addz,ifnull(e.follow,0)
@@ -742,9 +742,9 @@
 		WHERE a.did=#{deId}
 
 	</select>
-	<!-- 部门个人周报表 -->
-	<select id="findpeweek"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 部门个人周报表 -->
+    <select id="findpeweek"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.userName ,a.did,a.name,ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0)
 		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
@@ -815,9 +815,9 @@
 		ON e.userId=a.id
 		WHERE a.did=#{deId}
 	</select>
-	<!-- 部门个人月报表 -->
-	<select id="findpemonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 部门个人月报表 -->
+    <select id="findpemonth"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.userName ,a.did,a.name,ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
 		addqt,ifnull(b.addg,0) addg,ifnull(b.addz,0) addz,ifnull(e.follow,0)
@@ -882,9 +882,9 @@
 		WHERE a.did=#{deId}
 
 	</select>
-	<!-- 网络日报表 -->
-	<select id="findSumInday"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 网络日报表 -->
+    <select id="findSumInday"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT * FROM
 
 		(SELECT
@@ -963,9 +963,9 @@
 
 
 	</select>
-	<!-- 网络周报表 -->
-	<select id="findSumInweek"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 网络周报表 -->
+    <select id="findSumInweek"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT * FROM
 
 		(SELECT
@@ -1041,9 +1041,9 @@
 
 
 	</select>
-	<!-- 网络月报表 -->
-	<select id="findSumInmonth"
-		resultType="com.first.entity.StatisticsFormMap">
+    <!-- 网络月报表 -->
+    <select id="findSumInmonth"
+            resultType="com.first.entity.StatisticsFormMap">
 		SELECT * FROM
 
 		(SELECT
@@ -1122,4 +1122,181 @@
 
 
 	</select>
+
+
+    <!-- 竞价报表 -->
+    <select id="findByExtension"
+            resultType="com.first.entity.StatisticsFormMap">
+        SELECT
+        id,
+        baidu_price,
+        baidu_click,
+        sougou_price,
+        sougou_click,
+        shenma_price,
+        shenma_click,
+        ifnull(convert((baidu_price+sougou_price+shenma_price)/adds,decimal(10,2)),0) as cost,
+        ifnull(convert(adds/(baidu_click+sougou_click+shenma_click),decimal(10,4)),0) as add_conversion,
+        ifnull(convert(dea/(baidu_click+sougou_click+shenma_click),decimal(10,4)),0) as dea_conversion,
+        createDate,
+        ifnull(b.dea, 0) dea,
+        ifnull(b.price, 0) price,
+        ifnull(b.commission, 0) commission,
+        ifnull(b.projectName, 0) projectName,
+        ifnull(c.vis, 0) vis,
+        ifnull(d.adds, 0) adds
+        FROM
+        cuextension AS a
+        LEFT JOIN (
+        SELECT
+        COUNT(a.customerId) AS dea,
+        SUM(a.price) AS price,
+        SUM(a.commission) AS commission,
+        GROUP_CONCAT(a.projectId SEPARATOR ',') projectName,
+        a.dealDate
+        FROM
+        (
+        SELECT
+        cudeal.customerId,
+        cudeal.price,
+        cudeal.commission,
+        cudeal.projectId,
+        cudata.telephone,
+        cudeal.dealDate
+        FROM
+        cudeal
+        INNER JOIN cudata ON cudeal.customerId = cudata.id
+        WHERE
+        cudata.cusource IN (3, 6)
+        GROUP BY
+        cudata.telephone
+        ) AS a
+        GROUP BY
+        DATE_FORMAT(a.dealDate, '%Y%m%d')
+        ) AS b ON DATE_FORMAT(a.createDate, '%Y%m%d') = DATE_FORMAT(b.dealDate, '%Y%m%d')
+        LEFT JOIN (
+        SELECT
+        COUNT(b.customerId) AS vis,
+        b.visitDate
+        FROM
+        (
+        SELECT
+        cuvisit.customerId,
+        cudata.telephone,
+        cuvisit.visitDate
+        FROM
+        cuvisit
+        INNER JOIN cudata ON cuvisit.customerId = cudata.id
+        WHERE
+        cudata.cusource IN (3, 6)
+        GROUP BY
+        cudata.telephone
+        ) AS b
+        GROUP BY
+        DATE_FORMAT(b.visitDate, '%Y%m%d')
+        ) AS c ON DATE_FORMAT(a.createDate, '%Y%m%d') = DATE_FORMAT(c.visitDate, '%Y%m%d')
+        LEFT JOIN (
+        SELECT
+        COUNT(b.customerId) AS adds,
+        b.createDate AS addcreateDate
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        cuffxsource
+        GROUP BY
+        telephone
+        ) AS b
+        GROUP BY
+        DATE_FORMAT(createDate, '%Y%m%d')
+        ) AS d ON DATE_FORMAT(a.createDate, '%Y%m%d') = DATE_FORMAT(d.addcreateDate, '%Y%m%d')
+        WHERE
+        1=1
+        <if test="monthDate != null and  monthDate != '' ">
+            and DATE_FORMAT(createDate,'%Y%m'
+            )=DATE_FORMAT(#{monthDate},'%Y%m')
+        </if>
+        ORDER BY
+        createDate DESC
+
+
+    </select>
+    <!-- 查看当日竞价新增数据 -->
+    <select id="findAddOther"
+            resultType="java.util.HashMap">
+		SELECT
+	COUNT(*) AS alls,
+	COUNT(ffxsource = 1 OR NULL) AS bdsq,
+	COUNT(ffxsource = 2 OR NULL) AS batg,
+	COUNT(ffxsource = 3 OR NULL) AS ffxdh,
+	COUNT(ffxsource = 4 OR NULL) AS ffxwl,
+	COUNT(ffxsource = 5 OR NULL) AS xxl,
+	COUNT(ffxsource = 6 OR NULL) AS sm
+FROM
+	cuffxsource
+WHERE
+	DATE_FORMAT(createDate, '%Y%m%d') =DATE_FORMAT(#{createDate},'%Y%m%d')
+
+	</select>
+    <!-- 查看当日竞价到访数据 -->
+    <select id="findVis"
+            resultType="Integer">
+			SELECT COUNT(a.customerId) as vis FROM (SELECT
+	cuvisit.customerId
+FROM
+	cuvisit inner join cudata on cuvisit.customerId=cudata.id
+WHERE
+	DATE_FORMAT(cuvisit.visitDate, '%Y%m%d') =DATE_FORMAT(#{createDate},'%Y%m%d')
+ GROUP BY cudata.telephone) as a
+
+	</select>
+    <!-- 查看当日成交数据 -->
+    <select id="findDea"
+            resultType="java.util.HashMap">
+			SELECT COUNT(a.customerId)as dea  ,ifnull(SUM(a.price),0) as price,ifnull(SUM(a.commission),0) as commission ,ifnull(GROUP_CONCAT(a.projectId SEPARATOR ','),0) projectName FROM (SELECT
+	cudeal.customerId,cudeal.price,cudeal.commission,cudeal.projectId
+FROM
+	cudeal inner join cudata on cudeal.customerId=cudata.id
+WHERE
+	DATE_FORMAT(cudeal.dealDate, '%Y%m%d') =DATE_FORMAT(#{createDate},'%Y%m%d') GROUP BY cudata.telephone) as a
+
+	</select>
+	<!--添加竞价报表-->
+	<insert id="addEntity">
+		INSERT INTO
+		cuextension
+		VALUES
+		(
+		null,
+
+		#{baidu_price},
+		#{baidu_click},
+		#{sougou_price},
+		#{sougou_click},
+		#{shenma_price},
+		#{shenma_click},
+		#{createDate}
+
+		)
+	</insert>
+	<!--查看竞价来源
+	-->
+	<select id="findSource"
+			resultType="java.util.HashMap">
+		SELECT
+	COUNT(ffxsource = 1 OR NULL) baidusq,
+	COUNT(ffxsource = 2 OR NULL) baidudh,
+	COUNT(ffxsource = 3 OR NULL) ffxdh,
+	COUNT(ffxsource = 4 OR NULL) ffxwl,
+	COUNT(ffxsource = 5 OR NULL) xxl,
+	COUNT(ffxsource = 6 OR NULL) sgsm
+FROM (SELECT
+ *
+FROM
+	cuffxsource
+WHERE
+	DATE_FORMAT(createDate, '%Y%m%d') = DATE_FORMAT(#{createDate}, '%Y%m%d') GROUP BY telephone) as a
+	</select>
+
 </mapper>

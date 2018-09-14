@@ -220,8 +220,7 @@ h4:hover{
 		var page = $(_this).attr("value");
 		console.log("que" + que);
 		console.log("page" + page);
-		$
-				.ajax({
+		$.ajax({
 					"url" : "./interlocution/findQuestionsa.shtml",
 					"data" : {
 						que : que,

@@ -53,6 +53,12 @@ public interface ProjectMapper {
 	 * @param id
 	 */
 	public void deleteEntity(String id);
+	/**
+	 * 删除所有项目
+	 *
+	 *
+	 */
+	public void deletesEntity();
 	
 	/**
 	 * 匹配项目

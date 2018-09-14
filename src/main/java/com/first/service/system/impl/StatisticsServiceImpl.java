@@ -25,8 +25,7 @@ import com.first.service.system.StatisticsService;
 public class StatisticsServiceImpl implements StatisticsService  {
 	@Inject
 	private StatisticsMapper statisticsMapper;
-	@Inject
-	private  ProjectService projectservice;
+
 
 	@Override
 	public List<StatisticsFormMap> findSumInday(Map searchMap) {
@@ -49,5 +48,41 @@ public class StatisticsServiceImpl implements StatisticsService  {
 	public List<StatisticsFormMap> findSumInmonth(Map searchMap) {
 		// TODO Auto-generated method stub
 		return statisticsMapper.findSumInmonth(searchMap);
+	}
+
+	/**
+	 * 竞价报表
+	 * @param searchMap
+	 * @return
+	 */
+	@Override
+	public List<StatisticsFormMap> findByExtension(Map searchMap) {
+		return statisticsMapper.findByExtension(searchMap);
+	}
+
+	@Override
+	public Map<String, Object> findAddOther(String createDate) {
+		return statisticsMapper.findAddOther(createDate);
+	}
+
+	@Override
+	public Integer findVis(String createDate) {
+
+			return statisticsMapper.findVis(createDate);
+	}
+
+	@Override
+	public Map<String, Object> findDea(String createDate) {
+		return statisticsMapper.findDea(createDate);
+	}
+
+	@Override
+	public void addEntity(Map formMap) {
+		statisticsMapper.addEntity(formMap);
+	}
+
+	@Override
+	public Map<String, Object> findSource(String createDate) {
+		return statisticsMapper.findSource(createDate);
 	}
 }

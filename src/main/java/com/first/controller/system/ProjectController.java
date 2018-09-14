@@ -1,20 +1,5 @@
 package com.first.controller.system;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.first.annotation.SystemLog;
 import com.first.controller.index.BaseController;
 import com.first.entity.ProjectFormMap;
@@ -23,8 +8,22 @@ import com.first.service.system.ProjectService;
 import com.first.util.Common;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
 import net.sf.json.JSONArray;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * 项目管理
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -213,7 +212,7 @@ public class ProjectController extends BaseController{
 		return "success";
 	}
 	/**
-	 * 更新项目
+	 * 手动更新项目
 	 * 
 	 * @return
 	 * @throws Exception
@@ -227,6 +226,17 @@ public class ProjectController extends BaseController{
 			projectService.addproject();
 		
 		return "success";
+	}
+	/**
+	 * 自动更新项目
+	 */
+
+	@Scheduled(cron = "0 0 12 * * ?")
+	public void  updateProject() throws UnsupportedEncodingException {
+
+		System.err.println("---->>deleteAllTempClob删除数据库记录数:");
+		projectService.addproject();
+
 	}
 
 	/**

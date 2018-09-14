@@ -30,6 +30,14 @@ public interface CustomerMapper {
 	 * @throws Exception
 	 */
 	public void addVisit(Object formMap) throws Exception;
+
+	/**
+	 * 房发现客户具体来源
+	 * @param formMap
+	 * @throws Exception
+	 */
+	public void addSource(Object formMap) throws Exception;
+
 	/**
 	 * 添加成交
 	 * @param formMap
@@ -139,7 +147,7 @@ public interface CustomerMapper {
 	 *
 	 * @throws Exception
 	 */
-	public void autocDiscard() throws Exception;
+	public void autobDiscard() throws Exception;
 	/**
 	 *定时客户调入公司公共池
 	 *

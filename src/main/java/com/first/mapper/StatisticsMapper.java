@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.first.entity.StatisticsFormMap;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 部门操作
@@ -126,5 +127,31 @@ public interface StatisticsMapper {
 	 * @return
 	 */
 	public  List<StatisticsFormMap> findSumInmonth( Map searchMapMap);
-	
+
+	/**
+	 * 竞价报表
+	 * @param searchMapMap
+	 * @return
+	 */
+	public  List<StatisticsFormMap> findByExtension( Map searchMapMap);
+
+	/**
+	 * 查找当日竞价数据
+	 */
+	Map<String, Object> findAddOther(@Param("createDate") String createDate);
+	Integer findVis(@Param("createDate") String createDate);
+	Map<String, Object> findDea(@Param("createDate") String createDate);
+
+	/**
+	 * 添加竞价报表
+	 */
+	void addEntity(Map formMap);
+
+	/**
+	 * 查看具体来源
+	 * @param createDate
+	 * @return
+	 */
+	Map<String, Object> findSource(@Param("createDate") String createDate);
+
 }

@@ -99,7 +99,7 @@
 						</div>
 						<div class="form-group">
 							<label for="">信息来源：</label>
-							<select name="customerFormMap.cusource">
+							<select name="customerFormMap.cusource" id="cusource"  onchange="getCusource(this)">
 								<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请选择</option>
 								<option value="9">主动T客户</option>
 								<option value="1">网络（安居客端口）</option>
@@ -111,6 +111,20 @@
 								<option value="7">自身（打街霸）</option>
 								<option value="8">自身（朋友推荐）</option>
 								<option value="0">其他</option>
+							</select>
+						</div>
+						<div class="form-group" style="display: none;" id="ffxccusources" >
+							<label for="">具体来源：</label>
+							<select name="customerFormMap.ffxcusource" id="ffxccusource" >
+								<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请选择</option>
+								<option value="1">百度商桥</option>
+								<option value="2">百度推广电话</option>
+								<option value="3">房发现电话</option>
+								<option value="4">房发现微聊</option>
+								<option value="5">信息流</option>
+								<option value="6">搜狗神马</option>
+
+
 							</select>
 						</div>
 						<div class="form-group">
@@ -226,6 +240,16 @@
 			
 		
 		});
+        function getCusource(obj){
+            var a = $(obj).find('option:selected').val();
+            console.log("asd"+ a);
+            if(a==3||a==6){
+                $("#ffxccusources").show();
+                console.log("as5");
+            }else {
+                $("#ffxccusources").hide();
+            }
+        }
 		</script>
 
 	<!-- 	

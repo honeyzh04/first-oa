@@ -181,6 +181,11 @@
 		id=#{id}
 
 	</delete>
+	<!-- 删除所有项目 -->
+	<update id="deletesEntity">
+		truncate TABLE  prdata
+
+	</update>
 	<!-- 匹配项目 -->
 	<select id="findcuProject"
 		resultType="com.first.entity.ProjectFormMap" parameterType="hashmap">

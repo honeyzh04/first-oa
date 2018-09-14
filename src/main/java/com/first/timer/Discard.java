@@ -25,10 +25,10 @@ public class Discard {
 	@Inject
 	private CustomerMapper customerMapper; 
 	@Inject
-	private MonthStartMapper  monthstartMapper;  
+	private MonthStartMapper  monthstartMapper;
 
 	
-	/* @Scheduled(cron = "0/5 * * * * ?")   
+	/* @Scheduled(cron = "0/5 * * * * ?")
     public void show1(){  
         System.out.println("测试  每5s执行一次");  
     }  */
@@ -37,16 +37,17 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */    
-    @Scheduled(cron = "0 30 01 * * ?")   
-    public void show() throws Exception{  
-		customerMapper.autocDiscard(); 
+    @Scheduled(cron = "0 40 01 * * ?")
+    public void show() throws Exception{
+        System.out.println("das");
+		customerMapper.autobDiscard();
     }  
     /**
      * 调入公司公共池  
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */ 
-    @Scheduled(cron = "0  40 01 * * ?")   
+    @Scheduled(cron = "0  30 01 * * ?")
     public void show1() throws Exception{  
     	customerMapper.autoaDiscard(); 
     }  
@@ -127,6 +128,8 @@ public class Discard {
     	 monthstartMapper.deletefollow();
     	 monthstartMapper.deleteadd();
     	
-    } 
+    }
+
+
 
 }
