@@ -154,4 +154,56 @@ public interface StatisticsMapper {
 	 */
 	Map<String, Object> findSource(@Param("createDate") String createDate);
 
+	/**
+	 * 竞价周报表
+	 * @param searchMapMap
+	 * @return
+	 */
+	List<StatisticsFormMap> findWeekExtension( Map searchMapMap);
+
+    /**
+     * 竞价周报表统计
+     * @param searchMapMap
+     * @return
+     */
+    StatisticsFormMap findWeekSum(Map searchMapMap);
+	/**
+	 * 房发现新增周报表
+	 * @param searchMapMap
+	 * @return
+	 */
+	List<StatisticsFormMap> findWeekAdds( Map searchMapMap);
+	/**
+	 * 房发现带访周报表
+	 * @param searchMapMap
+	 * @return
+	 */
+	List<StatisticsFormMap> findWeekVisit( Map searchMapMap);
+
+	/**
+	 * 房发现成交周报表
+	 * @param searchMapMap
+	 * @return
+	 */
+	List<StatisticsFormMap> findWeekDeal( Map searchMapMap);
+    /**
+     * 房发现退单周报表
+     * @param searchMap
+     * @return
+     */
+    StatisticsFormMap findWeekRefund( Map searchMap);
+
+    /**
+     * 房发现去重周报表
+     * @param searchMap
+     * @return
+     */
+  StatisticsFormMap findWeekFilter( Map searchMap);
+
+	/**
+	 * 添加竞价周报表
+	 */
+	void addWeekReport(Map formMap);
+
+
 }

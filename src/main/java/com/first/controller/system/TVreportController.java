@@ -56,6 +56,7 @@ public class TVreportController extends BaseController {
 		 List<StatisticsFormMap> desouth3days=new ArrayList<StatisticsFormMap>();//南三当月每天的报表
 		 List<StatisticsFormMap> deeast1days=new ArrayList<StatisticsFormMap>();//东一当月每天的报表
 		 List<StatisticsFormMap> dewest1days=new ArrayList<StatisticsFormMap>();//x西一当月每天的报表
+
 	
 			for (StatisticsFormMap a : dedays) {
 			
@@ -93,6 +94,8 @@ public class TVreportController extends BaseController {
 		 List<StatisticsFormMap> rankDeVisMonth=statisticsMapper.findRankDeVisMonth();//部门当月到访排行
 		
 		 List<StatisticsFormMap> rankDeDeaMonth=statisticsMapper.findRankDeDeaMonth();//部门当月成交新增排行
+		List<StatisticsFormMap> monthExtiension=statisticsMapper.findMonthExtiension();//当月报表
+
 	
 		
 		 List<ProjectFormMap>  projectFormMap = projectMapper.getProject(); //项目查看
@@ -128,6 +131,7 @@ public class TVreportController extends BaseController {
 		searchMap.put("rankDeVisMonth",  rankDeVisMonth);
 		searchMap.put("rankDeDeaMonth", rankDeDeaMonth);
 		searchMap.put("projectFormMap", projectTVshows);
+		searchMap.put("monthExtiension", monthExtiension);
 		
 		
 		if(callback==null||callback.equals("")) {

@@ -165,6 +165,26 @@ $(function() {
 										}
 									}
 								},
+                            {
+                                data : "ffxsource",
+                                render : function(data, type, row, meta) {
+                                    if (data == 1) {
+                                        return '<span >百度商桥</span>';
+                                    } else if (data == 2) {
+                                        return '<span >百度推广电话</span>';
+                                    } else if (data == 3) {
+                                        return '<span >房发现电话</span>';
+                                    } else if (data == 4) {
+                                        return '<span >房发现微聊</span>';
+                                    } else if (data == 5) {
+                                        return '<span >信息流</span>';
+                                    } else if (data == 6) {
+                                        return '<span >搜狗神马</span>';
+                                    } else {
+                                        return '<span >未知</span>';
+                                    }
+                                }
+                            },
 								{
 									data : "userName",
 									render : function(data, type, row, meta) {

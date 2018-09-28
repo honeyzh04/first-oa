@@ -1262,8 +1262,8 @@ WHERE
 	DATE_FORMAT(cudeal.dealDate, '%Y%m%d') =DATE_FORMAT(#{createDate},'%Y%m%d') GROUP BY cudata.telephone) as a
 
 	</select>
-	<!--添加竞价报表-->
-	<insert id="addEntity">
+    <!--添加竞价报表-->
+    <insert id="addEntity">
 		INSERT INTO
 		cuextension
 		VALUES
@@ -1280,10 +1280,10 @@ WHERE
 
 		)
 	</insert>
-	<!--查看竞价来源
-	-->
-	<select id="findSource"
-			resultType="java.util.HashMap">
+    <!--查看竞价来源
+    -->
+    <select id="findSource"
+            resultType="java.util.HashMap">
 		SELECT
 	COUNT(ffxsource = 1 OR NULL) baidusq,
 	COUNT(ffxsource = 2 OR NULL) baidudh,
@@ -1298,5 +1298,316 @@ FROM
 WHERE
 	DATE_FORMAT(createDate, '%Y%m%d') = DATE_FORMAT(#{createDate}, '%Y%m%d') GROUP BY telephone) as a
 	</select>
+	<!--查看竞价周报表
+        -->
+
+    <select id="findWeekExtension"
+            resultType="com.first.entity.StatisticsFormMap">
+		SELECT
+	*
+FROM
+	cuwextension
+WHERE
+	DATE_FORMAT(start_date, '%Y%m%d') = DATE_FORMAT(#{screateDate}, '%Y%m%d')
+AND DATE_FORMAT(end_date, '%Y%m%d') = DATE_FORMAT(#{ecreateDate}, '%Y%m%d')
+
+	</select>
+    <!--查看周报表和
+        -->
+    <select id="findWeekSum" resultType="com.first.entity.StatisticsFormMap">
+    SELECT
+	"9999" AS id,
+	"合计" AS platform,
+	'' AS channel,
+	'' AS ways,
+	SUM(consume) AS consume,
+	SUM(keyword) AS keyword,
+	SUM(shows) AS shows,
+	SUM(click) AS click,
+	SUM(ip_click) AS ip_click,
+	SUM(pv_click) AS pv_click,
+	SUM(uv_click) AS uv_click,
+	CONVERT (
+		SUM(click) / SUM(click),
+		DECIMAL (10, 4)
+	) AS click_rate,
+	'' AS avetime,
+	'' AS bounce_rate,
+	'' AS aveprice,
+	SUM(telephone) AS telephone,
+	SUM(eftelephone) AS eftelephone,
+	SUM(weiliao) AS weiliao,
+	SUM(efweiliao) AS efweiliao,
+	SUM(shangqiao) AS shangqiao,
+	SUM(efshangqiao) AS efshangqiao,
+	SUM(message) AS message,
+	CONVERT (
+		SUM(consume) / (
+			SUM(telephone) + SUM(weiliao) + SUM(shangqiao) + SUM(message)
+		),
+		DECIMAL (10, 2)
+	) AS dialogue_cost,
+	CONVERT (
+		SUM(consume) / (
+			SUM(eftelephone) + SUM(efweiliao) + SUM(efshangqiao) + SUM(message)
+		),
+		DECIMAL (10, 2)
+	) AS efdialogue_cost,
+	'' AS dialogue_time
+    FROM
+    cuwextension
+    WHERE
+    DATE_FORMAT(start_date, '%Y%m%d') = DATE_FORMAT(#{screateDate}, '%Y%m%d')
+    AND DATE_FORMAT(end_date, '%Y%m%d') = DATE_FORMAT(#{ecreateDate}, '%Y%m%d')
+    </select>
+    <!--查看房发现带访周报表-->
+    <select id="findWeekVisit" resultType="com.first.entity.StatisticsFormMap">
+	SELECT
+	count(a.userId) AS visit,
+	department
+FROM
+	(
+		SELECT
+			cuvisit.customerId,
+			cuvisit.userId
+		FROM
+			cuvisit
+		LEFT JOIN cudata ON cuvisit.customerId = cudata.id
+		WHERE
+			visitDate BETWEEN #{screateDate}
+		AND #{ecreateDate}
+		AND cusource IN (3, 6)
+	) AS a
+RIGHT JOIN oguser ON a.userId = oguser.id
+WHERE
+	department IN (16, 18, 20, 21, 24, 26, 28)
+GROUP BY
+	oguser.department
+	</select>
+    <!--查看房发现成交周报表-->
+    <select id="findWeekDeal" resultType="com.first.entity.StatisticsFormMap">
+		SELECT
+	count(a.userId) AS dea,
+	department
+FROM
+	(
+		SELECT
+			cudeal.customerId,
+			cudeal.userId
+		FROM
+			cudeal
+		LEFT JOIN cudata ON cudeal.customerId = cudata.id
+		WHERE
+			dealDate BETWEEN #{screateDate}
+		AND #{ecreateDate}
+		AND cusource IN (3, 6)
+	) AS a
+			RIGHT JOIN oguser ON a.userId = oguser.id
+			WHERE
+	department IN (16, 18, 20, 21, 24, 26, 28)
+		GROUP BY
+	oguser.department
+	</select>
+    <!--查看房发现退单周报表-->
+    <select id="findWeekRefund" resultType="com.first.entity.StatisticsFormMap">
+		SELECT
+	IFNULL(SUM(commission),0) AS commission
+FROM
+	(
+		SELECT
+			commission
+		FROM
+			cudeal
+		LEFT JOIN cudata ON cudeal.customerId = cudata.id
+		WHERE
+			state = 5
+		AND cusource IN (3, 6)
+		AND cudeal.dealDate BETWEEN #{screateDate}
+		AND #{ecreateDate}
+		GROUP BY
+			telephone
+	) AS a
+	</select>
+    <!--查看房发现新增周报表-->
+    <select id="findWeekAdds" resultType="com.first.entity.StatisticsFormMap">
+		SELECT
+	SUM(a.adds + b.addshare) adds,
+	a.department
+FROM
+	(
+		SELECT
+			count(a.userId) AS adds,
+			department
+		FROM
+			(
+				SELECT
+					a.customerId,
+					a.userId
+				FROM
+					(
+						SELECT
+							cuadd.customerId,
+							cuadd.userId
+						FROM
+							cuadd
+						WHERE
+							cuadd.addDate BETWEEN #{screateDate}
+		AND #{ecreateDate}
+						AND source = 1
+					) AS a
+				LEFT JOIN cudata ON a.customerId = cudata.id
+				WHERE
+					cusource IN (3, 6)
+			) AS a
+		RIGHT JOIN oguser ON a.userId = oguser.id
+		WHERE
+			department IN (16, 18, 20, 21, 24, 26,28)
+		GROUP BY
+			oguser.department
+	) a
+LEFT JOIN (
+	SELECT
+		count(a.userId) AS addshare,
+		department
+	FROM
+		(
+			SELECT
+				cushare.userId
+			FROM
+				cushare
+			LEFT JOIN cudata ON cushare.customerId = cudata.id
+			WHERE
+				cushare.createDate BETWEEN #{screateDate}
+		AND #{ecreateDate}
+			AND cudata.cusource IN (3, 6)
+			AND cudata.department = 28
+			AND cushare.userId NOT IN (
+				SELECT
+					oguser.id
+				FROM
+					oguser
+				WHERE
+					department = 28
+			)
+			GROUP BY
+				customerId
+		) AS a
+	RIGHT JOIN oguser ON a.userId = oguser.id
+	WHERE
+		department IN (16, 18, 20, 21, 24, 26,28)
+	GROUP BY
+		oguser.department
+) AS b ON a.department = b.department
+GROUP BY
+	a.department
+	</select>
+    <!--查看房发现去重周报表-->
+    <select id="findWeekFilter" resultType="com.first.entity.StatisticsFormMap">
+		SELECT
+	IFNULL(filter_add, 0) filter_add,
+ 	IFNULL(filter_visit, 0) filter_visit,
+ 	IFNULL(filter_deal, 0) filter_deal,
+ 	IFNULL(commission, 0) commission
+FROM
+	(
+		SELECT
+			"9999" AS id,
+			COUNT(a.customerId) AS filter_add
+		FROM
+			(
+				SELECT
+					customerId
+				FROM
+					cuadd
+				LEFT JOIN cudata ON cuadd.customerId = cudata.id
+				WHERE
+					source = 1
+				AND cusource IN (3, 6)
+				AND cuadd.addDate BETWEEN #{screateDate}
+		AND #{ecreateDate}
+				GROUP BY
+					telephone
+			) a
+	) c
+LEFT JOIN (
+	SELECT
+		"9999" AS id,
+		COUNT(a.customerId) AS filter_visit
+	FROM
+		(
+			SELECT
+				customerId
+			FROM
+				cuvisit
+			LEFT JOIN cudata ON cuvisit.customerId = cudata.id
+			WHERE
+				cusource IN (3, 6)
+			AND cuvisit.visitDate BETWEEN #{screateDate}
+		AND #{ecreateDate}
+			GROUP BY
+				telephone
+		) a
+) e ON c.id = e.id
+LEFT JOIN (
+	SELECT
+		"9999" AS id,
+		COUNT(a.customerId) AS filter_deal,
+		SUM(a.commission) AS commission
+	FROM
+		(
+			SELECT
+				customerId,
+				commission
+			FROM
+				cudeal
+			LEFT JOIN cudata ON cudeal.customerId = cudata.id
+			WHERE
+				cusource IN (3, 6)
+			AND cudeal.dealDate BETWEEN #{screateDate}
+		AND #{ecreateDate}
+			GROUP BY
+				telephone
+		) a
+) f ON c.id = f.id
+
+	</select>
+	<!--添加竞价周报表-->
+	<insert id="addWeekReport">
+		INSERT INTO
+		cuwextension
+		VALUES
+		(
+		null,
+		#{platform},
+		#{channel},
+		#{ways},
+		#{consume},
+		#{keyword},
+		#{shows},
+		#{click},
+		#{ip_click},
+		#{pv_click},
+		#{uv_click},
+		#{click_rate},
+		#{avetime},
+		#{bounce_rate},
+		#{aveprice},
+		#{telephone},
+		#{eftelephone},
+		#{weiliao},
+		#{efweiliao},
+		#{shangqiao},
+		#{efshangqiao},
+		#{message},
+		#{dialogue_cost},
+		#{efdialogue_cost},
+		#{dialogue_time},
+		#{screateDate},
+		#{ecreateDate},
+		#{create_date}
+
+
+		)
+	</insert>
 
 </mapper>

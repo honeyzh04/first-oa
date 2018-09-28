@@ -127,5 +127,11 @@ public interface StatisticsTVMapper {
 	 * @return
 	 */
 	public  List<StatisticsFormMap> findlastdchampion();
-	
+
+	/**
+	 * 当月报表
+	 * @return
+	 */
+	List<StatisticsFormMap> findMonthExtiension();
+
 }

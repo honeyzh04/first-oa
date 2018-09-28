@@ -289,7 +289,7 @@ public class JsonUtils {
 				Object v = json.get(k);
 				//如果内层还是数组的话，继续解析  
 				if (v instanceof JSONArray) {
-					System.err.println("2");
+
 					List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 					Iterator<JSONObject> it = ((JSONArray) v).iterator();
 					while (it.hasNext()) {
@@ -298,7 +298,7 @@ public class JsonUtils {
 					}
 					map.put(k.toString(), list);
 				} else {
-					System.err.println("1");
+
 					map.put(k.toString(), v);
 				}
 			} 
@@ -343,7 +343,7 @@ public class JsonUtils {
         try {  
             //通过HTTP获取JSON数据  
             InputStream in = new URL(url).openStream();  
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));  
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in,"utf-8"));
             StringBuilder sb = new StringBuilder();  
             String line;  
             while((line=reader.readLine())!=null){  

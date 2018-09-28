@@ -324,7 +324,7 @@ public class CustomerController extends BaseController {
 			customerMapper.addVisit(customerFormMap);// 到访客户
 			// &&dealprojectId !=null
 		} else if (state.equals("4") && dealprojectId != null) {
-
+			customerMapper.addVisit1(customerFormMap);//到访客户
 			customerMapper.addDeal(customerFormMap);// 成交客户
 		}
 		return "success";

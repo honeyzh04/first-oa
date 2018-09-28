@@ -1,0 +1,317 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>房发现运营数据链输入页面</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+
+        .mb10 {
+            margin-bottom: 10px;
+        }
+
+        .col-lg-6 {
+            margin-bottom: 15px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>房发现运营数据链 <small>2018-09-11~2018-09-17</small></h1>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">推广平台选择</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">推广平台</span>
+                            <select class="form-control" id="sltWebSite">
+                                <option>选择推广平台</option>
+                                <option>电脑端:fangfaxian.com</option>
+                                <option>移动端:m.fangfaxian.com</option>
+                                <option>wangjinpu.com</option>
+                                <option>m.wangjinpu.com</option>
+                                <option>信息流营销页</option>
+                                <option>微信小程序</option>
+                                <option>中秋专题</option>
+                                <option>南充站</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">推广渠道</span>
+                            <select class="form-control" id="sltChannels">
+                                <option>选择推广渠道</option>
+                                <option>百度</option>
+                                <option>搜狗</option>
+                                <option>神马</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">推广方式</span>
+                            <select class="form-control" id="sltType">
+                                <option>选择推广方式</option>
+                                <option>搜索推广</option>
+                                <option>信息流</option>
+                                <option>自然流量</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">消费</span>
+                            <input type="text" class="form-control" placeholder="输入消费金额">
+                            <span class="input-group-addon">元</span>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">访问数据录入</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">消费</span>
+                            <input type="text" class="form-control" placeholder="输入消费金额">
+                            <span class="input-group-addon">元</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">关键词量</span>
+                            <input type="text" class="form-control" placeholder="输入关键词数量">
+                            <span class="input-group-addon">个</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">展现量</span>
+                            <input type="text" class="form-control" placeholder="输入展现数量">
+                            <span class="input-group-addon">次</span>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">总点击</span>
+                            <input type="text" class="form-control" placeholder="输入点击量">
+                            <span class="input-group-addon">次</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">IP</span>
+                            <input type="text" class="form-control" placeholder="输入IP数量">
+                            <span class="input-group-addon">个</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">PV</span>
+                            <input type="text" class="form-control" placeholder="输入PV数量">
+                            <span class="input-group-addon">次</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">UV</span>
+                            <input type="text" class="form-control" placeholder="输入UV数量">
+                            <span class="input-group-addon">次</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">平均访问时长</span>
+                            <input type="text" class="form-control" placeholder="输入点击量">
+                            <span class="input-group-addon">次</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">跳出率</span>
+                            <input type="text" class="form-control" placeholder="输入IP数量">
+                            <span class="input-group-addon">个</span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">点击率</span>
+                            <label class="form-control">总点击/展现量</label>
+                            <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">平均点击价格</span>
+                            <label class="form-control">总点击/消费</label>
+                            <span class="input-group-addon">次/元</span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">对话数据录入</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">电话接访</span>
+                            <input type="text" class="form-control" placeholder="输入电话接访数量">
+                            <span class="input-group-addon">个</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">有效电话接访</span>
+                            <input type="text" class="form-control" placeholder="输入有效电话接访数量">
+                            <span class="input-group-addon">个</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">网站微聊</span>
+                            <input type="text" class="form-control" placeholder="输入网站微聊数量">
+                            <span class="input-group-addon">个</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">有效网站微聊</span>
+                            <input type="text" class="form-control" placeholder="输入有效网站微聊数量">
+                            <span class="input-group-addon">个</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">商桥对话</span>
+                            <input type="text" class="form-control" placeholder="输入商桥对话数量">
+                            <span class="input-group-addon">个</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">有效商桥对话</span>
+                            <input type="text" class="form-control" placeholder="输入有效商桥对话接访数量">
+                            <span class="input-group-addon">个</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">短信&邮件</span>
+                            <input type="text" class="form-control" placeholder="输入短信&邮件数量">
+                            <span class="input-group-addon">个</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">新增客户</span>
+                            <input type="text" class="form-control" placeholder="输入新增客户数量">
+                            <span class="input-group-addon">分</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">平均对话时长</span>
+                            <input type="text" class="form-control" placeholder="输入平均对话时长">
+                            <span class="input-group-addon">分</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">有效对话成本</span>
+                            <label class="form-control">总有效对话/消费</label>
+                            <span class="input-group-addon">个/元</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon1">新增客户成本</span>
+                            <label class="form-control">新增客户/消费</label>
+                            <span class="input-group-addon">个/元</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -30,6 +30,12 @@ public interface CustomerMapper {
 	 * @throws Exception
 	 */
 	public void addVisit(Object formMap) throws Exception;
+	/**
+	 * 添加成交到访客户
+	 * @param formMap
+	 * @throws Exception
+	 */
+	public void addVisit1(Object formMap) throws Exception;
 
 	/**
 	 * 房发现客户具体来源

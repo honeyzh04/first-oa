@@ -279,7 +279,7 @@ table.dataTable tbody tr:hover {
 						<option value="1">新增客户</option>
 						<option value="2">到访客户</option>
 						<option value="4">成交客户</option>
-						<option value="5">退单客户<</option>
+						<option value="5">退单客户</option>
 					</select> <label for="exampleInputPassword1" class="pad">&nbsp;&nbsp;&nbsp;购买用途：</label>
 					<select class="form-control m-b-10" id="purpose"
 						name="customerFormMap.purpose">

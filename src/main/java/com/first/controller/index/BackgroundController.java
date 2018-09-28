@@ -62,7 +62,7 @@ public class BackgroundController extends BaseController {
 	@RequestMapping(value = "login", method = RequestMethod.GET, produces = "text/html; charset=utf-8")
 	public String login(HttpServletRequest request) {
 		request.removeAttribute("error");
-		return "/login";
+		return "login";
 	}
 	/**
 	 * 登录系统
@@ -79,7 +79,7 @@ public class BackgroundController extends BaseController {
 			}
 			if (Common.isEmpty(username) || Common.isEmpty(password)) {
 				request.setAttribute("error", "用户名或密码不能为空！");
-				return "/login";
+				return "login";
 			}
 			UserFormMap userFormMap = new UserFormMap();
 			userFormMap.put("accountName", "" + username + "");
@@ -96,15 +96,15 @@ public class BackgroundController extends BaseController {
 			} catch (LockedAccountException lae) {
 				token.clear();
 				request.setAttribute("error", "用户已经被锁定不能登录，请与管理员联系！");
-				return "/login";
+				return "login";
 			} catch (ExcessiveAttemptsException e) {
 				token.clear();
 				request.setAttribute("error", "账号：" + username + " 登录失败次数过多,锁定10分钟!");
-				return "/login";
+				return "login";
 			} catch (AuthenticationException e) {
 				token.clear();
 				request.setAttribute("error", "用户或密码不正确！");
-				return "/login";
+				return "login";
 			}
 			
 			//保存用户登录信息
@@ -123,7 +123,7 @@ public class BackgroundController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("error", "登录异常，请联系管理员！");
-			return "/login";
+			return "login";
 		}
 		return "redirect:index.shtml";
 	}

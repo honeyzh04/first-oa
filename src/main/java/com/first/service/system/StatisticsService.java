@@ -68,5 +68,43 @@ public interface StatisticsService {
 	 * @return
 	 */
 	Map<String, Object> findSource(String createDate);
+	/**
+	 * 房发现新增周报表
+	 * @param searchMap
+	 * @return
+	 */
+	List<StatisticsFormMap> findWeekAdds( Map searchMap);
+	/**
+	 * 房发现带访周报表
+	 * @param searchMap
+	 * @return
+	 */
+	List<StatisticsFormMap> findWeekVisit( Map searchMap);
+
+	/**
+	 * 房发现成交周报表
+	 * @param searchMap
+	 * @return
+	 */
+	List<StatisticsFormMap> findWeekDeal( Map searchMap);
+
+	/**
+	 * 房发现去重周报表
+	 * @param searchMap
+	 * @return
+	 */
+	StatisticsFormMap findWeekFilter( Map searchMap);
+
+	/**
+	 * 退单周报表
+	 * @param searchMap
+	 * @return
+	 */
+	  StatisticsFormMap findWeekRefund( Map searchMap);
+
+	/**
+	 * 添加竞价周报表
+	 */
+	void addWeekReport(Map formMap);
 
 }

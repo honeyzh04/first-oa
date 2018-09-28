@@ -6,6 +6,7 @@ import com.first.entity.ProjectFormMap;
 import com.first.mapper.ProjectMapper;
 import com.first.service.system.ProjectService;
 import com.first.util.Common;
+import com.first.util.JsonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
@@ -231,10 +232,10 @@ public class ProjectController extends BaseController{
 	 * 自动更新项目
 	 */
 
-	@Scheduled(cron = "0 0 12 * * ?")
+	@Scheduled(cron = "0 0 3,13 * * ?")
 	public void  updateProject() throws UnsupportedEncodingException {
 
-		System.err.println("---->>deleteAllTempClob删除数据库记录数:");
+
 		projectService.addproject();
 
 	}
@@ -251,6 +252,14 @@ public class ProjectController extends BaseController{
 
 		System.err.println("asd" + id);
 		if (Common.isNotEmpty(id)) {
+			List<Map<String, Object>> x= JsonUtils.getListByUrl("http://bd.fangfaxian.com/PrDC/GetPrIdInfoList/"+id);
+			for (Map b:x) {
+				b = JsonUtils.nullToEmpty(b);
+
+
+				System.err.println("cxa3" + b);
+
+			}
 
 			ProjectFormMap mps=projectService.findbyProject(id);
 

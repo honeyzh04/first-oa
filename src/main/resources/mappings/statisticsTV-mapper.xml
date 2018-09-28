@@ -13,7 +13,7 @@
 		vis,ifnull(d.dea,0)
 		dea,ifnull(e.follow,0) follow,day(NOW()) days FROM
 
-		(SELECT * FROM ogdepartment WHERE parentId in (12,13,14,15)) as a left
+		(SELECT * FROM ogdepartment WHERE parentId in (4,12,13,14,15)) as a left
 		JOIN
 
 		(SELECT
@@ -96,7 +96,7 @@
 		dea,ifnull(e.follow,0) follow FROM
 
 		(SELECT * FROM
-		ogdepartment WHERE parentId in (12,13,14,15)) as a left JOIN
+		ogdepartment WHERE parentId in (4,12,13,14,15)) as a left JOIN
 
 		(SELECT
 		c.name,
@@ -170,7 +170,7 @@
 		vis,ifnull(d.dea,0) dea,ifnull(e.follow,0) follow,MONTH(NOW()) months
 		FROM
 
-		(SELECT * FROM ogdepartment WHERE parentId in (12,13,14,15)) as a
+		(SELECT * FROM ogdepartment WHERE parentId in (4,12,13,14,15)) as a
 		left JOIN
 
 		(SELECT
@@ -253,7 +253,7 @@
 		(SELECT
 		a.id ,a.`name` ,a.parentId,b.days FROM ogdepartment a
 		,cuday b WHERE
-		b.days &lt;=day(NOW())and parentId in (12,13,14,15)) as
+		b.days &lt;=day(NOW())and parentId in (4,12,13,14,15)) as
 		a left JOIN
 
 		(SELECT
@@ -356,7 +356,7 @@
 		oguser LEFT
 		JOIN
 		ogdepartment ON ogdepartment.id=oguser.department WHERE
-		oguser.locked=1 and ogdepartment.parentId in (12,13,14,15)) as a LEFT
+		oguser.locked=1 and ogdepartment.parentId in (4,12,13,14,15)) as a LEFT
 		JOIN
 
 		(SELECT cuadd.userId, cuadd.userName,COUNT( customerId or null)
@@ -376,7 +376,7 @@
 		oguser.id,oguser.userName,ogdepartment.name FROM oguser LEFT
 		JOIN
 		ogdepartment ON ogdepartment.id=oguser.department WHERE
-		oguser.locked=1 and ogdepartment.parentId in (12,13,14,15)) as a LEFT
+		oguser.locked=1 and ogdepartment.parentId in (4,12,13,14,15)) as a LEFT
 		JOIN
 
 		(SELECT cufollow.userId, cufollow.userName,COUNT( customerId or
@@ -395,7 +395,7 @@
 		oguser.id,oguser.userName,ogdepartment.name FROM oguser
 		LEFT JOIN
 		ogdepartment ON ogdepartment.id=oguser.department WHERE
-		oguser.locked=1 and ogdepartment.parentId in (12,13,14,15)) as a LEFT
+		oguser.locked=1 and ogdepartment.parentId in (4,12,13,14,15)) as a LEFT
 		JOIN
 
 		(SELECT cuvisit.userId, cuvisit.userName,COUNT( customerId or
@@ -415,7 +415,7 @@
 		oguser.id,oguser.userName,ogdepartment.name FROM oguser
 		LEFT JOIN
 		ogdepartment ON ogdepartment.id=oguser.department WHERE
-		oguser.locked=1 and ogdepartment.parentId in (12,13,14,15)) as a LEFT
+		oguser.locked=1 and ogdepartment.parentId in (4,12,13,14,15)) as a LEFT
 		JOIN
 
 		(SELECT cudeal.userId, cudeal.userName,COUNT( customerId or null)
@@ -435,7 +435,7 @@
 		FROM
 		(SELECT *
 		FROM
-		ogdepartment WHERE parentId in (12,13,14,15)) as a
+		ogdepartment WHERE parentId in (4,12,13,14,15)) as a
 		left JOIN
 
 		(SELECT
@@ -466,7 +466,7 @@
 		SELECT * FROM (SELECT a.id,a.name ,ifnull(e.follow,0)
 		follow FROM
 		(SELECT *
-		FROM ogdepartment WHERE parentId in (12,13,14,15))
+		FROM ogdepartment WHERE parentId in (4,12,13,14,15))
 		as a left JOIN
 
 		(SELECT f.name,f.department,COUNT( f.customerId or null)
@@ -486,7 +486,7 @@
 		resultType="com.first.entity.StatisticsFormMap">
 		SELECT * FROM (SELECT a.id,a.name ,ifnull(c.vis,0) vis FROM
 		(SELECT * FROM
-		ogdepartment WHERE parentId in (12,13,14,15)) as a left
+		ogdepartment WHERE parentId in (4,12,13,14,15)) as a left
 		JOIN
 
 
@@ -512,7 +512,7 @@
 		resultType="com.first.entity.StatisticsFormMap">
 		SELECT * FROM (SELECT a.id,a.name ,ifnull(c.dea,0) dea FROM
 		(SELECT * FROM
-		ogdepartment WHERE parentId in (12,13,14,15)) as a left JOIN
+		ogdepartment WHERE parentId in (4,12,13,14,15)) as a left JOIN
 
 
 		(SELECT
@@ -592,5 +592,49 @@
 		resultType="com.first.entity.StatisticsFormMap">
 	SELECT a.name ,a.commission,a.date,b.description,b.image FROM cuchampion as a LEFT  JOIN peshows as b on  a.showid=b.id WHERE date=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH), '%Y%m') and type=2 
 
+	</select>
+	<!-- 本月销售报表 -->
+	<select id="findMonthExtiension"
+			resultType="com.first.entity.StatisticsFormMap">
+	SELECT
+	IFNULL(b.adds, 0) adds,
+	IFNULL(a.follow, 0) follow,
+	IFNULL(c.vis, 0) vis,
+	a.days
+FROM
+	(
+		SELECT
+			COUNT(customerId) AS follow,
+			DAY (CreateDate) AS days
+		FROM
+			cufollow
+		WHERE
+			DATE_FORMAT(CreateDate, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
+		GROUP BY
+			DATE_FORMAT(CreateDate, '%Y%m%d')
+	) AS a
+LEFT JOIN (
+	SELECT
+		COUNT(customerId) AS adds,
+		DAY (addDate) AS days
+	FROM
+		cuadd
+	WHERE
+		DATE_FORMAT(addDate, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
+	AND source = 1
+	GROUP BY
+		DATE_FORMAT(addDate, '%Y%m%d')
+) AS b ON a.days = b.days
+LEFT JOIN (
+	SELECT
+		COUNT(customerId) AS vis,
+		DAY (visitDate) AS days
+	FROM
+		cuvisit
+	WHERE
+		DATE_FORMAT(visitDate, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
+	GROUP BY
+		DATE_FORMAT(visitDate, '%Y%m%d')
+) AS c ON a.days = c.days
 	</select>
 </mapper>

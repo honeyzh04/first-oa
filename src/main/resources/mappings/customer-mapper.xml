@@ -220,7 +220,32 @@
 		)
 
 	</insert>
+	<!-- 添加成交到访客户 -->
+	<insert id="addVisit1">
+		INSERT INTO
+		cuvisit (
+		id,
+		customerId,
+		customerName,
+		userName,
+		userId,
+		projectId,
+		consultantName,
+		visitDate
+		)
+		VALUES
+		(
+		null,
+		#{id},
+		#{customerName},
+		#{userName},
+		#{userId},
+		#{dealprojectId},
+		#{dealconsulName},
+		#{dealdate}
+		)
 
+	</insert>
 
 	<!-- 添加成交客户 -->
 	<insert id="addDeal">
@@ -675,8 +700,8 @@
 			<if test=" telephone != null and  telephone != '' ">
 				telephone=#{telephone},
 			</if>
-			<if test=" gender != null and gender != '' ">
-				gender=#{gender},
+			<if test=" cusource != null and cusource != '' ">
+				cusource=#{cusource},
 			</if>
 			<if test=" gender != null and gender != '' ">
 				gender=#{gender},
@@ -870,12 +895,47 @@
 	<!--房发现客户查看 -->
 	<select id="findffxCustomerPage"
 		resultType="com.first.entity.CustomerFormMap">
-		select
-		<include refid="selectId" />
-
-		from cudata
-		where
-		cusource in (3,6)
+	SELECT
+	cudata.id,
+	userId,
+	customerName,
+		(select group_concat('跟进信息:',content
+		,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
+		DESC) from cufollow
+		where id
+		in (SELECT id FROM cufollow WHERE
+		cufollow.customerId=cudata.id)) content,
+	cudata.telephone,
+	gender,
+	apartment,
+	totalPrice,
+	purpose,
+	intention,
+	userName,
+	(
+	SELECT
+	NAME
+	FROM
+	ogdepartment
+	WHERE
+	id = department
+	) departmentName,
+	department,
+	cudata.createDate,
+	trackDate,
+	ntrackDate,
+	trackremind,
+	cusource,
+	resources,
+	state,
+	communicate,
+	description,
+	cuffxsource.ffxsource
+	FROM
+		cudata
+		LEFT JOIN cuffxsource ON cudata.id = cuffxsource.customerId
+		WHERE
+		cusource IN (3, 6)
 
 		<if test="customerName != null and  customerName != ''">
 
@@ -884,7 +944,7 @@
 		</if>
 		<if test="telephone != null and  telephone != ''">
 
-			and telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
+			and cudata.telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
 		</if>
 			<if
 			test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
