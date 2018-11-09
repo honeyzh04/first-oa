@@ -1,0 +1,1213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.CustomerMapper">
+    <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 <cache type="org.mybatis.caches.ehcache.LoggingEhcache"
+        /> -->
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+    <!-- 以下与实体类的中字段一致 -->
+
+    <sql id="selectId">
+        id,
+        userId,
+        customerName,
+        (select group_concat('跟进信息:',content
+        ,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
+        DESC) from cufollow
+        where id
+        in (SELECT id FROM cufollow WHERE
+        cufollow.customerId=cudata.id)) content,
+        <!-- (select group_concat(concat_ws('At:',content,createDate) ORDER BY
+            id DESC) from cufollow where id in (SELECT id FROM cufollow WHERE cufollow.customerId=cudata.id))
+            content , -->
+        telephone,
+        gender,
+        apartment,
+        totalPrice,
+        purpose,
+
+        intention,
+
+        userName,
+        (select name from ogdepartment
+        where id=department)departmentName,
+        department,
+        createDate,
+        trackDate,
+        ntrackDate,
+        trackremind,
+        cusource,
+        resources,
+        state,
+        communicate,
+        description
+    </sql>
+
+    <sql id="selectEdit">
+		id,
+		userId,
+		customerName,
+		(select group_concat('跟进信息:',content
+		,'[By:',userName,'At:',createDate,']\n', '' ORDER BY id DESC) from
+		cufollow
+		where id
+		in (SELECT id FROM cufollow WHERE
+		cufollow.customerId=cudata.id)) content,
+		telephone,
+		gender,
+		apartment,
+		totalPrice,
+		purpose,
+		intention,
+		userName,
+		(select name from ogdepartment
+		where id=department)departmentName,
+		department,
+		createDate,
+		trackDate,
+		ntrackDate,
+		trackremind,
+		cusource,
+		resources,
+		state,
+		communicate,
+		description
+	</sql>
+
+
+    <!-- 添加客户 -->
+
+    <insert id="addEntity">
+        INSERT INTO
+        cudata
+        VALUES
+        (
+        null,
+        #{userId},
+        #{customerName},
+        #{telephone},
+        #{gender},
+        #{apartment},
+        #{totalPrice},
+        #{purpose},
+        #{intention},
+        #{userName},
+        #{department},
+        #{accountName},
+        #{createDate},
+        #{trackDate},
+        #{ntrackDate},
+        #{trackremind},
+        #{cusource},
+        #{resources},
+        #{state},
+        #{communicate},
+        #{description}
+        )
+        <selectKey keyProperty="id" order="AFTER"
+                   resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- 添加更进信息 -->
+    <insert id="addFollow">
+		INSERT INTO
+		cufollow
+		VALUES
+		(
+		null,
+		#{id},
+		#{userId},
+		#{userName},
+
+		#{content},
+		#{communicate},
+		#{trackDate}
+
+		)
+	</insert>
+    <!-- 添加永久更进信息 -->
+    <insert id="addLFollow">
+		INSERT INTO
+		culfollow
+		VALUES
+		(
+		null,
+		#{id},
+		#{userId},
+		#{userName},
+
+		#{content},
+		#{communicate},
+		#{trackDate}
+
+		)
+	</insert>
+    <!-- 添加扩展信息 -->
+    <insert id="addExtend">
+		INSERT INTO
+		cuextend
+		VALUES
+		(
+		null,
+		#{id},
+		null,
+		null,
+		null,
+		null,
+		null,
+		#{createDate},
+		null
+
+		)
+	</insert>
+    <!--房发现客户具体来源-->
+    <insert id="addSource">
+
+			INSERT INTO
+		cuffxsource
+		VALUES
+		(
+		null,
+		#{id},
+		#{telephone},
+		#{ffxcusource},
+		#{createDate}
+
+		)
+	</insert>
+
+    <!-- 添加客户统计 -->
+    <insert id="addCu">
+		INSERT INTO
+		cuadd
+		VALUES
+		(
+		null,
+		#{id},
+		#{userId},
+		#{userName},
+		#{source},
+		#{createDate}
+
+		)
+	</insert>
+    <!-- 添加到访客户 -->
+    <insert id="addVisit">
+		INSERT INTO
+		cuvisit (
+		id,
+		customerId,
+		customerName,
+		userName,
+		userId,
+		projectId,
+		consultantName,
+		visitDate
+		)
+		VALUES
+		(
+		null,
+		#{id},
+		#{customerName},
+		#{userName},
+		#{userId},
+		#{visitprojectId},
+		#{visitconsulName},
+		#{visitdate}
+		)
+
+	</insert>
+    <!-- 添加成交到访客户 -->
+    <insert id="addVisit1">
+		INSERT INTO
+		cuvisit (
+		id,
+		customerId,
+		customerName,
+		userName,
+		userId,
+		projectId,
+		consultantName,
+		visitDate
+		)
+		VALUES
+		(
+		null,
+		#{id},
+		#{customerName},
+		#{userName},
+		#{userId},
+		#{dealprojectId},
+		#{dealconsulName},
+		#{dealdate}
+		)
+
+	</insert>
+
+    <!-- 添加成交客户 -->
+    <insert id="addDeal">
+		INSERT INTO
+		cudeal(
+		id,
+		customerId,
+		mode,
+		customerName,
+		userName,
+		userId,
+		projectId,
+		area,
+		price,
+		commission,
+		consultantName,
+		dealDate
+
+		)
+		VALUES
+		(
+		null,
+		#{id},
+		#{dealmode},
+		#{customerName},
+		#{userName},
+		#{userId},
+		#{dealprojectId},
+		#{dealarea},
+		#{dealprice},
+		#{commission},
+		#{dealconsulName},
+		#{dealdate}
+
+		)
+	</insert>
+    <!-- 修改扩展信息 -->
+    <update id="editExtend">
+        update cuextend
+        <set>
+            <if test=" charactera != null and  charactera != '' ">
+                charactera=#{charactera},
+            </if>
+            <if test=" telephone1 != null and  telephone1 != '' ">
+                telephone1=#{telephone1},
+            </if>
+            <if test="travel != null and travel != '' ">
+                travel=#{travel},
+            </if>
+            <if test="job != null and job != '' ">
+                job=#{job},
+            </if>
+            <if test="address != null and address != '' ">
+                address=#{address},
+            </if>
+            <if test="description != null and description != '' ">
+                description=#{description},
+            </if>
+            <if test="createDate != null and createDate != '' ">
+                createDate=#{createDate},
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+
+    <!-- 添加报备 -->
+
+    <insert id="addpreEntity">
+		INSERT INTO
+		cupreparation
+		VALUES
+		(
+		null,
+		#{id},
+		#{customerName},
+		#{userName},
+		#{projectId},
+		#{createDate},
+		#{bespeakDate}
+
+		)
+	</insert>
+
+    <!--客户查看 -->
+    <select id="findCustomerPage"
+            resultType="com.first.entity.CustomerFormMap">
+        select
+        <include refid="selectId"/>
+
+        from cudata
+        where
+        resources=1
+        <if test="id != null and id != '' and id != 0">
+            and userId=#{id}
+        </if>
+
+        <if test="customerName != null and  customerName != ''">
+            and customerName=#{customerName}
+            <!---AND customerName LIKE CONCAT(CONCAT('%',#{customerName}),'%')-->
+        </if>
+        <if test="telephone != null and  telephone != ''">
+            and telephone=#{telephone}
+
+        </if>
+        <if test="followa != null and  followa != ''">
+            and content LIKE CONCAT(CONCAT('%',#{followa}),'%')
+
+        </if>
+        <if
+                test="stotalPrice != null and  stotalPrice != '' or etotalPrice != null and  etotalPrice != ''">
+            and totalPrice between #{stotalPrice} and #{etotalPrice}
+        </if>
+        <if
+                test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
+            and createDate between #{screateDate} and #{ecreateDate}
+        </if>
+
+        <if test="state != null and  state != ''">
+            and state=#{state}
+        </if>
+
+        <if test="purpose != null and  purpose != ''">
+            and
+            purpose=#{purpose}
+        </if>
+        <if test="  intention != null and    intention != ''">
+            and
+            intention=#{ intention}
+        </if>
+
+        <if test="apartment != null and  apartment != ''">
+            and
+            apartment=#{apartment}
+        </if>
+        <if test="cusource != null and  cusource != '' and  cusource != 0 ">
+            and cusource= #{cusource}
+            <!-- cusource in <foreach item="item" index="index" collection="array"
+                open="(" separator="," close=")"> #{cusource} </foreach> -->
+        </if>
+
+
+        order by ${date} asc,createDate desc
+
+    </select>
+    <!-- <if test="followb != null and followb != '' and followb==1" > and (SELECT
+        DATEDIFF(trackDate,createDate) AS DiffDate) >15 </if> -->
+
+    <!--部门客户查看 -->
+    <select id="finddCustomerPage"
+            resultType="com.first.entity.CustomerFormMap"
+            parameterType="java.util.Map">
+        select
+        <include refid="selectId"/>
+
+        from cudata
+        where
+        resources=1
+        <!-- <if test="id != null and id != '' and id != 0"> and userId=#{id} </if> -->
+
+        <if test="departments != null ">
+            and department in
+            <foreach collection="departments" item="item" index="index"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="customerName != null and  customerName != ''">
+            and customerName=#{customerName}
+
+        </if>
+        <if test="telephone != null and  telephone != ''">
+            and telephone=#{telephone}
+
+        </if>
+        <if test="followa != null and  followa != ''">
+            AND content LIKE CONCAT(CONCAT('%',#{followa}),'%')
+
+        </if>
+        <if
+                test="stotalPrice != null and  stotalPrice != '' or etotalPrice != null and  etotalPrice != ''">
+            and totalPrice between #{stotalPrice} and #{etotalPrice}
+        </if>
+        <if
+                test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
+            and createDate between #{screateDate} and #{ecreateDate}
+        </if>
+
+
+        <if test="userId != null and  userId != ''and userId !=0">
+            and
+            userId=#{userId}
+        </if>
+        <if test="state != null and  state != ''">
+            and state=#{state}
+        </if>
+
+        <if test="purpose != null and  purpose != ''">
+            and
+            purpose=#{purpose}
+        </if>
+        <if test="  intention != null and    intention != ''">
+            and
+            intention=#{ intention}
+        </if>
+        <if test="apartment != null and  apartment != ''">
+            and
+            apartment=#{apartment}
+        </if>
+        <if test="cusource != null and  cusource != '' and  cusource != 0 ">
+            and cusource= #{cusource}
+
+        </if>
+
+        order by ${date} desc,id desc
+    </select>
+    <!--公司客户查看 -->
+    <select id="findaCustomerPage"
+            resultType="com.first.entity.CustomerFormMap">
+        select
+        <include refid="selectId"/>
+
+        from cudata
+        where
+        resources=1
+        <!-- <if test="id != null and id != '' and id != 0"> and userId=#{id} </if> -->
+
+        <if test="customerName != null and  customerName != ''">
+            and customerName=#{customerName}
+
+        </if>
+        <if test="telephone != null and  telephone != ''">
+            and telephone=#{telephone}
+
+        </if>
+        <if test="followa != null and  followa != ''">
+            AND content LIKE CONCAT(CONCAT('%',#{followa}),'%')
+
+        </if>
+        <if
+                test="stotalPrice != null and  stotalPrice != '' or etotalPrice != null and  etotalPrice != ''">
+            and totalPrice between #{stotalPrice} and #{etotalPrice}
+        </if>
+        <if
+                test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
+            and createDate between #{screateDate} and #{ecreateDate}
+        </if>
+
+        <if
+                test="department != null and  department != ''and  department != 0">
+            and department=#{department}
+        </if>
+
+        <if test="userId != null and  userId != ''and userId !=0">
+            and
+            userId=#{userId}
+        </if>
+        <if test="userName != null and  userName != ''">
+            and
+            userName=#{userName}
+        </if>
+        <if test="state != null and  state != ''">
+            and state=#{state}
+        </if>
+
+        <if test="purpose != null and  purpose != ''">
+            and
+            purpose=#{purpose}
+        </if>
+
+        <if test="apartment != null and  apartment != ''">
+            and
+            apartment=#{apartment}
+        </if>
+        <if test="  intention != null and    intention != ''">
+            and
+            intention=#{ intention}
+        </if>
+        <if test="cusource != null and  cusource != '' and  cusource != 0 ">
+            and cusource= #{cusource}
+            <!-- cusource in <foreach item="item" index="index" collection="array"
+                open="(" separator="," close=")"> #{cusource} </foreach> -->
+        </if>
+        order by ${date} asc ,id desc
+    </select>
+    <!--部门资源池客户查看 -->
+    <select id="findcCustomerPage"
+            resultType="com.first.entity.CustomerFormMap">
+        select
+        id,
+        userId,
+        customerName,
+        (select group_concat('跟进信息:',content
+        ,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
+        DESC) from cufollow
+        where id
+        in (SELECT id FROM cufollow WHERE
+        cufollow.customerId=cudata.id)) content,
+        telephone,
+        gender,
+        apartment ,
+        totalPrice,
+        purpose,
+        cusource,
+        userName,
+        (select name from ogdepartment
+        where id=department)
+        departmentName,
+        trackDate,
+        createDate
+        from cudata
+        where resources=2
+        <if test="departments != null ">
+            and department in
+            <foreach collection="departments" item="item" index="index"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="customerName != null and  customerName != ''">
+            and customerName=#{customerName}
+
+        </if>
+        <if test="telephone != null and  telephone != ''">
+            and telephone=#{telephone}
+
+        </if>
+        <if test="userId != null and  userId != ''and userId != 0">
+            and
+            userId=#{userId}
+        </if>
+        <if
+                test="stotalPrice != null and  stotalPrice != '' or etotalPrice != null and  etotalPrice != ''">
+            and totalPrice between #{stotalPrice} and #{etotalPrice}
+        </if>
+        <if test="purpose != null and  purpose != ''">
+            and
+            purpose=#{purpose}
+        </if>
+        <if test="apartment != null and  apartment != ''">
+            and
+            apartment=#{apartment}
+        </if>
+        order by createDate desc,id asc
+    </select>
+
+    <!--公司资源池客户查看 -->
+    <select id="findcAllPage"
+            resultType="com.first.entity.CustomerFormMap">
+        select
+        id,
+        userId,
+        customerName,
+        telephone,
+        gender,
+        apartment ,
+        totalPrice,
+        purpose,
+        cusource,
+        userName,
+        (select name from ogdepartment
+        where
+        id=department) departmentName,
+        trackDate,
+        createDate
+        from cudata
+        where
+        resources=3
+        <choose>
+            <when
+                    test="department != null and department != '' and department != 0 or
+            			userId != null and userId != '' and userId != 0 or
+            			customerName != null and  customerName != '' or
+            			telephone != null and  telephone != ''  or
+            			stotalPrice != null and  stotalPrice != '' or etotalPrice != null and  etotalPrice != '' or
+            			screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != '' or
+            			purpose != null and  purpose != '' and  purpose != 0 or 
+            			apartment != null and  apartment != '' and apartment != 0 or
+            			cusource != null and  cusource != '' and  cusource != 0   ">
+                <if
+                        test="department != null and department != '' and department != 0">
+                    and department=#{department}
+                </if>
+                <if test="userId != null and userId != '' and userId != 0">
+                    and userId=#{userId}
+                </if>
+                <if test="customerName != null and  customerName != ''">
+                    and customerName=#{customerName}
+
+                </if>
+                <if test="telephone != null and  telephone != ''">
+                    and telephone=#{telephone}
+
+                </if>
+
+                <if
+                        test="stotalPrice != null and  stotalPrice != '' or etotalPrice != null and  etotalPrice != ''">
+                    and totalPrice between #{stotalPrice} and #{etotalPrice}
+                </if>
+                <if
+                        test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
+                    and createDate between #{screateDate} and #{ecreateDate}
+                </if>
+                <if test="purpose != null and  purpose != '' and  purpose != 0 ">
+                    and purpose=#{purpose}
+                </if>
+                <if
+                        test="apartment != null and  apartment != '' and apartment != 0 ">
+                    and apartment=#{apartment}
+                </if>
+                <if
+                        test="cusource != null and  cusource != '' and  cusource != 0 ">
+                    and cusource=#{cusource}
+                </if>
+
+            </when>
+            <otherwise>
+                and (select ceil(rand()*(select MAX( id ) from cudata)))
+                &lt;=id
+            </otherwise>
+        </choose>
+
+
+    </select>
+
+    <!--跟进用户 -->
+    <select id="findbyeditUI"
+            resultType="com.first.entity.CustomerFormMap">
+        select
+        <include refid="selectEdit"/>
+
+        from cudata
+        where
+        <if test=" id != null">
+            id=#{id}
+        </if>
+    </select>
+    <!--查看带访客户 -->
+    <select id="findbyproject" resultType="String">
+		select group_concat('项目名:',projectId
+		,'；带访人:',userName,'；带访时间:',visitDate,'\n', '' ORDER BY id
+		DESC) as visproject from cuvisit
+		where
+
+		customerId=#{id}
+
+	</select>
+
+    <update id="editEntity">
+        update cudata
+        <set>
+            <if test=" customerName != null and  customerName != '' ">
+                customerName=#{customerName},
+            </if>
+            <if test=" telephone != null and  telephone != '' ">
+                telephone=#{telephone},
+            </if>
+            <if test=" cusource != null and cusource != '' ">
+                cusource=#{cusource},
+            </if>
+            <if test=" gender != null and gender != '' ">
+                gender=#{gender},
+            </if>
+            <if test=" apartment != null and apartment != '' ">
+                apartment=#{apartment},
+            </if>
+            <if test=" totalPrice != null and totalPrice != '' ">
+                totalPrice=#{totalPrice},
+            </if>
+            <if test=" purpose != null and purpose != '' ">
+                purpose=#{purpose},
+            </if>
+            <if test=" intention != null and intention != '' ">
+                intention=#{intention},
+            </if>
+            <if test=" trackDate != null and trackDate != '' ">
+                trackDate=#{trackDate},
+            </if>
+            <if test=" ntrackDate != null and ntrackDate != '' ">
+                ntrackDate=#{ntrackDate},
+            </if>
+            <if test=" trackremind != null and trackremind != '' ">
+                trackremind=#{trackremind},
+            </if>
+            <if test="  state  != null and  state  != '' ">
+                state =#{state},
+            </if>
+            <if test="  communicate  != null and  communicate  != '' ">
+                communicate =#{communicate},
+            </if>
+            <if test=" description != null and  description != '' ">
+                description =#{description},
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+
+
+    <!-- 编辑客户 (放入公共池或转让客户) -->
+    <update id="discardEntity">
+        update cudata
+        <set>
+            <if
+                    test=" resources != null and  resources != '' and  resources != 0">
+                resources=#{resources},
+            </if>
+            <if test=" userName != null and  userName != '' ">
+                userName=#{userName},
+            </if>
+            <if test=" userId != null and userId != '' and userId != 0 ">
+                userId=#{userId},
+            </if>
+            <if
+                    test=" department != null and department != '' and department != 0 ">
+                department=#{department},
+            </if>
+            <if test=" state != null and state != '' and state != 0 ">
+                state=#{state},
+            </if>
+            <if test=" trackremind != null and trackremind != ''  ">
+                trackremind=#{trackremind},
+            </if>
+
+            <!-- <if test="trackremind != null and trackremind != '' and trackremind
+                != 0"> trackremind=#{trackremind}, </if> -->
+        </set>
+        where id=#{id}
+        <if test=" stop != null and stop != '' and stop != 0 ">
+            and resources!=1
+        </if>
+
+    </update>
+
+
+    <!--定时放入部门公共池 -->
+    <update id="autobDiscard">
+		update cudata
+		set resources=2
+		where
+		resources=1 and
+		state !=4 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) &gt;7
+	</update>
+
+    <!--定时放入公司公共池 -->
+    <update id="autoaDiscard">
+		update cudata
+		set resources=3
+		where
+		resources=2 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) &gt;15
+	</update>
+    <!--昨日跟进 -->
+    <update id="auto0Discard">
+		update cudata
+		set trackremind=1
+		where
+		resources=1 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) =1
+	</update>
+    <!--1天未更 -->
+    <update id="auto1Discard">
+		update cudata
+		set trackremind=2
+		where
+		resources=1 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) =2
+	</update>
+    <!-- 2天未更 -->
+    <update id="auto2Discard">
+		update cudata
+		set trackremind=3
+		where
+		resources=1 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) =3
+	</update>
+    <!--3天未更 -->
+    <update id="auto3Discard">
+		update cudata
+		set trackremind=4
+		where
+		resources=1 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) =4
+	</update>
+    <!--4天未更 -->
+    <update id="auto4Discard">
+		update cudata
+		set trackremind=5
+		where
+		resources=1 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) =5
+	</update>
+    <!--5天未更 -->
+    <update id="auto5Discard">
+		update cudata
+		set trackremind=6
+		where
+		resources=1 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) =6
+	</update>
+    <!--6天未更 -->
+    <update id="auto6Discard">
+		update cudata
+		set trackremind=7
+		where
+		resources=1 and
+		(SELECT DATEDIFF(NOW(),trackDate) AS DiffDate) =7
+	</update>
+    <!--6天未更共享客户 -->
+    <delete id="auto6DiscardShare">
+		delete cushare from cushare LEFT JOIN cudata on cushare.customerId=cudata.id  where
+        cudata.state!=4 AND
+		(SELECT DATEDIFF(NOW(),cudata.trackDate) AS DiffDate)  &gt;7
+
+	</delete>
+
+
+    <!-- 删除客户 -->
+    <delete id="deleteEntity">
+		delete from cudata where
+		id=#{id}
+
+	</delete>
+    <delete id="deleteFollow">
+		delete from cufollow where
+		customerId=#{id}
+
+	</delete>
+    <delete id="deletExtend">
+		delete from cuextend where
+		customerId=#{id}
+
+	</delete>
+    <delete id="deletePreparation">
+		delete from cupreparation where
+		customerId=#{id}
+
+	</delete>
+    <!--跟进用户 -->
+    <select id="findbyExtend"
+            resultType="com.first.entity.ExtendFormMap">
+        select
+        id,
+        charactera,
+        telephone1,
+        travel,
+        job,
+        address,
+        description
+        from
+        cuextend
+        where
+        <if test=" id != null">
+            customerId=#{id}
+        </if>
+    </select>
+
+    <!--房发现客户查看 -->
+    <select id="findffxCustomerPage"
+            resultType="com.first.entity.CustomerFormMap">
+        SELECT
+        cudata.id,
+        userId,
+        customerName,
+        (select group_concat('跟进信息:',content
+        ,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
+        DESC) from cufollow
+        where id
+        in (SELECT id FROM cufollow WHERE
+        cufollow.customerId=cudata.id)) content,
+        cudata.telephone,
+        gender,
+        apartment,
+        totalPrice,
+        purpose,
+        intention,
+        userName,
+        (
+        SELECT
+        NAME
+        FROM
+        ogdepartment
+        WHERE
+        id = department
+        ) departmentName,
+        department,
+        cudata.createDate,
+        trackDate,
+        ntrackDate,
+        trackremind,
+        cusource,
+        resources,
+        state,
+        communicate,
+        description,
+        cuffxsource.ffxsource
+        FROM
+        cudata
+        LEFT JOIN cuffxsource ON cudata.id = cuffxsource.customerId
+        WHERE
+        cusource IN (3, 6)
+
+        <if test="customerName != null and  customerName != ''">
+
+            AND customerName LIKE
+            CONCAT(CONCAT('%',#{customerName}),'%')
+        </if>
+        <if test="telephone != null and  telephone != ''">
+
+            and cudata.telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
+        </if>
+        <if test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
+            and cudata.createDate between #{screateDate} and #{ecreateDate}
+        </if>
+
+
+        order by cudata.createDate desc
+
+    </select>
+    <!--带访客户查看 -->
+    <select id="findvisitCustomerPage"
+            resultType="com.first.entity.CustomerFormMap">
+        SELECT
+        cuvisit.customerId,
+        cuvisit.userId,
+        cuvisit.customerName,
+        (
+        SELECT
+        group_concat(
+        '跟进信息:',
+        content,
+        '[By:',
+        userName,
+        'At:',
+        createDate,
+        ']\n&lt;/br&gt;',
+        ''
+        ORDER BY
+        id DESC
+        )
+        FROM
+        cufollow
+        WHERE
+        id IN (
+        SELECT
+        id
+        FROM
+        cufollow
+        WHERE
+        cufollow.customerId = cuvisit.customerId
+        )
+        ) content,
+        cudata.telephone,
+        cudata.gender,
+        cudata.apartment,
+        cudata.totalPrice,
+        cudata.purpose,
+        cudata.intention,
+        cuvisit.userName,
+        cuvisit.projectId,
+        (
+        SELECT
+        NAME
+        FROM
+        ogdepartment
+        WHERE
+        id = cudata.department
+        ) departmentName,
+        cudata.department,
+        cudata.trackremind,
+        cuvisit.visitDate,
+        cudata.cusource,
+        cudata.resources,
+        cudata.state
+        FROM
+        cuvisit
+        LEFT JOIN cudata ON cuvisit.customerId = cudata.id
+        where 1=1
+        <if test="customerName != null and  customerName != ''">
+
+            AND cuvisit.customerName LIKE
+            CONCAT(CONCAT('%',#{customerName}),'%')
+        </if>
+        <if test="telephone != null and  telephone != ''">
+
+            and cudata.telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
+        </if>
+        <if test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
+            and cuvisit.visitDate between #{screateDate} and #{ecreateDate}
+        </if>
+
+        ORDER BY
+        cuvisit.visitDate DESC
+    </select>
+    <!--成交客户查看 -->
+    <select id="finddealCustomerPage"
+            resultType="com.first.entity.CustomerFormMap">
+        SELECT
+        cudeal.customerId,
+        cudeal.userId,
+        cudeal.customerName,
+        (
+        SELECT
+        group_concat(
+        '跟进信息:',
+        content,
+        '[By:',
+        userName,
+        'At:',
+        createDate,
+        ']\n&lt;/br&gt;',
+        ''
+        ORDER BY
+        id DESC
+        )
+        FROM
+        cufollow
+        WHERE
+        id IN (
+        SELECT
+        id
+        FROM
+        cufollow
+        WHERE
+        cufollow.customerId = cudeal.customerId
+        )
+        ) content,
+        cudata.telephone,
+        cudata.gender,
+        cudata.apartment,
+        cudata.totalPrice,
+        cudata.purpose,
+        cudata.intention,
+        cudeal.userName,
+        cudeal.projectId,
+        cudeal.price,
+        cudeal.commission,
+        cudeal.dealDate,
+        cudata.trackremind,
+        cudata.cusource,
+        cudata.resources,
+        cudata.state
+        FROM
+        cudeal
+        LEFT JOIN cudata ON cudeal.customerId = cudata.id
+        WHERE
+        1 = 1
+        <if test="customerName != null and  customerName != ''">
+
+            AND cudeal.customerName LIKE
+            CONCAT(CONCAT('%',#{customerName}),'%')
+        </if>
+        <if test="telephone != null and  telephone != ''">
+
+            and cudata.telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
+        </if>
+        <if test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
+            and cudeal.dealDate between #{screateDate} and #{ecreateDate}
+        </if>
+
+        ORDER BY
+        cudeal.dealDate DESC
+
+    </select>
+    <!-- 项目匹配 -->
+    <select id="findcumatch"
+            resultType="com.first.entity.CustomerFormMap">
+        SELECT id,totalPrice,apartment FROM cudata where
+        resources=1
+        <if test="id != null and id != '' and id != 0">
+            and userId=#{id}
+        </if>
+        <choose>
+            <when test="telephone != null and telephone !=''">
+                and telephone=#{telephone}
+            </when>
+            <otherwise>
+                and 1=0
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 共享客户 -->
+    <!-- 添加更进信息 -->
+    <insert id="shareEntity">
+		INSERT INTO
+		cushare
+		VALUES
+		(
+		null,
+		#{customerId},
+		#{userId},
+		#{state},
+		#{createDate}
+
+
+		)
+	</insert>
+    <insert id="share1Entity">
+		INSERT INTO
+		culshare
+		VALUES
+		(
+		null,
+		#{customerId},
+		#{userId},
+		#{state},
+		#{createDate}
+
+
+		)
+	</insert>
+
+
+    <!--匹配客户-->
+    <select id="findMatchCustomer"
+            resultType="com.first.entity.CustomerFormMap">
+        select
+        <include refid="selectId"/>
+
+        from cudata
+        where
+        resources=1
+        <if test="userId != null and  userId != '' and  userId != 0">
+            and userId=#{userId}
+        </if>
+        <if test="apartment != null and apartment != '' ">
+            AND type=#{apartment}
+
+        </if>
+
+        <if test="pricess != null and pricess != ''and pricese != null and pricese != '' ">
+            and (${pricess} &lt;= totalPrice AND totalPrice &lt;= ${pricese})
+
+        </if>
+
+
+    </select>
+    <!--查看预约客户条数-->
+    <select id="findNtrackDate"
+            resultType="com.first.entity.CustomerFormMap">
+    SELECT
+        COUNT(id) AS number
+    FROM
+        cudata
+    WHERE
+        userId=#{userId}
+    AND DATE_FORMAT(ntrackDate, '%YY%mm%dd') = DATE_FORMAT(#{ntrackDate}, '%YY%mm%dd')
+
+    </select>
+
+    <!--查看预约客户-->
+    <select id="findOrCustomer"
+            resultType="com.first.entity.CustomerFormMap">
+        select
+        <include refid="selectId"/>
+
+        from cudata
+        where
+        resources=1
+        AND userId=#{userId}
+        AND DATE_FORMAT(ntrackDate, '%YY%mm%dd') = DATE_FORMAT(#{ntrackDate}, '%YY%mm%dd')
+
+    </select>
+
+</mapper>

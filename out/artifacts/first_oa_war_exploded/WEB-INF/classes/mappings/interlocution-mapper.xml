@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.InterlocutionMapper">
+
+	<!--问题查看 -->
+	<select id="findQuestions"
+		resultType="com.first.entity.InterlocutionFormMap">
+		select
+		COUNT(a.id) as sum,
+		q.id,q.question,q.label,q.`describe`,q.createBy as qcreateBy,
+		a.answer,a.createBy,min(a.id) as aId ,a.qId ,
+		DATE_FORMAT(a.createDate, '%Y-%m-%d') AS createDate
+		from asquestion as
+		q LEFT JOIN asanswer as a ON q.id=a.qId
+
+		<if test="que != null and  que != ''">
+
+			where q.question LIKE CONCAT(CONCAT('%',#{que}),'%')
+		</if>
+
+		GROUP BY q.id order by id desc
+	</select>
+
+
+	<!-- 添加问题库 -->
+	<insert id="addquestion">
+		INSERT INTO
+		asquestion
+		VALUES
+		(
+		null,
+		#{question},
+		#{label},
+		#{describe},
+		#{createBy},
+		#{createDate}
+
+		)
+	</insert>
+
+	<!-- 添加问题库 -->
+	<insert id="addanswer">
+		INSERT INTO
+		asanswer
+		VALUES
+		(
+		null,
+		#{id},
+		#{answer},
+		#{createBy},
+		#{createDate}
+
+		)
+	</insert>
+
+	<select id="findbyquestion"
+		resultType="com.first.entity.InterlocutionFormMap">
+		select
+		id,
+		question
+
+		from asquestion
+		where 1=1
+		<if test="id != null and id != '' ">
+			and id=#{id}
+		</if>
+
+
+
+	</select>
+	<!-- 更多问题 -->
+	<select id="findanswer"
+		resultType="com.first.entity.InterlocutionFormMap">
+		select
+		id,qId,answer,createBy, DATE_FORMAT(createDate,
+		'%Y-%m-%d') AS
+		createDate
+		from asanswer
+		where 1=1
+		<if test="id != null and id != '' ">
+			and qId=#{id}
+		</if>
+		AND id!=(SELECT min(id)
+		FROM asanswer
+		WHERE qId=#{id})
+
+
+	</select>
+	<!-- 所有问题 -->
+		<select id="findanswers"
+		resultType="com.first.entity.InterlocutionFormMap">
+		select
+		id,qId,answer,createBy, DATE_FORMAT(createDate,
+		'%Y-%m-%d') AS
+		createDate
+		from asanswer
+		where 1=1
+		<if test="id != null and id != '' ">
+			and qId=#{id}
+		</if>
+		
+
+
+	</select>
+
+	<select id="findbyanswer"
+		resultType="com.first.entity.InterlocutionFormMap">
+		select
+		q.question,
+		a.answer,a.qId,a.id
+		from asquestion as q LEFT JOIN asanswer as a ON q.id=a.qId WHERE a.id=#{id}
+	</select>
+
+	<!-- 修改答案 -->
+	<update id="editanswer">
+		update asanswer
+		<set>
+			<if test=" answer != null and answer != '' ">
+				answer=#{answer},
+			</if>
+
+			<if test=" createDate != null and createDate != '' ">
+				createDate=#{createDate},
+			</if>
+		</set>
+		where id=#{id};
+	</update>
+	
+	<!-- 删除答案 -->
+	<delete id="deleteanswer">
+		delete from asanswer where
+		id=#{aId}
+
+	</delete>
+
+</mapper>

@@ -772,6 +772,7 @@ public class StatisticsController extends BaseController {
 
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         String c = sdf.format(new Date(Long.valueOf(createDate)));
+        System.err.println(c);
         model.addAttribute("createDate", c);
 
         return Common.BACKGROUND_PATH + "/system/statistics/source";
@@ -876,12 +877,12 @@ public class StatisticsController extends BaseController {
             data.add(a);
 
         }
-        StatisticsFormMap SumDeday = statisticsMapper.findWeekSum(searchMap);
+        StatisticsFormMap SumDeday = statisticsMapper.findWeekSum(searchMap);//查看周报表和
         if (SumDeday.get("consume") != null) {
 
 
             System.err.println("2" + SumDeday);
-            List<StatisticsFormMap> weekDeal = statisticsservice.findWeekDeal(searchMap);
+            List<StatisticsFormMap> weekDeal = statisticsservice.findWeekDeal(searchMap);//房发现成交周报表
             System.err.println("2" + weekDeal);
             for (StatisticsFormMap c : weekDeal) {
                 SumDeday.put("dea" + c.get("department"), c.get("dea"));
@@ -893,11 +894,12 @@ public class StatisticsController extends BaseController {
 				System.out.println("Value = " + value);
 			}*/
             }
-            List<StatisticsFormMap> weekVisit = statisticsservice.findWeekVisit(searchMap);
+            List<StatisticsFormMap> weekVisit = statisticsservice.findWeekVisit(searchMap);//房发现带访周报表
             for (StatisticsFormMap c : weekVisit) {
                 SumDeday.put("visit" + c.get("department"), c.get("visit"));
             }
-            List<StatisticsFormMap> weekAdds = statisticsservice.findWeekAdds(searchMap);
+
+            List<StatisticsFormMap> weekAdds = statisticsservice.findWeekAdds(searchMap);// 房发现新增周报表
             for (StatisticsFormMap c : weekAdds) {
                 SumDeday.put("adds" + c.get("department"), c.get("adds"));
             }

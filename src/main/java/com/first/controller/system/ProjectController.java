@@ -248,24 +248,17 @@ public class ProjectController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "housedetail")
-	public String housedetailUI(Model model,@RequestParam("id") String id){
+	public String housedetailUI(Model model,@RequestParam("id") String id,@RequestParam("state") String state){
 
-		System.err.println("asd" + id);
-		if (Common.isNotEmpty(id)) {
-			List<Map<String, Object>> x= JsonUtils.getListByUrl("http://bd.fangfaxian.com/PrDC/GetPrIdInfoList/"+id);
-			for (Map b:x) {
-				b = JsonUtils.nullToEmpty(b);
-
-
-				System.err.println("cxa3" + b);
-
-			}
-
-			ProjectFormMap mps=projectService.findbyProject(id);
-
-
-			//model.addAttribute("project", mps);
+		System.err.println("asd" + id+"DA"+state);
+		if(state.equals("2")){
+			state="在售";
+		}else {
+			state="停售";
 		}
+		System.err.println(state);
+		model.addAttribute("IDs",id);
+		model.addAttribute("state",state);
 		return Common.BACKGROUND_PATH + "/system/project/housedetail";
 	}
 

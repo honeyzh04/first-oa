@@ -113,7 +113,8 @@ public class Discard {
      */ 
     @Scheduled(cron = "0  22 01 * * ?")   
     public void show7() throws Exception{  
-    	customerMapper.auto6Discard(); 
+    	customerMapper.auto6Discard();
+        customerMapper.auto6DiscardShare();
     }  
     @Scheduled(cron = "0 00 02 1 * ?")   
     public void showmonth() throws Exception{  

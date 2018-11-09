@@ -46,6 +46,21 @@ public class PersonalController extends BaseController {
 		model.addAttribute("personal",userFormMap);
 		return Common.BACKGROUND_PATH + "/system/personal/list";
 	}
+
+	/**
+	 * 个人周报表
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("weekstatistics")
+	@ResponseBody
+	public Object weekstatistics() throws Exception {
+		getuserId();
+
+		return null;
+	}
+
 	/**
 	 * 修改密码
 	 * @param model

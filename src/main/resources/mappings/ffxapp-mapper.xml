@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.FFXAppMapper">
+	<!--mybatis ehcache缓存配置 -->
+	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 <cache type="org.mybatis.caches.ehcache.LoggingEhcache" 
+		/> -->
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+	<!-- 以下与实体类的中字段一致 -->
+
+	<sql id="selectId">
+		cudata.id,
+		cudata.userId,
+		cudata.customerName,
+		(select group_concat('跟进信息:',content
+		,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
+		DESC) from cufollow
+		where id
+		in (SELECT id FROM cufollow WHERE
+		cufollow.customerId=cudata.id)) content,
+		cudata.telephone,
+		cudata.gender,
+		cudata.apartment,
+		cudata.totalPrice,
+		cudata.purpose,
+		cudata.intention,
+		cudata.userName,
+		(select name from ogdepartment
+		where id=cudata.department)departmentName,
+		cudata.department,
+		cudata.createDate,
+		cudata.trackDate,
+		cudata.ntrackDate,
+		cudata.trackremind,
+		cudata.cusource,
+		cudata.resources,
+		cudata.state,
+		cudata.communicate,
+		cudata.description
+	</sql>
+	<!--客户查看 -->
+	<select id="findCustomerPage"
+			resultType="com.first.entity.CustomerFormMap">
+		select
+		<include refid="selectId" />
+
+		FROM cudata LEFT JOIN oguser
+		on cudata.userId=oguser.id
+		where cudata.resources=1
+		<if test="userName != null and userName != '' ">
+			and accountName=#{userName}
+		</if>
+
+		<if test="customerName != null and  customerName != ''">
+			and customerName=#{customerName}
+			<!---AND customerName LIKE CONCAT(CONCAT('%',#{customerName}),'%')-->
+		</if>
+		<if test="telephone != null and  telephone != ''">
+			and cudata.telephone=#{telephone}
+
+		</if>
+		<if test="followa != null and  followa != ''">
+			and content LIKE CONCAT(CONCAT('%',#{followa}),'%')
+
+		</if>
+		<if
+				test="stotalPrice != null and  stotalPrice != '' or etotalPrice != null and  etotalPrice != ''">
+			and totalPrice between #{stotalPrice} and #{etotalPrice}
+		</if>
+		<if
+				test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
+			and createDate between #{screateDate} and #{ecreateDate}
+		</if>
+
+		<if test="state != null and  state != ''">
+			and state=#{state}
+		</if>
+
+		<if test="purpose != null and  purpose != ''">
+			and
+			purpose=#{purpose}
+		</if>
+		<if test="  intention != null and    intention != ''">
+			and
+			intention=#{ intention}
+		</if>
+
+		<if test="apartment != null and  apartment != ''">
+			and
+			apartment=#{apartment}
+		</if>
+		<if test="cusource != null and  cusource != '' and  cusource != 0 ">
+			and cusource= #{cusource}
+		</if>
+
+
+		order by trackDate asc,createDate desc
+
+	</select>
+
+
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.DepartMapper">
+
+	<sql id="selectId">
+		id ,
+		name,
+		parentId
+	</sql>
+	<!-- 销售部门 -->
+	<select id="getcuDepart"
+		resultType="com.first.entity.DepartmentFormMap">
+		select
+		<include refid="selectId" />
+		from ogdepartment
+		where parentId in (2,12,13,14,15)
+
+	</select>
+	<!-- 部门 -->
+	<select id="getDepart"
+		resultType="com.first.entity.DepartmentFormMap">
+		select
+		<include refid="selectId" />
+		from ogdepartment
+		where 1=1
+
+	</select>
+
+	<!-- 二级联动 选择销售人员 -->
+	<select id="getUser" resultType="com.first.entity.UserFormMap">
+		select
+		id,
+		userName
+		from oguser
+		where
+		<if test=" departCode != null">
+			department=#{departCode}
+		</if>
+	</select>
+	<!-- 部门列表 -->
+	<select id="findDepart"
+		resultType="com.first.entity.DepartmentFormMap">
+		select
+		* ,
+		(SELECT name FROM ogdepartment WHERE id=a.parentId) as
+		parentName
+		from ogdepartment as a
+		where 1=1
+		<if
+			test="departName != null and departName != '' and departName != 0">
+			and name=#{departName}
+		</if>
+	</select>
+
+
+	<!-- 择销售人员 -->
+	<select id="getAlluser"
+		resultType="com.first.entity.UserFormMap">
+		SELECT id,v,userName,name FROM oguser LEFT JOIN (SELECT id
+		as v,name from ogdepartment WHERE parentId in (2,12,13,14,15)) as b on
+		oguser.department=b.v WHERE oguser.department
+		in (b.v) and id not in (10,11,12,13)ORDER BY name
+
+	</select>
+</mapper>

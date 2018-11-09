@@ -83,8 +83,7 @@ public class CrossDomainController  extends BaseController {
 					searchMap.put("message", "登录异常，请联系管理员！");
 					searchMap.put("status","OK");
 				}
-			
-			// 想要得到 SecurityUtils.getSubject()　的对象．．访问地址必须跟ｓｈｉｒｏ的拦截地址内．不然后会报空指针
+
 					
 		if(callback==null||callback.equals("")) {
 			callback="callback";
@@ -98,7 +97,7 @@ public class CrossDomainController  extends BaseController {
 	 @ResponseBody
 	public Object project(String callback,String username, String password) throws Exception {
 		Map<String, Object> searchMap = new HashMap<String, Object>();
-		System.err.println("fas"+username);
+		System.err.println("fas1"+username);
 		
 		
 			System.err.println("fas"+username);
@@ -126,7 +125,7 @@ public class CrossDomainController  extends BaseController {
 						searchMap.put("status","OK");
 					} catch (ExcessiveAttemptsException e) {
 						
-						searchMap.put("message", "账号：" + username + " 登录失败次数过多,锁定10分钟!");
+						searchMap.put("message", "账号：" + username + " 登录失败次数过多,锁定10分钟！!");
 						searchMap.put("status","OK");
 					} catch (AuthenticationException e) {
 						

@@ -203,6 +203,13 @@ public interface CustomerMapper {
 	 */
 	public void auto6Discard() throws Exception;
 	/**
+	 *6日未跟 共享客户
+	 *
+	 * @throws Exception
+	 */
+	public void auto6DiscardShare() throws Exception;
+
+	/**
 	 * 查询传入客户ID 扩展信息
 	 * @param id
 	 * @return
@@ -222,6 +229,20 @@ public interface CustomerMapper {
 	 */
 	public List<CustomerFormMap> findffxCustomerPage( Map searchMapMap);
 	/**
+	 * 带访客户
+	 * @param searchMapMap
+	 * @return
+	 */
+	public List<CustomerFormMap> findvisitCustomerPage( Map searchMapMap);
+    /**
+     * 成交客户
+     * @param searchMapMap
+     * @return
+     */
+    public List<CustomerFormMap> finddealCustomerPage( Map searchMapMap);
+
+
+	/**
 	 * 项目匹配
 	 * 
 	   @author zhaoh
@@ -237,6 +258,12 @@ public interface CustomerMapper {
 	 * @throws Exception
 	 */
 	public void shareEntity(CustomerFormMap formMap) throws Exception;
+	/**
+	 * 共享客户数据
+	 * @param formMap
+	 * @throws Exception
+	 */
+	public void share1Entity(CustomerFormMap formMap) throws Exception;
 	/**
 	 * 查看带访客户
 	 * 
@@ -254,5 +281,18 @@ public interface CustomerMapper {
 	 * @return
 	 */
 	public List<CustomerFormMap> findMatchCustomer( Map searchMapMap);
-	
+
+    /**
+     * 查看预约客户条数
+     */
+
+    CustomerFormMap  findNtrackDate( Map searchMapMap);
+
+    /**
+     * 查看预约客户
+     * @param searchMapMap
+     * @return
+     */
+    public List<CustomerFormMap>  findOrCustomer( Map searchMapMap);
+
 }

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.ShareCustomerMapper">
+	<sql id="selectId">
+		id,
+		userId,
+		customerName,
+		(select group_concat('跟进信息:',content
+		,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
+		DESC) from cufollow
+		where id
+		in (SELECT id FROM cufollow WHERE
+		cufollow.customerId=cudata.id)) content,
+		<!-- (select group_concat(concat_ws('At:',content,createDate) ORDER BY 
+			id DESC) from cufollow where id in (SELECT id FROM cufollow WHERE cufollow.customerId=cudata.id)) 
+			content , -->
+		telephone,
+		gender,
+		apartment,
+		totalPrice,
+		purpose,
+
+		intention,
+
+		userName,
+		(select name from ogdepartment
+		where id=department)departmentName,
+		department,
+		createDate,
+		trackDate,
+		ntrackDate,
+		trackremind,
+		cusource,
+		resources,
+		state,
+		communicate,
+		description
+	</sql>
+	<select id="findOldUser" resultType="String">
+		SELECT userId FROM cushare
+		where customerId=#{customerId}
+
+
+	</select>
+
+
+	<!--客户查看 -->
+	<select id="findShareCu"
+		resultType="com.first.entity.CustomerFormMap">
+		select
+		<include refid="selectId" />
+
+		from cudata
+		where
+		resources=1
+		<if test="id != null and id != ''">
+			and id in (SELECT customerId FROM cushare WHERE
+			userId=#{id})
+		</if>
+
+		<if test="customerName != null and  customerName != ''">
+
+			AND customerName LIKE
+			CONCAT(CONCAT('%',#{customerName}),'%')
+		</if>
+		<if test="telephone != null and  telephone != ''">
+
+			and telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
+		</if>
+
+
+
+
+
+		order by createDate desc
+
+	</select>
+	<!--所有共享客户查看 -->
+	<select id="findDeShareCu"
+		resultType="com.first.entity.CustomerFormMap">
+		select
+		<include refid="selectId" />
+
+		from cudata
+		where
+		resources=1
+		<if test="id != null and id != ''">
+			and id in (SELECT customerId FROM cushare GROUP BY
+			customerId)
+		</if>
+
+		<if test="customerName != null and  customerName != ''">
+
+			AND customerName LIKE
+			CONCAT(CONCAT('%',#{customerName}),'%')
+		</if>
+		<if test="telephone != null and  telephone != ''">
+
+			and telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
+		</if>
+
+
+
+
+
+		order by createDate desc
+
+	</select>
+	<!-- 退出共享 -->
+	<delete id="outShareCustomer">
+		delete from cushare where
+		customerId=#{id}
+		and
+		userId =#{userId}
+
+	</delete>
+	<!-- 查询客户共享人数 -->
+	<select id="findShareUser"
+		resultType="String">
+		SELECT userName FROM oguser WHERE id in(SELECT userId FROM cushare WHERE
+		customerId=#{id} GROUP BY userId)
+	</select>
+</mapper>
