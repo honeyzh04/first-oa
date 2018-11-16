@@ -145,7 +145,7 @@ public class BaseController {
 			
 				//如果此枚举对象至少还有一个可提供的元素，则返回此枚举的下一个元素。
 				String nms = en.nextElement().toString();
-				System.err.println("获取测试3"+nms);
+
 				if(nms.endsWith("[]")){//测试此字符串是否以指定的后缀结束。
 					String[] as = request.getParameterValues(nms);
 					
@@ -157,7 +157,7 @@ public class BaseController {
 							nms=nms.substring(nms.toUpperCase().indexOf(mname)+1);
 							map.put( nms,as);
 						}
-						System.err.println("获取测试6"+map);
+
 					}
 				}else{
 				
@@ -169,7 +169,7 @@ public class BaseController {
 						if(nms.toUpperCase().startsWith(mname)){
 							nms=nms.substring(mname.length()+1);
 							map.put( nms, as);
-							System.err.println("获取测试5"+map);
+
 						}
 						
 					}

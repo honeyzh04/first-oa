@@ -44,6 +44,8 @@
 					title="请选择需要共享的经纪人" data-live-search="true"
 					data-live-search-placeholder="搜索" id="receiverDepartment"
 					 name="customerFormMap.user" multiple>
+					<optgroup id="departments" label="区总">
+					</optgroup>
 					<optgroup id="departmente" label="东区一部">
 					</optgroup>
 					<optgroup id="departmente2" label="东区二部">
@@ -103,12 +105,16 @@
 					
 					for (var i = 0; i < obj.length; i++) {
 
-						if (obj[i].v == 16) {
+						if (obj[i].v == 12||obj[i].v == 13||obj[i].v == 14||obj[i].v == 15) {
 
 							var str = "<option  value="+obj[i].id+">"
 									+ obj[i].userName + "</option>";
-							$("#departmente").append(str);
-						} else if (obj[i].v == 17) {
+							$("#departments").append(str);
+						}else if (obj[i].v == 16) {
+                            var str = "<option  value="+obj[i].id+">"
+                                + obj[i].userName + "</option>";
+                            $("#departmente").append(str);
+                        } else if (obj[i].v == 17) {
                             var str = "<option  value="+obj[i].id+">"
                                 + obj[i].userName + "</option>";
                             $("#departmente2 ").append(str);

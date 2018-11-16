@@ -73,7 +73,7 @@ public class RoleController extends BaseController {
 	        map.put("recordsTotal", pageinfo.getTotal());  
 	        map.put("recordsFiltered", pageinfo.getTotal()); 
 	        map.put("data", data);   
-	        System.err.println("角色"+map);
+
 	        return map; 
 	        
 	 
@@ -96,7 +96,7 @@ public class RoleController extends BaseController {
 	public String addEntity() throws Exception {
 		RoleFormMap roleFormMap = getFormMap(RoleFormMap.class);
 		roleFormMap.put("trackDate",new Date());
-		System.err.println("职位添加"+roleFormMap);
+
 		roleMapper.addEntity(roleFormMap);
 		return "success";
 	}
@@ -110,10 +110,10 @@ public class RoleController extends BaseController {
 	@RequestMapping("editUI")
 	public String editUI(Model model) throws Exception {
 		String id = getPara("id");
-		System.err.println("职位"+id);
+
 		if(Common.isNotEmpty(id)){
 			RoleFormMap mps = roleMapper.findbyeditUI(id);
-			System.err.println("ce"+mps);
+
 		
 			model.addAttribute("role", mps);
 		}
@@ -140,7 +140,7 @@ public class RoleController extends BaseController {
 	@SystemLog(module="系统管理",methods="组管理-删除组")//凡需要处理业务逻辑的.都需要记录操作日志
 	public String deleteEntity() throws Exception {
 		String Ids = getPara("id");
-		System.err.println("职位"+Ids);
+
 		 String []ids=Ids.split(",");
 		 for (String id : ids) {
 			 roleMapper.deleteEntity(id);//职位信息
@@ -160,16 +160,16 @@ public class RoleController extends BaseController {
 		RoleFormMap roleFormMap = getFormMap(RoleFormMap.class);
 	
 		Object userId = roleFormMap.get("userId");
-		System.err.println("zhi1"+ userId);
+
 		if(null!=userId){
 			List<RoleFormMap> list = roleMapper.seletUserRole(roleFormMap);
-			System.err.println(list);
+
 			String ugid = "";
 			for (RoleFormMap ml : list) {
 				ugid += ml.get("id")+",";
 			}
 			ugid = Common.trimComma(ugid);
-			System.err.println("zhi"+ ugid);
+
 			model.addAttribute("txtRoleSelect", ugid);
 			model.addAttribute("userRole", list);
 			if(StringUtils.isNotBlank(ugid)){
@@ -177,9 +177,9 @@ public class RoleController extends BaseController {
 				
 			}
 		}
-		System.err.println("zhi2"+ roleFormMap);
+
 		List<RoleFormMap> roles = roleMapper.findByWhere(roleFormMap);
-		System.err.println("zhi3"+ roles);
+
 		model.addAttribute("role", roles);
 		
 		return Common.BACKGROUND_PATH + "/system/user/roleSelect";
@@ -200,7 +200,7 @@ public class RoleController extends BaseController {
 		
 		List<TreeObject> list = new ArrayList<TreeObject>();
 		for (ResFormMap map : mps) {
-			System.err.println("asd116"+map);
+
 			TreeObject ts = new TreeObject();
 			Common.flushObject(ts, map);
 			list.add(ts);
@@ -221,7 +221,7 @@ public class RoleController extends BaseController {
 	@RequestMapping("findRes")
 	public List<ResFormMap> findUserRes() {
 		ResFormMap resFormMap = getFormMap(ResFormMap.class);
-		System.err.println("chak"+resFormMap);
+
 		List<ResFormMap> rs = resourcesMapper.findRoleRes(resFormMap);
 		return rs;
 	}
@@ -239,20 +239,20 @@ public class RoleController extends BaseController {
 		
 		String roleId = getPara("roleId");
 	
-		System.err.println("5.181"+roleId);
+
 		 roleMapper.deleteByRoRe(roleId);
 		 if (null != roleId && !Common.isEmpty(roleId.toString())) {
 
 			
 		
 			String[] a = getParaValues("resId[]");
-			System.err.println("adasd1"+a);
+
 
 				for (String rid : a) {
 					RoleResFormMap roleresFormMap = new RoleResFormMap();
 					roleresFormMap.put("resId", rid);
 					roleresFormMap.put("roleId",roleId);
-					System.err.println("zhiwei"+roleresFormMap);
+
 					roleMapper.addRREntity(roleresFormMap);
 					
 				

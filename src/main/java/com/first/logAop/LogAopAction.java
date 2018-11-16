@@ -77,7 +77,7 @@ public  class LogAopAction {
 		try {
 			
 			logMapper.addEntity(logForm);
-			System.err.println("5.5测试"+logForm);
+
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

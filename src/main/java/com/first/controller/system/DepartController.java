@@ -42,7 +42,7 @@ public class DepartController extends BaseController {
 	@RequestMapping("ogranlist")
 	public String ogranlistUI(Model model) throws Exception {
 		model.addAttribute("res", findByRes());
-		System.err.println("查找");
+
 		return Common.BACKGROUND_PATH + "/system/department/ogran_list";
 	}
 	
@@ -56,17 +56,13 @@ public class DepartController extends BaseController {
 	@RequestMapping("list")
 	public String listUI(Model model) throws Exception {
 		model.addAttribute("res", findByRes());
-		System.err.println("查找");
+
 		return Common.BACKGROUND_PATH + "/system/department/list";
 	}
 	
 	/**
 	 * 部门列表
-	 * 
-	 * @param pageNow
-	 * @param pageSize
-	 * @param column
-	 * @param sort
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -100,9 +96,9 @@ public class DepartController extends BaseController {
 	@RequestMapping("showDepart")
 	@ResponseBody
 	public List<DepartmentFormMap>  showProvince(){
-		System.err.println("bumn1");
+
 		List<DepartmentFormMap>   departmentFormMap =  dictMapper.getDepart();
-		System.err.println(departmentFormMap);
+
 		return  departmentFormMap;
 	}
 	/**
@@ -112,11 +108,11 @@ public class DepartController extends BaseController {
 	@RequestMapping("showUser")
 	@ResponseBody
 	public List<UserFormMap>  showUser(String departCode){
-		System.err.println("销售"+departCode);
+
 		List<UserFormMap>   userFormMap=null;
 		if (Common.isNotEmpty( departCode)) {
 		   userFormMap =  dictMapper.getUser(departCode);
-		System.err.println(userFormMap);
+
 		}
 		return userFormMap;
 	}
@@ -127,9 +123,9 @@ public class DepartController extends BaseController {
 	@RequestMapping("showcuDepart")
 	@ResponseBody
 	public List<DepartmentFormMap>  showcuDepart(){
-		System.err.println("bumn");
+
 		List<DepartmentFormMap>   departmentFormMap =  dictMapper.getcuDepart();
-		System.err.println(departmentFormMap);
+
 		return  departmentFormMap;
 	}
 	/**
@@ -141,7 +137,7 @@ public class DepartController extends BaseController {
 	public List<UserFormMap>  allUser(){
 		
 		List<UserFormMap>   userFormMap =  dictMapper.getAlluser();
-		System.err.println("bumn1"+userFormMap);
+
 		return  userFormMap;
 	}
 

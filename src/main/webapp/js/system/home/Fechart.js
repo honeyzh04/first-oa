@@ -232,7 +232,7 @@ $(function () {
                 //报表=====================部门==========================
                 var department = echarts.init(document.getElementById('ChildOne'));
                 option = {
-                    title: {text: "销售报表", textStyle: {color: "red"}, left: "20%",},
+                    title: {text: "本周销售报表", textStyle: {color: "red"}, left: "20%",},
                     tooltip: {
                         trigger: 'axis',
                         axisPointer: {            // 坐标轴指示器，坐标轴触发有效

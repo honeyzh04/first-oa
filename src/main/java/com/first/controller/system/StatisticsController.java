@@ -84,7 +84,7 @@ public class StatisticsController extends BaseController {
             searchMap.put("choiceday", ab);
         }
 
-        System.err.println(searchMap);
+
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findDeday(searchMap);
@@ -93,7 +93,7 @@ public class StatisticsController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Object> data = new ArrayList<Object>();
         StatisticsFormMap SumDeday = statisticsMapper.findSumDeday(searchMap);
-        System.err.println("s13");
+
 
 
         for (StatisticsFormMap a : pageinfo.getList()) {
@@ -102,7 +102,7 @@ public class StatisticsController extends BaseController {
 
         }
         data.add(SumDeday);
-        System.err.println("s12" + data);
+
         map.put("draw", draw);
         map.put("recordsTotal", pageinfo.getTotal());
         map.put("recordsFiltered", pageinfo.getTotal());
@@ -143,7 +143,7 @@ public class StatisticsController extends BaseController {
         } else {
             week = week - 3;
         }
-        System.err.println("，阿达" + week);
+
         if (departweek.equals("1")) {
             searchMap.put("departweeke", new Date());
             cal.add(Calendar.DAY_OF_YEAR, -week);
@@ -171,7 +171,7 @@ public class StatisticsController extends BaseController {
             String reStr2 = sdf.format(dt2);
             searchMap.put("departweeks", reStr2);
         }
-        System.err.println("查询" + searchMap);
+
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findDeweek(searchMap);
@@ -213,14 +213,14 @@ public class StatisticsController extends BaseController {
         Map<String, Object> searchMap = new HashMap<String, Object>();
         searchMap.put("id", userFormMap.get("id"));
         String ab = request.getParameter("choicemonth");
-        System.err.println("das" + ab);
+
         if (ab == null || "".equals(ab)) {
             searchMap.put("choicemonth", new Date());
         } else {
             searchMap.put("choicemonth", ab + "-00");
         }
 
-        System.err.println(searchMap);
+
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findDe(searchMap);
 
@@ -234,7 +234,7 @@ public class StatisticsController extends BaseController {
 
         }
         data.add(SumDemonth);
-        System.err.println("s11" + data);
+
         map.put("draw", draw);
         map.put("recordsTotal", pageinfo.getTotal());
         map.put("recordsFiltered", pageinfo.getTotal());

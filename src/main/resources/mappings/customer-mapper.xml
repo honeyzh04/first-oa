@@ -857,7 +857,7 @@
     <delete id="auto6DiscardShare">
 		delete cushare from cushare LEFT JOIN cudata on cushare.customerId=cudata.id  where
         cudata.state!=4 AND
-		(SELECT DATEDIFF(NOW(),cudata.trackDate) AS DiffDate)  &gt;=7
+		(SELECT DATEDIFF(NOW(),cudata.trackDate) AS DiffDate)  &gt;7
 
 	</delete>
 

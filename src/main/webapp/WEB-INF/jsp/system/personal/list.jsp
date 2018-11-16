@@ -1,199 +1,263 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>	
-	<script type="text/javascript" src="js/system/role/list.js"></script> 
- 	
-	<body>
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<script type="text/javascript" src="js/system/personal/list.js"></script>
+<style>
+    .wid100 {
+        width: 100%;
+    }
 
-		<div class="layui-fluid layadmin-homepage-fluid">
-			<div class="layui-row layui-col-space8">
-				<div class="layui-col-md2">
-					<div class="layadmin-homepage-panel layadmin-homepage-shadow">
-						<div class="layui-card text-center">
-							<div class="layui-card-body">
-							<p style="font-size: 18px; font-weight: bold;">基本信息</p>
-								<div class="layadmin-homepage-pad-ver">
-									<img class="layadmin-homepage-pad-img" src="./img/tou.png" width="96" height="96">
-								</div>
-								<h4 class="layadmin-homepage-font">${personal.userName}</h4>
-							</div>
-						</div>
-						<p class="layadmin-homepage-about">
-							关于我
-						</p>
-						<ul class="layadmin-homepage-list-group">
-							<li class="list-group-item"><i class="fa fa-user"></i>&nbsp;账户名：${personal.accountName}</li>
-							<li class="list-group-item"><i class="fa fa-user-md"></i>&nbsp;用户名：${personal.userName}</li>
-							<li class="list-group-item"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;部门：${personal.departmentName}</li>
-							<li class="list-group-item"><i class="fa fa-envelope"></i>&nbsp;邮箱：${personal.email}</li>
-							<li class="list-group-item"><i class="fa fa-phone-square "></i>&nbsp;电话：${personal.telephone}</li>
-						</ul>
-						<div class="layadmin-homepage-pad-hor">
-							<mdall>描述：：${personal.description}</mdall>
-						</div>
-					</div>
-				</div>
-				<div class="layui-col-md10">
-					<div class="layui-fluid layadmin-homepage-content">
-	
-						<div class="layui-row layui-col-space20 layadmin-homepage-list-imgtxt">
-							<div class="layui-col-md9">
-								<div class="grid-demo">
-									<div class="layadmin-homepage-shadow">
-									
-										<div class="media-body">
-								
-											<p style="font-size: 18px; font-weight: bold; padding-top:10px;">个人报表</p>
-											<div class="media-list">
-												<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-												<div id="main" style="width: 900px;height:400px;"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="layui-col-md3">
-								<div class="grid-demo">
-									<div class="layui-card homepage-bottom">
-										<div class="layui-card-header">
-											<p style="font-size: 18px; font-weight: bold;">其他信息</p>
-										</div>
-										<div class="layui-card-body">
-					
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    .wid100 div {
+        display: inline-block;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    h4 {
+        display: inline-block;
+        margin-top: 25px;
+    }
+
+    .inp_btn {
+        height: 21px;
+        line-height: 21px;
+        padding: 0px 12px !important;
+        margin-top: 1px;
+    }
+
+    .wid32 {
+        width: 32%;
+    }
+
+    .wid32 span {
+        color: red;
+    }
+
+    .bor_all {
+        border: 1px solid #b4b8a7;
+    }
+
+    .bor_bottom {
+        border-bottom: 1px solid #b4b8a7;
+    }
+
+    .bor_right {
+        border-right: 1px solid #b4b8a7;
+    }
+</style>
+<body>
+
+<div class="layui-fluid layadmin-homepage-fluid">
+    <div class="layui-row layui-col-space8">
+        <div class="layui-col-md2">
+            <div class="layadmin-homepage-panel layadmin-homepage-shadow">
+                <div class="layui-card text-center">
+                    <div class="layui-card-body">
+                        <p style="font-size: 18px; font-weight: bold;">基本信息</p>
+                        <div class="layadmin-homepage-pad-ver">
+                            <img class="layadmin-homepage-pad-img" src="./img/tou.png" width="96" height="96">
+                        </div>
+                        <h4 class="layadmin-homepage-font">${personal.userName}</h4>
+                    </div>
+                </div>
+                <p class="layadmin-homepage-about">
+                    关于我
+                </p>
+                <ul class="layadmin-homepage-list-group">
+                    <li class="list-group-item"><i class="fa fa-user"></i>&nbsp;账户名：${personal.accountName}</li>
+                    <li class="list-group-item"><i class="fa fa-user-md"></i>&nbsp;用户名：${personal.userName}</li>
+                    <li class="list-group-item"><i class="fa fa-tag"
+                                                   aria-hidden="true"></i>&nbsp;部门：${personal.departmentName}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope"></i>&nbsp;邮箱：${personal.email}</li>
+                    <li class="list-group-item"><i class="fa fa-phone-square "></i>&nbsp;电话：${personal.telephone}</li>
+                </ul>
+                <div class="layadmin-homepage-pad-hor">
+                    <mdall>描述：：${personal.description}</mdall>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md7">
+            <div class="layui-fluid layadmin-homepage-content">
+
+                <div class="layui-row layui-col-space20 layadmin-homepage-list-imgtxt">
+                    <div class="layui-col-md9">
+                        <div class="grid-demo">
+                            <div class="layadmin-homepage-shadow">
+
+                                <div class="media-body">
+
+                                    <p style="font-size: 18px; font-weight: bold; padding-top:10px;">个人报表(敬请期待)</p>
+                                    <div class="media-list">
+                                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                                        <div id="main" style="width: 900px;height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md3">
+            <p style="font-size: 18px; font-weight: bold;">报表提交</p>
+            <header class="panel-heading">
+                <div class="doc-buttons">
+                    <c:forEach items="${res}" var="key">
+                        ${key.description}
+                    </c:forEach>
+
+                </div>
+            </header>
+            <h4>日目标</h4>
+            <button type="button" class="btn btn-default navbar-btn inp_btn" id="dayadd">录入</button>
+            <div class="wid100 bor_all">
+                <div class="wid32 bor_right">今日目标</div>
+                <div class="wid32 bor_right">目标新增：<span>
+             <span>${dayplan.add}
+                   </span></div>
+                <div class="wid32">目标带访：<span>${dayplan.visit}</span></div>
+            </div>
+            <div class="wid100 bor_all">
+                <div class="wid32 bor_right">明日目标</div>
+                <div class="wid32 bor_right">目标新增：<span>23</span></div>
+                <div class="wid32">目标带访：<span>323</span></div>
+            </div>
 
 
-		<script type="text/javascript">
-		$(function () {
-	       
-	 
-	        showLine();
-	    });
+            <h4>周目标</h4>
+            <button type="button" class="btn btn-danger navbar-btn inp_btn" id="weekadd">录入</button>
+            <div class="wid100 bor_all">
+                <div class="wid32 bor_right">目标新增：<span>${weekplan.add}</span></div>
+                <div class="wid32 bor_right">目标带访：<span>${weekplan.visit}</span></div>
+                <div class="wid32">目标佣金：<span>${weekplan.commission}</span></div>
+            </div>
 
-	    function showLine() {
-	    
-	        $.ajax({
-	            type: "GET",
-	            url: "./statistics/findBypersonweek.shtml",
-	            dataType: 'json',
-	        });
-	    }
-			// 基于准备好的dom，初始化echarts实例
-			var myChart = echarts.init(document.getElementById('main'));
+            <h4>月目标</h4>
+            <button type="button" class="btn btn-warning navbar-btn inp_btn" id="monthadd">录入</button>
+            <div class="wid100 bor_all">
+                <div class="wid32 bor_right">目标新增：<span>${monthplan.add}</span></div>
+                <div class="wid32 bor_right">目标带访：<span>${monthplan.visit}</span></div>
+                <div class="wid32">目标佣金：<span>${monthplan.commission}</span></div>
+            </div>
 
-			// 指定图表的配置项和数据
-	
-			var option = {
-				tooltip: {
-					trigger: 'axis',
-					axisPointer: { // 坐标轴指示器，坐标轴触发有效
-						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-					}
-				},
-				legend: {
-					data: ['新增', '到访', '排号', '成交', '退单']
-				},
-				grid: {
-					left: '3%',
-					right: '4%',
-					bottom: '3%',
-					containLabel: true
-				},
-				xAxis: {
-					type: 'value'
-				},
-				yAxis: {
-					type: 'category',
-					data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-				},
-				series: [{
-						name: '新增',
-						type: 'bar',
-						stack: '总量',
-						label: {
-							normal: {
-								show: true,
-								position: 'insideRight'
-							}
-						},
-						data: [320, 302, 301, 334, 390, 330, 320]
-					},
-					{
-						name: '到访',
-						type: 'bar',
-						stack: '总量',
-						label: {
-							normal: {
-								show: true,
-								position: 'insideRight'
-							}
-						},
-						data: [120, 132, 101, 134, 90, 230, 210]
-					},
-					{
-						name: '排号',
-						type: 'bar',
-						stack: '总量',
-						label: {
-							normal: {
-								show: true,
-								position: 'insideRight'
-							}
-						},
-						data: [220, 182, 191, 234, 290, 330, 310]
-					},
-					{
-						name: '成交',
-						type: 'bar',
-						stack: '总量',
-						label: {
-							normal: {
-								show: true,
-								position: 'insideRight'
-							}
-						},
-						data: [150, 212, 201, 154, 190, 330, 410]
-					},
-					{
-						name: '退单',
-						type: 'bar',
-						stack: '总量',
-						label: {
-							normal: {
-								show: true,
-								position: 'insideRight'
-							}
-						},
-						data: [820, 832, 901, 934, 1290, 1330, 1320]
-					}
-				]
-			};
+        </div>
+    </div>
+</div>
 
-			// 使用刚指定的配置项和数据显示图表。
-			myChart.setOption(option);
-			
-			// 异步加载数据
-			/*$.get('data.json').done(function (data) {
-			    // 填入数据
-			    myChart.setOption({
-			        xAxis: {
-			            data: data.categories
-			        },
-			        series: [{
-			            // 根据名字对应到相应的系列
-			            name: '新增',
-			            data: data.data
-			        }]
-			    });*/
-		</script>
-	</body>
+
+<script type="text/javascript">
+    $(function () {
+
+
+        showLine();
+    });
+
+    function showLine() {
+
+        $.ajax({
+            type: "GET",
+            url: "./statistics/findBypersonweek.shtml",
+            dataType: 'json',
+        });
+    }
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+
+    var option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        legend: {
+            data: ['新增', '到访', '排号', '成交', '退单']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value'
+        },
+        yAxis: {
+            type: 'category',
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        series: [{
+            name: '新增',
+            type: 'bar',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'insideRight'
+                }
+            },
+            data: [320, 302, 301, 334, 390, 330, 320]
+        },
+            {
+                name: '到访',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+                name: '排号',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [220, 182, 191, 234, 290, 330, 310]
+            },
+            {
+                name: '成交',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [150, 212, 201, 154, 190, 330, 410]
+            },
+            {
+                name: '退单',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [820, 832, 901, 934, 1290, 1330, 1320]
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+</script>
+</body>
 
 </html>

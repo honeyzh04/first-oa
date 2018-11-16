@@ -242,7 +242,7 @@ public class FFXAppController extends BaseController {
          * customerFormMap.put("visitprojectId", null);
          * customerFormMap.put("dealprojectId", null);
          */
-        System.err.println("客户跟进1" + customerFormMap);
+
         customerFormMap.put("trackDate", new Date());
 
         customerFormMap.put("trackremind", "0");

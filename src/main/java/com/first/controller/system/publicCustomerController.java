@@ -52,7 +52,7 @@ public class publicCustomerController extends BaseController {
     public String listUI(HttpServletRequest request, Model model) throws Exception {
         model.addAttribute("res", findByRes());
         UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
-        System.err.println("dad" + userFormMap);
+
         model.addAttribute("user", userFormMap);
         return Common.BACKGROUND_PATH + "/system/publicCustomer/list";
     }
@@ -83,8 +83,10 @@ public class publicCustomerController extends BaseController {
         String depar = userFormMap.get("department").toString();
         int depId = Integer.parseInt(depar);
         List<DepartmentFormMap> departmentFormMap = departMapper.getDepart();
-        List<String> idss =null;
-        idss = TreeUtil.treeMenuList(departmentFormMap, depId);
+
+        List<String> idss = new ArrayList<>();
+
+        TreeUtil.treeMenuList(idss,departmentFormMap, depId);
         idss.add(depar);
         searchMap.put("departments", idss);
         PageHelper.startPage((start / length) + 1, length);

@@ -75,7 +75,7 @@ public class ProjectServiceImpl implements ProjectService  {
 
 
 		 List<Map<String, Object>> x= JsonUtils.getListByUrl("http://bd.fangfaxian.com/PrDC/GetPrInfoList/");
-		 System.err.println("cxa"+x);
+
 		deletesEntity();
 		System.out.println("a1");
 		 for (Map b:x) {

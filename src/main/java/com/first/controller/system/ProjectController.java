@@ -167,12 +167,12 @@ public class ProjectController extends BaseController{
 	@RequestMapping(value = "editUI")
 	public String editUI(Model model,@RequestParam("id") String id) throws Exception {
 		//String id = getPara("id");
-		System.err.println("asd" + id);
+
 		if (Common.isNotEmpty(id)) {
-			System.err.println("asd2" );
+
 			ProjectFormMap mps=projectService.findbyProject(id);
 			
-			System.err.println("1"+mps);
+
 			model.addAttribute("project", mps);
 		}
 		return Common.BACKGROUND_PATH + "/system/project/edit";
@@ -202,12 +202,12 @@ public class ProjectController extends BaseController{
 	@Transactional(readOnly = false) // 需要事务操作必须加入此注解
 	@SystemLog(module = "项目管理", methods = "项目管理-删除项目") // 凡需要处理业务逻辑的.都需要记录操作日志
 	public String deleteEntity() throws Exception {
-		System.err.println("cc");
+
 		String Ids = getPara("ids");
 		 String []ids=Ids.split(",");
 		for (String id : ids) {
 			projectService.deleteEntity(id);
-			System.err.println("asd" + id);
+
 		
 		}
 		return "success";
@@ -223,7 +223,7 @@ public class ProjectController extends BaseController{
 	@Transactional(readOnly = false) // 需要事务操作必须加入此注解
 	@SystemLog(module = "项目管理", methods = "项目管理-更新项目") // 凡需要处理业务逻辑的.都需要记录操作日志
 	public String updateEntity() throws Exception {
-			System.err.println("genx");
+
 			projectService.addproject();
 		
 		return "success";
@@ -250,13 +250,13 @@ public class ProjectController extends BaseController{
 	@RequestMapping(value = "housedetail")
 	public String housedetailUI(Model model,@RequestParam("id") String id,@RequestParam("state") String state){
 
-		System.err.println("asd" + id+"DA"+state);
+
 		if(state.equals("2")){
 			state="在售";
 		}else {
 			state="停售";
 		}
-		System.err.println(state);
+
 		model.addAttribute("IDs",id);
 		model.addAttribute("state",state);
 		return Common.BACKGROUND_PATH + "/system/project/housedetail";

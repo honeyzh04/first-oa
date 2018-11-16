@@ -13,9 +13,7 @@ import com.first.entity.DepartmentFormMap;
  */
 public class TreeUtil {
 	
-    //获取管理部门
-	static List<String> idss = new ArrayList<>();
-	static List<String> idsa = new ArrayList<>();
+
 	/**
 	 * 递归获取本部门及下属部门
 	 * 
@@ -26,8 +24,11 @@ public class TreeUtil {
 	 * @param pid
 	 * @return
 	 */
-    public static List<String> treeMenuList( List<DepartmentFormMap> menuList, int pid){  
-    	  
+    public static void treeMenuList(List<String> childList, List<DepartmentFormMap> menuList, int pid){
+		//获取管理部门
+		// List<String> idss = new ArrayList<>();
+
+
         for(DepartmentFormMap mu: menuList){  
         	Object vlaues =mu.get("parentId");
         	String parentIds = vlaues.toString();
@@ -37,21 +38,19 @@ public class TreeUtil {
     		  if(parentId==pid){  
                   //递归遍历下一级  
     			  Object vlaue =mu.get("id");
+
     	        	String ids = vlaue.toString();
     	    		int id = Integer.parseInt(ids);
     	    		System.err.println(id);
-    	    		idss.add(ids);
-    	    		
+				  childList.add(ids);
+
     	    		 
-                  treeMenuList(menuList,id);  
+                  treeMenuList(childList,menuList,id);
                  
-              }else {
-            	  idsa.add("");
-            	  }
-    		  
+              }
         }  
-        System.err.println(idss);
-    return idss;  
+        System.err.println(childList);
+
     }  
 	/**
 	 * 根据父节点的ID获取所有子节点

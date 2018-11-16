@@ -52,7 +52,7 @@ public class UserController extends BaseController {
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
         model.addAttribute("res", findByRes());
-        System.err.println("查找");
+
         return Common.BACKGROUND_PATH + "/system/user/list";
     }
 
@@ -129,7 +129,7 @@ public class UserController extends BaseController {
         try {
             UserFormMap userFormMap = getFormMap(UserFormMap.class);
             userFormMap.put("txtGroupsSelect", txtGroupsSelect);
-            System.err.println("cecer" + userFormMap);
+
             PasswordHelper passwordHelper = new PasswordHelper();
             // 默认密码
             userFormMap.set("password", "123456");
@@ -144,14 +144,14 @@ public class UserController extends BaseController {
                     UserFormMap ui = userMapper.findbyFrist(userFormMap);
                     userRoleFormMap.put("userId", ui.get("id"));
                     userRoleFormMap.put("roleId", roleId);
-                    System.err.println("1" + userFormMap);
+
                     userMapper.addUREntity(userRoleFormMap);
-                    System.err.println(userFormMap);
+
                 }
             }
             String register = userFormMap.get("register").toString();
 
-            System.err.println("ads1" + register.equals("1"));
+
             if (register.equals("1")) {
                 Map<String, String> map = new HashMap<>();
                 map.put("CreatID", getuserId());
@@ -161,7 +161,7 @@ public class UserController extends BaseController {
                 String url = "http://api.fangfaxian.com/api/OGMember";
 
                 PostUtil.httpPost(url, map);
-                System.err.println(PostUtil.httpPost(url, map));
+
             }
         } catch (Exception e) {
             throw new SystemException("添加账号异常");
@@ -181,7 +181,7 @@ public class UserController extends BaseController {
     public boolean isExist(String name) {
         UserFormMap userFormMap = getFormMap(UserFormMap.class);
         String ac = (String) userFormMap.get("accountName");
-        System.err.println("5.55" + ac);
+
         UserFormMap lis = userMapper.findbyFrist(userFormMap);
         if (lis == null) {
             return true;
@@ -201,11 +201,11 @@ public class UserController extends BaseController {
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
     @SystemLog(module = "系统管理", methods = "用户管理-删除用户") // 凡需要处理业务逻辑的.都需要记录操作日志
     public String deleteEntity() throws Exception {
-        System.err.println("cc");
+
         String[] ids = getParaValues("ids");
 
         for (String id : ids) {
-            System.err.println("asd" + id);
+
             /*
              * userMapper.deleteByUR(UserRoleFormMap.class); userMapper.deleteByRU("userId",
              * id, ResUserFormMap.class); userMapper.deleteByUser("id", id,
@@ -225,7 +225,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "editUI")
     public String editUI(Model model) throws Exception {
         String id = getPara("id");
-        System.err.println("asd" + id);
+
         if (Common.isNotEmpty(id)) {
             // int id = Integer.parseInt(iid);
             UserFormMap mps = userMapper.findbyeditUI(id);
@@ -242,19 +242,19 @@ public class UserController extends BaseController {
     @SystemLog(module = "系统管理", methods = "用户管理-修改用户") // 凡需要处理业务逻辑的.都需要记录操作日志
     public String editEntity(String txtGroupsSelect) throws Exception {
         UserFormMap userFormMap = getFormMap(UserFormMap.class);
-        System.err.println("C" + userFormMap);
+
         userFormMap.put("txtGroupsSelect", txtGroupsSelect);
         userMapper.editEntity(userFormMap);
-        System.err.println("c测试1");
+
         userMapper.deleteByUR(userFormMap);
-        System.err.println("c测试2");
+
         if (!Common.isEmpty(txtGroupsSelect)) {
             String[] txt = txtGroupsSelect.split(",");
             for (String roleId : txt) {
                 UserRoleFormMap userGroupsFormMap = new UserRoleFormMap();
                 userGroupsFormMap.put("userId", userFormMap.get("id"));
                 userGroupsFormMap.put("roleId", roleId);
-                System.err.println("c测试1");
+
                 userMapper.addUREntity(userGroupsFormMap);
             }
         }
@@ -272,7 +272,7 @@ public class UserController extends BaseController {
     public String updatePassword(HttpServletRequest request, Model model) throws Exception {
 
         UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
-        System.err.println("aa" + userFormMap);
+
         model.addAttribute("userSession", userFormMap);
         return Common.BACKGROUND_PATH + "/system/user/updatePassword";
     }
@@ -283,7 +283,7 @@ public class UserController extends BaseController {
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
     @SystemLog(module = "系统管理", methods = "用户管理-修改密码") // 凡需要处理业务逻辑的.都需要记录操作日志
     public String editPassword() throws Exception {
-        System.err.println("xiugai密码");
+
         // 当验证都通过后，把用户信息放在session里
         UserFormMap userFormMap = getFormMap(UserFormMap.class);
         userFormMap.put("password", userFormMap.get("newpassword"));
@@ -291,7 +291,7 @@ public class UserController extends BaseController {
         PasswordHelper passwordHelper = new PasswordHelper();
 
         passwordHelper.encryptPassword(userFormMap);
-        System.err.println("bb" + userFormMap);
+
         userMapper.editEntity(userFormMap);
         return "success";
     }
@@ -303,19 +303,19 @@ public class UserController extends BaseController {
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
     @SystemLog(module = "系统管理", methods = "用户管理-重置密码") // 凡需要处理业务逻辑的.都需要记录操作日志
     public String resetPassword() throws Exception {
-        System.err.println("重置密碼");
+
         String Id = getPara("id");
-        System.err.println("asdadf" + Id);
+
 
         // 当验证都通过后，把用户信息放在session里
         UserFormMap userFormMap = userMapper.findbyeditUI(Id);
         userFormMap.put("password", "123456");
-        System.err.println("dd" + userFormMap);
+
         // 这里对修改的密码进行加密
         PasswordHelper passwordHelper = new PasswordHelper();
 
         passwordHelper.encryptPassword(userFormMap);
-        System.err.println("bb" + userFormMap);
+
         userMapper.editEntity(userFormMap);
         return "success";
     }

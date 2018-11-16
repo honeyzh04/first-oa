@@ -70,7 +70,7 @@ public class UserLoginController extends BaseController {
 	        map.put("recordsTotal", pageinfo.getTotal());  
 	        map.put("recordsFiltered", pageinfo.getTotal()); 
 	        map.put("data", data);  
-	        System.err.println(map);
+
 	        return map; 
 	}
 

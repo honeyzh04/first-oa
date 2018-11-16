@@ -5,6 +5,7 @@
     <!--周报表-->
     <select id="findpeweek"
             resultType="com.first.entity.StatisticsFormMap">
+		SELECT  * from (
 		SELECT a.id,a.userName ,a.did,a.name,ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0)
 		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
@@ -74,15 +75,22 @@
 		cufollow.createDate between
 		#{departweeks} and #{departweeke} ) as b GROUP BY b.userId) as e
 		ON e.userId=a.id
-		WHERE 1=1
-        <if test="deId != null ">
-            and a.did in
-            <foreach collection="deId" item="item" index="index"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-		ORDER BY dea DESC,vis dESC, addw DESC LIMIT 15
+		WHERE
+		<choose>
+			<when test="deId != null and deId !=''">
+				a.did in
+				<foreach collection="deId" item="item" index="index"
+						 open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</when>
+			<otherwise>
+				 1=0
+			</otherwise>
+		</choose>
+
+		ORDER BY dea DESC,vis dESC, addw DESC LIMIT 15)  as a
+		ORDER BY dea ASC,vis ASC, addw ASC LIMIT 15
 	</select>
 
 

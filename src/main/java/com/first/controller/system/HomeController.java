@@ -67,14 +67,17 @@ public class HomeController extends BaseController {
             } else {
                 int depId = Integer.parseInt(depar);
                 List<DepartmentFormMap> departmentFormMap = departMapper.getDepart();
-                List<String> idss = null;
-                idss = TreeUtil.treeMenuList(departmentFormMap, depId);
+
+                List<String> idss = new ArrayList<>();
+
+                TreeUtil.treeMenuList(idss,departmentFormMap, depId);
                 idss.add(depar);
                 searchMap.put("deId", idss);
-                System.err.println("af2" + idss);
+                System.err.println("部门" + idss);
                 p = homeService.findpeweek(searchMap);
                 rr = new Result<Void>(2, "成功", p);
-                System.err.println("af1" + p);
+                System.err.println("zhou"+rr);
+
             }
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
