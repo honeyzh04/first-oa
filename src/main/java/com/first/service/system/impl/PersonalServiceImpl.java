@@ -4,15 +4,11 @@
 package com.first.service.system.impl;
 
 import com.first.entity.PersonalFormMap;
-import com.first.entity.StatisticsFormMap;
-import com.first.mapper.HomeMapper;
 import com.first.mapper.PersonalMapper;
-import com.first.service.system.HomeService;
 import com.first.service.system.PersonalService;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,23 +26,28 @@ public class PersonalServiceImpl implements PersonalService {
 
 
     @Override
-    public  PersonalFormMap finddayrepart(Map searchMap) {
-        return personalMapper.finddayrepart(searchMap);
+    public  PersonalFormMap finddayreport(Map searchMap) {
+        return personalMapper.finddayreport(searchMap);
     }
 
     @Override
-    public  PersonalFormMap findweekrepart(Map searchMap) {
-        return personalMapper.findweekrepart(searchMap);
+    public  PersonalFormMap findweekreport(Map searchMap) {
+        return personalMapper.findweekreport(searchMap);
     }
 
     @Override
-    public  PersonalFormMap findmonthrepart(Map searchMap) {
-        return personalMapper.findmonthrepart(searchMap);
+    public  PersonalFormMap findmonthreport(Map searchMap) {
+        return personalMapper.findmonthreport(searchMap);
     }
 
     @Override
     public PersonalFormMap finddayadd(Map searchMap) {
         return personalMapper.finddayadd(searchMap);
+    }
+
+    @Override
+    public PersonalFormMap findnextdayadd(Map searchMap) {
+        return personalMapper.findnextdayadd(searchMap);
     }
 
     @Override
@@ -57,6 +58,27 @@ public class PersonalServiceImpl implements PersonalService {
     @Override
     public PersonalFormMap findmonthadd(Map searchMap) {
         return personalMapper.findmonthadd(searchMap);
+    }
+
+    @Override
+    public PersonalFormMap finddedayadd(Map searchMap) {
+
+            return personalMapper.finddedayadd(searchMap);
+    }
+
+    @Override
+    public PersonalFormMap finddenextdayadd(Map searchMap) {
+        return personalMapper.finddenextdayadd(searchMap);
+    }
+
+    @Override
+    public PersonalFormMap finddeweekadd(Map searchMap) {
+        return personalMapper.finddeweekadd(searchMap);
+    }
+
+    @Override
+    public PersonalFormMap finddemonthadd(Map searchMap) {
+        return personalMapper.finddemonthadd(searchMap);
     }
 
     @Override
@@ -72,6 +94,34 @@ public class PersonalServiceImpl implements PersonalService {
     @Override
     public void addMonthPlan(PersonalFormMap formMap) {
         personalMapper.addMonthPlan(formMap);
+    }
+
+    @Override
+    public void adddeDayPlan(PersonalFormMap formMap) {
+        personalMapper.adddeDayPlan(formMap);
+    }
+
+    @Override
+    public void adddeWeekPlan(PersonalFormMap formMap) {
+        personalMapper.adddeWeekPlan(formMap);
+    }
+
+    @Override
+    public void adddeMonthPlan(PersonalFormMap formMap) {
+            personalMapper.adddeMonthPlan(formMap);
+    }
+
+    @Override
+    public PersonalFormMap finddedayreport(Map searchMap) {
+        return personalMapper.finddedayreport(searchMap);
+    }
+    @Override
+    public PersonalFormMap finddeweekreport(Map searchMap) {
+        return personalMapper.finddeweekreport(searchMap);
+    }
+    @Override
+    public PersonalFormMap finddemonthreport(Map searchMap) {
+        return personalMapper.finddemonthreport(searchMap);
     }
 }
 	

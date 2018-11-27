@@ -329,7 +329,7 @@ function check(_this) {
         title : "客户来源",
         resize : false,
         type : 2,
-        area : [ "530px", "520px" ],
+        area : [ "530px", "600px" ],
         content : './statistics/sourceUI.shtml?createDate=' +createDate
 
     });

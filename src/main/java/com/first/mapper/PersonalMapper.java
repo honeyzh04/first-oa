@@ -1,9 +1,7 @@
 package com.first.mapper;
 
 import com.first.entity.PersonalFormMap;
-import com.first.entity.StatisticsFormMap;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,26 +21,33 @@ public interface PersonalMapper {
      * @param searchMapMap
      * @return
      */
-    public PersonalFormMap finddayrepart(Map searchMapMap);
+    public PersonalFormMap finddayreport(Map searchMapMap);
+
+
     /**
      * 当周销售数据
      * @param searchMapMap
      * @return
      */
-    public  PersonalFormMap findweekrepart(Map searchMapMap);
+    public  PersonalFormMap findweekreport(Map searchMapMap);
     /**
      * 当月销售数据
      * @param searchMapMap
      * @return
      */
-    public  PersonalFormMap findmonthrepart(Map searchMapMap);
+    public  PersonalFormMap findmonthreport(Map searchMapMap);
     /**
      * 查看日计划
      * @param searchMapMap
      * @return
      */
     public PersonalFormMap finddayadd(Map searchMapMap);
-
+    /**
+     * 查看明日日计划
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap findnextdayadd(Map searchMapMap);
     /**
      * 查看周计划
      * @param searchMapMap
@@ -55,8 +60,53 @@ public interface PersonalMapper {
      * @return
      */
     public PersonalFormMap findmonthadd(Map searchMapMap);
+    /**
+     * 查看部门日计划
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap finddedayadd(Map searchMapMap);
+    /**
+     * 查看部门明日日计划
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap finddenextdayadd(Map searchMapMap);
 
+    /**
+     * 查看部门周计划
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap finddeweekadd(Map searchMapMap);
+    /**
+     * 查看部门月计划
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap finddemonthadd(Map searchMapMap);
     void addDayPlan(PersonalFormMap formMap);
     void addWeekPlan(PersonalFormMap formMap);
     void addMonthPlan(PersonalFormMap formMap);
+    void adddeDayPlan(PersonalFormMap formMap);
+    void adddeWeekPlan(PersonalFormMap formMap);
+    void adddeMonthPlan(PersonalFormMap formMap);
+    /**
+     * 当日部门销售数据
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap  finddedayreport(Map searchMapMap);
+    /**
+     * 当周部门销售数据
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap  finddeweekreport(Map searchMapMap);
+    /**
+     * 当月部门销售数据
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap  finddemonthreport(Map searchMapMap);
 }

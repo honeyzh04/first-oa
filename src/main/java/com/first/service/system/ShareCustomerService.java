@@ -3,15 +3,12 @@
  */
 package com.first.service.system;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.scheduling.annotation.Scheduled;
+import com.first.entity.CustomerFormMap;
 import org.springframework.stereotype.Service;
 
-import com.first.entity.CustomerFormMap;
-import com.first.entity.ProjectFormMap;
-import com.first.entity.UserFormMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * 共享客户
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -23,14 +20,14 @@ import com.first.entity.UserFormMap;
 public interface ShareCustomerService {
 	/**
 	 * 个人查询客户
-	 * @param userFormMap
+	 * @param searchMapMap
 	 * @return
 	 */
-	public List<CustomerFormMap> findShareCu( Map searchMapMap);
+	 List<CustomerFormMap> findShareCu( Map searchMapMap);
 
 	/**
-	 * 查看所有客户
-	 * @param userFormMap
+	 * 查看客户
+	 * @param searchMapMap
 	 * @return
 	 */
 	public List<CustomerFormMap>  findDeShareCu( Map searchMapMap);
@@ -64,6 +61,14 @@ public interface ShareCustomerService {
 	 * @return
 	 */
 	public List<String> findShareUser(String id);
-	
 
+	/**
+	 * 查询指定客户共享
+	 * @param id
+	 * @param userId
+	 * @return
+	 */
+	HashMap findShareCustomer(String id,String userId);
+
+	void editShareCustomer(String id, String userId,String userIds);
 }

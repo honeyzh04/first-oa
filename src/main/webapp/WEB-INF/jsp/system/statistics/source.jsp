@@ -67,6 +67,21 @@
                 <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="sgsm"  disabled="disabled">
                 <span class="input-group-addon">位</span>
             </div>
+            <div class="input-group form-group">
+            <span class="input-group-addon">离线宝：：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="lxb"  disabled="disabled">
+            <span class="input-group-addon">位</span>
+            </div>
+                <div class="input-group form-group">
+            <span class="input-group-addon">公众号：：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="gzh"  disabled="disabled">
+            <span class="input-group-addon">位</span>
+                </div>
+                    <div class="input-group form-group">
+            <span class="input-group-addon">其他途径：：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="qttj"  disabled="disabled">
+            <span class="input-group-addon">位</span>
+        </div>
 
         </div>
 
@@ -76,7 +91,7 @@
 </div>
     <script type="">
             var  a=$("#createDate").val();
-            console.log("das"+a);
+
         $.ajax({
             "url" : "../statistics/Source.shtml",
             "data" : {
@@ -96,6 +111,9 @@
                 $("#ffxwl").val(obj.ffxwl);
                 $("#xxl").val(obj.xxl);
                 $("#sgsm").val(obj.sgsm);
+                $("#lxb").val(obj.lxb);
+                $("#gzh").val(obj.gzh);
+                $("#qttj").val(obj.qttj);
 
 
 

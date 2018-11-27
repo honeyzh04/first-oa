@@ -39,13 +39,16 @@ $(function() {
 				required : true,
 				remote : { // 异步验证是否存在
 					type : "POST",
-					url : '../personal/isExist.shtml',
+					url : '../personal/deisExist.shtml',
 					data : {
                         createDate: function() {
 							return $("#createDate").val();
 						},
                         type : function() {
                             return $("#type").val();
+                        },
+                        deId : function() {
+                            return $("#deId").val();
                         },
 
 					}

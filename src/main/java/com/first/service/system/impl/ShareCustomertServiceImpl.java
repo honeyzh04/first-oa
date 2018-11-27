@@ -3,6 +3,7 @@
  */
 package com.first.service.system.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,8 +54,19 @@ public class ShareCustomertServiceImpl implements ShareCustomerService  {
 	public List<String> findShareUser(String id) {
 		
 		return  sharecustomerMapper.findShareUser(id);
-	}	
 	}
+
+	@Override
+	public HashMap findShareCustomer(String id, String userId) {
+		return  sharecustomerMapper.findShareCustomer(id,userId);
+	}
+
+	@Override
+	public void editShareCustomer(String id, String userId, String userIds) {
+		sharecustomerMapper.editShareCustomer(id,userId,userIds);
+	}
+
+}
 	
 
 

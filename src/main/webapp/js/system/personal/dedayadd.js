@@ -15,6 +15,7 @@ $(function() {
 
 							parent.layer.close(parent.pageii);
                             parent.$("#loadhtml").load("/personal/list.shtml?id=23");
+                            console.log("12")
 							return false;
 						});
 
@@ -32,20 +33,20 @@ $(function() {
             "personalFormMap.visit":{
                 required : true,
                 number : true},
-            "personalFormMap.deal":{
-                required : true,
-                number : true},
 			"personalFormMap.createDate" : {
 				required : true,
 				remote : { // 异步验证是否存在
 					type : "POST",
-					url : '../personal/isExist.shtml',
+					url : '../personal/deisExist.shtml',
 					data : {
                         createDate: function() {
 							return $("#createDate").val();
 						},
                         type : function() {
                             return $("#type").val();
+                        },
+                        deId : function() {
+                            return $("#deId").val();
                         },
 
 					}
@@ -62,11 +63,6 @@ $(function() {
 			},
             "personalFormMap.visit" : {
                 required : "请输入用计划新增",
-                number : "请输入合法的数字",
-
-            },
-            "personalFormMap.deal" : {
-                required : "请输入用计划佣金",
                 number : "请输入合法的数字",
 
             },

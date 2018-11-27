@@ -14,6 +14,7 @@ $(function() {
 						}, function(index) {
 
 							parent.layer.close(parent.pageii);
+                            parent.$("#loadhtml").load("/personal/list.shtml?id=23");
 							return false;
 						});
 

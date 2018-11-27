@@ -29,6 +29,9 @@
     .wid32 {
         width: 32%;
     }
+    .wid64 {
+        width:64%;
+    }
 
     .wid32 span {
         color: red;
@@ -38,12 +41,20 @@
         border: 1px solid #b4b8a7;
     }
 
-    .bor_bottom {
-        border-bottom: 1px solid #b4b8a7;
+    .height60{
+        height: 60px !important;
     }
-
+    line60{
+        line-height: 60px !important;
+    }
     .bor_right {
         border-right: 1px solid #b4b8a7;
+    }
+    .posre{
+        position: relative;
+    }
+    .posab{
+        position: absolute;
     }
 </style>
 <body>
@@ -90,7 +101,7 @@
                                     <p style="font-size: 18px; font-weight: bold; padding-top:10px;">个人报表(敬请期待)</p>
                                     <div class="media-list">
                                         <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-                                        <div id="main" style="width: 900px;height:400px;"></div>
+                                        <div id="main" style="width: 100%;height:400px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -104,7 +115,8 @@
             <p style="font-size: 18px; font-weight: bold;">报表提交</p>
             <header class="panel-heading">
                 <div class="doc-buttons">
-                    <c:forEach items="${res}" var="key">
+                  <%-- <button type="button" id="peReport" class="btn btn-primary marR10">个人日报表审核</button>--%>
+                    <c:forEach items="${reres}" var="key">
                         ${key.description}
                     </c:forEach>
 
@@ -112,34 +124,52 @@
             </header>
             <h4>日目标</h4>
             <button type="button" class="btn btn-default navbar-btn inp_btn" id="dayadd">录入</button>
+           ${deres.deadd2.description}
             <div class="wid100 bor_all">
-                <div class="wid32 bor_right">今日目标</div>
-                <div class="wid32 bor_right">目标新增：<span>
-             <span>${dayplan.add}
+            <div class="wid32 bor_right">
+                今日目标</div>
+            <div class="wid32 bor_right">新增：
+             <span>${dayplan.add}组
                    </span></div>
-                <div class="wid32">目标带访：<span>${dayplan.visit}</span></div>
+            <div class="wid32">带访：<span>${dayplan.visit}组</span></div>
+        </div>
+            <div class="wid100 bor_all height60 posre" >
+                <div class="wid32 bor_right height60 posab" style="line-height: 60px" >目标项目</div>
+                <div class="wid64 height60 posab" style="left: 32%">
+               <span>${dayplan.visitproject}
+                   </span>
+                </div>
             </div>
             <div class="wid100 bor_all">
                 <div class="wid32 bor_right">明日目标</div>
-                <div class="wid32 bor_right">目标新增：<span>23</span></div>
-                <div class="wid32">目标带访：<span>323</span></div>
-            </div>
 
+                <div class="wid32 bor_right">新增：<span>${nextplan.add}组</span></div>
+                <div class="wid32">带访：<span>${nextplan.visit}组</span></div>
+            </div>
+            <div class="wid100 bor_all height60 posre" >
+                <div class="wid32 bor_right height60 posab" style="line-height: 60px" >目标项目</div>
+                <div class="wid64 height60 posab" style="left: 32%">
+                       <span>${nextplan.visitproject}
+                   </span>
+                </div>
+            </div>
 
             <h4>周目标</h4>
             <button type="button" class="btn btn-danger navbar-btn inp_btn" id="weekadd">录入</button>
+            ${deres.deadd3.description}
             <div class="wid100 bor_all">
-                <div class="wid32 bor_right">目标新增：<span>${weekplan.add}</span></div>
-                <div class="wid32 bor_right">目标带访：<span>${weekplan.visit}</span></div>
-                <div class="wid32">目标佣金：<span>${weekplan.commission}</span></div>
+                <div class="wid32 bor_right">新增：<span>${weekplan.add}组</span></div>
+                <div class="wid32 bor_right">带访：<span>${weekplan.visit}组</span></div>
+                <div class="wid32">佣金：<span>${weekplan.commission}万元</span></div>
             </div>
 
             <h4>月目标</h4>
             <button type="button" class="btn btn-warning navbar-btn inp_btn" id="monthadd">录入</button>
+            ${deres.deadd4.description}
             <div class="wid100 bor_all">
-                <div class="wid32 bor_right">目标新增：<span>${monthplan.add}</span></div>
-                <div class="wid32 bor_right">目标带访：<span>${monthplan.visit}</span></div>
-                <div class="wid32">目标佣金：<span>${monthplan.commission}</span></div>
+                <div class="wid32 bor_right">新增：<span>${monthplan.add}组</span></div>
+                <div class="wid32 bor_right">带访：<span>${monthplan.visit}组</span></div>
+                <div class="wid32">佣金：<span>${monthplan.commission}万元</span></div>
             </div>
 
         </div>

@@ -1,22 +1,5 @@
 package com.first.controller.system;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.first.annotation.SystemLog;
 import com.first.controller.index.BaseController;
 import com.first.entity.CustomerFormMap;
@@ -31,6 +14,17 @@ import com.first.util.Common;
 import com.first.util.TreeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 客户管理 Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -393,9 +387,21 @@ public class CustomerController extends BaseController {
     public String transferEntity() throws Exception {
         CustomerFormMap customerFormMap = getFormMap(CustomerFormMap.class);
         String Ids = customerFormMap.get("id").toString();
+        String userIds= customerFormMap.get("userId").toString();
         if (null != Ids && !Common.isEmpty(Ids.toString())) {
             String[] ids = Ids.split(",");
             for (String id : ids) {
+                //查看该客户是否共享
+                CustomerFormMap customer= customerMapper.findCustomer(id);
+                String userId=customer.get("userId").toString();
+                System.err.println(userId);
+                HashMap a= shareCustomerService.findShareCustomer(id,userId);
+                if(a!=null){
+                    shareCustomerService.editShareCustomer(id,userId,userIds);
+                    System.err.println(1111);
+
+                }
+                System.err.println("chakan"+a);
 
                 customerFormMap.put("id", id);
                 customerMapper.discardEntity(customerFormMap);
@@ -403,6 +409,9 @@ public class CustomerController extends BaseController {
                 customerFormMap.put("createDate", new Date());
 
                 customerMapper.addCu(customerFormMap);// 新增客户统计
+
+
+
             }
 
         }
@@ -419,9 +428,6 @@ public class CustomerController extends BaseController {
     @RequestMapping(value = "discardUI")
     public String discardUI(Model model) throws Exception {
         String id = getPara("id");
-
-
-
         if (Common.isNotEmpty(id)) {
             // int id = Integer.parseInt(iid);
             CustomerFormMap mps = new CustomerFormMap();
@@ -436,11 +442,12 @@ public class CustomerController extends BaseController {
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
     @SystemLog(module = "客户管理", methods = "客户管理-放入公共池") // 凡需要处理业务逻辑的.都需要记录操作日志
     public String discardEntity() throws Exception {
-        CustomerFormMap cutomerFormMap = getFormMap(CustomerFormMap.class);
-
-        cutomerFormMap.put("trackremind", "7");
-
-        customerMapper.discardEntity(cutomerFormMap);
+        CustomerFormMap customerFormMap = getFormMap(CustomerFormMap.class);
+        String id=customerFormMap.get("id").toString();
+        System.err.println("公共出"+customerFormMap);
+        customerFormMap.put("trackremind", "7");
+        shareCustomerService.outShareCustomer(id,null);
+        customerMapper.discardEntity(customerFormMap);
 
         return "success";
     }

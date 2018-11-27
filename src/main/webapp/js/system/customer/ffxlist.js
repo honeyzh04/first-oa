@@ -180,6 +180,12 @@ $(function() {
                                         return '<span >信息流</span>';
                                     } else if (data == 6) {
                                         return '<span >搜狗神马</span>';
+                                    }else if (data == 7) {
+                                        return '<span >离线宝</span>';
+                                    } else if (data == 8) {
+                                        return '<span >公众号</span>';
+                                    } else if (data == 9) {
+                                        return '<span >其他途径</span>';
                                     } else {
                                         return '<span >未知</span>';
                                     }

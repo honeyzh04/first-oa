@@ -13,9 +13,8 @@ $(function() {
 							title : '提示'
 						}, function(index) {
 
-							parent.layer.close(parent.pageii);
-
-                            parent.$("#loadhtml").load("/personal/list.shtml?id=23");
+                            parent.layer.close(parent.pageii);
+                            parent.myTable.draw(false);
                             console.log("12")
 							return false;
 						});
@@ -28,45 +27,18 @@ $(function() {
 		},
 		rules : {
 			
-			"personalFormMap.add":{
+			"teamAwardFormMap.customers":{
 				required : true,
 				number : true},
-            "personalFormMap.visit":{
-                required : true,
-                number : true},
-			"personalFormMap.createDate" : {
-				required : true,
-				remote : { // 异步验证是否存在
-					type : "POST",
-					url : '../personal/isExist.shtml',
-					data : {
-                        createDate: function() {
-							return $("#createDate").val();
-						},
-                        type : function() {
-                            return $("#type").val();
-                        },
 
-					}
-				}
-			},
 
 		},
 		messages : {
 			
-			"personalFormMap.add" : {
-				required : "请输入用计划新增",
+			"teamAwardFormMap.customers" : {
+				required : "请输入奖励客户组数",
                 number : "请输入合法的数字",
 				
-			},
-            "personalFormMap.visit" : {
-                required : "请输入用计划新增",
-                number : "请输入合法的数字",
-
-            },
-			"personalFormMap.createDate" : {
-				required : "请输入计划日期",
-				remote : "该日期已经存在"
 			},
 
 		},

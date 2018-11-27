@@ -1303,7 +1303,10 @@ WHERE
 	COUNT(ffxsource = 3 OR NULL) ffxdh,
 	COUNT(ffxsource = 4 OR NULL) ffxwl,
 	COUNT(ffxsource = 5 OR NULL) xxl,
-	COUNT(ffxsource = 6 OR NULL) sgsm
+	COUNT(ffxsource = 6 OR NULL) sgsm,
+	COUNT(ffxsource = 7 OR NULL) lxb,
+	COUNT(ffxsource = 8 OR NULL) gzh,
+	COUNT(ffxsource =9 OR NULL) qttj
 FROM (SELECT * FROM ( SELECT
  *
 FROM

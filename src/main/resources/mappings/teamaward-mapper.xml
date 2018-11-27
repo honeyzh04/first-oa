@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.TeamAwardMapper">
+    <!--战队今日奖励查看-->
+    <select id="findTeam"
+            resultType="com.first.entity.TeamAwardFormMap">
+		SELECT
+			team_data.*, IFNULL(a.customers, 0) customers
+		FROM
+			team_data
+		LEFT JOIN (
+		SELECT
+			teamId,
+		COUNT(customerId) AS customers
+		FROM
+			team_award
+		WHERE
+			DATE_FORMAT(
+			team_award.createDate,
+			'%Y%m%d'
+			) = DATE_FORMAT(NOW(), '%Y%m%d')
+		GROUP BY
+			teamId
+		) AS a ON team_data.id = a.teamId  where parentId in (1,9)
+	</select>
+    <!--添加奖励-->
+    <insert id="addAward">
+		INSERT INTO
+		team_award
+		VALUES
+		(
+		null,
+		#{teamId},
+		#{cuId},
+		#{date}
+		)
+	</insert>
+
+</mapper>

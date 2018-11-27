@@ -1,16 +1,11 @@
 package com.first.shiro;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
+import com.first.entity.ResFormMap;
+import com.first.entity.UserFormMap;
+import com.first.mapper.ResourcesMapper;
+import com.first.mapper.UserMapper;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -18,10 +13,8 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
-import com.first.entity.ResFormMap;
-import com.first.entity.UserFormMap;
-import com.first.mapper.ResourcesMapper;
-import com.first.mapper.UserMapper;
+import javax.inject.Inject;
+import java.util.List;
 /**
  * 自定义Realm,进行数据源配置
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -101,7 +94,6 @@ public class MyRealm extends AuthorizingRealm {
 					ByteSource.Util.bytes(username + "" + userFormMaps.get(0).get("credentialsSalt")),// salt=username+salt
 					getName() // realm name
 			);
-			System.out.println("en"+userFormMaps.get(0).get("password"));
 			// 当验证都通过后，把用户信息放在session里
 			Session session = SecurityUtils.getSubject().getSession();
 			/*session.setAttribute("userSession", userFormMaps.get(0));

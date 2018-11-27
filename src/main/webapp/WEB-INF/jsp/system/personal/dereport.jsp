@@ -35,14 +35,14 @@
 </head>
 
 <body>
-<input type="hidden" class="agentid" id="agentid"
-       value="${personal.agentid}">
-<input type="hidden" class="corpsecret" id="corpsecret"
-       value="${personal.corpsecret}">
+<input type="hidden" class="agentid" id="agentid"  value="${personal.agentid}">
+<input type="hidden" class="corpsecret" id="corpsecret"   value="${personal.corpsecret}">
+<input type="hidden"  value="${weekreality.dealproject}"  class="w_real_dealproject" name="customerFormMap.userId" id="w_real_dealproject">
+<input type="hidden"  value="${monthreality.dealproject}"  class="m_real_dealproject" name="customerFormMap.userId" id="m_real_dealproject">
 <div class="containt " style="border:0px">
     <div class="msg">
-        <h2 class="text-center">个人日报确认单</h2>
-        <div class="name padl10">姓名：${personal.userName}</div>
+        <h2 class="text-center">部门日报确认单</h2>
+        <div class="name padl10">提交人：${personal.userName}</div>
         <div class=" padl10" >部门：<span class="dep">${personal.departmentName}</span></div>
         <div class="time padl10">时间：${dayreality.days}</div>
     </div>
@@ -230,6 +230,8 @@
             var w_real_price = $.trim($(".w_real_price").text());
             var w_real_money = $.trim($(".w_real_money").text());
             var  w_real_net = $.trim($(".w_real_net").text());
+           var  w_real_dealproject= $.trim($("#w_real_dealproject").val());
+            console.log( w_real_dealproject)
             //本月预计目标
             var m_exp_add = $.trim($(".m_exp_add").text());
             var m_exp_visit = $.trim($(".m_exp_visit").text());
@@ -241,29 +243,28 @@
             var m_real_price = $.trim($(".m_real_price").text());
             var m_real_money = $.trim($(".m_real_money").text());
             var  m_real_net = $.trim($(".m_real_net").text());
-            // console.log(d_exp_add)
+            var  m_real_dealproject= $.trim($("#m_real_dealproject").val());
+             console.log( m_real_dealproject)
             var agentid=$.trim($("#agentid").val());
             var corpsecret=$.trim($("#corpsecret").val());
-
             if (d_exp_add == "" || d_exp_visit == "" || w_exp_add == "" || w_exp_visit == "" || m_exp_add == "" || m_exp_visit == "") {
                 layer.alert('请返回主页制定目标计划！', 3);
             } else {
-                var info = name + "\n部门：" + dep + "\n" + day + "工作情况：\n新增总数：" + d_real_sum + "组,\n电话新增：" + d_real_tel + "组,\n网络新增：" + d_real_net + ",\n其他新增：" + d_real_other +
+                var info = "部门日报表\n\n"+name + "\n部门：" + dep + "\n" + day + "工作情况：\n新增总数：" + d_real_sum + "组,\n电话新增：" + d_real_tel + "组,\n网络新增：" + d_real_net + ",\n其他新增：" + d_real_other +
                     "组,\n今日带看数：" + d_real_visit + "组,\n今天带看项目：" + d_real_pro + ",\n今日成交价格：" + d_real_price + "万元,\n今日成交佣金：" + d_real_money + "万元,\n今天成交项目：" + d_real_moneypro + ",\n明日预计新增：" +
                     d_exp_add + "组,\n明日预计到访：" + d_exp_visit + "组,\n明日预计到访项目："+  d_exp_visitpro + "\n \n本周预计新增目标：" + w_exp_add + "组,\n已完成：" + w_real_sum + "组,\n网络新增：" + w_real_net + "组;\n预计到访目标：" + w_exp_visit +
-                    "组,\n已完成：" + w_real_visit + "组;\n佣金周目标：" + w_exp_money + "万元,\n已完成：" + w_real_money + "万元,\n成交价格：" + w_real_price +"万元;\n \n本月新增目标：" + m_exp_add + "组,\n已完成：" + m_real_sum
-                    +  "组,\n网络新增：" + m_real_net +"组;\n预计到访目标：" + m_exp_visit + "组,\n已完成：" + m_real_visit + "组; \n佣金目标：" + m_exp_money + "万元, \n已完成：" + m_real_money + "万元\n成交价格：" + m_real_price + "万元"
+                    "组,\n已完成：" + w_real_visit + "组;\n佣金周目标：" + w_exp_money + "万元,\n已完成：" + w_real_money + "万元,\n成交价格：" + w_real_price+ "万元,\n成交详情：" + w_real_dealproject +";\n \n本月新增目标：" + m_exp_add + "组,\n已完成：" + m_real_sum
+                    +  "组,\n网络新增：" + m_real_net +"组;\n预计到访目标：" + m_exp_visit + "组,\n已完成：" + m_real_visit + "组; \n佣金目标：" + m_exp_money + "万元, \n已完成：" + m_real_money + "万元\n成交价格：" + m_real_price + "万元,\n成交详情：" + m_real_dealproject
                 $.ajax({
                     url: "../personal/sendWeChat.shtml",
                     type: 'get',
                     dataType: 'json',
                     data: {
-                       corpsecret:corpsecret,
+                        corpsecret:corpsecret,
                         agentid: agentid,
                         info: info
                     },
                     success: function (res, error) {
-                        // console.log(res)
                         if(res=="success"){
                             layer.confirm('提交成功!是否关闭窗口?', {
                                 icon : 6,
@@ -278,6 +279,7 @@
                             layer.alert('提交失败！', 3);
                         }
                     }
+
                 })
 
             }

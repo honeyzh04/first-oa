@@ -315,9 +315,7 @@
                         + obj[i].userName + "</option>";
                     $("#cuserName").append(str);
                 }
-                if (userCode != -1) {
 
-                }
             },
             error: function () {
                 alert("请与管理员联系");
@@ -339,9 +337,7 @@
                     var str = "<option class='form-control m-b-10' value=" + obj[i].id + ">" + obj[i].userName + "</option>";
                     $("#auserId").append(str);
                 }
-                if (userCode != -1) {
 
-                }
             },
             error: function () {
                 alert("请与管理员联系");

@@ -1,12 +1,12 @@
 package com.first.mapper;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.first.entity.CustomerFormMap;
 import com.first.entity.ExtendFormMap;
+import com.first.entity.TeamAwardFormMap;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -294,5 +294,21 @@ public interface CustomerMapper {
      * @return
      */
     public List<CustomerFormMap>  findOrCustomer( Map searchMapMap);
+
+	/**
+	 * 查看指定客户
+	 * @param id
+	 * @return
+	 */
+	CustomerFormMap  findCustomer(@Param("id") String id);
+
+    /**
+     * 随机奖励客户
+     * @param teamAwardFormMap
+     * @return
+     */
+    public List<CustomerFormMap>  findAwardCustomer(TeamAwardFormMap teamAwardFormMap);
+
+	public List<CustomerFormMap> getAwardCustomer(@Param("userId") String userId);
 
 }

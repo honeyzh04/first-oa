@@ -502,7 +502,7 @@ function giveAccount(_this) {
 	var nRow = $(_this).parents('tr')[0];// 得到这一行
 	var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
 	var cuId = aData.id;
-
+    var userId = aData.userId;
 	pageii = layer.open({
 		// skin: 'layui-layer-rim',
 		title : "客户转让",
@@ -579,7 +579,7 @@ function addAccount() {
 	});
 };
 /**
- * 新增用户
+ * 批量转让
  * @returns
  */
 function givesAccount() {

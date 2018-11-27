@@ -292,7 +292,8 @@
                             <h5 class="title green">
                           		      你有未读通知
                             </h5>
-                            <a href="javascript:;" class="btn-success btn-view-all">查看全部</a>
+
+                            <a  href="#" onclick="javascript:awardCustomer();"  class="btn-primary btn-view-all">查看</a>
                         </div>
                         <div class="notification-list task-list">
                             <a href="javascript:;">

@@ -51,9 +51,11 @@
                     <input type="text" class="from-con test-item form-control" name="personalFormMap.createDate" value=""
                            id="createDate">
                     <label>计划新增：</label>
-                    <input type="text"class="form-control checkacc from-con" name="personalFormMap.add" id="add" value=""/>
+                    <input type="text"class="form-control checkacc from-con" name="personalFormMap.add" id="add" value="" placeholder="录入新增目标"/>
                     <label>计划到访：</label>
-                    <input type="text"  class="form-control checkacc from-con " name="personalFormMap.visit" id="visit" value=""/>
+                    <input type="text"  class="form-control checkacc from-con " name="personalFormMap.visit" id="visit" value="" placeholder="录入到访数量"/>
+                    <label style="">计划到访项目：</label>
+                    <input  style="width: 73%;"type="text"   class="form-control checkacc from-con " name="personalFormMap.visitproject" id="visitproject" value="" placeholder="录入到访项目，用逗号隔开"/>
                 </div>
 
                 <div id="zs"> 友情提示：目标制定确认后不可更改，请谨慎合理制定！</div>

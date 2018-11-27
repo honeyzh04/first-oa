@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@include file="/common/common.jspf" %>
-    <script type="text/javascript" src="${ctx}/js/system/personal/weekadd.js"></script>
+    <script type="text/javascript" src="${ctx}/js/system/personal/deweekadd.js"></script>
 
     <style type="text/css">
         .from-con {
@@ -36,17 +36,19 @@
 <div class="msg">
 
     <form id="form" name="form" class="form-preparation" method="post"
-          action="${ctx}/personal/weekadd.shtml">
+          action="${ctx}/personal/deweekadd.shtml">
         <section class="panel panel-default">
             <input type="hidden" class="form-control checkacc" id="type"
-                   value="weekadd" name="personalFormMap.type">
+                   value="deweekadd" name="personalFormMap.type">
+            <input type="hidden" class="form-control checkacc" id="deId"
+                   value="${userFormMap.department}" name="personalFormMap.deId">
             <div class="modal-body" style="margin-bottom:160px">
                 <p class="fz">周目标：</p>
                 <div class="l_err" style="width: 100%; margin-top: 2px;"></div>
                 <div class="text-center">
-                    <label>销售精英：</label>
-                    <input type="text" class="from-con form-control checkacc" name="personalFormMap.userName" id="userName"
-                           value="${userName}" readonly="readonly"/>
+                    <label>销售部门：</label>
+                    <input type="text" class="from-con form-control checkacc" name="personalFormMap.departmentName" id="departmentName"
+                           value="${userFormMap.departmentName}" readonly="readonly"/>
                     <label>计划时间：</label>
                     <input type="text" class="from-con test-item form-control" name="personalFormMap.createDate" placeholder="选取本周任意一天"
                            id="createDate">

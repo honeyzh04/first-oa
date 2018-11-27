@@ -56,6 +56,7 @@
                     <input type="text"  class="form-control checkacc from-con " name="personalFormMap.visit" id="visit" value=""/>
                     <label>计划成交佣金：</label>
                     <input type="text"  class="form-control checkacc from-con " name="personalFormMap.deal" id="deal" value=""/>
+                    万元
                 </div>
 
                 <div id="zs"> 友情提示：目标制定确认后不可更改，请谨慎合理制定！</div>

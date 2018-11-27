@@ -12,22 +12,36 @@ $(function() {
         deReport();
 
 	});
-    //部门日报表
+
     $("#dayadd").click("click", function() {
         dayadd();
 
     });
-    //部门日报表
+
     $("#weekadd").click("click", function() {
         weekadd();
 
     });
-    //部门日报表
+
     $("#monthadd").click("click", function() {
         monthadd();
 
     });
 
+    $("#dedayadd").click("click", function() {
+        dedayadd();
+
+    });
+
+    $("#deweekadd").click("click", function() {
+        deweekadd();
+
+    });
+
+    $("#demonthadd").click("click", function() {
+       demonthadd();
+
+    });
 });
 
 
@@ -53,8 +67,8 @@ function deReport() {
     pageii = layer.open({
         title : "部门日报表确认单",
         type : 2,
-        area : ["1000px", "80%"  ],
-        content : './role/addUI.shtml'
+        area : [ "1040px", "80%" ],
+        content : './personal/dereportUI.shtml'
     });
 }
 
@@ -91,5 +105,40 @@ function monthadd() {
         type : 2,
         area : [ "530px", "500px" ],
         content : './personal/monthaddUI.shtml'
+    });
+}
+/**
+ * 添加部门日目标
+ */
+function dedayadd() {
+    pageii = layer.open({
+        title : "制定日目标",
+        type : 2,
+        area : [ "530px", "500px" ],
+        content : './personal/dedayaddUI.shtml'
+    });
+}
+
+/**
+ * 添加周目标
+ */
+function deweekadd() {
+    pageii = layer.open({
+        title : "制定周目标",
+        type : 2,
+        area : [ "530px", "500px" ],
+        content : './personal/deweekaddUI.shtml'
+    });
+}
+
+/**
+ * 添加月目标
+ */
+function demonthadd() {
+    pageii = layer.open({
+        title : "制定月目标",
+        type : 2,
+        area : [ "530px", "500px" ],
+        content : './personal/demonthaddUI.shtml'
     });
 }

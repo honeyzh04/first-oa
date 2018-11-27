@@ -17,12 +17,7 @@
 		userId=oguser.id) ) roleName,
 		password,
 		credentialsSalt,
-		(select name  from ogdepartment
-		where id=department) departmentName,
-		(select parentId  from ogdepartment
-		where  id=department) parentId,
 		department,
-		
 		gender,
 		email,
 		telephone,
@@ -35,8 +30,14 @@
 	<!-- 登录 -->
 	<select id="findByNames" resultType="com.first.entity.UserFormMap">
 		select
+		a.name as departmentName,
+		parentId ,
+		agentid,
+		corpsecret,
 		<include refid="selectId" />
-		from oguser 
+
+		from oguser left join (select ogdepartment.id as deId,  name, parentId ,ogde_wechat.agentid,ogde_wechat.corpsecret from ogdepartment LEFT JOIN ogde_wechat on ogdepartment.id=ogde_wechat.deID) as a
+		on oguser.department=a.deId
 		where 
 		<if test=" accountName != null">
 		 accountName=#{accountName}

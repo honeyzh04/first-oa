@@ -54,8 +54,8 @@
 		  srr.resId=sres.id  
 		<if test="parentId != null and parentId != '' and parentId != 0">
 			and sres.parentId = #{parentId}
-		</if> 
-		
+		</if>
+		GROUP BY id
 		<!--  order by level asc -->
 	</select>
 	

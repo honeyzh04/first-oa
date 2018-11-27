@@ -562,11 +562,6 @@ $(function () {
         dataType: "json",
         success: function (data) {
             console.log("1" + data);
-
-            /*  for(var i=0;i<data.content.length;i++) {
-
-              }*/
-
             //===================================================================
             var x = 10;
             function time(number) {

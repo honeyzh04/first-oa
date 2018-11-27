@@ -121,7 +121,6 @@
 		#{id},
 		#{userId},
 		#{userName},
-
 		#{content},
 		#{communicate},
 		#{trackDate}
@@ -1193,7 +1192,7 @@
     WHERE
         userId=#{userId}
     AND DATE_FORMAT(ntrackDate, '%YY%mm%dd') = DATE_FORMAT(#{ntrackDate}, '%YY%mm%dd')
-
+    AND DATE_FORMAT(trackDate, '%YY%mm%dd') != DATE_FORMAT(now(), '%YY%mm%dd')
     </select>
 
     <!--查看预约客户-->
@@ -1207,6 +1206,56 @@
         resources=1
         AND userId=#{userId}
         AND DATE_FORMAT(ntrackDate, '%YY%mm%dd') = DATE_FORMAT(#{ntrackDate}, '%YY%mm%dd')
+
+    </select>
+    <!--查看指定客户-->
+    <select id="findCustomer"   resultType="com.first.entity.CustomerFormMap">
+        select
+          *
+        from cudata
+        where
+
+             id=#{id}
+
+    </select>
+    <!--查看奖励客户-->
+    <select id="findAwardCustomer"   resultType="com.first.entity.CustomerFormMap">
+        SELECT * FROM cudata
+        WHERE
+        1=1 and state!=4
+        <if test="resources != null and  resources != ''">
+
+            <if test="resources ==1">
+                and resources=1
+            </if>
+            <if test="resources==2">
+                and resources in (2,3)
+            </if>
+
+        </if>
+        ORDER BY rand() limit ${customers};
+
+    </select>
+    <!--查看奖励客户-->
+    <select id="getAwardCustomer"   resultType="com.first.entity.CustomerFormMap">
+      SELECT
+	*
+FROM
+	cudata
+WHERE
+	id IN (
+		SELECT
+			customerId
+		FROM
+			team_award
+		LEFT JOIN team_data ON team_award.teamId = team_data.id
+		WHERE
+			userId = #{userId}
+		AND DATE_FORMAT(
+			team_award.createDate,
+			'%Y%m%d'
+		) = DATE_FORMAT(NOW(), '%Y%m%d')
+	)
 
     </select>
 

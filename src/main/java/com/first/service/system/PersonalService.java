@@ -4,9 +4,7 @@
 package com.first.service.system;
 
 import com.first.entity.PersonalFormMap;
-import com.first.entity.StatisticsFormMap;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,19 +21,19 @@ public interface PersonalService {
      * @param searchMap
      * @return
      */
-    PersonalFormMap finddayrepart(Map searchMap);
+    PersonalFormMap finddayreport(Map searchMap);
     /**
      *当周销售数据
      * @param searchMap
      * @return
      */
-    PersonalFormMap findweekrepart(Map searchMap);
+    PersonalFormMap findweekreport(Map searchMap);
     /**
      *当月销售数据
      * @param searchMap
      * @return
      */
-    PersonalFormMap findmonthrepart(Map searchMap);
+    PersonalFormMap findmonthreport(Map searchMap);
 
     /**
      * 查看日计划
@@ -43,6 +41,13 @@ public interface PersonalService {
      * @return
      */
    PersonalFormMap finddayadd(Map searchMap);
+
+    /**
+     * 查看明日计划
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap findnextdayadd(Map searchMap);
 
     /**
      * 查看周计划
@@ -57,7 +62,33 @@ public interface PersonalService {
      * @return
      */
     PersonalFormMap findmonthadd(Map searchMap);
+    /**
+     * 查看部门日计划
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap finddedayadd(Map searchMap);
 
+    /**
+     * 查看部门明日计划
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap finddenextdayadd(Map searchMap);
+
+    /**
+     * 查看部门周计划
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap finddeweekadd(Map searchMap);
+
+    /**
+     * 查看部门月计划
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap finddemonthadd(Map searchMap);
     void addDayPlan(PersonalFormMap formMap);
 
     void addWeekPlan(PersonalFormMap formMap);
@@ -65,5 +96,28 @@ public interface PersonalService {
     void addMonthPlan(PersonalFormMap formMap);
 
 
+    void adddeDayPlan(PersonalFormMap formMap);
+
+    void adddeWeekPlan(PersonalFormMap formMap);
+
+    void adddeMonthPlan(PersonalFormMap formMap);
+    /**
+     *当天部门销售数据
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap finddedayreport(Map searchMap);
+    /**
+     *当周部门销售数据
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap finddeweekreport(Map searchMap);
+    /**
+     *当月部门销售数据
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap finddemonthreport(Map searchMap);
 }
 

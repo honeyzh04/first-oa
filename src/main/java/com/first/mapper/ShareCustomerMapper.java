@@ -1,5 +1,6 @@
 package com.first.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,4 +63,14 @@ public interface ShareCustomerMapper {
 	 * @param userId
 	 */
 	void outShareCustomer(@Param("id")String id,@Param("userId")String userId);
+
+	/**
+	 * 查看指定共享客户信息
+	 * @param id
+	 * @param userId
+	 * @return
+	 */
+	HashMap findShareCustomer(@Param("id")String id, @Param("userId")String userId);
+
+	void editShareCustomer(@Param("id")String id, @Param("userId")String userId,@Param("userIds")String userIds);
 }

@@ -111,8 +111,10 @@
 	<delete id="outShareCustomer">
 		delete from cushare where
 		customerId=#{id}
-		and
-		userId =#{userId}
+		<if test="userId != null and userId != ''">
+			and userId =#{userId}
+		</if>
+
 
 	</delete>
 	<!-- 查询客户共享人数 -->
@@ -121,4 +123,17 @@
 		SELECT userName FROM oguser WHERE id in(SELECT userId FROM cushare WHERE
 		customerId=#{id} GROUP BY userId)
 	</select>
+
+	<!-- 查询指定共享客户 -->
+	<select id="findShareCustomer"
+			resultType="java.util.HashMap">
+		SELECT * FROM cushare where customerId=#{id} and userId=#{userId} group by customerId
+	</select>
+	<!-- 转出客户修改共享信息 -->
+	<update id="editShareCustomer">
+		update cushare
+		set userId=#{userIds}
+		where
+	customerId=#{id} and userId=#{userId}
+	</update>
 </mapper>

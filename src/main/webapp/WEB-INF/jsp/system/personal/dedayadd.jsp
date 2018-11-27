@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@include file="/common/common.jspf" %>
-    <script type="text/javascript" src="${ctx}/js/system/personal/weekadd.js"></script>
+    <script type="text/javascript" src="${ctx}/js/system/personal/dedayadd.js"></script>
 
     <style type="text/css">
         .from-con {
@@ -36,27 +36,28 @@
 <div class="msg">
 
     <form id="form" name="form" class="form-preparation" method="post"
-          action="${ctx}/personal/weekadd.shtml">
+          action="${ctx}/personal/dedayadd.shtml">
         <section class="panel panel-default">
             <input type="hidden" class="form-control checkacc" id="type"
-                   value="weekadd" name="personalFormMap.type">
-            <div class="modal-body" style="margin-bottom:160px">
-                <p class="fz">周目标：</p>
+                   value="dedayadd" name="personalFormMap.type">
+            <input type="hidden" class="form-control checkacc" id="deId"
+                   value="${userFormMap.department}" name="personalFormMap.deId">
+            <div class="modal-body" style="margin-bottom:180px">
+                <p class="fz">日目标：</p>
                 <div class="l_err" style="width: 100%; margin-top: 2px;"></div>
                 <div class="text-center">
-                    <label>销售精英：</label>
-                    <input type="text" class="from-con form-control checkacc" name="personalFormMap.userName" id="userName"
-                           value="${userName}" readonly="readonly"/>
+                    <label>销售部门：</label>
+                    <input type="text" class="from-con form-control checkacc" name="personalFormMap.departmentName" id="departmentName"
+                           value="${userFormMap.departmentName}" readonly="readonly"/>
                     <label>计划时间：</label>
-                    <input type="text" class="from-con test-item form-control" name="personalFormMap.createDate" placeholder="选取本周任意一天"
+                    <input type="text" class="from-con test-item form-control" name="personalFormMap.createDate" value=""
                            id="createDate">
                     <label>计划新增：</label>
-                    <input type="text"class="form-control checkacc from-con" name="personalFormMap.add" id="add" value=""/>
+                    <input type="text"class="form-control checkacc from-con" name="personalFormMap.add" id="add" value="" placeholder="录入新增目标"/>
                     <label>计划到访：</label>
-                    <input type="text"  class="form-control checkacc from-con " name="personalFormMap.visit" id="visit" value=""/>
-                    <label >计划成交佣金：</label>
-                    <input type="text"  class="form-control checkacc from-con " name="personalFormMap.deal" id="deal" value=""/>
-                    万元
+                    <input type="text"  class="form-control checkacc from-con " name="personalFormMap.visit" id="visit" value="" placeholder="录入到访数量"/>
+                    <label style="">计划到访项目：</label>
+                    <input  style="width: 73%;"type="text"   class="form-control checkacc from-con " name="personalFormMap.visitproject" id="visitproject" value="" placeholder="录入到访项目，用逗号隔开"/>
                 </div>
 
                 <div id="zs"> 友情提示：目标制定确认后不可更改，请谨慎合理制定！</div>
@@ -80,33 +81,17 @@
 
     layui.use('laydate', function () {
         var laydate = layui.laydate;
-        var dt = new Date();
 
-        if(dt.getDay()==1){
-            lay('.test-item').each(function () {
-                laydate.render({
-                    elem: this,
+        //同时绑定多个
+        lay('.test-item').each(function () {
+            laydate.render({
+                elem: this,
 
-                    trigger: 'click'
-                    , min: 0 //7天前
-                    , max: 0 //1天后
-                });
+                trigger: 'click'
+                , min: 0 //7天前
+                , max: 7 //7天后
             });
-        }else {
-
-            lay('.test-item').each(function () {
-                laydate.render({
-                    elem: this,
-
-                    trigger: 'click'
-                    , min: 0 //7天前
-                    , max: 1 //1天后
-                });
-            });
-        }
-
-
-
+        });
 
 
     });

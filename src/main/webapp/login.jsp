@@ -47,7 +47,7 @@
 			method="post">
               <div class="login-wrap">
                   <input type="text" class="form-control" placeholder="User ID" name="username" autofocus>
-                  <input type="password" class="form-control" placeholder="Password" name="password">
+                  <input type="password" class="form-control" placeholder="Password" name="password" autocomplete="on" >
                   <a id="logoin" type="submit" href="javascript:checkUserForm()"  class="btn btn-lg btn-success btn-block" >登录</a>
    
                   <label class="checkbox-custom check-success">

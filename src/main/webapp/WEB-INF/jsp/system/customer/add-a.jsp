@@ -123,7 +123,9 @@
 								<option value="4">房发现微聊</option>
 								<option value="5">信息流</option>
 								<option value="6">搜狗神马</option>
-
+								<option value="7">离线宝</option>
+								<option value="8">公众号</option>
+								<option value="9">其他途径</option>
 
 							</select>
 						</div>
