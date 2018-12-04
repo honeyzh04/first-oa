@@ -1,9 +1,7 @@
-/**
- * 
- */
 package com.first.mapper;
 
 /**
+ * 月初定时任务
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
    @author zhaoh
  * @date 2018年7月31日

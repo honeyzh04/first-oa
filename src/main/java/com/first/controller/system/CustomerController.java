@@ -1,6 +1,7 @@
 package com.first.controller.system;
 
 import com.first.annotation.SystemLog;
+import com.first.annotation.Token;
 import com.first.controller.index.BaseController;
 import com.first.entity.CustomerFormMap;
 import com.first.entity.DepartmentFormMap;
@@ -196,6 +197,7 @@ public class CustomerController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("addUI")
+    @Token(save = true)
     public String addUI(HttpServletRequest request, Model model) throws Exception {
         UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
 
@@ -211,6 +213,7 @@ public class CustomerController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("addaUI")
+    @Token(save = true)
     public String addaUI(HttpServletRequest request, Model model) throws Exception {
         UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
         Date date = new Date();
@@ -226,7 +229,8 @@ public class CustomerController extends BaseController {
     @RequestMapping("addEntity")
     @SystemLog(module = "客户管理", methods = "客户管理-添加客户") // 凡需要处理业务逻辑的.都需要记录操作日志
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
-    public String addEntity() {
+    @Token(remove = true)
+    public String addEntity(HttpServletRequest request) {
 
         try {
             CustomerFormMap customerFormMap = getFormMap(CustomerFormMap.class);
@@ -287,6 +291,7 @@ public class CustomerController extends BaseController {
     public String editEntity() throws Exception {
 
         CustomerFormMap customerFormMap = getFormMap(CustomerFormMap.class);
+        System.err.println("各级"+customerFormMap);
         customerFormMap.put("userName", getuserName());
         customerFormMap.put("userId", getuserId());
 

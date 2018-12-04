@@ -1,14 +1,13 @@
 package com.first.shiro.filter;
 
-import javax.inject.Inject;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
+import com.first.entity.UserFormMap;
+import com.first.mapper.UserMapper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.PathMatchingFilter;
 
-import com.first.entity.UserFormMap;
-import com.first.mapper.UserMapper;
+import javax.inject.Inject;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 /**
  * url模式过滤的功能
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -24,7 +23,7 @@ public class SysUserFilter extends PathMatchingFilter {
 
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-
+        System.err.println("url过滤");
         String username = (String)SecurityUtils.getSubject().getPrincipal();
         UserFormMap userFormMap = new UserFormMap();
 		userFormMap.put("accountName", "" + username + "");

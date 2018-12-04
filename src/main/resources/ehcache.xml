@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xml>
-<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-         xsi:noNamespaceSchemaLocation="ehcache.xsd"  
-         updateCheck="true" monitoring="autodetect"  
-         dynamicConfig="true">  
+<ehcache updateCheck="false"  name="shirocache">
          <!--
      diskStore:为缓存路径，ehcache分为内存和磁盘 2级，此属性定义磁盘的缓存位置
       user.home - 用户主目录
@@ -92,4 +88,4 @@
            overflowToDisk="false"
            statistics="true">
     </cache>
-</ehcache>
+    </ehcache>

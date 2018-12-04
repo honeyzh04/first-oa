@@ -8,12 +8,12 @@
 		customerName,
 		(select group_concat('跟进信息:',content
 		,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
-		DESC) from cufollow
+		DESC) from cu_follow
 		where id
-		in (SELECT id FROM cufollow WHERE
-		cufollow.customerId=cudata.id)) content,
+		in (SELECT id FROM cu_follow WHERE
+		cu_follow.customerId=cudata.id)) content,
 		<!-- (select group_concat(concat_ws('At:',content,createDate) ORDER BY 
-			id DESC) from cufollow where id in (SELECT id FROM cufollow WHERE cufollow.customerId=cudata.id)) 
+			id DESC) from cu_follow where id in (SELECT id FROM cu_follow WHERE cu_follow.customerId=cudata.id))
 			content , -->
 		telephone,
 		gender,

@@ -45,7 +45,7 @@ public class MyRealm extends AuthorizingRealm {
 			String userId = SecurityUtils.getSubject().getSession().getAttribute("userSessionId").toString();
 			
 			List<ResFormMap> rs = resourcesMapper.findUserResourcess(userId);
-			System.err.println("6.12"+rs);
+			System.err.println("6.12权限验证"+rs);
 			// 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			// 用户的角色集合
@@ -91,8 +91,8 @@ public class MyRealm extends AuthorizingRealm {
 			// 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
 			SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(username, // 用户名
 					userFormMaps.get(0).get("password"), // 密码
-					ByteSource.Util.bytes(username + "" + userFormMaps.get(0).get("credentialsSalt")),// salt=username+salt
-					getName() // realm name
+					ByteSource.Util.bytes(username + "" + userFormMaps.get(0).get("credentialsSalt")),// 盐 salt=username+salt
+					getName() // 当前 realm name
 			);
 			// 当验证都通过后，把用户信息放在session里
 			Session session = SecurityUtils.getSubject().getSession();
@@ -146,5 +146,9 @@ public class MyRealm extends AuthorizingRealm {
 		clearAllCachedAuthenticationInfo();
 		clearAllCachedAuthorizationInfo();
 	}
+  /*  public void clearCache() {
+        PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
+        super.clearCache(principals);
+    }*/
 
 }

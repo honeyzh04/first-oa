@@ -18,7 +18,6 @@
 	
 	
 		<!--layuidate-->
-		<link rel="stylesheet" href="js/layui-date/css/layui.css" media="all">
 		<style type="text/css">
 			html,body{margin:0;padding:0;overflow-x:hidden;}
 			.mt20 {
@@ -59,9 +58,11 @@
 
 	<body>
 		<!--form-horizontal-->
+
 		<div class="l_err" style="width: 100%; margin-top: 2px;"></div>
 			<form id="form" name="form" class="form-horizontal" method="post"
 			action="${ctx}/customer/addEntity.shtml">
+			<input type="hidden" name="token" value="${token}"/>
 			<input type="hidden" class="form-control checkacc"
 			value="${user.id}" name="customerFormMap.userId" id="userId">
 			<input type="hidden" class="form-control checkacc"
@@ -213,9 +214,6 @@
 		</form>
 
 
-		<!--layuidate-->
-		<!--<script src="../layui-date/lay/modules/laydate.js" type="text/javascript" charset="utf-8"></script>-->
-		<script src="../layui-date/layui.js" charset="utf-8"></script>
 		
 		<script type="text/javascript">
 			function today(){

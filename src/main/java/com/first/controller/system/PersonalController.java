@@ -3,14 +3,17 @@ package com.first.controller.system;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.first.annotation.SystemLog;
 import com.first.controller.index.BaseController;
+import com.first.entity.DepartmentFormMap;
 import com.first.entity.PersonalFormMap;
 import com.first.entity.ResFormMap;
 import com.first.entity.UserFormMap;
+import com.first.mapper.DepartMapper;
 import com.first.mapper.UserMapper;
 import com.first.service.system.PersonalService;
 import com.first.util.Common;
 import com.first.util.DateWeek;
 import com.first.util.SendWeChat;
+import com.first.util.TreeUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +39,8 @@ public class PersonalController extends BaseController {
     private UserMapper userMapper;
     @Inject
     private PersonalService personalService;
-
+    @Inject
+    private DepartMapper departMapper;
     /**
      * 个人主页展示
      *
@@ -67,36 +71,11 @@ public class PersonalController extends BaseController {
 
         }
 
-        Map<String, Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("createDate", new Date());
-        searchMap.put("userId", getuserId());
-        searchMap.put("nexteDate",getnNext());
-        PersonalFormMap daylis = personalService.finddayadd(searchMap);
-        PersonalFormMap daynextlis = personalService.findnextdayadd(searchMap);
-        System.err.println("1"+daylis);
-
-
-        SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
-        String date1 = formater.format(new Date());
-        Date date = formater.parse(date1);
-        Date a = DateWeek.getThisWeekTuesday(date);
-        Date b = DateWeek.getNextWeekTuesday(date);
-
-        searchMap.put("screateDate", a);
-        searchMap.put("ecreateDate", b);
-        PersonalFormMap weeklis = personalService.findweekadd(searchMap);
-        System.err.println("2"+weeklis);
-
-        PersonalFormMap monthlis = personalService.findmonthadd(searchMap);
-        System.err.println("3"+monthlis);
 
 
 
         model.addAttribute("personal", userFormMap);
-        model.addAttribute("dayplan", daylis);
-        model.addAttribute("nextplan",daynextlis);
-        model.addAttribute("weekplan", weeklis);
-        model.addAttribute("monthplan", monthlis);
+
         return Common.BACKGROUND_PATH + "/system/personal/list";
     }
 
@@ -113,17 +92,42 @@ public class PersonalController extends BaseController {
         return  date;
     }
     /**
-     * 个人周报表
+     * 个人报表
      *
      * @return
      * @throws Exception
      */
-    @RequestMapping("weekstatistics")
+    @RequestMapping("showPlan")
     @ResponseBody
-    public Object weekstatistics() throws Exception {
-        getuserId();
+    public  Map<String,PersonalFormMap> showPlan() throws Exception {
+        Map<String, Object> searchMap = new HashMap<String, Object>();
+        System.err.println("lalal那");
+        searchMap.put("createDate", new Date());
+        searchMap.put("userId", getuserId());
+        searchMap.put("nexteDate",getnNext());
+        PersonalFormMap daylis = personalService.finddayadd(searchMap);
+        PersonalFormMap daynextlis = personalService.findnextdayadd(searchMap);
+        System.err.println("1"+daylis);
+        SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
+        String date1 = formater.format(new Date());
+        Date date = formater.parse(date1);
+        Date a = DateWeek.getThisWeekTuesday(date);
+        Date b = DateWeek.getNextWeekTuesday(date);
 
-        return null;
+        searchMap.put("screateDate", a);
+        searchMap.put("ecreateDate", b);
+        PersonalFormMap weeklis = personalService.findweekadd(searchMap);
+        System.err.println("2"+weeklis);
+
+        PersonalFormMap monthlis = personalService.findmonthadd(searchMap);
+
+        System.err.println("3"+monthlis);
+        Map<String,PersonalFormMap>  personalPlan= new HashMap<>();
+        personalPlan.put("dayplan",daylis);
+        personalPlan.put("nextplan",daynextlis);
+        personalPlan.put("weekplan",weeklis);
+        personalPlan.put("monthplan",monthlis);
+        return personalPlan;
     }
 
     /**
@@ -187,6 +191,15 @@ public class PersonalController extends BaseController {
         searchMap.put("userId", getuserId());
         searchMap.put("deId", userFormMap.get("department"));
         searchMap.put("nexteDate",getnNext());
+
+        String depar = userFormMap.get("department").toString();
+        int depId = Integer.parseInt(depar);
+        List<DepartmentFormMap> departmentFormMap = departMapper.getDepart();
+        List<String> idss = new ArrayList<>();
+        TreeUtil.treeMenuList(idss,departmentFormMap, depId);
+        idss.add(depar);
+        searchMap.put("departments", idss);
+
         PersonalFormMap daynextP = personalService.finddenextdayadd(searchMap);
         PersonalFormMap daylisR = personalService.finddedayreport(searchMap); //日数据
         System.err.println("daylisR");

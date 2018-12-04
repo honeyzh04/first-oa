@@ -18,6 +18,7 @@
 
 		(SELECT
 		c.name,
+
 		c.department,
 		COUNT(if(c.source=1 and
 		c.cusource=9,true,null)) adddh,
@@ -29,11 +30,11 @@
 		COUNT(c.source=2 or null) addg,
 		COUNT(c.source=3 OR NULL) addz
 		FROM
-		(SELECT a.*, cudata.cusource FROM (SELECT cuadd.*,oguser.department
-		,ogdepartment.`name` from cuadd LEFT JOIN oguser ON
-		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		(SELECT a.*, cudata.cusource FROM (SELECT cu_add.*,oguser.department
+		,ogdepartment.`name` from cu_add LEFT JOIN oguser ON
+		cu_add.userId=oguser.id LEFT JOIN ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cuadd.addDate,
+		DATE_FORMAT(cu_add.addDate,
 		'%Y%m%d' )=DATE_FORMAT(now(), '%Y%m%d')) as a LEFT JOIN
 		cudata ON
 		cudata.id =a.customerId) AS c GROUP BY c.name) as b ON
@@ -45,26 +46,26 @@
 		COUNT(
 		d.customerId or null) vis
 		FROM
-		(SELECT cuvisit.*,oguser.department
+		(SELECT cu_visit.*,oguser.department
 		,ogdepartment.`name`
-		from cuvisit LEFT JOIN oguser ON
-		cuvisit.userId=oguser.id LEFT JOIN
+		from cu_visit LEFT JOIN oguser ON
+		cu_visit.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cuvisit.visitDate,
+		DATE_FORMAT(cu_visit.visitDate,
 		'%Y%m%d' )=DATE_FORMAT(now(), '%Y%m%d')
 		) AS d GROUP BY d.name ) as c
 		ON c.department=a.id LEFT JOIN
 
 		(SELECT e.name,e.department,COUNT(
 		e.customerId or null) dea FROM
-		(SELECT cudeal.*,oguser.department
+		(SELECT cu_deal.*,oguser.department
 		,ogdepartment.`name`
-		from cudeal LEFT JOIN oguser ON
-		cudeal.userId=oguser.id LEFT JOIN
+		from cu_deal LEFT JOIN oguser ON
+		cu_deal.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cudeal.dealDate,
+		DATE_FORMAT(cu_deal.dealDate,
 		'%Y%m%d' )=DATE_FORMAT(now(), '%Y%m%d'))
 		AS e GROUP BY e.name ) AS d ON
 		d.department=a.id LEFT JOIN
@@ -72,13 +73,13 @@
 
 		(SELECT f.name,f.department,COUNT(
 		f.customerId or null) follow FROM
-		(SELECT cufollow.*,oguser.department
+		(SELECT cu_follow.*,oguser.department
 		,ogdepartment.`name`
-		from cufollow LEFT JOIN oguser ON
-		cufollow.userId=oguser.id LEFT JOIN
+		from cu_follow LEFT JOIN oguser ON
+		cu_follow.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cufollow.CreateDate, '%Y%m%d' )=DATE_FORMAT(now(),
+		DATE_FORMAT(cu_follow.CreateDate, '%Y%m%d' )=DATE_FORMAT(now(),
 		'%Y%m%d')) AS f GROUP BY f.name) as e ON e.department=a.id
 
 		ORDER BY
@@ -109,12 +110,12 @@
 		COUNT(c.source=2 or null) addg,
 		COUNT(c.source=3 OR NULL) addz
 		FROM (SELECT a.*, cudata.cusource FROM
-		(SELECT cuadd.*,oguser.department
-		,ogdepartment.`name` from cuadd LEFT
+		(SELECT cu_add.*,oguser.department
+		,ogdepartment.`name` from cu_add LEFT
 		JOIN oguser ON
-		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		cu_add.userId=oguser.id LEFT JOIN ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		YEARWEEK(date_format(cuadd.addDate,'%Y-%m-%d')) = YEARWEEK(now())) as
+		YEARWEEK(date_format(cu_add.addDate,'%Y-%m-%d')) = YEARWEEK(now())) as
 		a LEFT JOIN
 		cudata ON cudata.id =a.customerId) AS c GROUP BY c.name) as
 		b ON
@@ -126,36 +127,36 @@
 		COUNT(
 		d.customerId or null) vis
 		FROM
-		(SELECT cuvisit.*,oguser.department
+		(SELECT cu_visit.*,oguser.department
 		,ogdepartment.`name`
-		from cuvisit LEFT JOIN oguser ON
-		cuvisit.userId=oguser.id LEFT JOIN
+		from cu_visit LEFT JOIN oguser ON
+		cu_visit.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		YEARWEEK(date_format(cuvisit.visitDate,'%Y-%m-%d')) = YEARWEEK(now())
+		YEARWEEK(date_format(cu_visit.visitDate,'%Y-%m-%d')) = YEARWEEK(now())
 		) AS d GROUP BY d.name ) as c ON c.department=a.id LEFT JOIN
 
 		(SELECT
 		e.name,e.department,COUNT( e.customerId or null) dea FROM
 		(SELECT
-		cudeal.*,oguser.department ,ogdepartment.`name`
-		from cudeal LEFT JOIN
-		oguser ON cudeal.userId=oguser.id LEFT JOIN
+		cu_deal.*,oguser.department ,ogdepartment.`name`
+		from cu_deal LEFT JOIN
+		oguser ON cu_deal.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		YEARWEEK(date_format(cudeal.dealDate,'%Y-%m-%d')) = YEARWEEK(now()))
+		YEARWEEK(date_format(cu_deal.dealDate,'%Y-%m-%d')) = YEARWEEK(now()))
 		AS e GROUP BY e.name ) AS d ON d.department=a.id LEFT JOIN
 
 
 		(SELECT
 		f.name,f.department,COUNT( f.customerId or null) follow FROM
 		(SELECT
-		cufollow.*,oguser.department ,ogdepartment.`name`
-		from cufollow LEFT
-		JOIN oguser ON cufollow.userId=oguser.id LEFT JOIN
+		cu_follow.*,oguser.department ,ogdepartment.`name`
+		from cu_follow LEFT
+		JOIN oguser ON cu_follow.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		YEARWEEK(date_format(cufollow.createDate,'%Y-%m-%d')) =
+		YEARWEEK(date_format(cu_follow.createDate,'%Y-%m-%d')) =
 		YEARWEEK(now())) AS f GROUP BY f.name) as e ON e.department=a.id
 
 		ORDER
@@ -186,11 +187,11 @@
 		COUNT(c.source=2 or null) addg,
 		COUNT(c.source=3 OR NULL) addz
 		FROM
-		(SELECT a.*, cudata.cusource FROM (SELECT cuadd.*,oguser.department
-		,ogdepartment.`name` from cuadd LEFT JOIN oguser ON
-		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		(SELECT a.*, cudata.cusource FROM (SELECT cu_add.*,oguser.department
+		,ogdepartment.`name` from cu_add LEFT JOIN oguser ON
+		cu_add.userId=oguser.id LEFT JOIN ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cuadd.addDate,
+		DATE_FORMAT(cu_add.addDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')) as a LEFT JOIN
 		cudata ON cudata.id
 		=a.customerId) AS c GROUP BY c.name) as b ON
@@ -202,25 +203,25 @@
 		d.department,
 		COUNT( d.customerId or null) vis
 		FROM
-		(SELECT cuvisit.*,oguser.department ,ogdepartment.`name`
-		from cuvisit
-		LEFT JOIN oguser ON cuvisit.userId=oguser.id LEFT JOIN
+		(SELECT cu_visit.*,oguser.department ,ogdepartment.`name`
+		from cu_visit
+		LEFT JOIN oguser ON cu_visit.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cuvisit.visitDate,
+		DATE_FORMAT(cu_visit.visitDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m') )
 		AS d GROUP BY d.name ) as c ON
 		c.department=a.id LEFT JOIN
 
 		(SELECT e.name,e.department,COUNT(
 		e.customerId or null) dea FROM
-		(SELECT cudeal.*,oguser.department
+		(SELECT cu_deal.*,oguser.department
 		,ogdepartment.`name`
-		from cudeal LEFT JOIN oguser ON
-		cudeal.userId=oguser.id LEFT JOIN
+		from cu_deal LEFT JOIN oguser ON
+		cu_deal.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cudeal.dealDate,
+		DATE_FORMAT(cu_deal.dealDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')) AS e
 		GROUP BY e.name ) AS d ON
 		d.department=a.id LEFT JOIN
@@ -228,13 +229,13 @@
 
 		(SELECT f.name,f.department,COUNT(
 		f.customerId or null) follow FROM
-		(SELECT cufollow.*,oguser.department
+		(SELECT cu_follow.*,oguser.department
 		,ogdepartment.`name`
-		from cufollow LEFT JOIN oguser ON
-		cufollow.userId=oguser.id LEFT JOIN
+		from cu_follow LEFT JOIN oguser ON
+		cu_follow.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cufollow.CreateDate, '%Y%m' )=DATE_FORMAT(now(), '%Y%m'))
+		DATE_FORMAT(cu_follow.CreateDate, '%Y%m' )=DATE_FORMAT(now(), '%Y%m'))
 		AS f GROUP BY f.name) as e ON e.department=a.id
 
 		ORDER BY
@@ -252,7 +253,7 @@
 
 		(SELECT
 		a.id ,a.`name` ,a.parentId,b.days FROM ogdepartment a
-		,cuday b WHERE
+		,cu_day b WHERE
 		b.days &lt;=day(NOW())and parentId in (4,12,13,14,15)) as
 		a left JOIN
 
@@ -272,11 +273,11 @@
 		c.days
 		FROM (SELECT a.*, cudata.cusource FROM
 		(SELECT
-		cuadd.*,day(cuadd.addDate) as days,oguser.department
-		,ogdepartment.`name` from cuadd LEFT JOIN oguser ON
-		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		cu_add.*,day(cu_add.addDate) as days,oguser.department
+		,ogdepartment.`name` from cu_add LEFT JOIN oguser ON
+		cu_add.userId=oguser.id LEFT JOIN ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cuadd.addDate,
+		DATE_FORMAT(cu_add.addDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')) as a LEFT JOIN
 		cudata ON cudata.id
 		=a.customerId) AS c GROUP BY c.name,c.days) as b ON
@@ -290,15 +291,15 @@
 		COUNT(
 		d.customerId or null) vis
 		FROM
-		(SELECT cuvisit.*,day(cuvisit.visitDate)
+		(SELECT cu_visit.*,day(cu_visit.visitDate)
 		as days,oguser.department
 		,ogdepartment.`name`
-		from cuvisit LEFT JOIN
-		oguser ON cuvisit.userId=oguser.id LEFT JOIN
+		from cu_visit LEFT JOIN
+		oguser ON cu_visit.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department
 		WHERE
-		DATE_FORMAT(cuvisit.visitDate,
+		DATE_FORMAT(cu_visit.visitDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')
 		) AS d GROUP BY d.name ,d.days ) as
 		c ON c.department=a.id AND
@@ -311,16 +312,16 @@
 		COUNT( e.customerId or null) dea
 		FROM
 		((SELECT
-		cudeal.*,
-		day(cudeal.dealDate) as days,
+		cu_deal.*,
+		day(cu_deal.dealDate) as days,
 		oguser.department ,
 		ogdepartment.`name`
-		from cudeal LEFT JOIN oguser ON
-		cudeal.userId=oguser.id LEFT JOIN
+		from cu_deal LEFT JOIN oguser ON
+		cu_deal.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department
 		WHERE
-		DATE_FORMAT(cudeal.dealDate,
+		DATE_FORMAT(cu_deal.dealDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')
 		)) AS e GROUP BY e.name ,e.days) AS
 		d ON d.department=a.id AND
@@ -332,16 +333,16 @@
 		f.days
 		FROM
 		(SELECT
-		cufollow.*,
+		cu_follow.*,
 		oguser.department ,
-		day(cufollow.CreateDate) as days,
+		day(cu_follow.CreateDate) as days,
 		ogdepartment.`name`
-		from cufollow LEFT JOIN oguser ON
-		cufollow.userId=oguser.id LEFT JOIN
+		from cu_follow LEFT JOIN oguser ON
+		cu_follow.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department
 		WHERE
-		DATE_FORMAT(cufollow.CreateDate, '%Y%m' )=DATE_FORMAT(now(),'%Y%m'))
+		DATE_FORMAT(cu_follow.CreateDate, '%Y%m' )=DATE_FORMAT(now(),'%Y%m'))
 		AS f GROUP BY f.name,f.days) as e ON e.department=a.id AND
 		a.days=e.days
 		ORDER BY a.parentId,a.id ,a.days
@@ -359,9 +360,9 @@
 		oguser.locked=1 and ogdepartment.parentId in (4,12,13,14,15)) as a LEFT
 		JOIN
 
-		(SELECT cuadd.userId, cuadd.userName,COUNT( customerId or null)
+		(SELECT cu_add.userId, cu_add.userName,COUNT( customerId or null)
 		addw FROM
-		cuadd where cuadd.source=1 and DATE_FORMAT(addDate, '%Y%m'
+		cu_add where cu_add.source=1 and DATE_FORMAT(addDate, '%Y%m'
 		)=DATE_FORMAT(now(), '%Y%m' ) GROUP BY userId ) as b
 		ON b.userId=a.id
 
@@ -379,9 +380,9 @@
 		oguser.locked=1 and ogdepartment.parentId in (4,12,13,14,15)) as a LEFT
 		JOIN
 
-		(SELECT cufollow.userId, cufollow.userName,COUNT( customerId or
+		(SELECT cu_follow.userId, cu_follow.userName,COUNT( customerId or
 		null) follow
-		FROM cufollow where DATE_FORMAT(CreateDate, '%Y%m'
+		FROM cu_follow where DATE_FORMAT(CreateDate, '%Y%m'
 		)=DATE_FORMAT(now(), '%Y%m' ) GROUP BY userId ) as b
 		ON b.userId=a.id
 
@@ -398,9 +399,9 @@
 		oguser.locked=1 and ogdepartment.parentId in (4,12,13,14,15)) as a LEFT
 		JOIN
 
-		(SELECT cuvisit.userId, cuvisit.userName,COUNT( customerId or
+		(SELECT cu_visit.userId, cu_visit.userName,COUNT( customerId or
 		null) vis FROM
-		cuvisit where DATE_FORMAT(visitDate, '%Y%m'
+		cu_visit where DATE_FORMAT(visitDate, '%Y%m'
 		)=DATE_FORMAT(now(),
 		'%Y%m' ) GROUP BY userId ) as b
 		ON b.userId=a.id
@@ -418,9 +419,9 @@
 		oguser.locked=1 and ogdepartment.parentId in (4,12,13,14,15)) as a LEFT
 		JOIN
 
-		(SELECT cudeal.userId, cudeal.userName,COUNT( customerId or null)
+		(SELECT cu_deal.userId, cu_deal.userName,COUNT( customerId or null)
 		dea FROM
-		cudeal where DATE_FORMAT(dealDate, '%Y%m' )=DATE_FORMAT(now(),
+		cu_deal where DATE_FORMAT(dealDate, '%Y%m' )=DATE_FORMAT(now(),
 		'%Y%m'
 		) GROUP BY userId ) as b
 		ON b.userId=a.id
@@ -447,11 +448,11 @@
 		FROM
 		(SELECT
 		a.*,
-		cudata.cusource FROM (SELECT cuadd.*,oguser.department
-		,ogdepartment.`name` from cuadd LEFT JOIN oguser ON
-		cuadd.userId=oguser.id LEFT JOIN ogdepartment ON
+		cudata.cusource FROM (SELECT cu_add.*,oguser.department
+		,ogdepartment.`name` from cu_add LEFT JOIN oguser ON
+		cu_add.userId=oguser.id LEFT JOIN ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cuadd.addDate,
+		DATE_FORMAT(cu_add.addDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')) as a LEFT JOIN
 		cudata ON
 		cudata.id
@@ -471,12 +472,12 @@
 
 		(SELECT f.name,f.department,COUNT( f.customerId or null)
 		follow FROM
-		(SELECT cufollow.*,oguser.department ,ogdepartment.`name`
-		from cufollow
-		LEFT JOIN oguser ON cufollow.userId=oguser.id LEFT JOIN
+		(SELECT cu_follow.*,oguser.department ,ogdepartment.`name`
+		from cu_follow
+		LEFT JOIN oguser ON cu_follow.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cufollow.CreateDate, '%Y%m' )=DATE_FORMAT(now(),
+		DATE_FORMAT(cu_follow.CreateDate, '%Y%m' )=DATE_FORMAT(now(),
 		'%Y%m'))
 		AS f GROUP BY f.name) as e ON e.department=a.id
 		ORDER BY follow desc
@@ -496,13 +497,13 @@
 		COUNT( d.customerId or null) vis
 		FROM
 		(SELECT
-		cuvisit.*,oguser.department ,ogdepartment.`name`
-		from cuvisit
+		cu_visit.*,oguser.department ,ogdepartment.`name`
+		from cu_visit
 		LEFT JOIN
-		oguser ON cuvisit.userId=oguser.id LEFT JOIN
+		oguser ON cu_visit.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cuvisit.visitDate,
+		DATE_FORMAT(cu_visit.visitDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')
 		) AS d GROUP BY d.name ) as c ON
 		c.department=a.id
@@ -521,12 +522,12 @@
 		COUNT( d.customerId or null) dea
 		FROM
 		(SELECT
-		cudeal.*,oguser.department ,ogdepartment.`name`
-		from cudeal LEFT JOIN
-		oguser ON cudeal.userId=oguser.id LEFT JOIN
+		cu_deal.*,oguser.department ,ogdepartment.`name`
+		from cu_deal LEFT JOIN
+		oguser ON cu_deal.userId=oguser.id LEFT JOIN
 		ogdepartment ON
 		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cudeal.dealDate,
+		DATE_FORMAT(cu_deal.dealDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')
 		) AS d GROUP BY d.name ) as c ON
 		c.department=a.id
@@ -584,13 +585,13 @@
 		<!-- 上月个人销冠排行 -->
 	<select id="findlastpchampion"
 		resultType="com.first.entity.StatisticsFormMap">
-	SELECT a.name ,a.department,a.commission,a.date,b.description,b.image FROM cuchampion as a LEFT  JOIN peshows as b on  a.showid=b.id WHERE date=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH), '%Y%m') and type=1 
+	SELECT a.name ,a.department,a.commission,a.date,b.description,b.image FROM cu_champion as a LEFT  JOIN peshows as b on  a.showid=b.id WHERE date=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH), '%Y%m') and type=1
 
 	</select>
 		<!-- 上月部门销冠排行 -->
 	<select id="findlastdchampion"
 		resultType="com.first.entity.StatisticsFormMap">
-	SELECT a.name ,a.commission,a.date,b.description,b.image FROM cuchampion as a LEFT  JOIN peshows as b on  a.showid=b.id WHERE date=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH), '%Y%m') and type=2 
+	SELECT a.name ,a.commission,a.date,b.description,b.image FROM cu_champion as a LEFT  JOIN peshows as b on  a.showid=b.id WHERE date=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH), '%Y%m') and type=2
 
 	</select>
 	<!-- 本月销售报表 -->
@@ -607,7 +608,7 @@ FROM
 			COUNT(customerId) AS follow,
 			DAY (CreateDate) AS days
 		FROM
-			cufollow
+			cu_follow
 		WHERE
 			DATE_FORMAT(CreateDate, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
 		GROUP BY
@@ -618,7 +619,7 @@ LEFT JOIN (
 		COUNT(customerId) AS adds,
 		DAY (addDate) AS days
 	FROM
-		cuadd
+		cu_add
 	WHERE
 		DATE_FORMAT(addDate, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
 	AND source = 1
@@ -630,7 +631,7 @@ LEFT JOIN (
 		COUNT(customerId) AS vis,
 		DAY (visitDate) AS days
 	FROM
-		cuvisit
+		cu_visit
 	WHERE
 		DATE_FORMAT(visitDate, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
 	GROUP BY

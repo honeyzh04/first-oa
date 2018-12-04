@@ -129,27 +129,27 @@
             <div class="wid32 bor_right">
                 今日目标</div>
             <div class="wid32 bor_right">新增：
-             <span>${dayplan.add}组
+             <span id="dayplan_add">组
                    </span></div>
-            <div class="wid32">带访：<span>${dayplan.visit}组</span></div>
+            <div class="wid32">带访：<span id="dayplan_visit"></span></div>
         </div>
             <div class="wid100 bor_all height60 posre" >
                 <div class="wid32 bor_right height60 posab" style="line-height: 60px" >目标项目</div>
                 <div class="wid64 height60 posab" style="left: 32%">
-               <span>${dayplan.visitproject}
+               <span id="dayplan_visitproject">
                    </span>
                 </div>
             </div>
             <div class="wid100 bor_all">
                 <div class="wid32 bor_right">明日目标</div>
 
-                <div class="wid32 bor_right">新增：<span>${nextplan.add}组</span></div>
-                <div class="wid32">带访：<span>${nextplan.visit}组</span></div>
+                <div class="wid32 bor_right">新增：<span id="nextplan_add"></span></div>
+                <div class="wid32">带访：<span id="nextplan_visit"></span></div>
             </div>
             <div class="wid100 bor_all height60 posre" >
                 <div class="wid32 bor_right height60 posab" style="line-height: 60px" >目标项目</div>
                 <div class="wid64 height60 posab" style="left: 32%">
-                       <span>${nextplan.visitproject}
+                       <span id="nextplan_visitproject">
                    </span>
                 </div>
             </div>
@@ -158,18 +158,18 @@
             <button type="button" class="btn btn-danger navbar-btn inp_btn" id="weekadd">录入</button>
             ${deres.deadd3.description}
             <div class="wid100 bor_all">
-                <div class="wid32 bor_right">新增：<span>${weekplan.add}组</span></div>
-                <div class="wid32 bor_right">带访：<span>${weekplan.visit}组</span></div>
-                <div class="wid32">佣金：<span>${weekplan.commission}万元</span></div>
+                <div class="wid32 bor_right">新增：<span  id="weekplan_add"></span></div>
+                <div class="wid32 bor_right">带访：<span id="weekplan_visit"></span></div>
+                <div class="wid32">佣金：<span id="weekplan_commission"></span></div>
             </div>
 
             <h4>月目标</h4>
             <button type="button" class="btn btn-warning navbar-btn inp_btn" id="monthadd">录入</button>
             ${deres.deadd4.description}
             <div class="wid100 bor_all">
-                <div class="wid32 bor_right">新增：<span>${monthplan.add}组</span></div>
-                <div class="wid32 bor_right">带访：<span>${monthplan.visit}组</span></div>
-                <div class="wid32">佣金：<span>${monthplan.commission}万元</span></div>
+                <div class="wid32 bor_right">新增：<span  id="monthplan_add"> </span></div>
+                <div class="wid32 bor_right">带访：<span  id="monthplan_visit"></span></div>
+                <div class="wid32">佣金：<span  id="monthplan_commission"></span></div>
             </div>
 
         </div>
@@ -180,10 +180,10 @@
 <script type="text/javascript">
     $(function () {
 
-
+        showPlan();
         showLine();
     });
-
+//个人报表1
     function showLine() {
 
         $.ajax({
@@ -191,6 +191,41 @@
             url: "./statistics/findBypersonweek.shtml",
             dataType: 'json',
         });
+    }
+    //个人计划
+    function showPlan() {
+
+        $.ajax({
+            type: "GET",
+            url: "./personal/showPlan.shtml",
+            dataType: 'json',
+            success : function(obj) {
+                console.log(obj);
+                if (obj.dayplan!=null){
+                    $("#dayplan_add").html(obj.dayplan.add+"组");
+                    $("#dayplan_visit").html(obj.dayplan.visit+"组");
+                    $("#dayplan_visitproject").html(obj.dayplan.visitproject);
+                }
+                if (obj.nextplan!=null) {
+                    $("#nextplan_add").html(obj.nextplan.add+"组");
+                    $("#nextplan_visit").html(obj.nextplan.visit+"组");
+                    $("#nextplan_visitproject").html(obj.nextplan.visitproject);
+                }
+                if (obj.weekplan!=null){
+                    $("#weekplan_add").html(obj.weekplan.add+"组");
+                    $("#weekplan_visit").html(obj.weekplan.visit+"组");
+                    $("#weekplan_commission").html(obj.weekplan.commission+"万元");
+                }
+                if (obj.monthplan!=null){
+                    $("#monthplan_add").html(obj.monthplan.add+"组");
+                    $("#monthplan_visit").html(obj.monthplan.visit+"组");
+                    $("#monthplan_commission").html(obj.monthplan.commission+"万元");
+                }
+            },
+            error : function() {
+                layer.alert("请与管理员联系");
+            }
+            });
     }
 
     // 基于准备好的dom，初始化echarts实例

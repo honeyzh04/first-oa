@@ -103,9 +103,9 @@ LEFT JOIN (
 			FROM
 				(
 					SELECT
-						cuadd.*
+						cu_add.*
 					FROM
-						cuadd
+						cu_add
 					WHERE
 						DATE_FORMAT(addDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
 				) AS b
@@ -123,9 +123,9 @@ LEFT JOIN (
 	FROM
 		(
 			SELECT
-				cuvisit.*
+				cu_visit.*
 			FROM
-				cuvisit
+				cu_visit
 			WHERE
 				DATE_FORMAT(visitDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
 			AND userId =#{userId}
@@ -142,9 +142,9 @@ LEFT JOIN (
 	FROM
 		(
 			SELECT
-				cudeal.*
+				cu_deal.*
 			FROM
-				cudeal
+				cu_deal
 			WHERE
 				DATE_FORMAT(dealDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
 			AND userId =#{userId}
@@ -253,9 +253,9 @@ LEFT JOIN (
 			FROM
 				(
 					SELECT
-						cuadd.*
+						cu_add.*
 					FROM
-						cuadd
+						cu_add
 					WHERE
 						addDate between #{screateDate} and #{ecreateDate}
 				) AS b
@@ -273,9 +273,9 @@ LEFT JOIN (
 	FROM
 		(
 			SELECT
-				cuvisit.*
+				cu_visit.*
 			FROM
-				cuvisit
+				cu_visit
 			WHERE
 				visitDate  between #{screateDate} and #{ecreateDate}
 			AND userId = #{userId}
@@ -292,9 +292,9 @@ LEFT JOIN (
 	FROM
 		(
 			SELECT
-				cudeal.*
+				cu_deal.*
 			FROM
-				cudeal
+				cu_deal
 			WHERE
 				dealDate between #{screateDate} and #{ecreateDate}
 			AND userId = #{userId}
@@ -402,9 +402,9 @@ LEFT JOIN (
 			FROM
 				(
 					SELECT
-						cuadd.*
+						cu_add.*
 					FROM
-						cuadd
+						cu_add
 					WHERE
 						DATE_FORMAT(addDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
 				) AS b
@@ -422,9 +422,9 @@ LEFT JOIN (
 	FROM
 		(
 			SELECT
-				cuvisit.*
+				cu_visit.*
 			FROM
-				cuvisit
+				cu_visit
 			WHERE
 				DATE_FORMAT(visitDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
 			AND userId =#{userId}
@@ -441,9 +441,9 @@ LEFT JOIN (
 	FROM
 		(
 			SELECT
-				cudeal.*
+				cu_deal.*
 			FROM
-				cudeal
+				cu_deal
 			WHERE
 				DATE_FORMAT(dealDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
 			AND userId =#{userId}
@@ -655,6 +655,7 @@ LEFT JOIN (
 FROM
 	(
 		SELECT
+			'888' deId,
 			oguser.id,
 			oguser.userName,
 			ogdepartment.id AS did,
@@ -667,7 +668,7 @@ FROM
 	) AS a
 LEFT JOIN (
 	SELECT
-		c.department,
+		'888' department,
 		COUNT(
 
 			IF (
@@ -730,43 +731,56 @@ LEFT JOIN (
 			FROM
 				(
 					SELECT
-						cuadd.*, oguser.department
+						cu_add.*, oguser.department
 					FROM
-						cuadd
-					LEFT JOIN oguser ON cuadd.userId = oguser.id
+						cu_add
+					LEFT JOIN oguser ON cu_add.userId = oguser.id
 					WHERE
 						DATE_FORMAT(addDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
 				) AS b
 			LEFT JOIN cudata ON cudata.id = b.customerId
 		) AS c
 	WHERE
-		department =#{deId}
-) AS b ON a.did = b.department
+		 1=1
+		<if test="departments != null ">
+			and department in
+			<foreach collection="departments" item="item" index="index"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+) AS b ON a.deId = b.department
 LEFT JOIN (
 	SELECT
-		b.department,
+		'888' department,
 		COUNT(b.customerId) AS visit,
 		group_concat("", projectName) AS projectName
 	FROM
 		(
 			SELECT
-				cuvisit.*, oguser.department,
+				cu_visit.*, oguser.department,
 				CONCAT(
-					cuvisit.userName,
+					cu_visit.userName,
 					"：",
 					projectId
 				) AS projectName
 			FROM
-				cuvisit
-			LEFT JOIN oguser ON cuvisit.userId = oguser.id
+				cu_visit
+			LEFT JOIN oguser ON cu_visit.userId = oguser.id
 			WHERE
 				DATE_FORMAT(visitDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
-			AND department =#{deId}
+		<if test="departments != null ">
+			and department in
+			<foreach collection="departments" item="item" index="index"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
 		) AS b
-) AS c ON a.did = c.department
+) AS c ON a.deId = c.department
 LEFT JOIN (
 	SELECT
-		b.department,
+		'888' department,
 		COUNT(b.customerId OR NULL) deal,
 		sum(b.price) price,
 		sum(b.commission) commission,
@@ -774,9 +788,9 @@ LEFT JOIN (
 	FROM
 		(
 			SELECT
-				cudeal.*, oguser.department,
+				cu_deal.*, oguser.department,
 				CONCAT(
-					cudeal.userName,
+					cu_deal.userName,
 					"：",
 					projectId,
 					"，总价：",
@@ -785,13 +799,20 @@ LEFT JOIN (
 					commission
 				) AS projectName
 			FROM
-				cudeal
-			LEFT JOIN oguser ON cudeal.userId = oguser.id
+				cu_deal
+			LEFT JOIN oguser ON cu_deal.userId = oguser.id
 			WHERE
 				DATE_FORMAT(dealDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
-			AND department = #{deId}
+		<if test="departments != null ">
+			and department in
+			<foreach collection="departments" item="item" index="index"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+
 		) AS b
-) AS d ON a.did = d.department
+) AS d ON a.deId = d.department
 
 	</select>
 	<!--当周部门销售数据-->
@@ -819,6 +840,7 @@ LEFT JOIN (
 FROM
 	(
 		SELECT
+			'888' deId,
 			oguser.id,
 			oguser.userName,
 			ogdepartment.id AS did,
@@ -831,7 +853,7 @@ FROM
 	) AS a
 LEFT JOIN (
 	SELECT
-		c.department,
+		'888' department,
 		COUNT(
 
 			IF (
@@ -894,43 +916,56 @@ LEFT JOIN (
 			FROM
 				(
 					SELECT
-						cuadd.*, oguser.department
+						cu_add.*, oguser.department
 					FROM
-						cuadd
-					LEFT JOIN oguser ON cuadd.userId = oguser.id
+						cu_add
+					LEFT JOIN oguser ON cu_add.userId = oguser.id
 					WHERE
 						addDate  between #{screateDate} and #{ecreateDate}
 				) AS b
 			LEFT JOIN cudata ON cudata.id = b.customerId
 		) AS c
 	WHERE
-		department =#{deId}
-) AS b ON a.did = b.department
+		1=1
+		<if test="departments != null ">
+			and department in
+			<foreach collection="departments" item="item" index="index"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+) AS b ON a.deId = b.department
 LEFT JOIN (
 	SELECT
-		b.department,
+		'888' department,
 		COUNT(b.customerId) AS visit,
 		group_concat("", projectName) AS projectName
 	FROM
 		(
 			SELECT
-				cuvisit.*, oguser.department,
+				cu_visit.*, oguser.department,
 				CONCAT(
-					cuvisit.userName,
+					cu_visit.userName,
 					"：",
 					projectId
 				) AS projectName
 			FROM
-				cuvisit
-			LEFT JOIN oguser ON cuvisit.userId = oguser.id
+				cu_visit
+			LEFT JOIN oguser ON cu_visit.userId = oguser.id
 			WHERE
 			visitDate  between #{screateDate} and #{ecreateDate}
-			AND department =#{deId}
+		<if test="departments != null ">
+			and department in
+			<foreach collection="departments" item="item" index="index"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
 		) AS b
-) AS c ON a.did = c.department
+) AS c ON a.deId = c.department
 LEFT JOIN (
 	SELECT
-		b.department,
+		'888' department,
 		COUNT(b.customerId OR NULL) deal,
 		sum(b.price) price,
 		sum(b.commission) commission,
@@ -938,9 +973,9 @@ LEFT JOIN (
 	FROM
 		(
 			SELECT
-				cudeal.*, oguser.department,
+				cu_deal.*, oguser.department,
 				CONCAT(
-					cudeal.userName,
+					cu_deal.userName,
 					"：",
 					projectId,
 					"，总价：",
@@ -949,13 +984,19 @@ LEFT JOIN (
 					commission
 				) AS projectName
 			FROM
-				cudeal
-			LEFT JOIN oguser ON cudeal.userId = oguser.id
+				cu_deal
+			LEFT JOIN oguser ON cu_deal.userId = oguser.id
 			WHERE
 				dealDate  between #{screateDate} and #{ecreateDate}
-			AND department = #{deId}
+		<if test="departments != null ">
+			and department in
+			<foreach collection="departments" item="item" index="index"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
 		) AS b
-) AS d ON a.did = d.department
+) AS d ON a.deId = d.department
 
 	</select>
 	<!--当月部门销售数据-->
@@ -983,6 +1024,7 @@ LEFT JOIN (
 FROM
 	(
 		SELECT
+			'888' deId,
 			oguser.id,
 			oguser.userName,
 			ogdepartment.id AS did,
@@ -995,7 +1037,7 @@ FROM
 	) AS a
 LEFT JOIN (
 	SELECT
-		c.department,
+		'888' department,
 		COUNT(
 
 			IF (
@@ -1058,43 +1100,57 @@ LEFT JOIN (
 			FROM
 				(
 					SELECT
-						cuadd.*, oguser.department
+						cu_add.*, oguser.department
 					FROM
-						cuadd
-					LEFT JOIN oguser ON cuadd.userId = oguser.id
+						cu_add
+					LEFT JOIN oguser ON cu_add.userId = oguser.id
 					WHERE
 						DATE_FORMAT(addDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
 				) AS b
 			LEFT JOIN cudata ON cudata.id = b.customerId
 		) AS c
 	WHERE
-		department =#{deId}
-) AS b ON a.did = b.department
+		1=1
+		<if test="departments != null ">
+		and department in
+		<foreach collection="departments" item="item" index="index"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		</if>
+) AS b ON a.deId = b.department
 LEFT JOIN (
 	SELECT
-		b.department,
+		'888' department,
 		COUNT(b.customerId) AS visit,
 		group_concat("", projectName) AS projectName
 	FROM
 		(
 			SELECT
-				cuvisit.*, oguser.department,
+				cu_visit.*, oguser.department,
 				CONCAT(
-					cuvisit.userName,
+					cu_visit.userName,
 					"：",
 					projectId
 				) AS projectName
 			FROM
-				cuvisit
-			LEFT JOIN oguser ON cuvisit.userId = oguser.id
+				cu_visit
+			LEFT JOIN oguser ON cu_visit.userId = oguser.id
 			WHERE
 				DATE_FORMAT(visitDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
-			AND department =#{deId}
+
+		<if test="departments != null ">
+		and department in
+		<foreach collection="departments" item="item" index="index"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		</if>
 		) AS b
-) AS c ON a.did = c.department
+) AS c ON a.deId = c.department
 LEFT JOIN (
 	SELECT
-		b.department,
+		'888' department,
 		COUNT(b.customerId OR NULL) deal,
 		sum(b.price) price,
 		sum(b.commission) commission,
@@ -1102,9 +1158,9 @@ LEFT JOIN (
 	FROM
 		(
 			SELECT
-				cudeal.*, oguser.department,
+				cu_deal.*, oguser.department,
 				CONCAT(
-					cudeal.userName,
+					cu_deal.userName,
 					"：",
 					projectId,
 					"，总价：",
@@ -1113,13 +1169,20 @@ LEFT JOIN (
 					commission
 				) AS projectName
 			FROM
-				cudeal
-			LEFT JOIN oguser ON cudeal.userId = oguser.id
+				cu_deal
+			LEFT JOIN oguser ON cu_deal.userId = oguser.id
 			WHERE
 				DATE_FORMAT(dealDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
-			AND department = #{deId}
+
+		<if test="departments != null ">
+		and department in
+		<foreach collection="departments" item="item" index="index"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		</if>
 		) AS b
-) AS d ON a.did = d.department
+) AS d ON a.deId = d.department
 
 	</select>
 

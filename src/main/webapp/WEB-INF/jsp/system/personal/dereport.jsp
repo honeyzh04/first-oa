@@ -37,6 +37,7 @@
 <body>
 <input type="hidden" class="agentid" id="agentid"  value="${personal.agentid}">
 <input type="hidden" class="corpsecret" id="corpsecret"   value="${personal.corpsecret}">
+<input type="hidden" class="department" id="deId"   value="${personal.department}">
 <input type="hidden"  value="${weekreality.dealproject}"  class="w_real_dealproject" name="customerFormMap.userId" id="w_real_dealproject">
 <input type="hidden"  value="${monthreality.dealproject}"  class="m_real_dealproject" name="customerFormMap.userId" id="m_real_dealproject">
 <div class="containt " style="border:0px">
@@ -247,7 +248,8 @@
              console.log( m_real_dealproject)
             var agentid=$.trim($("#agentid").val());
             var corpsecret=$.trim($("#corpsecret").val());
-            if (d_exp_add == "" || d_exp_visit == "" || w_exp_add == "" || w_exp_visit == "" || m_exp_add == "" || m_exp_visit == "") {
+            var deId=$.trim($("#deId").val());
+            if (d_exp_add == "" || d_exp_visit == "" || w_exp_add == "" || w_exp_visit == "" || m_exp_add == "" || m_exp_visit == "" ) {
                 layer.alert('请返回主页制定目标计划！', 3);
             } else {
                 var info = "部门日报表\n\n"+name + "\n部门：" + dep + "\n" + day + "工作情况：\n新增总数：" + d_real_sum + "组,\n电话新增：" + d_real_tel + "组,\n网络新增：" + d_real_net + ",\n其他新增：" + d_real_other +

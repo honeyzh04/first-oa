@@ -32,7 +32,7 @@
 		COUNT(c.source=2 or null) addg,
 		COUNT(c.source=3 OR NULL) addz
 		FROM (SELECT b.*, cudata.cusource FROM
-		(SELECT cuadd.* FROM cuadd where cuadd.addDate between
+		(SELECT cu_add.* FROM cu_add where cu_add.addDate between
 		#{departweeks} and #{departweeke}) as b LEFT JOIN
 		cudata ON
 		cudata.id =b.customerId)
@@ -46,8 +46,8 @@
 		,
 		b.userName,
 		COUNT( b.customerId or null) vis
-		FROM(SELECT cuvisit.* FROM
-		cuvisit where cuvisit.visitDate between
+		FROM(SELECT cu_visit.* FROM
+		cu_visit where cu_visit.visitDate between
 		#{departweeks} and
 		#{departweeke}) as b GROUP BY
 		b.userId) as c
@@ -57,8 +57,8 @@
 		b.userId ,
 		b.userName,
 		COUNT( b.customerId or null) dea
-		FROM(SELECT cudeal.* FROM cudeal where
-		cudeal.dealDate between
+		FROM(SELECT cu_deal.* FROM cu_deal where
+		cu_deal.dealDate between
 		#{departweeks} and #{departweeke} )
 		as b GROUP BY b.userId) as
 		d
@@ -70,9 +70,9 @@
 		b.userName,
 		COUNT(
 		b.customerId or null) follow
-		FROM(SELECT cufollow.*
-		FROM cufollow where
-		cufollow.createDate between
+		FROM(SELECT cu_follow.*
+		FROM cu_follow where
+		cu_follow.createDate between
 		#{departweeks} and #{departweeke} ) as b GROUP BY b.userId) as e
 		ON e.userId=a.id
 		WHERE

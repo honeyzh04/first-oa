@@ -3,17 +3,15 @@
  */
 package com.first.timer;
 
-import javax.inject.Inject;
-
+import com.first.mapper.CustomerMapper;
+import com.first.mapper.MonthStartMapper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.first.mapper.CustomerMapper;
-import com.first.mapper.MonthStartMapper;
-import com.first.service.system.ProjectService;
+import javax.inject.Inject;
 
 /**
- * 定时器任务
+ * 客户跟进定时器任务
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
    @author zhaoh
  * @date 2018年5月29日
@@ -115,7 +113,12 @@ public class Discard {
     public void show7() throws Exception{  
     	customerMapper.auto6Discard();
         customerMapper.auto6DiscardShare();
-    }  
+    }
+
+    /**
+     * 月初定时任务
+     * @throws Exception
+     */
     @Scheduled(cron = "0 00 02 1 * ?")   
     public void showmonth() throws Exception{  
     	 monthstartMapper.addreportpsum();

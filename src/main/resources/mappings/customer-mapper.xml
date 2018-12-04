@@ -14,12 +14,12 @@
         customerName,
         (select group_concat('跟进信息:',content
         ,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
-        DESC) from cufollow
+        DESC) from cu_follow
         where id
-        in (SELECT id FROM cufollow WHERE
-        cufollow.customerId=cudata.id)) content,
+        in (SELECT id FROM cu_follow WHERE
+        cu_follow.customerId=cudata.id)) content,
         <!-- (select group_concat(concat_ws('At:',content,createDate) ORDER BY
-            id DESC) from cufollow where id in (SELECT id FROM cufollow WHERE cufollow.customerId=cudata.id))
+            id DESC) from cu_follow where id in (SELECT id FROM cu_follow WHERE cu_follow.customerId=cudata.id))
             content , -->
         telephone,
         gender,
@@ -50,10 +50,10 @@
 		customerName,
 		(select group_concat('跟进信息:',content
 		,'[By:',userName,'At:',createDate,']\n', '' ORDER BY id DESC) from
-		cufollow
+		cu_follow
 		where id
-		in (SELECT id FROM cufollow WHERE
-		cufollow.customerId=cudata.id)) content,
+		in (SELECT id FROM cu_follow WHERE
+		cu_follow.customerId=cudata.id)) content,
 		telephone,
 		gender,
 		apartment,
@@ -114,13 +114,14 @@
     <!-- 添加更进信息 -->
     <insert id="addFollow">
 		INSERT INTO
-		cufollow
+		cu_follow
 		VALUES
 		(
 		null,
 		#{id},
 		#{userId},
 		#{userName},
+		#{department},
 		#{content},
 		#{communicate},
 		#{trackDate}
@@ -130,14 +131,14 @@
     <!-- 添加永久更进信息 -->
     <insert id="addLFollow">
 		INSERT INTO
-		culfollow
+		cu_lfollow
 		VALUES
 		(
 		null,
 		#{id},
 		#{userId},
 		#{userName},
-
+        #{department},
 		#{content},
 		#{communicate},
 		#{trackDate}
@@ -181,13 +182,14 @@
     <!-- 添加客户统计 -->
     <insert id="addCu">
 		INSERT INTO
-		cuadd
+		cu_add
 		VALUES
 		(
 		null,
 		#{id},
 		#{userId},
 		#{userName},
+		#{department},
 		#{source},
 		#{createDate}
 
@@ -196,12 +198,14 @@
     <!-- 添加到访客户 -->
     <insert id="addVisit">
 		INSERT INTO
-		cuvisit (
+		cu_visit
+		(
 		id,
 		customerId,
 		customerName,
 		userName,
 		userId,
+		deId,
 		projectId,
 		consultantName,
 		visitDate
@@ -213,6 +217,7 @@
 		#{customerName},
 		#{userName},
 		#{userId},
+		#{department},
 		#{visitprojectId},
 		#{visitconsulName},
 		#{visitdate}
@@ -222,12 +227,13 @@
     <!-- 添加成交到访客户 -->
     <insert id="addVisit1">
 		INSERT INTO
-		cuvisit (
+		cu_visit (
 		id,
 		customerId,
 		customerName,
 		userName,
 		userId,
+		deId,
 		projectId,
 		consultantName,
 		visitDate
@@ -239,6 +245,7 @@
 		#{customerName},
 		#{userName},
 		#{userId},
+		#{department},
 		#{dealprojectId},
 		#{dealconsulName},
 		#{dealdate}
@@ -249,13 +256,15 @@
     <!-- 添加成交客户 -->
     <insert id="addDeal">
 		INSERT INTO
-		cudeal(
+		cu_deal
+		(
 		id,
 		customerId,
 		mode,
 		customerName,
 		userName,
 		userId,
+		deId,
 		projectId,
 		area,
 		price,
@@ -272,6 +281,7 @@
 		#{customerName},
 		#{userName},
 		#{userId},
+		#{department},
 		#{dealprojectId},
 		#{dealarea},
 		#{dealprice},
@@ -314,7 +324,7 @@
 
     <insert id="addpreEntity">
 		INSERT INTO
-		cupreparation
+		cu_preparation
 		VALUES
 		(
 		null,
@@ -538,10 +548,10 @@
         customerName,
         (select group_concat('跟进信息:',content
         ,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
-        DESC) from cufollow
+        DESC) from cu_follow
         where id
-        in (SELECT id FROM cufollow WHERE
-        cufollow.customerId=cudata.id)) content,
+        in (SELECT id FROM cu_follow WHERE
+        cu_follow.customerId=cudata.id)) content,
         telephone,
         gender,
         apartment ,
@@ -685,7 +695,7 @@
     <select id="findbyproject" resultType="String">
 		select group_concat('项目名:',projectId
 		,'；带访人:',userName,'；带访时间:',visitDate,'\n', '' ORDER BY id
-		DESC) as visproject from cuvisit
+		DESC) as visproject from cu_visit
 		where
 
 		customerId=#{id}
@@ -868,7 +878,7 @@
 
 	</delete>
     <delete id="deleteFollow">
-		delete from cufollow where
+		delete from cu_follow where
 		customerId=#{id}
 
 	</delete>
@@ -878,7 +888,7 @@
 
 	</delete>
     <delete id="deletePreparation">
-		delete from cupreparation where
+		delete from cu_preparation where
 		customerId=#{id}
 
 	</delete>
@@ -910,10 +920,10 @@
         customerName,
         (select group_concat('跟进信息:',content
         ,'[By:',userName,'At:',createDate,']\n&lt;/br&gt;', '' ORDER BY id
-        DESC) from cufollow
+        DESC) from cu_follow
         where id
-        in (SELECT id FROM cufollow WHERE
-        cufollow.customerId=cudata.id)) content,
+        in (SELECT id FROM cu_follow WHERE
+        cu_follow.customerId=cudata.id)) content,
         cudata.telephone,
         gender,
         apartment,
@@ -967,9 +977,9 @@
     <select id="findvisitCustomerPage"
             resultType="com.first.entity.CustomerFormMap">
         SELECT
-        cuvisit.customerId,
-        cuvisit.userId,
-        cuvisit.customerName,
+        cu_visit.customerId,
+        cu_visit.userId,
+        cu_visit.customerName,
         (
         SELECT
         group_concat(
@@ -985,15 +995,15 @@
         id DESC
         )
         FROM
-        cufollow
+        cu_follow
         WHERE
         id IN (
         SELECT
         id
         FROM
-        cufollow
+        cu_follow
         WHERE
-        cufollow.customerId = cuvisit.customerId
+        cu_follow.customerId = cu_visit.customerId
         )
         ) content,
         cudata.telephone,
@@ -1002,8 +1012,8 @@
         cudata.totalPrice,
         cudata.purpose,
         cudata.intention,
-        cuvisit.userName,
-        cuvisit.projectId,
+        cu_visit.userName,
+        cu_visit.projectId,
         (
         SELECT
         NAME
@@ -1014,17 +1024,17 @@
         ) departmentName,
         cudata.department,
         cudata.trackremind,
-        cuvisit.visitDate,
+        cu_visit.visitDate,
         cudata.cusource,
         cudata.resources,
         cudata.state
         FROM
-        cuvisit
-        LEFT JOIN cudata ON cuvisit.customerId = cudata.id
+        cu_visit
+        LEFT JOIN cudata ON cu_visit.customerId = cudata.id
         where 1=1
         <if test="customerName != null and  customerName != ''">
 
-            AND cuvisit.customerName LIKE
+            AND cu_visit.customerName LIKE
             CONCAT(CONCAT('%',#{customerName}),'%')
         </if>
         <if test="telephone != null and  telephone != ''">
@@ -1032,19 +1042,19 @@
             and cudata.telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
         </if>
         <if test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
-            and cuvisit.visitDate between #{screateDate} and #{ecreateDate}
+            and cu_visit.visitDate between #{screateDate} and #{ecreateDate}
         </if>
 
         ORDER BY
-        cuvisit.visitDate DESC
+        cu_visit.visitDate DESC
     </select>
     <!--成交客户查看 -->
     <select id="finddealCustomerPage"
             resultType="com.first.entity.CustomerFormMap">
         SELECT
-        cudeal.customerId,
-        cudeal.userId,
-        cudeal.customerName,
+        cu_deal.customerId,
+        cu_deal.userId,
+        cu_deal.customerName,
         (
         SELECT
         group_concat(
@@ -1060,15 +1070,15 @@
         id DESC
         )
         FROM
-        cufollow
+        cu_follow
         WHERE
         id IN (
         SELECT
         id
         FROM
-        cufollow
+        cu_follow
         WHERE
-        cufollow.customerId = cudeal.customerId
+        cu_follow.customerId = cu_deal.customerId
         )
         ) content,
         cudata.telephone,
@@ -1077,23 +1087,23 @@
         cudata.totalPrice,
         cudata.purpose,
         cudata.intention,
-        cudeal.userName,
-        cudeal.projectId,
-        cudeal.price,
-        cudeal.commission,
-        cudeal.dealDate,
+        cu_deal.userName,
+        cu_deal.projectId,
+        cu_deal.price,
+        cu_deal.commission,
+        cu_deal.dealDate,
         cudata.trackremind,
         cudata.cusource,
         cudata.resources,
         cudata.state
         FROM
-        cudeal
-        LEFT JOIN cudata ON cudeal.customerId = cudata.id
+        cu_deal
+        LEFT JOIN cudata ON cu_deal.customerId = cudata.id
         WHERE
         1 = 1
         <if test="customerName != null and  customerName != ''">
 
-            AND cudeal.customerName LIKE
+            AND cu_deal.customerName LIKE
             CONCAT(CONCAT('%',#{customerName}),'%')
         </if>
         <if test="telephone != null and  telephone != ''">
@@ -1101,11 +1111,11 @@
             and cudata.telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
         </if>
         <if test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
-            and cudeal.dealDate between #{screateDate} and #{ecreateDate}
+            and cu_deal.dealDate between #{screateDate} and #{ecreateDate}
         </if>
 
         ORDER BY
-        cudeal.dealDate DESC
+        cu_deal.dealDate DESC
 
     </select>
     <!-- 项目匹配 -->
@@ -1190,9 +1200,10 @@
     FROM
         cudata
     WHERE
-        userId=#{userId}
+      resources=1
+    AND userId=#{userId}
     AND DATE_FORMAT(ntrackDate, '%YY%mm%dd') = DATE_FORMAT(#{ntrackDate}, '%YY%mm%dd')
-    AND DATE_FORMAT(trackDate, '%YY%mm%dd') != DATE_FORMAT(now(), '%YY%mm%dd')
+     AND   trackDate  &lt;= ntrackDate
     </select>
 
     <!--查看预约客户-->
@@ -1206,7 +1217,7 @@
         resources=1
         AND userId=#{userId}
         AND DATE_FORMAT(ntrackDate, '%YY%mm%dd') = DATE_FORMAT(#{ntrackDate}, '%YY%mm%dd')
-
+        AND   trackDate  &lt;= ntrackDate
     </select>
     <!--查看指定客户-->
     <select id="findCustomer"   resultType="com.first.entity.CustomerFormMap">

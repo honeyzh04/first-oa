@@ -64,9 +64,11 @@
 
 	<body>
 		<!--form-horizontal-->
+
 			<div class="l_err" style="width: 100%; margin-top: 2px;"></div>
 			<form id="form" name="form" class="form-horizontal" method="post"
 			action="./customer/addEntity.shtml">
+			<input type="hidden" name="token" value="${token}"/>
 			<input type="hidden" class="form-control checkacc"
 			value="${user.id}" name="customerFormMap.userId" id="userId">
 			<input type="hidden" class="form-control checkacc"

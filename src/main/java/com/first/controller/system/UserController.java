@@ -1,22 +1,5 @@
 package com.first.controller.system;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
-import com.first.util.PostUtil;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.first.annotation.SystemLog;
 import com.first.controller.index.BaseController;
 import com.first.entity.UserFormMap;
@@ -25,8 +8,19 @@ import com.first.exception.SystemException;
 import com.first.mapper.UserMapper;
 import com.first.util.Common;
 import com.first.util.PasswordHelper;
+import com.first.util.PostUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * 用户控制器 Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -151,7 +145,7 @@ public class UserController extends BaseController {
             }
             String register = userFormMap.get("register").toString();
 
-
+            //创建房源发布系统账号
             if (register.equals("1")) {
                 Map<String, String> map = new HashMap<>();
                 map.put("CreatID", getuserId());

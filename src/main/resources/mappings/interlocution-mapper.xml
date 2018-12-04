@@ -11,8 +11,8 @@
 		q.id,q.question,q.label,q.`describe`,q.createBy as qcreateBy,
 		a.answer,a.createBy,min(a.id) as aId ,a.qId ,
 		DATE_FORMAT(a.createDate, '%Y-%m-%d') AS createDate
-		from asquestion as
-		q LEFT JOIN asanswer as a ON q.id=a.qId
+		from qa_question as
+		q LEFT JOIN qa_answer as a ON q.id=a.qId
 
 		<if test="que != null and  que != ''">
 
@@ -26,7 +26,7 @@
 	<!-- 添加问题库 -->
 	<insert id="addquestion">
 		INSERT INTO
-		asquestion
+		qa_question
 		VALUES
 		(
 		null,
@@ -42,7 +42,7 @@
 	<!-- 添加问题库 -->
 	<insert id="addanswer">
 		INSERT INTO
-		asanswer
+		qa_answer
 		VALUES
 		(
 		null,
@@ -60,7 +60,7 @@
 		id,
 		question
 
-		from asquestion
+		from qa_question
 		where 1=1
 		<if test="id != null and id != '' ">
 			and id=#{id}
@@ -76,13 +76,13 @@
 		id,qId,answer,createBy, DATE_FORMAT(createDate,
 		'%Y-%m-%d') AS
 		createDate
-		from asanswer
+		from qa_answer
 		where 1=1
 		<if test="id != null and id != '' ">
 			and qId=#{id}
 		</if>
 		AND id!=(SELECT min(id)
-		FROM asanswer
+		FROM qa_answer
 		WHERE qId=#{id})
 
 
@@ -94,7 +94,7 @@
 		id,qId,answer,createBy, DATE_FORMAT(createDate,
 		'%Y-%m-%d') AS
 		createDate
-		from asanswer
+		from qa_answer
 		where 1=1
 		<if test="id != null and id != '' ">
 			and qId=#{id}
@@ -109,12 +109,12 @@
 		select
 		q.question,
 		a.answer,a.qId,a.id
-		from asquestion as q LEFT JOIN asanswer as a ON q.id=a.qId WHERE a.id=#{id}
+		from qa_question as q LEFT JOIN qa_answer as a ON q.id=a.qId WHERE a.id=#{id}
 	</select>
 
 	<!-- 修改答案 -->
 	<update id="editanswer">
-		update asanswer
+		update qa_answer
 		<set>
 			<if test=" answer != null and answer != '' ">
 				answer=#{answer},
@@ -129,7 +129,7 @@
 	
 	<!-- 删除答案 -->
 	<delete id="deleteanswer">
-		delete from asanswer where
+		delete from qa_answer where
 		id=#{aId}
 
 	</delete>

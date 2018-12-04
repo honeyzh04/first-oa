@@ -464,6 +464,11 @@
            // setInterval("startRequest()",1000);
         startRequest();
 
+        setInterval(startRequest,1000000);
+
+            //getLoc();
+
+
 		});
     function startRequest() {
 
@@ -475,10 +480,10 @@
             "success" : function(obj) {
                 console.log(obj.number);
                 var number = obj.number;
-                $("#number").append(number);
+                $("#number").html(number);
             },
             error : function() {
-                alert("请与管理员联系");
+                layer.alert("请与管理员联系");
             }
         });
     }

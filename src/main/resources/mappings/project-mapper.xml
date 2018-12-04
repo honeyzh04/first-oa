@@ -33,7 +33,7 @@
 		resultType="com.first.entity.ProjectFormMap">
 		select
 		<include refid="selectId" />
-		from prdata
+		from proj_data
 		where 1=1
 
 	</select>
@@ -42,7 +42,7 @@
 		resultType="com.first.entity.ProjectFormMap" parameterType="hashmap">
 		select
 		<include refid="selectId" />
-		from prdata
+		from proj_data
 		where 1=1
 		<if test="projectName != null and projectName != '' ">
 			AND projectName LIKE
@@ -77,7 +77,7 @@
 	<!-- 添加项目 -->
 	<insert id="addProject">
 		INSERT INTO
-		prdata
+		proj_data
 		VALUES
 		(
 		#{id},
@@ -109,7 +109,7 @@
 		resultType="com.first.entity.ProjectFormMap">
 		select
 		*
-		from prdata
+		from proj_data
 		where 1=1
 		<if test="id != null and id != '' and id != 0">
 			and id=#{id}
@@ -117,7 +117,7 @@
 	</select>
 	<!-- 修改项目 -->
 	<update id="editProject">
-		update prdata
+		update proj_data
 		<set>
 			<if test=" projectName != null and projectName != '' ">
 				projectName=#{projectName},
@@ -178,13 +178,13 @@
 	</update>
 	<!-- 删除项目 -->
 	<delete id="deleteEntity">
-		delete from prdata where
+		delete from proj_data where
 		id=#{id}
 
 	</delete>
 	<!-- 删除所有项目 -->
 	<update id="deletesEntity">
-		truncate TABLE  prdata
+		truncate TABLE  proj_data
 
 	</update>
 	<!-- 匹配项目 -->
@@ -192,7 +192,7 @@
 		resultType="com.first.entity.ProjectFormMap" parameterType="hashmap">
 		select
 		<include refid="selectId" />
-		from prdata
+		from proj_data
 		where 
 		1=1
 		<choose>
@@ -220,14 +220,14 @@
 		
 		select
 		max(id) id
-		from prdata
+		from proj_data
 
 	</select>
 	<select id="findProjecttest"
 		resultType="com.first.entity.ProjectFormMap">
 		select
 		*
-		from prdata
+		from proj_data
 		where id IN(1,2,3)
 	</select>
 </mapper>
