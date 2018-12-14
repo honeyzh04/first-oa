@@ -29,7 +29,7 @@ public interface StatisticsTVMapper {
 	 * 部门月报表
 	 * @return
 	 */
-	public  List<StatisticsFormMap> findDe();
+	public  List<StatisticsFormMap> findDemonth();
 	/**
 	 * 部门当月每天报表
 	 * @return

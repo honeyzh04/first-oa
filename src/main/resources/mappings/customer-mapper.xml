@@ -252,7 +252,26 @@
 		)
 
 	</insert>
+    <!-- 添加成交佣金分配 -->
+    <insert id="addDealAllot">
+		INSERT INTO
+		cu_deal_allot (
+		id,
+		dealId,
+		userId,
+		deId,
+		commission
+		)
+		VALUES
+		(
+		null,
+		#{dealId},
+		#{userId},
+		#{deId},
+		#{dealCommission}
+		)
 
+	</insert>
     <!-- 添加成交客户 -->
     <insert id="addDeal">
 		INSERT INTO
@@ -276,7 +295,7 @@
 		VALUES
 		(
 		null,
-		#{id},
+		#{cuId},
 		#{dealmode},
 		#{customerName},
 		#{userName},
@@ -290,6 +309,10 @@
 		#{dealdate}
 
 		)
+        <selectKey keyProperty="id" order="AFTER"
+                   resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
 	</insert>
     <!-- 修改扩展信息 -->
     <update id="editExtend">
@@ -786,7 +809,22 @@
         </if>
 
     </update>
+    <!--修改部门 修改客户数据-->
+    <update id="modifCuEntity">
+        update cudata
+        <set>
 
+            <if
+                    test=" department != null and department != '' and department != 0 ">
+                department=#{department},
+            </if>
+
+        </set>
+        where userId=#{userId}
+            and resources=1
+
+
+    </update>
 
     <!--定时放入部门公共池 -->
     <update id="autobDiscard">

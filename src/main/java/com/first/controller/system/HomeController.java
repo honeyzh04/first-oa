@@ -10,7 +10,7 @@ import com.first.mapper.DepartMapper;
 import com.first.mapper.StatisticsMapper;
 import com.first.service.system.HomeService;
 import com.first.util.Common;
-import com.first.util.DateWeek;
+import com.first.util.DateUtil;
 import com.first.util.Result;
 import com.first.util.TreeUtil;
 import org.springframework.stereotype.Controller;
@@ -52,7 +52,7 @@ public class HomeController extends BaseController {
             SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
             String date1 = formater.format(new Date());
             Date date = formater.parse(date1);
-            Date b = DateWeek.getThisWeekTuesday(date);
+            Date b = DateUtil.getThisWeekTuesday(date);
             System.out.println(b);
             UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
             Map<String, Object> searchMap = new HashMap<String, Object>();

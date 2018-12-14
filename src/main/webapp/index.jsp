@@ -324,7 +324,7 @@
                                     </span>
 
                            
-                        </div>
+                          </div>
                     </div>
                 </li>
                 <!--task info end-->
@@ -464,7 +464,7 @@
            // setInterval("startRequest()",1000);
         startRequest();
 
-        setInterval(startRequest,1000000);
+        setInterval(startRequest,1800000);
 
             //getLoc();
 
@@ -478,13 +478,13 @@
             "type" : "GET",
             "dataType" : "json",
             "success" : function(obj) {
-                console.log(obj.number);
+                console.log("预约"+obj.number);
                 var number = obj.number;
                 $("#number").html(number);
             },
-            error : function() {
-                layer.alert("请与管理员联系");
-            }
+       /*     error : function() {
+                layer.alert("预约客户错误，请与管理员联系");
+            }*/
         });
     }
 

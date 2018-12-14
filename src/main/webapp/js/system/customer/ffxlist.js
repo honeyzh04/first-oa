@@ -186,6 +186,8 @@ $(function() {
                                         return '<span >公众号</span>';
                                     } else if (data == 9) {
                                         return '<span >其他途径</span>';
+                                    } else if (data == 10) {
+                                        return '<span >页面留言</span>';
                                     } else {
                                         return '<span >未知</span>';
                                     }

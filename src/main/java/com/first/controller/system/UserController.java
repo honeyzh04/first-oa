@@ -5,6 +5,7 @@ import com.first.controller.index.BaseController;
 import com.first.entity.UserFormMap;
 import com.first.entity.UserRoleFormMap;
 import com.first.exception.SystemException;
+import com.first.mapper.CustomerMapper;
 import com.first.mapper.UserMapper;
 import com.first.util.Common;
 import com.first.util.PasswordHelper;
@@ -35,6 +36,8 @@ public class UserController extends BaseController {
     private static final RequestMethod[] GET = null;
     @Inject
     private UserMapper userMapper;
+    @Inject
+    private CustomerMapper customerMapper;
 
     /**
      * 显示按钮
@@ -236,19 +239,24 @@ public class UserController extends BaseController {
     @SystemLog(module = "系统管理", methods = "用户管理-修改用户") // 凡需要处理业务逻辑的.都需要记录操作日志
     public String editEntity(String txtGroupsSelect) throws Exception {
         UserFormMap userFormMap = getFormMap(UserFormMap.class);
-
+        String deIdo = userFormMap.getStr("departmento");
+        String deId = userFormMap.getStr("department");
+        String userId = userFormMap.getStr("id");
+        if (!deIdo.equals(deId)) {
+            HashMap<String, String> forMap = new HashMap();
+            forMap.put("department", deId);
+            forMap.put("userId", userId);
+            customerMapper.modifCuEntity(forMap); //  部门改变 修改客户归属
+        }
         userFormMap.put("txtGroupsSelect", txtGroupsSelect);
         userMapper.editEntity(userFormMap);
-
         userMapper.deleteByUR(userFormMap);
-
         if (!Common.isEmpty(txtGroupsSelect)) {
             String[] txt = txtGroupsSelect.split(",");
             for (String roleId : txt) {
                 UserRoleFormMap userGroupsFormMap = new UserRoleFormMap();
                 userGroupsFormMap.put("userId", userFormMap.get("id"));
                 userGroupsFormMap.put("roleId", roleId);
-
                 userMapper.addUREntity(userGroupsFormMap);
             }
         }

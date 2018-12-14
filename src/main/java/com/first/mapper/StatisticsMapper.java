@@ -41,7 +41,7 @@ public interface StatisticsMapper {
 	 * 部门月报表
 	 * @return
 	 */
-	public  List<StatisticsFormMap> findDe(Map searchMapMap);
+	public  List<StatisticsFormMap> findDemonth(Map searchMapMap);
 	/**
 	 * 部门月报表t统计
 	 * @return

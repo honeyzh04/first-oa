@@ -5,6 +5,7 @@ package com.first.service.system;
 
 import com.first.entity.PersonalFormMap;
 
+import java.text.ParseException;
 import java.util.Map;
 
 /**
@@ -119,5 +120,7 @@ public interface PersonalService {
      * @return
      */
     PersonalFormMap finddemonthreport(Map searchMap);
+
+    void delayedSendWeChat() throws ParseException;
 }
 

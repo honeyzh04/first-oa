@@ -96,6 +96,7 @@ public class MyRealm extends AuthorizingRealm {
 			);
 			// 当验证都通过后，把用户信息放在session里
 			Session session = SecurityUtils.getSubject().getSession();
+			//System.err.println("session过期时间"+session.getTimeout());
 			/*session.setAttribute("userSession", userFormMaps.get(0));
 			session.setAttribute("userSessionId", userFormMaps.get(0).get("id"));*/
 			return authenticationInfo;
@@ -146,9 +147,9 @@ public class MyRealm extends AuthorizingRealm {
 		clearAllCachedAuthenticationInfo();
 		clearAllCachedAuthorizationInfo();
 	}
-  /*  public void clearCache() {
+   public void clearCache() {
         PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
         super.clearCache(principals);
-    }*/
+    }
 
 }

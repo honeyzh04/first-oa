@@ -5,6 +5,7 @@ import com.first.entity.ExtendFormMap;
 import com.first.entity.TeamAwardFormMap;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -310,5 +311,14 @@ public interface CustomerMapper {
     public List<CustomerFormMap>  findAwardCustomer(TeamAwardFormMap teamAwardFormMap);
 
 	public List<CustomerFormMap> getAwardCustomer(@Param("userId") String userId);
+
+	public void modifCuEntity(Map forMap) throws Exception;
+
+	/**
+	 * 添加佣金分配
+	 * @param formMap
+	 * @throws Exception
+	 */
+	void addDealAllot(HashMap formMap) throws Exception;
 
 }

@@ -128,7 +128,7 @@
 								<option value="7">离线宝</option>
 								<option value="8">公众号</option>
 								<option value="9">其他途径</option>
-
+								<option value="10">页面留言</option>
 							</select>
 						</div>
 						<div class="form-group">

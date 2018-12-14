@@ -110,7 +110,9 @@
 
     <!-- 会话DAO -->
     <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+        <!--设置Session缓存名字，默认就是shiro-activeSessionCache-->
         <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
+        <!-- 用于生成会话ID，默认就是JavaUuidSessionIdGenerator，使用java.util.UUID生成 -->
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
     </bean>
 

@@ -45,12 +45,15 @@
 		
 	</select>
 		<select id="findByUser" resultType="com.first.entity.UserFormMap">
-		select
-		a.id,a.accountName,a.userName,b.name as department,a.department as departmentId,a.telephone,a.description as image
-		from oguser as a LEFT JOIN ogdepartment as b ON b.id=a.department 
-		where 
-		<if test=" accountName != null">
-		 accountName=#{accountName}
+			select (select group_concat(roleName) from ogrole
+			where ogrole.id
+			in (SELECT roleId FROM oguser_role WHERE
+			userId=a.id) ) roleName,
+			a.id,a.accountName,a.userName,b.name as department,a.department as departmentId,a.telephone,a.description as image ,c.agentid,c.corpsecret
+			from oguser as a LEFT JOIN ogdepartment as b ON b.id=a.department LEFT JOIN ogde_wechat c on a.department=c.deID
+			where
+			<if test=" accountName != null">
+				 accountName=#{accountName}
 		 </if>
 		
 	</select>
@@ -158,7 +161,10 @@
 		
  		 <if  test="  telephone != null and  telephone != ''  ">
 			 telephone=#{telephone},
-		 </if> 
+		 </if>
+		<if  test="  department != null and  department != ''  ">
+				department=#{department},
+		</if>
 		 <if  test=" locked != null and locked != '' ">
 			locked=#{locked},
 		 </if> 

@@ -2,12 +2,12 @@ package com.first.util;
 /**
  *
  * 获取上周周二日期
- * @Title: DateWeek
+ * @Title: DateUtil
  * @ProjectName first-oa
  * @Description: TODO
  * @author: zhaoh
  * @date 2018/9/279:50
- * @Title: DateWeek
+ * @Title: DateUtil
  * @ProjectName first-oa
  * @Description: TODO
  * @author Administrator
@@ -15,12 +15,12 @@ package com.first.util;
  */
 
 
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
-public class DateWeek {
+public class DateUtil {
 
     public static Date geLastWeekTuesday(Date date) {
         Calendar cal = Calendar.getInstance();
@@ -55,7 +55,18 @@ public class DateWeek {
         cal.add(Calendar.DATE, 7);
         return cal.getTime();
     }
-
+    /**
+     * 明天时间
+     * @return
+     */
+    public static Date getnNext(){
+        Date date=new Date();//取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE,1);
+        date=calendar.getTime();
+        return  date;
+    }
     public static void main(String[] args) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {

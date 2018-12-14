@@ -59,7 +59,7 @@
 		SELECT id,v,userName,name FROM oguser LEFT JOIN (SELECT id
 		as v,name from ogdepartment WHERE parentId in (2,12,13,14,15)) as b on
 		oguser.department=b.v WHERE oguser.department
-		in (b.v) ORDER BY name
+		in (b.v) and oguser.locked=1 ORDER BY name
 
 	</select>
 </mapper>

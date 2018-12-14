@@ -13,10 +13,6 @@ import com.first.util.FormMap;
  */
 @TableSeg(tableName = "ogButtom", id="id")
 public class ButtomFormMap extends FormMap<String,Object>{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 }

@@ -11,9 +11,10 @@ import com.first.mapper.DepartMapper;
 import com.first.mapper.UserMapper;
 import com.first.service.system.PersonalService;
 import com.first.util.Common;
-import com.first.util.DateWeek;
+import com.first.util.DateUtil;
 import com.first.util.SendWeChat;
 import com.first.util.TreeUtil;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -79,18 +81,7 @@ public class PersonalController extends BaseController {
         return Common.BACKGROUND_PATH + "/system/personal/list";
     }
 
-    /**
-     * 明天时间
-     * @return
-     */
-    private  Date getnNext(){
-        Date date=new Date();//取时间
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        calendar.add(calendar.DATE,1);//把日期往后增加一天.整数往后推,负数往前移动
-        date=calendar.getTime();
-        return  date;
-    }
+
     /**
      * 个人报表
      *
@@ -104,15 +95,15 @@ public class PersonalController extends BaseController {
         System.err.println("lalal那");
         searchMap.put("createDate", new Date());
         searchMap.put("userId", getuserId());
-        searchMap.put("nexteDate",getnNext());
+        searchMap.put("nexteDate",DateUtil.getnNext());
         PersonalFormMap daylis = personalService.finddayadd(searchMap);
         PersonalFormMap daynextlis = personalService.findnextdayadd(searchMap);
         System.err.println("1"+daylis);
         SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
         String date1 = formater.format(new Date());
         Date date = formater.parse(date1);
-        Date a = DateWeek.getThisWeekTuesday(date);
-        Date b = DateWeek.getNextWeekTuesday(date);
+        Date a = DateUtil.getThisWeekTuesday(date);
+        Date b = DateUtil.getNextWeekTuesday(date);
 
         searchMap.put("screateDate", a);
         searchMap.put("ecreateDate", b);
@@ -142,15 +133,15 @@ public class PersonalController extends BaseController {
         Map<String, Object> searchMap = new HashMap<String, Object>();
         searchMap.put("createDate", new Date());
         searchMap.put("userId", getuserId());
-        searchMap.put("nexteDate",getnNext());
+        searchMap.put("nexteDate",DateUtil.getnNext());
         PersonalFormMap daynextP = personalService.findnextdayadd(searchMap);
         PersonalFormMap daylisR = personalService.finddayreport(searchMap); //日数据
         System.err.println(daylisR);
         SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
         String date1 = formater.format(new Date());
         Date date = formater.parse(date1);
-        Date a = DateWeek.getThisWeekTuesday(date);
-        Date b = DateWeek.getNextWeekTuesday(date);
+        Date a = DateUtil.getThisWeekTuesday(date);
+        Date b = DateUtil.getNextWeekTuesday(date);
         searchMap.put("screateDate", a);
         searchMap.put("ecreateDate", b);
         PersonalFormMap weeklisP = personalService.findweekadd(searchMap); //周计划
@@ -190,7 +181,7 @@ public class PersonalController extends BaseController {
         searchMap.put("createDate", new Date());
         searchMap.put("userId", getuserId());
         searchMap.put("deId", userFormMap.get("department"));
-        searchMap.put("nexteDate",getnNext());
+        searchMap.put("nexteDate",DateUtil.getnNext());
 
         String depar = userFormMap.get("department").toString();
         int depId = Integer.parseInt(depar);
@@ -207,8 +198,8 @@ public class PersonalController extends BaseController {
         SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
         String date1 = formater.format(new Date());
         Date date = formater.parse(date1);
-        Date a = DateWeek.getThisWeekTuesday(date);
-        Date b = DateWeek.getNextWeekTuesday(date);
+        Date a = DateUtil.getThisWeekTuesday(date);
+        Date b = DateUtil.getNextWeekTuesday(date);
         searchMap.put("screateDate", a);
         searchMap.put("ecreateDate", b);
         PersonalFormMap weeklisP = personalService.finddeweekadd(searchMap); //周计划
@@ -344,8 +335,8 @@ public class PersonalController extends BaseController {
             SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
             String date1 = formater.format(new Date());
             Date date = formater.parse(date1);
-            Date a = DateWeek.getThisWeekTuesday(date);
-            Date b = DateWeek.getNextWeekTuesday(date);
+            Date a = DateUtil.getThisWeekTuesday(date);
+            Date b = DateUtil.getNextWeekTuesday(date);
 
             searchMap.put("screateDate", a);
             searchMap.put("ecreateDate", b);
@@ -462,22 +453,20 @@ public class PersonalController extends BaseController {
         System.err.println("部门验证1"+searchMap);
         if (type.equals("dedayadd")) {
             lis = personalService.finddedayadd(searchMap);
-            System.err.println("31" + lis);
         } else if (type.equals("deweekadd")) {
             SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
             String date1 = formater.format(new Date());
             Date date = formater.parse(date1);
-            Date a = DateWeek.getThisWeekTuesday(date);
-            Date b = DateWeek.getNextWeekTuesday(date);
+            Date a = DateUtil.getThisWeekTuesday(date);
+            Date b = DateUtil.getNextWeekTuesday(date);
             searchMap.put("screateDate", a);
             searchMap.put("ecreateDate", b);
             lis = personalService.finddeweekadd(searchMap);
-            System.err.println("123" + lis);
         } else if (type.equals("demonthadd")) {
             lis = personalService.finddemonthadd(searchMap);
-            System.err.println("1234" + lis);
+
         }
-        System.err.println("3" + lis);
+
         if (lis == null) {
             return true;
         } else {
@@ -524,6 +513,19 @@ public class PersonalController extends BaseController {
             return "success";
         }else {
             return  "0";
+        }
+
+    }
+
+    /**
+     * 定时发送微信
+     */
+    @Scheduled(cron = "0 0 22 * * ? ")
+    public void delayedSendWeChat () {
+        try {
+            personalService.delayedSendWeChat();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
     }

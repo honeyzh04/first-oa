@@ -51,6 +51,11 @@ public class SHAUtil {
         long c=  new Date().getTime();
         String a ="api.fangfaxianFFXfangfaxianFFX"+c;
         System.out.println("SHA后：" + shaEncode(a));
+/*
+        String str1 = "hello";
+        String base64Encoded = Base64.encodeToString(str1.getBytes());
+        String str2 = Base64.decodeToString(base64Encoded);
+        System.err.println("2"+base64Encoded);*/
     }
 }
 

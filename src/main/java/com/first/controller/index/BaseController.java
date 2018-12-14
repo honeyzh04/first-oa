@@ -63,6 +63,19 @@ public class BaseController {
 		}
 		return rse;
 	}
+
+	/**
+	 * 获取操用户部门
+	 * @return
+	 */
+	public String getdeId(){
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
+
+		String  department  = userFormMap.get("department").toString();
+		return department;
+
+	}
 	/**
 	 *获取操作用户名
 	 * @param key

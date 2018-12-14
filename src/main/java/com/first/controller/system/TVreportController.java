@@ -55,7 +55,7 @@ public class TVreportController extends BaseController {
         try {
             Map<String, Object> searchMap = new HashMap<String, Object>();
             List<StatisticsFormMap> departday = statisticsMapper.findDeday();//部门当月当天报表
-            List<StatisticsFormMap> departMonth = statisticsMapper.findDe();//部门当月报表
+            List<StatisticsFormMap> departMonth = statisticsMapper.findDemonth();//部门当月报表
 
             List<StatisticsFormMap> dedays = statisticsMapper.findDedays();//部门当月每天的报表
             List<StatisticsFormMap> denorth1days = new ArrayList<StatisticsFormMap>();//北一当月每天的报表

@@ -63,7 +63,7 @@
     </form>
 </div>
 <div style="text-align: center;">
-    <img src="img/fangfaxian/erweima1.png">
+    <img src="img/fangfaxian/erweima.png">
 
 
 </div>

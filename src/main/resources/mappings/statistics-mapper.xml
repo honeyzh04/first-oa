@@ -2,25 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.first.mapper.StatisticsMapper">
-
+    <!--部门日报表-->
     <select id="findDeday"
             resultType="com.first.entity.StatisticsFormMap">
-		SELECT a.id,a.name , ifnull(b.addw,0)
+				SELECT a.id,a.name , ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0)
 		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
 		addqt,ifnull(b.addg,0)
-		addg,ifnull(b.addz,0) addz,ifnull(c.vis,0)
-		vis,ifnull(d.dea,0)
+		addg,ifnull(b.addz,0) addz,ifnull(c.visit,0)
+		vis,ifnull(d.deal,0)
 		dea,ifnull(e.follow,0) follow,day(#{choiceday})
 		days FROM
 
 		(SELECT * FROM ogdepartment WHERE parentId in (12,13,14,15,4))
 		as a left
 		JOIN
-
 		(SELECT
-		c.name,
-		c.department,
+		c.deId,
 		COUNT(if(c.source=1 and
 		c.cusource=9,true,null)) adddh,
 		COUNT(if(c.source=1 and c.cusource IN
@@ -31,60 +29,29 @@
 		COUNT(c.source=2 or null) addg,
 		COUNT(c.source=3 OR NULL) addz
 		FROM
-		(SELECT a.*, cudata.cusource FROM (SELECT cu_add.*,oguser.department
-		,ogdepartment.`name` from cu_add LEFT JOIN oguser ON
-		cu_add.userId=oguser.id LEFT JOIN ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cu_add.addDate,
-		'%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d')) as a LEFT JOIN
-		cudata
-		ON
-		cudata.id =a.customerId) AS c GROUP BY c.name) as b ON
-		b.department=a.id left JOIN
+		(SELECT a.*, cudata.cusource FROM (SELECT  * FROM cu_add
+		WHERE
+		DATE_FORMAT(cu_add.addDate, '%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d' )) as a LEFT JOIN
+		cudata ON cudata.id =a.customerId) AS c GROUP BY c.deId)as b ON
+		b.deId=a.id left JOIN
 
-		(SELECT
-		d.name,
-		d.department,
-		COUNT(
-		d.customerId or null) vis
-		FROM
-		(SELECT cu_visit.*,oguser.department
-		,ogdepartment.`name`
-		from cu_visit LEFT JOIN oguser ON
-		cu_visit.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cu_visit.visitDate,
-		'%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d')
-		) AS d GROUP BY d.name )
-		as c
-		ON c.department=a.id LEFT JOIN
+		(SELECT deId,COUNT(customerId or null) visit FROM cu_visit
+		WHERE
+		DATE_FORMAT(cu_visit.visitDate, '%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d' )
+	GROUP BY deId)	as c
+		ON c.deId=a.id LEFT JOIN
 
-		(SELECT e.name,e.department,COUNT(
-		e.customerId or null) dea FROM
-		(SELECT cu_deal.*,oguser.department
-		,ogdepartment.`name`
-		from cu_deal LEFT JOIN oguser ON
-		cu_deal.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cu_deal.dealDate,
-		'%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d'))
-		AS e GROUP BY e.name )
-		AS d ON
-		d.department=a.id LEFT JOIN
+(SELECT deId,COUNT(customerId or null) deal FROM cu_deal
+		WHERE
+		DATE_FORMAT(cu_deal.dealDate, '%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d' )
+	GROUP BY deId)
+AS d ON
+		d.deId=a.id LEFT JOIN
 
-
-		(SELECT f.name,f.department,COUNT(
-		f.customerId or null) follow FROM
-		(SELECT cu_follow.*,oguser.department
-		,ogdepartment.`name`
-		from cu_follow LEFT JOIN oguser ON
-		cu_follow.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cu_follow.CreateDate, '%Y%m%d' )=DATE_FORMAT(#{choiceday},
-		'%Y%m%d')) AS f GROUP BY f.name) as e ON e.department=a.id
+(SELECT deId,COUNT(customerId or null) follow FROM cu_follow
+		WHERE
+		DATE_FORMAT(cu_follow.CreateDate, '%Y%m%d' )=DATE_FORMAT(#{choiceday}, '%Y%m%d' )
+	GROUP BY deId)as e ON e.deId=a.id
 
 		ORDER BY
 		a.parentId,a.id
@@ -133,98 +100,64 @@
 		cudata.id
 		=a.customerId) AS c
 	</select>
-
+	<!--部门周报表-->
     <select id="findDeweek"
             resultType="com.first.entity.StatisticsFormMap">
-		SELECT a.id,a.name , ifnull(b.addw,0)
+				SELECT a.id,a.name , ifnull(b.addw,0)
 		addw,ifnull(b.adddh,0)
 		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
 		addqt,ifnull(b.addg,0)
-		addg,ifnull(b.addz,0) addz,ifnull(c.vis,0)
-		vis,ifnull(d.dea,0)
-		dea,ifnull(e.follow,0) follow FROM
+		addg,ifnull(b.addz,0) addz,ifnull(c.visit,0)
+		vis,ifnull(d.deal,0)
+		dea,ifnull(e.follow,0) follow
+		FROM
 
-		(SELECT * FROM
-		ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
-
+		(SELECT * FROM ogdepartment WHERE parentId in (12,13,14,15,4))
+		as a left
+		JOIN
 		(SELECT
-		c.name,
-		c.department,
-		COUNT(if(c.source=1 and c.cusource=9,true,null))
-		adddh,
-		COUNT(if(c.source=1 and c.cusource IN (0,7,8),true,null)) addqt,
-		COUNT(if(c.source=1 and c.cusource IN (1,2,3,4,5,6),true,null)) addwl,
+		c.deId,
+		COUNT(if(c.source=1 and
+		c.cusource=9,true,null)) adddh,
+		COUNT(if(c.source=1 and c.cusource IN
+		(0,7,8),true,null)) addqt,
+		COUNT(if(c.source=1 and c.cusource IN
+		(1,2,3,4,5,6),true,null)) addwl,
 		COUNT(c.source=1 or null)addw,
 		COUNT(c.source=2 or null) addg,
 		COUNT(c.source=3 OR NULL) addz
-		FROM (SELECT a.*, cudata.cusource FROM
-		(SELECT cu_add.*,oguser.department
-		,ogdepartment.`name` from cu_add LEFT
-		JOIN oguser ON
-		cu_add.userId=oguser.id LEFT JOIN ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		cu_add.addDate between
-		#{departweeks} and #{departweeke}) as
-		a LEFT JOIN
-		cudata ON cudata.id
-		=a.customerId) AS c GROUP BY c.name) as
-		b ON
-		b.department=a.id left JOIN
-
-		(SELECT
-		d.name,
-		d.department,
-		COUNT(
-		d.customerId or null) vis
 		FROM
-		(SELECT
-		cu_visit.*,oguser.department
-		,ogdepartment.`name`
-		from cu_visit LEFT JOIN
-		oguser ON
-		cu_visit.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		cu_visit.visitDate between
-		#{departweeks} and #{departweeke})
-		AS d GROUP BY d.name ) as c ON
-		c.department=a.id LEFT JOIN
+		(SELECT a.*, cudata.cusource FROM (SELECT  * FROM cu_add
+		WHERE
+		cu_add.addDate  between
+		#{departweeks} and #{departweeke}
+		) as a LEFT JOIN
+		cudata ON cudata.id =a.customerId) AS c GROUP BY c.deId)as b ON
+		b.deId=a.id left JOIN
 
-		(SELECT
-		e.name,e.department,COUNT(
-		e.customerId or null) dea FROM
-		(SELECT
-		cu_deal.*,oguser.department
-		,ogdepartment.`name`
-		from cu_deal LEFT JOIN
-		oguser ON
-		cu_deal.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		cu_deal.dealDate between
-		#{departweeks} and #{departweeke})
-		AS e GROUP BY e.name ) AS d ON
-		d.department=a.id LEFT JOIN
+		(SELECT deId,COUNT(customerId or null) visit FROM cu_visit
+		WHERE
+		visitDate  between
+		#{departweeks} and #{departweeke}
+	GROUP BY deId)	as c
+		ON c.deId=a.id LEFT JOIN
 
+(SELECT deId,COUNT(customerId or null) deal FROM cu_deal
+		WHERE
+		dealDate  between
+		#{departweeks} and #{departweeke}
+	GROUP BY deId)
+AS d ON
+		d.deId=a.id LEFT JOIN
 
-		(SELECT
-		f.name,f.department,COUNT(
-		f.customerId or null) follow FROM
-		(SELECT
-		cu_follow.*,oguser.department
-		,ogdepartment.`name`
-		from cu_follow LEFT
-		JOIN oguser ON
-		cu_follow.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		cu_follow.createDate between
-		#{departweeks} and #{departweeke})
-		AS f GROUP BY f.name) as e ON
-		e.department=a.id
+(SELECT deId,COUNT(customerId or null) follow FROM cu_follow
+		WHERE
+		CreateDate  between
+		#{departweeks} and #{departweeke}
+	GROUP BY deId)as e ON e.deId=a.id
 
-		ORDER
-		BY a.parentId,a.id
+		ORDER BY
+		a.parentId,a.id
 	</select>
     <!-- 周报表统计 -->
     <select id="findSumDeweek"
@@ -267,24 +200,25 @@
 		cudata.id
 		=a.customerId) AS c
 	</select>
-
-    <select id="findDe"
+	<!--部门月报表-->
+    <select id="findDemonth"
             resultType="com.first.entity.StatisticsFormMap">
 
-		SELECT a.id,a.name , ifnull(b.addw,0)
-		addw,ifnull(b.adddh,0) adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
-		addqt,ifnull(b.addg,0) addg,ifnull(b.addz,0) addz,ifnull(c.vis,0)
-		vis,ifnull(d.dea,0) dea,ifnull(e.follow,0)
-		follow,MONTH(#{choicemonth}) months
+
+				SELECT a.id,a.name , ifnull(b.addw,0)
+		addw,ifnull(b.adddh,0)
+		adddh,ifnull(b.addwl,0) addwl,ifnull(b.addqt,0)
+		addqt,ifnull(b.addg,0)
+		addg,ifnull(b.addz,0) addz,ifnull(c.visit,0)
+		vis,ifnull(d.deal,0)
+		dea,ifnull(e.follow,0) follow,MONTH(#{choicemonth}) months
 		FROM
 
-		(SELECT * FROM ogdepartment
-		WHERE parentId in (12,13,14,15,4)) as a
-		left JOIN
-
+		(SELECT * FROM ogdepartment WHERE parentId in (12,13,14,15,4))
+		as a left
+		JOIN
 		(SELECT
-		c.name,
-		c.department,
+		c.deId,
 		COUNT(if(c.source=1 and
 		c.cusource=9,true,null)) adddh,
 		COUNT(if(c.source=1 and c.cusource IN
@@ -295,71 +229,35 @@
 		COUNT(c.source=2 or null) addg,
 		COUNT(c.source=3 OR NULL) addz
 		FROM
-		(SELECT a.*, cudata.cusource FROM
-		(SELECT cu_add.*,oguser.department
-		,ogdepartment.`name` from cu_add LEFT
-		JOIN oguser ON
-		cu_add.userId=oguser.id LEFT JOIN ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cu_add.addDate,
-		'%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m')) as a LEFT JOIN
-		cudata ON
-		cudata.id
-		=a.customerId) AS c GROUP BY c.name) as b ON
-		b.department=a.id left
-		JOIN
+		(SELECT a.*, cudata.cusource FROM (SELECT  * FROM cu_add
+		WHERE
+		DATE_FORMAT(cu_add.addDate, '%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m' )) as a LEFT JOIN
+		cudata ON cudata.id =a.customerId) AS c GROUP BY c.deId)as b ON
+		b.deId=a.id left JOIN
 
-		(SELECT
-		d.name,
-		d.department,
-		COUNT(
-		d.customerId or null) vis
-		FROM
-		(SELECT cu_visit.*,oguser.department
-		,ogdepartment.`name`
-		from cu_visit
-		LEFT JOIN oguser ON
-		cu_visit.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cu_visit.visitDate,
-		'%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m') )
-		AS d GROUP BY d.name )
-		as c ON
-		c.department=a.id LEFT JOIN
+		(SELECT deId,COUNT(customerId or null) visit FROM cu_visit
+		WHERE
+		DATE_FORMAT(cu_visit.visitDate, '%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m' )
+	GROUP BY deId)	as c
+		ON c.deId=a.id LEFT JOIN
 
-		(SELECT e.name,e.department,COUNT(
-		e.customerId or null) dea FROM
-		(SELECT cu_deal.*,oguser.department
-		,ogdepartment.`name`
-		from cu_deal LEFT JOIN oguser ON
-		cu_deal.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cu_deal.dealDate,
-		'%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m')) AS e
-		GROUP BY e.name ) AS
-		d ON
-		d.department=a.id LEFT JOIN
+(SELECT deId,COUNT(customerId or null) deal FROM cu_deal
+		WHERE
+		DATE_FORMAT(cu_deal.dealDate, '%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m' )
+	GROUP BY deId)
+AS d ON
+		d.deId=a.id LEFT JOIN
 
-
-		(SELECT f.name,f.department,COUNT(
-		f.customerId or null) follow FROM
-		(SELECT cu_follow.*,oguser.department
-		,ogdepartment.`name`
-		from cu_follow LEFT JOIN oguser ON
-		cu_follow.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cu_follow.CreateDate, '%Y%m' )=DATE_FORMAT(#{choicemonth},
-		'%Y%m'))
-		AS f GROUP BY f.name) as e ON e.department=a.id
+(SELECT deId,COUNT(customerId or null) follow FROM cu_follow
+		WHERE
+		DATE_FORMAT(cu_follow.CreateDate, '%Y%m' )=DATE_FORMAT(#{choicemonth}, '%Y%m' )
+	GROUP BY deId)as e ON e.deId=a.id
 
 		ORDER BY
 		a.parentId,a.id
 
-	</select>
 
+	</select>
     <!-- 月报表统计 -->
     <select id="findSumDemonth"
             resultType="com.first.entity.StatisticsFormMap">
@@ -517,7 +415,7 @@
 		a.days=e.days
 		ORDER BY a.parentId,a.id ,a.days
 	</select>
-
+	<!-- 个人报表月排行榜 -->
     <select id="findRankPerAddMonth"
             resultType="com.first.entity.StatisticsFormMap">
 			SELECT * FROM (SELECT a.userName ,a.name,ifnull(b.addw,0)
@@ -596,29 +494,22 @@
 		ORDER BY dea desc LIMIT
 		5) as a ORDER BY dea asc
 	</select>
-
+	<!-- 部门报表月排行榜 -->
     <select id="findRankDeAddMonth"
             resultType="com.first.entity.StatisticsFormMap">
 		SELECT a.id,a.name ,ifnull(b.addw,0) addw FROM
 		(SELECT *
 		FROM ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
-
-		(SELECT
-		c.name,
-		c.department,
-
+		(SELECT		c.deId,
 		COUNT(c.source=1 or null)addw
-
 		FROM (SELECT
-		a.*, cudata.cusource FROM (SELECT cu_add.*,oguser.department
-		,ogdepartment.`name` from cu_add LEFT JOIN oguser ON
-		cu_add.userId=oguser.id LEFT JOIN ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
+		a.*, cudata.cusource FROM (SELECT  * FROM cu_add
+		WHERE
 		DATE_FORMAT(cu_add.addDate,
-		'%Y%m%d' )=DATE_FORMAT(now(), '%Y%m%d')) as a LEFT JOIN
+		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')) as a LEFT JOIN
 		cudata ON
-		cudata.id =a.customerId) AS c GROUP BY c.name) as b ON
-		b.department=a.id
+		cudata.id =a.customerId) AS c GROUP BY c.deId) as b ON
+		b.deId=a.id
 		ORDER BY addw desc LIMIT 5
 	</select>
     <select id="findRankDeFollowMonth"
@@ -628,15 +519,12 @@
 		(SELECT *
 		FROM ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
 
-		(SELECT f.name,f.department,COUNT( f.customerId or null) follow FROM
-		(SELECT cu_follow.*,oguser.department ,ogdepartment.`name`
-		from cu_follow
-		LEFT JOIN oguser ON cu_follow.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
-		DATE_FORMAT(cu_follow.CreateDate, '%Y%m' )=DATE_FORMAT(now(),
-		'%Y%m'))
-		AS f GROUP BY f.name) as e ON e.department=a.id
+		(SELECT f.deId,COUNT( f.customerId or null) follow FROM
+		(SELECT  * FROM cu_follow
+		WHERE
+		DATE_FORMAT(cu_follow.CreateDate,
+		'%Y%m' )=DATE_FORMAT(now(), '%Y%m'))
+		AS f GROUP BY f.deId) as e ON e.deId=a.id
 		ORDER BY follow desc
 		LIMIT 5
 	</select>
@@ -645,23 +533,16 @@
 		SELECT a.id,a.name ,ifnull(c.vis,0) vis FROM
 		(SELECT * FROM
 		ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
-
-
 		(SELECT
-		d.name,
-		d.department,
+		d.deId,
 		COUNT( d.customerId or null) vis
 		FROM
-		(SELECT
-		cu_visit.*,oguser.department ,ogdepartment.`name`
-		from cu_visit LEFT JOIN
-		oguser ON cu_visit.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
+		(SELECT  * FROM cu_visit
+		WHERE
 		DATE_FORMAT(cu_visit.visitDate,
 		'%Y%m' )=DATE_FORMAT(now(), '%Y%m')
-		) AS d GROUP BY d.name ) as c ON
-		c.department=a.id
+		) AS d GROUP BY d.deId ) as c ON
+		c.deId=a.id
 		ORDER BY vis desc LIMIT 5
 	</select>
     <select id="findRankDeDeaMonth"
@@ -669,20 +550,14 @@
 		SELECT a.id,a.name ,ifnull(d.dea,0) dea FROM
 		(SELECT * FROM
 		ogdepartment WHERE parentId in (12,13,14,15,4)) as a left JOIN
-
-
 		(SELECT
-		e.name,e.department,COUNT( e.customerId or null) dea FROM
-		(SELECT
-		cu_deal.*,oguser.department ,ogdepartment.`name`
-		from cu_deal LEFT JOIN
-		oguser ON cu_deal.userId=oguser.id LEFT JOIN
-		ogdepartment ON
-		ogdepartment.id=oguser.department WHERE
+		e.deId,COUNT( e.customerId or null) dea FROM
+		(SELECT  * FROM cu_deal
+		WHERE
 		DATE_FORMAT(cu_deal.dealDate,
-		'Y%m' )=DATE_FORMAT(now(), '%Y%m'))
-		AS e GROUP BY e.name ) AS d ON
-		d.department=a.id
+		'%Y%m' )=DATE_FORMAT(now(), '%Y%m'))
+		AS e GROUP BY e.deId ) AS d ON
+		d.deId=a.id
 		ORDER BY dea desc LIMIT 5
 	</select>
 
@@ -1137,25 +1012,26 @@
     <select id="findByExtension"
             resultType="com.first.entity.StatisticsFormMap">
         SELECT
-		id,
-		baiduss_price,
-		baiduss_click,
-		baiduxxl_price,
-		baiduxxl_click,
-		sougou_price,
-		sougou_click,
-		shenma_price,
-		shenma_click,
-		ifnull(convert((baiduss_price+baiduxxl_price+sougou_price+shenma_price)/adds,decimal(10,2)),0) as cost,
-		ifnull(convert(adds/(baiduss_click+baiduxxl_click+sougou_click+shenma_click),decimal(10,4)),0) as add_conversion,
-		ifnull(convert(dea/(baiduss_click+baiduxxl_click+sougou_click+shenma_click),decimal(10,4)),0) as dea_conversion,
-		createDate,
-		ifnull(b.dea, 0) dea,
-		ifnull(b.price, 0) price,
-		ifnull(b.commission, 0) commission,
-		ifnull(b.projectName, 0) projectName,
-		ifnull(c.vis, 0) vis,
-		ifnull(d.adds, 0) adds
+        id,
+        baiduss_price,
+        baiduss_click,
+        baiduxxl_price,
+        baiduxxl_click,
+        sougou_price,
+        sougou_click,
+        shenma_price,
+        shenma_click,
+        ifnull(convert((baiduss_price+baiduxxl_price+sougou_price+shenma_price)/adds,decimal(10,2)),0) as cost,
+        ifnull(convert(adds/(baiduss_click+baiduxxl_click+sougou_click+shenma_click),decimal(10,4)),0) as
+        add_conversion,
+        ifnull(convert(dea/(baiduss_click+baiduxxl_click+sougou_click+shenma_click),decimal(10,4)),0) as dea_conversion,
+        createDate,
+        ifnull(b.dea, 0) dea,
+        ifnull(b.price, 0) price,
+        ifnull(b.commission, 0) commission,
+        ifnull(b.projectName, 0) projectName,
+        ifnull(c.vis, 0) vis,
+        ifnull(d.adds, 0) adds
         FROM
         cuextension AS a
         LEFT JOIN (
@@ -1180,7 +1056,7 @@
         WHERE
         cudata.cusource IN (3, 6)
         GROUP BY
-		DATE_FORMAT(cu_deal.dealDate, '%Y%m'),
+        DATE_FORMAT(cu_deal.dealDate, '%Y%m'),
         cudata.telephone
         ) AS a
         GROUP BY
@@ -1293,8 +1169,7 @@ WHERE
 
 		)
 	</insert>
-    <!--查看竞价来源
-    -->
+    <!--查看竞价来源  -->
     <select id="findSource"
             resultType="java.util.HashMap">
 			SELECT
@@ -1314,8 +1189,7 @@ FROM
 WHERE 1=1
 	GROUP BY telephone) as a where DATE_FORMAT(createDate, '%Y%m%d') = DATE_FORMAT(#{createDate}, '%Y%m%d') ) as a
 	</select>
-	<!--查看竞价周报表
-        -->
+    <!--查看竞价周报表   -->
 
     <select id="findWeekExtension"
             resultType="com.first.entity.StatisticsFormMap">
@@ -1328,8 +1202,7 @@ WHERE
 AND DATE_FORMAT(end_date, '%Y%m%d') = DATE_FORMAT(#{ecreateDate}, '%Y%m%d')
 
 	</select>
-    <!--查看周报表和
-        -->
+    <!--查看周报表和   -->
     <select id="findWeekSum" resultType="com.first.entity.StatisticsFormMap">
     SELECT
 	"9999" AS id,
@@ -1587,8 +1460,8 @@ LEFT JOIN (
 ) f ON c.id = f.id
 
 	</select>
-	<!--添加竞价周报表-->
-	<insert id="addWeekReport">
+    <!--添加竞价周报表-->
+    <insert id="addWeekReport">
 		INSERT INTO
 		cuwextension
 		VALUES

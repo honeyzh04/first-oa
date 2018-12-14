@@ -267,7 +267,9 @@ public class CustomerController extends BaseController {
      * @return
      * @throws Exception
      */
+
     @RequestMapping(value = "editUI")
+    @Token(save = true)
     public String editUI(Model model) throws Exception {
         String id = getPara("id");
 
@@ -284,16 +286,32 @@ public class CustomerController extends BaseController {
         return Common.BACKGROUND_PATH + "/system/customer/edit";
     }
 
+    /**
+     * 佣金拆分，deId+ userId
+     * @param dealUser
+     */
+    private HashMap<String,Object> splitDealUsser(String dealUser){
+        String[] txt =dealUser.split(",");
+        HashMap<String,Object> searchMap=new HashMap<>();
+        if (txt.length==2){
+        for (int i=0;i<txt.length;i++){ }
+            searchMap.put("userId",txt[0]);
+            searchMap.put("deId",txt[1]);
+        }
+        return  searchMap;
+    }
     @ResponseBody
     @RequestMapping("editEntity")
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
     @SystemLog(module = "客户管理", methods = "用户管理-跟进客户") // 凡需要处理业务逻辑的.都需要记录操作日志
+    @Token(remove = true)
     public String editEntity() throws Exception {
 
         CustomerFormMap customerFormMap = getFormMap(CustomerFormMap.class);
-        System.err.println("各级"+customerFormMap);
+
         customerFormMap.put("userName", getuserName());
         customerFormMap.put("userId", getuserId());
+        customerFormMap.put("department",   getdeId());
 
         Object ntrackDate = customerFormMap.get("ntrackDate");
 
@@ -323,7 +341,54 @@ public class CustomerController extends BaseController {
             // &&dealprojectId !=null
         } else if (state.equals("4") && dealprojectId != null) {
             customerMapper.addVisit1(customerFormMap);//到访客户
+            customerFormMap.put("cuId",customerFormMap.get("id"));
             customerMapper.addDeal(customerFormMap);// 成交客户
+            Object dealCommissiona=customerFormMap.get("dealCommissiona");
+            String  dealUserb=customerFormMap.get("dealUserb").toString();
+            String  dealUserc=customerFormMap.get("dealUserc").toString();
+            String  dealUserd=customerFormMap.get("dealUserd").toString();
+            String  dealUsere=customerFormMap.get("dealUsere").toString();
+            System.err.println("成交"+customerFormMap);
+            HashMap<String,Object> searchMap=new HashMap();
+            if ( dealCommissiona==null){
+                searchMap.put("userId",customerFormMap.get("userId"));
+                searchMap.put("deId",customerFormMap.get("department"));
+                searchMap.put("dealCommission",customerFormMap.get("commission"));
+                searchMap.put("dealId",customerFormMap.get("id"));
+                System.err.println(searchMap);
+                customerMapper.addDealAllot(searchMap);
+            }else {
+                searchMap.put("userId",customerFormMap.get("userId"));
+                searchMap.put("deId",customerFormMap.get("department"));
+                searchMap.put("dealCommission",customerFormMap.get("dealCommissiona"));
+                searchMap.put("dealId",customerFormMap.get("id"));
+                customerMapper.addDealAllot(searchMap);
+            }
+           if (!dealUserb.equals("0")){
+               searchMap= splitDealUsser(dealUserb);
+               searchMap.put("dealCommission",customerFormMap.get("dealCommissionb"));
+               searchMap.put("dealId",customerFormMap.get("id"));
+               System.err.println(searchMap);
+               customerMapper.addDealAllot(searchMap);
+            }
+            if (!dealUserc.equals("0")){
+                searchMap= splitDealUsser(dealUserc);
+                searchMap.put("dealCommission",customerFormMap.get("dealCommissionc"));
+                searchMap.put("dealId",customerFormMap.get("id"));
+                customerMapper.addDealAllot(searchMap);
+            }
+            if (!dealUserd.equals("0")){
+                 searchMap= splitDealUsser(dealUserd);
+                 searchMap.put("dealCommission",customerFormMap.get("dealCommissiond"));
+                searchMap.put("dealId",customerFormMap.get("id"));
+                customerMapper.addDealAllot(searchMap);
+            }
+            if (!dealUsere.equals("0")){
+               searchMap= splitDealUsser(dealUsere);
+               searchMap.put("dealCommission",customerFormMap.get("dealCommissione"));
+                searchMap.put("dealId",customerFormMap.get("id"));
+                customerMapper.addDealAllot(searchMap);
+            }
         }
         return "success";
     }

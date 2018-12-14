@@ -31,7 +31,7 @@ ${exception.message}
               <h2 class="green-bg">page not found</h2>
           </div>
           <p>Something went wrong or that page doesn’t exist yet.</p>
-          <a href="index.html" class="back-btn">Back to Home</a>
+          <a href="index.shtml" class="back-btn">Back to Home</a>
       </section>
 
   </body>

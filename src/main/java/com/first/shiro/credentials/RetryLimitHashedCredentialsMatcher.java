@@ -1,17 +1,12 @@
 package com.first.shiro.credentials;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.util.ByteSource;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 身份认证的密码匹配
@@ -34,7 +29,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
         AuthenticationInfo info) {
     	
         String username = (String) token.getPrincipal();
-      ;
+
         
      
         // retry count + 1
@@ -45,14 +40,11 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
             passwordRetryCache.put(username, retryCount);
         }
       
-        if (retryCount.incrementAndGet() > 5) {
+        if (retryCount.incrementAndGet() > 5) { //密码错误大于5次 锁定账号
             // if retry count > 5 throw
             throw new ExcessiveAttemptsException();
         }
         //进行密码验证的，如果成功，则清除ehcache中存储的记录登录失败次数的count
-       
-     
-    
         boolean matches=super.doCredentialsMatch(token, info);
      
         System.err.println("登录验证是否成功"+matches);

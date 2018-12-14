@@ -1,11 +1,8 @@
 package com.first.logAop;
-import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.inject.Inject;
-
+import com.first.annotation.SystemLog;
+import com.first.entity.LogFormMap;
+import com.first.mapper.LogMapper;
+import com.first.util.Common;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,10 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.first.annotation.SystemLog;
-import com.first.entity.LogFormMap;
-import com.first.mapper.LogMapper;
-import com.first.util.Common;
+import javax.inject.Inject;
+import java.lang.reflect.Method;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 /**
  * 切点类
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -86,7 +84,7 @@ public  class LogAopAction {
      * 前置通知 用于拦截Controller层记录用户的操作
      *环绕通知（Around advice） ：包围一个连接点的通知，类似Web中Servlet规范中的Filter的doFilter方法。
      *可以在方法的调用前后完成自定义的行为，也可以选择不执行。
-     * @param joinPoint 切点
+     * @param point 切点
      */
     @Around("controllerAspect()")
      public Object doController(ProceedingJoinPoint point) {

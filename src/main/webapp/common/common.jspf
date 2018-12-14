@@ -6,16 +6,19 @@
 <%@ taglib  uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!-- fn函数-->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
+<!-- shiro-->
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <title>First管理系统</title>
+<%--http-equiv，相当于http的文件头作用--%>
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
 <META HTTP-EQUIV="Expires" CONTENT="0">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 
-<!-- name="viewport" 移动端开发 -->
+<%--viewport设置移动端自适应--%>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">	
 <!-- 
@@ -31,7 +34,7 @@ user-scalable - 用户是否可以手动缩放
 
 <!-- Modernizr是一个检测用户浏览器HTML5和CSS3能力的JavaScript库。 -->
 <script type="text/javascript" src="${ctx}/js/modernizr.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery-1.10.2.min.js"></script>
 	<!-- 应用迁移辅助插件，解决不同版本之间的兼容问题 -->
 <script type="text/javascript" src="${ctx}/js/jquery-migrate.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"></script>
@@ -59,7 +62,8 @@ user-scalable - 用户是否可以手动缩放
 <link rel="stylesheet" type="text/css" href="${ctx}/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="${ctx}/js/layui-date/css/layui.css">
 <link href="${ctx}/js/font-awesome.min.css" rel="stylesheet">
-<script>
+<%--百度统计代码--%>
+<script type="">
     var _hmt = _hmt || [];
     (function() {
         var hm = document.createElement("script");

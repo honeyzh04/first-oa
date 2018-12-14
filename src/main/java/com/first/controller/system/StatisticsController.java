@@ -1,31 +1,24 @@
 package com.first.controller.system;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
-import com.first.util.DateWeek;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.first.controller.index.BaseController;
 import com.first.entity.StatisticsFormMap;
 import com.first.entity.UserFormMap;
 import com.first.mapper.StatisticsMapper;
 import com.first.service.system.StatisticsService;
 import com.first.util.Common;
+import com.first.util.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 客户报表统计 Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -87,7 +80,7 @@ public class StatisticsController extends BaseController {
 
 
         PageHelper.startPage((start / length) + 1, length);
-        List<StatisticsFormMap> p = statisticsMapper.findDeday(searchMap);
+        List<StatisticsFormMap> p = statisticsMapper.findDeday(searchMap); //部门日报表
 
         PageInfo<StatisticsFormMap> pageinfo = new PageInfo<StatisticsFormMap>(p);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -222,7 +215,7 @@ public class StatisticsController extends BaseController {
 
 
         PageHelper.startPage((start / length) + 1, length);
-        List<StatisticsFormMap> p = statisticsMapper.findDe(searchMap);
+        List<StatisticsFormMap> p = statisticsMapper.findDemonth(searchMap);
 
         PageInfo<StatisticsFormMap> pageinfo = new PageInfo<StatisticsFormMap>(p);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -851,14 +844,14 @@ public class StatisticsController extends BaseController {
         String date1= formater.format(new Date());
         Date date = formater.parse( date1);
         if (screateDate == null || "".equals(screateDate)) {
-           Date a= DateWeek.geLastWeekTuesday(date);
+           Date a= DateUtil.geLastWeekTuesday(date);
             System.err.println("123"+a);
             searchMap.put("screateDate", a);
         } else {
             searchMap.put("screateDate", screateDate);
         }
         if (ecreateDate == null || "".equals(ecreateDate)) {
-            Date b= DateWeek.getThisWeekTuesday(date);
+            Date b= DateUtil.getThisWeekTuesday(date);
             searchMap.put("ecreateDate", b);
             System.err.println("123"+b);
         } else {

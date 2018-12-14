@@ -66,7 +66,7 @@ label[class^="btn btn-default"] {
 			</div>
 			<div class="line line-dashed line-lg pull-in"></div>
 			<div class="form-group">
-			 <input type="hidden" id ="selectDepartment" value="${user.department}"/>
+			 <input type="hidden" id ="selectDepartment"  name="userFormMap.departmento" value="${user.department}"/>
 				<label class="col-sm-3 control-label">部门</label>
 				<div class="col-sm-9">
 					<select class="form-control" id="adepartment"
@@ -146,6 +146,7 @@ label[class^="btn btn-default"] {
 	    var locked=$("#selectLocked").val();
 	    var gender=$("#selectGender").val();
 	    var department=$("#selectDepartment").val();
+
 	 
 	     //根据值让option选中 
 	     $("#locked option[value='"+locked+"']").attr("selected","selected"); 
@@ -159,6 +160,7 @@ label[class^="btn btn-default"] {
 			"data" :"" ,
 			"type" : "GET",
 			"dataType" : "json",
+            async:false,
 			"success" : function(obj) {
 				$("#adepartment").html("<option value=0> 请选择</option>");
 				for (i = 0; i < obj.length; i++) {
@@ -168,7 +170,7 @@ label[class^="btn btn-default"] {
 				
 			},
 			error : function() {
-				alert("请与管理员联系");
+				layer.alert("请与管理员联系");
 			}
 		});
 

@@ -162,7 +162,7 @@
 		ORDER
 		BY a.parentId,a.id
 	</select>
-	<select id="findDe"
+	<select id="findDemonth"
 		resultType="com.first.entity.StatisticsFormMap">
 
 		SELECT a.id,a.name , ifnull(b.addw,0)
