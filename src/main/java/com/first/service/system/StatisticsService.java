@@ -3,10 +3,10 @@
  */
 package com.first.service.system;
 
+import com.first.entity.StatisticsFormMap;
+
 import java.util.List;
 import java.util.Map;
-
-import com.first.entity.StatisticsFormMap;
 
 /**
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -44,7 +44,8 @@ public interface StatisticsService {
 	 * @return
 	 */
 	Map<String, Object> findAddOther(String createDate);
-
+	 List<StatisticsFormMap> findPedays(String userId);
+	List<StatisticsFormMap> findDedays();
 	/**
 	 * 带访数据
 	 * @param createDate

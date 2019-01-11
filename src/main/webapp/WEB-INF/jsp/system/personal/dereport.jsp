@@ -192,7 +192,9 @@
 </body>
 <script>
     $(".subbtn").click(
+
         function () {
+
             var myDate = new Date();
             // myDate.getMonth(); //获取当前月份(0-11,0代表1月)
             // myDate.getDate(); //获取当前日(1-31)
@@ -249,17 +251,18 @@
             var agentid=$.trim($("#agentid").val());
             var corpsecret=$.trim($("#corpsecret").val());
             var deId=$.trim($("#deId").val());
+
             if (d_exp_add == "" || d_exp_visit == "" || w_exp_add == "" || w_exp_visit == "" || m_exp_add == "" || m_exp_visit == "" ) {
                 layer.alert('请返回主页制定目标计划！', 3);
             } else {
-                var info = "部门日报表\n\n"+name + "\n部门：" + dep + "\n" + day + "工作情况：\n新增总数：" + d_real_sum + "组,\n电话新增：" + d_real_tel + "组,\n网络新增：" + d_real_net + ",\n其他新增：" + d_real_other +
-                    "组,\n今日带看数：" + d_real_visit + "组,\n今天带看项目：" + d_real_pro + ",\n今日成交价格：" + d_real_price + "万元,\n今日成交佣金：" + d_real_money + "万元,\n今天成交项目：" + d_real_moneypro + ",\n明日预计新增：" +
-                    d_exp_add + "组,\n明日预计到访：" + d_exp_visit + "组,\n明日预计到访项目："+  d_exp_visitpro + "\n \n本周预计新增目标：" + w_exp_add + "组,\n已完成：" + w_real_sum + "组,\n网络新增：" + w_real_net + "组;\n预计到访目标：" + w_exp_visit +
-                    "组,\n已完成：" + w_real_visit + "组;\n佣金周目标：" + w_exp_money + "万元,\n已完成：" + w_real_money + "万元,\n成交价格：" + w_real_price+ "万元,\n成交详情：" + w_real_dealproject +";\n \n本月新增目标：" + m_exp_add + "组,\n已完成：" + m_real_sum
-                    +  "组,\n网络新增：" + m_real_net +"组;\n预计到访目标：" + m_exp_visit + "组,\n已完成：" + m_real_visit + "组; \n佣金目标：" + m_exp_money + "万元, \n已完成：" + m_real_money + "万元\n成交价格：" + m_real_price + "万元,\n成交详情：" + m_real_dealproject
+                var info = "部门日报表\n\n"+name + "\n部门：" + dep + "\n" + day + "工作情况：\n=================\n\n新增总数：" + d_real_sum + "组,\n电话新增：" + d_real_tel + "组,\n网络新增：" + d_real_net + ",\n其他新增：" + d_real_other +
+                    "组,\n今日带看数：" + d_real_visit + "组,\n今天带看项目：\n" + d_real_pro + ",\n今日成交价格：" + d_real_price + "万元,\n今日成交佣金：" + d_real_money + "万元,\n今天成交项目：\n" + d_real_moneypro + ",\n明日预计新增：" +
+                    d_exp_add + "组,\n明日预计到访：" + d_exp_visit + "组,\n明日预计到访项目："+  d_exp_visitpro + "\n \n=================\n\n本周预计新增目标：" + w_exp_add + "组,\n已完成：" + w_real_sum + "组,\n网络新增：" + w_real_net + "组;\n预计到访目标：" + w_exp_visit +
+                    "组,\n已完成：" + w_real_visit + "组;\n佣金周目标：" + w_exp_money + "万元,\n已完成：" + w_real_money + "万元,\n成交价格：" + w_real_price+ "万元,\n成交详情：\n" + w_real_dealproject +";\n\n=================\n\n本月新增目标：" + m_exp_add + "组,\n已完成：" + m_real_sum
+                    +  "组,\n网络新增：" + m_real_net +"组;\n预计到访目标：" + m_exp_visit + "组,\n已完成：" + m_real_visit + "组; \n佣金目标：" + m_exp_money + "万元, \n已完成：" + m_real_money + "万元\n成交价格：" + m_real_price + "万元,\n成交详情：\n" + m_real_dealproject
                 $.ajax({
                     url: "../personal/sendWeChat.shtml",
-                    type: 'get',
+                    type: 'post',
                     dataType: 'json',
                     data: {
                         corpsecret:corpsecret,

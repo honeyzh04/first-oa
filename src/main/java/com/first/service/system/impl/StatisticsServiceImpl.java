@@ -3,17 +3,14 @@
  */
 package com.first.service.system.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
-import org.springframework.stereotype.Service;
-
 import com.first.entity.StatisticsFormMap;
 import com.first.mapper.StatisticsMapper;
-import com.first.service.system.ProjectService;
 import com.first.service.system.StatisticsService;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -66,6 +63,16 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public Map<String, Object> findAddOther(String createDate) {
         return statisticsMapper.findAddOther(createDate);
+    }
+
+    @Override
+    public List<StatisticsFormMap> findPedays(String userId) {
+        return statisticsMapper.findPedays(userId);
+    }
+
+    @Override
+    public List<StatisticsFormMap> findDedays() {
+        return statisticsMapper.findDedays();
     }
 
     @Override

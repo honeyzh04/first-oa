@@ -3,13 +3,12 @@ package com.first.controller.system;
 import com.first.annotation.SystemLog;
 import com.first.annotation.Token;
 import com.first.controller.index.BaseController;
-import com.first.entity.CustomerFormMap;
-import com.first.entity.DepartmentFormMap;
-import com.first.entity.ExtendFormMap;
-import com.first.entity.UserFormMap;
+import com.first.entity.*;
 import com.first.exception.SystemException;
 import com.first.mapper.CustomerMapper;
 import com.first.mapper.DepartMapper;
+import com.first.service.system.CreditService;
+import com.first.service.system.CustomerService;
 import com.first.service.system.ShareCustomerService;
 import com.first.util.Common;
 import com.first.util.TreeUtil;
@@ -41,9 +40,13 @@ public class CustomerController extends BaseController {
     @Inject
     private CustomerMapper customerMapper;
     @Inject
+    private CustomerService customerService;
+    @Inject
     private DepartMapper departMapper;
     @Inject
     private ShareCustomerService shareCustomerService;
+    @Inject
+    private CreditService creditService;
 
     /**
      * 账号查询
@@ -134,15 +137,11 @@ public class CustomerController extends BaseController {
 
             List<String> idss = new ArrayList<>();
 
-            TreeUtil.treeMenuList(idss,departmentFormMap, depId);
-
+            TreeUtil.treeMenuList(idss, departmentFormMap, depId);
 
 
             idss.add(depar);
             searchMap.put("departments", idss);
-
-
-
 
 
             PageHelper.startPage((start / length) + 1, length);
@@ -254,6 +253,11 @@ public class CustomerController extends BaseController {
 
             customerFormMap.put("source", "1");
             customerMapper.addCu(customerFormMap);// 新增客户统计
+            // 积分系统
+            HashMap searchMap = new HashMap();
+            searchMap.put("id", 1);
+            searchMap.put("userId", getuserId());
+            creditService.editUserCredit(searchMap);
         } catch (Exception e) {
             throw new SystemException("添加客户异常");
         }
@@ -277,9 +281,11 @@ public class CustomerController extends BaseController {
             // int id = Integer.parseInt(iid);
             CustomerFormMap mps = customerMapper.findbyeditUI(id);
             String visproject = customerMapper.findbyproject(id);
-
-
-
+            String telephone = mps.get("telephone").toString();
+            System.err.println("电话"+telephone);
+            CustomerFormMap createUser = customerService.createUser(telephone);
+            System.err.println(createUser);
+            model.addAttribute("createUser", createUser);
             model.addAttribute("customer", mps);
             model.addAttribute("visproject", visproject);
         }
@@ -288,18 +294,41 @@ public class CustomerController extends BaseController {
 
     /**
      * 佣金拆分，deId+ userId
+     *
      * @param dealUser
      */
-    private HashMap<String,Object> splitDealUsser(String dealUser){
-        String[] txt =dealUser.split(",");
-        HashMap<String,Object> searchMap=new HashMap<>();
-        if (txt.length==2){
-        for (int i=0;i<txt.length;i++){ }
-            searchMap.put("userId",txt[0]);
-            searchMap.put("deId",txt[1]);
+    private HashMap<String, Object> splitDealUsser(String dealUser) {
+        String[] txt = dealUser.split(":");
+        HashMap<String, Object> searchMap = new HashMap<>();
+        if (txt.length == 2) {
+            for (int i = 0; i < txt.length; i++) {
+            }
+            searchMap.put("userId", txt[0]);
+            searchMap.put("deId", txt[1]);
         }
-        return  searchMap;
+        return searchMap;
     }
+
+    private List<HashMap<String, Object>> splitDealUssers(String dealUser) {
+        String[] txt = dealUser.split(",");
+        List a = new ArrayList();
+        for (int i = 0; i < txt.length; i++) {
+            String[] txtj = txt[i].split(":");
+            for (int j = 0; j < txtj.length; j++) {
+
+            }
+
+            HashMap<String, Object> searchMap = new HashMap<>();
+            searchMap.put("userId", txtj[0]);
+            searchMap.put("deId", txtj[1]);
+            a.add(searchMap);
+
+        }
+
+        return a;
+    }
+
+
     @ResponseBody
     @RequestMapping("editEntity")
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
@@ -311,84 +340,144 @@ public class CustomerController extends BaseController {
 
         customerFormMap.put("userName", getuserName());
         customerFormMap.put("userId", getuserId());
-        customerFormMap.put("department",   getdeId());
-
-        Object ntrackDate = customerFormMap.get("ntrackDate");
-
-     /*   if (ntrackDate == null) {
-            customerFormMap.put("ntrackDate", new Date());
-        }*/
-        /*
-         * customerFormMap.put("visitprojectId", null);
-         * customerFormMap.put("dealprojectId", null);
-         */
-
+        customerFormMap.put("department", getdeId());
+        System.err.println("跟进客户" + customerFormMap);
         customerFormMap.put("trackDate", new Date());
-
         customerFormMap.put("trackremind", "0");
         customerMapper.editEntity(customerFormMap);// 修改客户
-
         customerMapper.addFollow(customerFormMap);// 跟进客户
         customerMapper.addLFollow(customerFormMap);// 跟进客户长期保存
         String state = customerFormMap.get("state").toString();
         Object visitprojectId = customerFormMap.get("visitprojectId");
         Object dealprojectId = customerFormMap.get("dealprojectId");
 
+        // 跟进积分系统
+        if (creditService.findFollowCredit(getuserId()) <= 10) {
+            HashMap creditMap = new HashMap();
+            creditMap.put("id", 2);
+            creditMap.put("userId", getuserId());
+            creditService.editUserCredit(creditMap);
+        }
+
         if (state.equals("2") && visitprojectId != null) {
-
-
             customerMapper.addVisit(customerFormMap);// 到访客户
-            // &&dealprojectId !=null
-        } else if (state.equals("4") && dealprojectId != null) {
-            customerMapper.addVisit1(customerFormMap);//到访客户
-            customerFormMap.put("cuId",customerFormMap.get("id"));
+            // 积分系统
+            HashMap creditMap1 = new HashMap();
+            creditMap1.put("id", 3);
+            creditMap1.put("userId", getuserId());
+            creditService.editUserCredit(creditMap1);
+
+        } else if (state.equals("4") && !dealprojectId.equals("0")) {
+            customerMapper.addVisit1(customerFormMap);//成交时到访客户
+            customerFormMap.put("cuId", customerFormMap.get("id"));
+            customerFormMap.put("dealState", "1");
             customerMapper.addDeal(customerFormMap);// 成交客户
-            Object dealCommissiona=customerFormMap.get("dealCommissiona");
-            String  dealUserb=customerFormMap.get("dealUserb").toString();
-            String  dealUserc=customerFormMap.get("dealUserc").toString();
-            String  dealUserd=customerFormMap.get("dealUserd").toString();
-            String  dealUsere=customerFormMap.get("dealUsere").toString();
-            System.err.println("成交"+customerFormMap);
-            HashMap<String,Object> searchMap=new HashMap();
-            if ( dealCommissiona==null){
-                searchMap.put("userId",customerFormMap.get("userId"));
-                searchMap.put("deId",customerFormMap.get("department"));
-                searchMap.put("dealCommission",customerFormMap.get("commission"));
-                searchMap.put("dealId",customerFormMap.get("id"));
+            String dealRatioKF = customerFormMap.get("dealRatioKF").toString();
+            String  dealUserKF = customerFormMap.get("dealUserKF").toString();
+            String  dealUserSL = customerFormMap.get("dealUserSL").toString();
+            String dealUserGS = customerFormMap.get("dealUserGS").toString();
+            String dealUserYY = customerFormMap.get("dealUserYY").toString();
+            String dealUserZL = customerFormMap.get("dealUserZL").toString();
+            String dealUserCY = customerFormMap.get("dealUserCY").toString();
+
+            double dealRatioSL=0.05;
+            double dealRatioGS=0.15;
+            double dealRatioYY=0.25;
+            double dealRatioZL=0.3;
+            double dealRatioCY=0.25;
+            System.err.println("成交" + customerFormMap);
+            HashMap<String, Object> searchMap = new HashMap();
+            if (dealRatioKF.equals("0.15") &&  !dealUserKF.equals("0") ) {
+                 dealRatioSL=0.05*0.85;
+                 dealRatioGS=0.15*0.85;
+                 dealRatioYY=0.25*0.85;
+                 dealRatioZL=0.3*0.85;
+                 dealRatioCY=0.25*0.85;
+
+               HashMap  dealUserKF1=splitDealUsser(dealUserKF);
+                searchMap.put("dealCommission",customerFormMap.get("dealCommissionKF"));
+                searchMap.put("dealId", customerFormMap.get("id"));
+                searchMap.put("ratio",0.15);
+                searchMap.put("type", "客服");
+                searchMap.putAll(dealUserKF1);
+                    customerMapper.addDealAllot(searchMap);
+
+            }
+            if ( dealUserSL !=null) {
+                searchMap.put("dealCommission",customerFormMap.get("dealCommissionSL"));
+                searchMap.put("dealId", customerFormMap.get("id"));
+                searchMap.put("ratio",dealRatioSL);
+                searchMap.put("type", "首录");
+                searchMap.put("userId",customerFormMap.get("dealUserIdSL"));
+                searchMap.put("deId",customerFormMap.get("dealdeIdSL"));
                 System.err.println(searchMap);
                 customerMapper.addDealAllot(searchMap);
-            }else {
-                searchMap.put("userId",customerFormMap.get("userId"));
-                searchMap.put("deId",customerFormMap.get("department"));
-                searchMap.put("dealCommission",customerFormMap.get("dealCommissiona"));
-                searchMap.put("dealId",customerFormMap.get("id"));
-                customerMapper.addDealAllot(searchMap);
+
             }
-           if (!dealUserb.equals("0")){
-               searchMap= splitDealUsser(dealUserb);
-               searchMap.put("dealCommission",customerFormMap.get("dealCommissionb"));
-               searchMap.put("dealId",customerFormMap.get("id"));
-               System.err.println(searchMap);
-               customerMapper.addDealAllot(searchMap);
+            if (dealUserGS !=null) {
+                String dealCommissionGS = customerFormMap.get("dealCommissionGS").toString();
+                List<HashMap<String, Object>> hashMaps = splitDealUssers(dealUserGS);
+                double x= Double.parseDouble(dealCommissionGS )/hashMaps.size();
+                searchMap.put("dealCommission", x);
+                searchMap.put("dealId", customerFormMap.get("id"));
+                searchMap.put("ratio", dealRatioGS/hashMaps.size());
+                searchMap.put("type", "归属");
+                for (HashMap a:hashMaps){
+                    searchMap.putAll(a);
+                    customerMapper.addDealAllot(searchMap);
+                }
             }
-            if (!dealUserc.equals("0")){
-                searchMap= splitDealUsser(dealUserc);
-                searchMap.put("dealCommission",customerFormMap.get("dealCommissionc"));
-                searchMap.put("dealId",customerFormMap.get("id"));
-                customerMapper.addDealAllot(searchMap);
+
+            if (dealUserYY !=null) {
+                String dealCommissionYY = customerFormMap.get("dealCommissionYY").toString();
+                List<HashMap<String, Object>> hashMaps = splitDealUssers(dealUserYY);
+                double x= Double.parseDouble(dealCommissionYY )/hashMaps.size();
+                searchMap.put("dealCommission", x);
+                searchMap.put("dealId", customerFormMap.get("id"));
+                searchMap.put("ratio", dealRatioYY/hashMaps.size());
+                searchMap.put("type", "邀约");
+                for (HashMap a:hashMaps){
+                    searchMap.putAll(a);
+                    customerMapper.addDealAllot(searchMap);
+                }
             }
-            if (!dealUserd.equals("0")){
-                 searchMap= splitDealUsser(dealUserd);
-                 searchMap.put("dealCommission",customerFormMap.get("dealCommissiond"));
-                searchMap.put("dealId",customerFormMap.get("id"));
-                customerMapper.addDealAllot(searchMap);
+            if (dealUserZL !=null) {
+                String dealCommissionZL = customerFormMap.get("dealCommissionZL").toString();
+                List<HashMap<String, Object>> hashMaps = splitDealUssers(dealUserZL);
+                double x= Double.parseDouble(dealCommissionZL )/hashMaps.size();
+                searchMap.put("dealCommission", x);
+                searchMap.put("dealId", customerFormMap.get("id"));
+                searchMap.put("ratio", dealRatioZL/hashMaps.size());
+                searchMap.put("type", "战狼");
+                for (HashMap a:hashMaps){
+                    searchMap.putAll(a);
+                    customerMapper.addDealAllot(searchMap);
+                }
             }
-            if (!dealUsere.equals("0")){
-               searchMap= splitDealUsser(dealUsere);
-               searchMap.put("dealCommission",customerFormMap.get("dealCommissione"));
-                searchMap.put("dealId",customerFormMap.get("id"));
-                customerMapper.addDealAllot(searchMap);
+            if (dealUserCY !=null) {
+                String dealCommissionCY = customerFormMap.get("dealCommissionCY").toString();
+                List<HashMap<String, Object>> hashMaps = splitDealUssers(dealUserCY);
+                double x= Double.parseDouble(dealCommissionCY )/hashMaps.size();
+                searchMap.put("dealCommission", x);
+                searchMap.put("dealId", customerFormMap.get("id"));
+                searchMap.put("ratio", dealRatioCY/hashMaps.size());
+                searchMap.put("type", "参与");
+                for (HashMap a:hashMaps){
+                    searchMap.putAll(a);
+                    customerMapper.addDealAllot(searchMap);
+                }
             }
+            // 积分系统
+            HashMap creditMap2 = new HashMap();
+            creditMap2.put("id", 4);
+            creditMap2.put("userId", getuserId());
+            creditService.editUserCredit(creditMap2);
+        } else if (state.equals("5")) {
+            // 积分系统
+            //    HashMap creditMap3 = new HashMap();
+            //  creditMap3.put("id",5);
+            //   creditMap3.put("userId",getuserId());
+            //   creditService. editUserCredit(creditMap3);
         }
         return "success";
     }
@@ -457,21 +546,21 @@ public class CustomerController extends BaseController {
     public String transferEntity() throws Exception {
         CustomerFormMap customerFormMap = getFormMap(CustomerFormMap.class);
         String Ids = customerFormMap.get("id").toString();
-        String userIds= customerFormMap.get("userId").toString();
+        String userIds = customerFormMap.get("userId").toString();
         if (null != Ids && !Common.isEmpty(Ids.toString())) {
             String[] ids = Ids.split(",");
             for (String id : ids) {
                 //查看该客户是否共享
-                CustomerFormMap customer= customerMapper.findCustomer(id);
-                String userId=customer.get("userId").toString();
+                CustomerFormMap customer = customerMapper.findCustomer(id);
+                String userId = customer.get("userId").toString();
                 System.err.println(userId);
-                HashMap a= shareCustomerService.findShareCustomer(id,userId);
-                if(a!=null){
-                    shareCustomerService.editShareCustomer(id,userId,userIds);
+                HashMap a = shareCustomerService.findShareCustomer(id, userId);
+                if (a != null) {
+                    shareCustomerService.editShareCustomer(id, userId, userIds);
                     System.err.println(1111);
 
                 }
-                System.err.println("chakan"+a);
+                System.err.println("chakan" + a);
 
                 customerFormMap.put("id", id);
                 customerMapper.discardEntity(customerFormMap);
@@ -479,7 +568,6 @@ public class CustomerController extends BaseController {
                 customerFormMap.put("createDate", new Date());
 
                 customerMapper.addCu(customerFormMap);// 新增客户统计
-
 
 
             }
@@ -513,10 +601,10 @@ public class CustomerController extends BaseController {
     @SystemLog(module = "客户管理", methods = "客户管理-放入公共池") // 凡需要处理业务逻辑的.都需要记录操作日志
     public String discardEntity() throws Exception {
         CustomerFormMap customerFormMap = getFormMap(CustomerFormMap.class);
-        String id=customerFormMap.get("id").toString();
-        System.err.println("公共出"+customerFormMap);
+        String id = customerFormMap.get("id").toString();
+        System.err.println("公共出" + customerFormMap);
         customerFormMap.put("trackremind", "7");
-        shareCustomerService.outShareCustomer(id,null);
+        shareCustomerService.outShareCustomer(id, null);
         customerMapper.discardEntity(customerFormMap);
 
         return "success";
@@ -577,25 +665,27 @@ public class CustomerController extends BaseController {
         }
         return "success";
     }
+
     /**
      * 带访成交
+     *
      * @param request
      * @param model
      * @return
      * @throws Exception
      */
     @RequestMapping("dealvisitUI")
-    public String dealvisitUI(HttpServletRequest request,Model model) throws Exception {
+    public String dealvisitUI(HttpServletRequest request, Model model) throws Exception {
 
-        UserFormMap userFormMap = (UserFormMap)Common.findUserSession(request);
+        UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
 
         model.addAttribute("user", userFormMap);
         return Common.BACKGROUND_PATH + "/system/customer/visdealist";
     }
+
     @ResponseBody
     @RequestMapping("findByVisitCustomer")
     public Object findByVisitCustomer(HttpServletRequest request, int draw, int start, int length) throws Exception {
-        System.out.println("123+2018");
         Map<String, Object> searchMap = new HashMap<String, Object>();
 
         searchMap.put("customerName", request.getParameter("customerName"));
@@ -623,12 +713,11 @@ public class CustomerController extends BaseController {
 
         return map;
     }
+
     @ResponseBody
     @RequestMapping(" findByDealCustomer")
-    public Object  findByDealCustomer(HttpServletRequest request, int draw, int start, int length) throws Exception {
-        System.out.println("123+20181");
+    public Object findByDealCustomer(HttpServletRequest request, int draw, int start, int length) throws Exception {
         Map<String, Object> searchMap = new HashMap<String, Object>();
-
         searchMap.put("customerName", request.getParameter("customerName"));
         searchMap.put("telephone", request.getParameter("telephone"));
         searchMap.put("screateDate", request.getParameter("screateDate"));
@@ -653,6 +742,35 @@ public class CustomerController extends BaseController {
         map.put("data", data);
 
         return map;
+    }
+
+    /**
+     * 成交详情
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "dealAllotUI")
+    public String dealAllotUI(Model model) throws Exception {
+        String id = getPara("id");
+
+        if (Common.isNotEmpty(id)) {
+            model.addAttribute("deaId", id);
+        }
+        return Common.BACKGROUND_PATH + "/system/customer/dealallot";
+    }
+
+    @ResponseBody
+    @RequestMapping("dealAllot")
+    public Map<String, Object> dealAllotr(String id) throws Exception {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        List<HashMap> dealAllot = customerMapper.finddealAllot(id);
+        List<HashMap> dealUserAllot = customerMapper.finddealUserAllot(id);
+        System.err.println("da"+id);
+        resultMap.put("dealAllot", dealAllot);
+        resultMap.put("dealUserAllot",dealUserAllot);
+        return resultMap;
     }
 
     /**
@@ -716,14 +834,15 @@ public class CustomerController extends BaseController {
      */
     @RequestMapping("fangfaxianlistUI")
     public String fangfaxianlistUI() throws Exception {
-
+        System.err.println("房发现1");
         return Common.BACKGROUND_PATH + "/system/customer/ffxlist";
+
     }
 
     @ResponseBody
     @RequestMapping("findByffxCustomer")
     public Object findByffxCustomer(HttpServletRequest request, int draw, int start, int length) throws Exception {
-
+        System.err.println("房发现2");
         Map<String, Object> searchMap = new HashMap<String, Object>();
 
         searchMap.put("customerName", request.getParameter("customerName"));
@@ -754,21 +873,23 @@ public class CustomerController extends BaseController {
 
     /**
      * 提示今日预约客户
+     *
      * @return
      * @throws Exception
      */
     @ResponseBody
     @RequestMapping("findNtrackDate")
-    public  CustomerFormMap findNtrackDate() throws Exception {
+    public CustomerFormMap findNtrackDate() throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
-        String userId=getuserId();
+        String userId = getuserId();
         map.put("userId", userId);
-        map.put("ntrackDate",new Date());
+        map.put("ntrackDate", new Date());
 
-        CustomerFormMap p = customerMapper.findNtrackDate( map);
+        CustomerFormMap p = customerMapper.findNtrackDate(map);
 
         return p;
     }
+
     /**
      * 预约客户
      *
@@ -787,13 +908,13 @@ public class CustomerController extends BaseController {
     public Object findOrCustomer(HttpServletRequest request, int draw, int start, int length) throws Exception {
 
         Map<String, Object> map = new HashMap<String, Object>();
-        String userId=getuserId();
+        String userId = getuserId();
         map.put("userId", userId);
-        map.put("ntrackDate",new Date());
+        map.put("ntrackDate", new Date());
 
-        PageHelper.startPage((start/length)+1, length);
+        PageHelper.startPage((start / length) + 1, length);
 
-        List< CustomerFormMap> p = customerMapper.findOrCustomer( map);
+        List<CustomerFormMap> p = customerMapper.findOrCustomer(map);
 
         PageInfo<CustomerFormMap> pageinfo = new PageInfo<CustomerFormMap>(p);
 

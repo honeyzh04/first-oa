@@ -1,10 +1,10 @@
 package com.first.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import com.first.entity.StatisticsFormMap;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 部门操作
@@ -47,6 +47,11 @@ public interface StatisticsMapper {
 	 * @return
 	 */
 	public StatisticsFormMap findSumDemonth( Map searchMapMap);
+	/**
+	 * 个人当月每天报表
+	 * @return
+	 */
+	public  List<StatisticsFormMap> findPedays(@Param("userId") String userId);
 	/**
 	 * 部门当月每天报表
 	 * @return

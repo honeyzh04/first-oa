@@ -245,6 +245,7 @@
                        style="text-align: center; vertical-align: middle !important">
                     <thead>
                     <tr>
+                        <th>选择</th>
                         <th>客户姓名</th>
                         <th>客户姓名</th>
                         <th>联系方式</th>
@@ -260,6 +261,7 @@
                         <th>成交佣金</th>
                         <th>成交销售</th>
                         <th>成交时间</th>
+                        <th>成交详情</th>
 
 
                     </tr>

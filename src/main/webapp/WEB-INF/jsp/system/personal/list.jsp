@@ -129,7 +129,7 @@
             <div class="wid32 bor_right">
                 今日目标</div>
             <div class="wid32 bor_right">新增：
-             <span id="dayplan_add">组
+             <span id="dayplan_add">
                    </span></div>
             <div class="wid32">带访：<span id="dayplan_visit"></span></div>
         </div>

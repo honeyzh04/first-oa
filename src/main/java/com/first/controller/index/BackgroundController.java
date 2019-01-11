@@ -1,17 +1,14 @@
 package com.first.controller.index;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.first.entity.ResFormMap;
+import com.first.entity.UserFormMap;
+import com.first.entity.UserLoginFormMap;
+import com.first.mapper.ResourcesMapper;
+import com.first.mapper.UserLoginMapper;
+import com.first.mapper.UserMapper;
+import com.first.util.Common;
+import com.first.util.TreeObject;
+import com.first.util.TreeUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -27,15 +24,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.first.entity.ResFormMap;
-import com.first.entity.UserFormMap;
-import com.first.entity.UserLoginFormMap;
-import com.first.mapper.ResourcesMapper;
-import com.first.mapper.UserLoginMapper;
-import com.first.mapper.UserMapper;
-import com.first.util.Common;
-import com.first.util.TreeObject;
-import com.first.util.TreeUtil;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 /**
  * 进行管理后台框架界面的类
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -73,6 +71,7 @@ public class BackgroundController extends BaseController {
 	 */
 	@RequestMapping(value = "login", method = RequestMethod.POST, produces = "text/html; charset=utf-8")
 	public String login(String username, String password, HttpServletRequest request) {
+		System.err.println("dengl");
 		try {
 			if (!request.getMethod().equals("POST")) {
 				request.setAttribute("error", "支持POST方法提交！");

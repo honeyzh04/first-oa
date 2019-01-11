@@ -260,6 +260,8 @@
 		dealId,
 		userId,
 		deId,
+		ratio,
+		type,
 		commission
 		)
 		VALUES
@@ -268,52 +270,58 @@
 		#{dealId},
 		#{userId},
 		#{deId},
+		#{ratio},
+		#{type},
 		#{dealCommission}
 		)
 
 	</insert>
     <!-- 添加成交客户 -->
     <insert id="addDeal">
-		INSERT INTO
-		cu_deal
-		(
-		id,
-		customerId,
-		mode,
-		customerName,
-		userName,
-		userId,
-		deId,
-		projectId,
-		area,
-		price,
-		commission,
-		consultantName,
-		dealDate
+        INSERT INTO
+        cu_deal
+        (
+        id,
+        customerId,
+        mode,
+        customerName,
+        userName,
+        userId,
+        deId,
+        projectId,
+        area,
+        price,
+        commission,
+        money,
+        roomNumber,
+        state,
+        dealDate
 
-		)
-		VALUES
-		(
-		null,
-		#{cuId},
-		#{dealmode},
-		#{customerName},
-		#{userName},
-		#{userId},
-		#{department},
-		#{dealprojectId},
-		#{dealarea},
-		#{dealprice},
-		#{commission},
-		#{dealconsulName},
-		#{dealdate}
+        )
+        VALUES
+        (
+        null,
+        #{cuId},
+        #{dealmode},
+        #{customerName},
+        #{userName},
+        #{userId},
+        #{department},
+        #{dealprojectId},
+        #{dealarea},
+        #{dealprice},
+        #{commission},
+        #{money},
+        #{roomNumber},
+        #{dealState},
+        #{dealdate}
 
-		)
+        )
         <selectKey keyProperty="id" order="AFTER"
                    resultType="java.lang.Integer">
             SELECT LAST_INSERT_ID()
         </selectKey>
-	</insert>
+    </insert>
     <!-- 修改扩展信息 -->
     <update id="editExtend">
         update cuextend
@@ -779,8 +787,7 @@
     <update id="discardEntity">
         update cudata
         <set>
-            <if
-                    test=" resources != null and  resources != '' and  resources != 0">
+            <if test=" resources != null and  resources != '' and  resources != 0">
                 resources=#{resources},
             </if>
             <if test=" userName != null and  userName != '' ">
@@ -821,7 +828,7 @@
 
         </set>
         where userId=#{userId}
-            and resources=1
+        and resources=1
 
 
     </update>
@@ -1090,6 +1097,7 @@
     <select id="finddealCustomerPage"
             resultType="com.first.entity.CustomerFormMap">
         SELECT
+        cu_deal.id,
         cu_deal.customerId,
         cu_deal.userId,
         cu_deal.customerName,
@@ -1255,10 +1263,10 @@
         resources=1
         AND userId=#{userId}
         AND DATE_FORMAT(ntrackDate, '%YY%mm%dd') = DATE_FORMAT(#{ntrackDate}, '%YY%mm%dd')
-        AND   trackDate  &lt;= ntrackDate
+        AND trackDate &lt;= ntrackDate
     </select>
     <!--查看指定客户-->
-    <select id="findCustomer"   resultType="com.first.entity.CustomerFormMap">
+    <select id="findCustomer" resultType="com.first.entity.CustomerFormMap">
         select
           *
         from cudata
@@ -1268,7 +1276,7 @@
 
     </select>
     <!--查看奖励客户-->
-    <select id="findAwardCustomer"   resultType="com.first.entity.CustomerFormMap">
+    <select id="findAwardCustomer" resultType="com.first.entity.CustomerFormMap">
         SELECT * FROM cudata
         WHERE
         1=1 and state!=4
@@ -1286,7 +1294,7 @@
 
     </select>
     <!--查看奖励客户-->
-    <select id="getAwardCustomer"   resultType="com.first.entity.CustomerFormMap">
+    <select id="getAwardCustomer" resultType="com.first.entity.CustomerFormMap">
       SELECT
 	*
 FROM
@@ -1307,5 +1315,79 @@ WHERE
 	)
 
     </select>
+    <!--查看成交客户详情-->
+    <select id="finddealAllot" resultType="java.util.HashMap">
+        SELECT
+            type,
+            SUM(commission) commission
+        FROM
+            cu_deal_allot
+        LEFT JOIN oguser ON cu_deal_allot.userId = oguser.id
+        WHERE
+            dealId=#{id}
+        GROUP BY
+            type
+        ORDER BY cu_deal_allot.id
+    </select>
+    <select id="finddealUserAllot" resultType="java.util.HashMap">
+        SELECT
+            userName,
+             type,
+         commission
+        FROM
+            cu_deal_allot
+        LEFT JOIN oguser ON cu_deal_allot.userId = oguser.id
+        WHERE
+            dealId=#{id}
 
+    </select>
+    <!--查看奖励客户-->
+    <select id="addCumMtch" resultType="com.first.entity.CustomerFormMap">
+             SELECT
+            *
+        FROM
+            cudata
+        WHERE
+            id = (
+                SELECT
+                    MAX(id)
+                FROM
+                    cudata
+                WHERE
+                    userId = #{userId}
+            )
+
+    </select>
+    <!--查看首录-->
+    <select id="createUser" resultType="com.first.entity.CustomerFormMap">
+               SELECT
+            a.createDate,
+            createBy,
+            b.id,
+            b.userName,
+            b.department
+        FROM
+            (
+                SELECT
+                    createDate,
+                    createBy,
+                    userId
+                FROM
+                    cudata
+                WHERE
+                    telephone = #{telephone}
+                ORDER BY
+                    createDate
+                LIMIT 1
+            ) a
+        LEFT JOIN (
+            SELECT
+                *
+            FROM
+                oguser b
+            WHERE
+                b.locked = 1
+        ) b ON a.createBy = b.accountName
+
+    </select>
 </mapper>

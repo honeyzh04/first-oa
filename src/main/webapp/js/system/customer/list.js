@@ -39,8 +39,11 @@ $(function() {
 								params.intention = $("input[name='customerFormMap.intention']:checked").val();
 								params.choice = $('input[type=checkbox]:checked').val();
 
-							}
-						},
+							},
+                            error:function(){
+                                layer.alert('服务器走丢了，刷新一下试试看');
+                            }
+                        },
 						columns : [
 								{
 									data : "id",

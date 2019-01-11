@@ -162,10 +162,10 @@
 		delete from cu_follow where
 		CreateDate &lt;=DATE_SUB(NOW(),INTERVAL 3 MONTH)
 	</delete>
-    <!-- 删除3月前新增 -->
+    <!-- 删除6月前新增 -->
     <delete id="deleteadd">
 		delete from cu_add where
-		addDate &lt;=DATE_SUB(NOW(),INTERVAL 3 MONTH)
+		addDate &lt;=DATE_SUB(NOW(),INTERVAL 6 MONTH) and source!=1
 	</delete>
 
 </mapper>

@@ -6,6 +6,8 @@ package com.first.service.system;
 import com.first.entity.PersonalFormMap;
 
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -122,5 +124,39 @@ public interface PersonalService {
     PersonalFormMap finddemonthreport(Map searchMap);
 
     void delayedSendWeChat() throws ParseException;
+    /**
+     *当天所有销售数据
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap findalldayreport(Map searchMap);
+    /**
+     *当周所有销售数据
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap findallweekreport(Map searchMap);
+    /**
+     *当月所有销售数据
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap findallmonthreport(Map searchMap);
+
+
+    /**
+     * 查看明日计划
+     * @param searchMap
+     * @return
+     */
+    PersonalFormMap findallnextdayadd(Map searchMap);
+
+    /**
+     * 查看个人成交业绩
+     * @param searchMap
+     * @return
+     */
+    List<HashMap>  peDealPerformance(Map searchMap);
+
 }
 

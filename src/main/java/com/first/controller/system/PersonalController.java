@@ -3,17 +3,14 @@ package com.first.controller.system;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.first.annotation.SystemLog;
 import com.first.controller.index.BaseController;
-import com.first.entity.DepartmentFormMap;
-import com.first.entity.PersonalFormMap;
-import com.first.entity.ResFormMap;
-import com.first.entity.UserFormMap;
+import com.first.entity.*;
 import com.first.mapper.DepartMapper;
 import com.first.mapper.UserMapper;
 import com.first.service.system.PersonalService;
-import com.first.util.Common;
-import com.first.util.DateUtil;
-import com.first.util.SendWeChat;
-import com.first.util.TreeUtil;
+import com.first.service.system.StatisticsService;
+import com.first.util.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +40,8 @@ public class PersonalController extends BaseController {
     private PersonalService personalService;
     @Inject
     private DepartMapper departMapper;
+    @Inject
+    private StatisticsService statisticsservice;
     /**
      * 个人主页展示
      *
@@ -204,7 +203,7 @@ public class PersonalController extends BaseController {
         searchMap.put("ecreateDate", b);
         PersonalFormMap weeklisP = personalService.finddeweekadd(searchMap); //周计划
         PersonalFormMap weeklisR = personalService.finddeweekreport(searchMap);//周数据
-        System.err.println("月数据"+ weeklisR);
+        System.err.println("周数据"+ weeklisR);
         PersonalFormMap monthlisP = personalService.finddemonthadd(searchMap);   //月计划
         PersonalFormMap monthlisR = personalService.finddemonthreport(searchMap);//月数据
         System.err.println("月数据"+monthlisR);
@@ -506,21 +505,28 @@ public class PersonalController extends BaseController {
     @ResponseBody
     @SystemLog(module = "计划制定", methods = "计划制定-发送计划") // 凡需要处理业务逻辑的.都需要记录操作日志
     public String sendWeChat(String corpsecret, String agentid,String info) throws Exception {
+        String success="";
         System.err.println("发送微信");
         SendWeChat sendWeChat=new SendWeChat();
-        boolean is_send = sendWeChat.send_info(corpsecret, agentid,info);
-        if (is_send){
-            return "success";
-        }else {
-            return  "0";
+        List<String> b= SplitString.getStrList(info,600);
+
+        for(String c:b){
+            boolean is_send = sendWeChat.send_info(corpsecret, agentid,c);
+            if (is_send){
+                success= "success";
+            }else {
+                success= "0";
+            }
         }
+
+       return  success;
 
     }
 
     /**
      * 定时发送微信
      */
-    @Scheduled(cron = "0 0 22 * * ? ")
+  @Scheduled(cron = "0 00 22 * * ? ")
     public void delayedSendWeChat () {
         try {
             personalService.delayedSendWeChat();
@@ -528,5 +534,58 @@ public class PersonalController extends BaseController {
             e.printStackTrace();
         }
 
+    }
+
+
+    /**
+     * 个人业绩
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("perfUI")
+    public String perfUI() {
+        return Common.BACKGROUND_PATH + "/system/personal/perflist";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("peDealPerformance")
+    public Object  peDealPerformance(HttpServletRequest request, int draw, int start, int length) throws Exception {
+        Map<String, Object> searchMap = new HashMap<String, Object>();
+        searchMap.put("customerName", request.getParameter("customerName"));
+        searchMap.put("telephone", request.getParameter("telephone"));
+        searchMap.put("screateDate", request.getParameter("screateDate"));
+        searchMap.put("ecreateDate", request.getParameter("ecreateDate"));
+        searchMap.put("userId",getuserId());
+        PageHelper.startPage((start / length) + 1, length);
+        List<HashMap> p = personalService.peDealPerformance(searchMap);
+        PageInfo<HashMap> pageinfo = new PageInfo<HashMap>(p);
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<Object> data = new ArrayList<Object>();
+        for (HashMap a : pageinfo.getList()) {
+            data.add(a);
+        }
+        map.put("draw", draw);
+        map.put("recordsTotal", pageinfo.getTotal());
+        map.put("recordsFiltered", pageinfo.getTotal());
+        map.put("data", data);
+
+        return map;
+    }
+
+    /**
+     * 个人当月每天数据
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("findPedays")
+    public List  findPedays() throws Exception {
+
+       String userId=getuserId();
+
+        List<StatisticsFormMap> p =statisticsservice.findPedays(userId);
+
+        return p;
     }
 }

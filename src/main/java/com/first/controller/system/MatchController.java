@@ -1,28 +1,26 @@
 package com.first.controller.system;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
-import com.first.service.system.ProjectService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.first.controller.index.BaseController;
 import com.first.entity.CustomerFormMap;
 import com.first.entity.ProjectFormMap;
 import com.first.entity.UserFormMap;
 import com.first.mapper.CustomerMapper;
 import com.first.mapper.ProjectMapper;
+import com.first.service.system.ProjectService;
 import com.first.util.Common;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * 项目匹配系统
  * Copyright (C), 2018-2022, ChengDu First Real estate agency
@@ -46,7 +44,7 @@ public class MatchController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping("customermatchtUI")
-	public String fangfaxianlistUI() throws Exception {
+	public String customerMatchtUI() throws Exception {
 		
 
 		return Common.BACKGROUND_PATH + "/system/match/prmatch";
@@ -54,15 +52,15 @@ public class MatchController extends BaseController{
 	
 	@ResponseBody
 	@RequestMapping("findcumatch")
-	public Object findByffxCustomer(HttpServletRequest request, int draw, int start, int length) throws Exception {
+	public Object findCuMatch(HttpServletRequest request, int draw, int start, int length) throws Exception {
 		UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
-		System.err.println("22");
+
 		 Map<String, Object> searchMap = new HashMap<String, Object>(); 
 		
 		 searchMap.put("id",userFormMap.get("id") );
 		
 		 searchMap.put("telephone",request.getParameter("telephone"));	
-		 System.err.println(searchMap);
+
 		 CustomerFormMap b=null;
 			List<CustomerFormMap> x=customerMapper.findcumatch(searchMap);
 			System.err.println("查询"+x);
@@ -89,6 +87,19 @@ public class MatchController extends BaseController{
 	        map.put("data", data);  
 	       
 	        return map; 
+	}
+
+	/**
+	 * 新增客户匹配项目
+	 */
+	@ResponseBody
+	@RequestMapping("addcumatch")
+	public Object addCumMtch( )  {
+		CustomerFormMap b = customerMapper.addCumMtch(getuserId());
+		System.err.println(b);
+		List<ProjectFormMap> p = projectMapper.findcuProject(b);
+		System.err.println(p);
+		return p;
 	}
 	/**
 	 *匹配客户

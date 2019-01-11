@@ -175,6 +175,7 @@ table.dataTable tbody tr:hover {
 </head>
 
 <body>
+<div id="matching" style="display: none;"></div>
 	<!--body wrapper start-->
 	<form action="" method="POST" role="form" id="form-test"
 		class="form-inline">
@@ -497,15 +498,46 @@ table.dataTable tbody tr:hover {
 	<script type="text/javascript">
 
 	$(function() {
-		//var a=$(".pda2 input").val();
-		//var b= $("input[name='customerFormMap.choice']:checked").val();
-		//var c=$('input[type=checkbox]:checked').val();
-		//var d=$(".pda2 input").prop("checked",true).val();
-		//console.log(c);
-	//	console.log(b);
 		getDepartment(-1,-1);
+
 	});
-	
+    function matchproject(){
+        $.ajax({
+            "url":"./match/addcumatch.shtml",
+            "data":"",
+            "type":"post",
+            "dataType":"json",
+            "success":function(obj) {
+
+                var a=new Array();
+                for(i=0;i<obj.length;i++){
+                a.push(obj[i].projectName);
+                    var str ="<div style='color:#68b5ff'>"+obj[i].projectName +"</div>";
+                        $("#matching").append(str);
+                }
+                var str=a.join("/n");
+                layer.open({
+                    type: 1,
+                    time:10000,
+                    title: '新增客户有如下匹配项目',
+                    closeBtn: 1, //不显示关闭按钮
+                    area: ['340px', '220px'],
+                    skin: 'layui-layer-lan',
+                    move:false,
+                    shade: 0,
+                    offset: 'rb', //右下角弹出
+                    anim: 2,
+                    content: $("#matching"),
+                    btn: ['关闭提醒','查看更多'],
+                    btn2: function(index, layero){
+            	    }
+         		   }, function(index, layero){
+
+                });
+            }
+            });
+
+    }
 	//当部门列表发生改变时,调用getUser函数获取城市信息
 	function getUsera(userCode){
 		$.ajax({
@@ -520,12 +552,12 @@ table.dataTable tbody tr:hover {
 					$("#userId").append(str);
 				}
 				if(userCode!=-1){
-					
+
 				}
 			},
-			  error : function() {  
-	              alert("请与管理员联系");  
-	          }  
+			  error : function() {
+	              alert("请与管理员联系");
+	          }
 		});
 
 	}

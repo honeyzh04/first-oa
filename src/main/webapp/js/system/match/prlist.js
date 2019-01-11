@@ -162,7 +162,7 @@ var pageii = null;
 			                        
 			                        "render": function(data, type, full){  
 			                            return  "<div class='btn-group'>"+
-			    		        				"<button id='editRow' onclick='discardCustomer(this);' class='btn btn-warning btn-s' type='button'>详情</button>"+
+			    		        				"<button id='editRow' onclick='detailsCustomer(this);' class='btn btn-warning btn-s' type='button'>详情</button>"+
 			    		        				"</div>" 
 			                        }  
 				                },
@@ -193,5 +193,21 @@ var pageii = null;
 	$("#btn-test").click("click", function() {// 绑定查询按扭
 		myTable.ajax.reload();
 	});
-	
+function detailsCustomer(_this) {
+    var nRow = $(_this).parents('tr')[0];// 得到这一行
+    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var prId = aData.id;
+    var state = aData.state;
+
+
+    pageii = layer.open({
+        title : "楼盘详情",
+        resize : false,
+        type : 2,
+        area : [ "80%", "80%" ],
+        content : './project/housedetail.shtml?id=' + prId+'&state='+state
+
+    });
+
+}
 

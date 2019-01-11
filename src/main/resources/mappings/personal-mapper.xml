@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.first.mapper.PersonalMapper">
-    <!--当天销售数据-->
+    <!--当天个人销售数据-->
     <select id="finddayreport"
             resultType="com.first.entity.PersonalFormMap">
 		SELECT
@@ -132,27 +132,33 @@ LEFT JOIN (
 		) AS b
 ) AS c ON a.id = c.userId
 LEFT JOIN (
-	SELECT
+ 	SELECT
 		b.userId,
-		b.userName,
-		COUNT(b.customerId OR NULL) dea,
+		COUNT(b.ratio OR NULL) dea,
 		sum(b.price) price,
-		sum(b.commission) commission,
-		group_concat("", projectId) AS deaproject
+		sum(b.raCommission) commission,
+		group_concat("", projectId)AS deaproject
 	FROM
 		(
-			SELECT
-				cu_deal.*
+	SELECT
+				cu_deal_allot.userId,
+				cu_deal_allot.dealId,
+				SUM(cu_deal_allot.ratio) ratio,
+				SUM(cu_deal_allot.commission) as  raCommission,
+				cu_deal.price,
+				CONCAT(cu_deal.projectId) projectId,
+				cu_deal.commission,
+				cu_deal.dealDate
 			FROM
-				cu_deal
+				cu_deal_allot LEFT JOIN cu_deal on cu_deal_allot.dealId=cu_deal.id
 			WHERE
-				DATE_FORMAT(dealDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
-			AND userId =#{userId}
+				  DATE_FORMAT(dealDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
+			AND  cu_deal_allot.userId=#{userId}
+			GROUP BY dealId
 		) AS b
 ) AS d ON a.id = d.userId
 	</select>
-
-	<!--当周销售数据-->
+	<!--当周个人销售数据-->
 	<select id="findweekreport"
 			resultType="com.first.entity.PersonalFormMap">
 		SELECT
@@ -284,24 +290,32 @@ LEFT JOIN (
 LEFT JOIN (
 	SELECT
 		b.userId,
-		b.userName,
-		COUNT(b.customerId OR NULL) dea,
+		COUNT(b.ratio OR NULL) dea,
 		sum(b.price) price,
-		sum(b.commission) commission,
-		group_concat("", projectId) AS deaproject
+		sum(b.raCommission) commission,
+		group_concat("", projectId)AS deaproject
 	FROM
 		(
-			SELECT
-				cu_deal.*
+	SELECT
+				cu_deal_allot.userId,
+				cu_deal_allot.dealId,
+				SUM(cu_deal_allot.ratio) ratio,
+				SUM(cu_deal_allot.commission) as  raCommission,
+				cu_deal.price,
+				CONCAT(cu_deal.projectId) projectId,
+				cu_deal.commission,
+				cu_deal.dealDate
 			FROM
-				cu_deal
+				cu_deal_allot LEFT JOIN cu_deal on cu_deal_allot.dealId=cu_deal.id
 			WHERE
-				dealDate between #{screateDate} and #{ecreateDate}
-			AND userId = #{userId}
+						dealDate between #{screateDate} and #{ecreateDate}
+			AND  cu_deal_allot.userId=#{userId}
+			 GROUP BY dealId
+
 		) AS b
 ) AS d ON a.id = d.userId
 	</select>
-	<!--当月销售数据-->
+	<!--当月个人销售数据-->
 	<select id="findmonthreport"
 			resultType="com.first.entity.PersonalFormMap">
 		SELECT
@@ -431,26 +445,34 @@ LEFT JOIN (
 		) AS b
 ) AS c ON a.id = c.userId
 LEFT JOIN (
-	SELECT
+		SELECT
 		b.userId,
-		b.userName,
-		COUNT(b.customerId OR NULL) dea,
+		COUNT(b.ratio OR NULL) dea,
 		sum(b.price) price,
-		sum(b.commission) commission,
+		sum(b.raCommission) commission,
 		group_concat("", projectId)AS deaproject
 	FROM
 		(
-			SELECT
-				cu_deal.*
+	SELECT
+				cu_deal_allot.userId,
+				cu_deal_allot.dealId,
+				SUM(cu_deal_allot.ratio) ratio,
+				SUM(cu_deal_allot.commission) as  raCommission,
+				cu_deal.price,
+				CONCAT(cu_deal.projectId) projectId,
+				cu_deal.commission,
+				cu_deal.dealDate
 			FROM
-				cu_deal
+				cu_deal_allot LEFT JOIN cu_deal on cu_deal_allot.dealId=cu_deal.id
 			WHERE
 				DATE_FORMAT(dealDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
-			AND userId =#{userId}
+			AND  cu_deal_allot.userId=#{userId}
+			GROUP BY dealId
+
 		) AS b
 ) AS d ON a.id = d.userId
 	</select>
-    <!--查看日计划-->
+    <!--查看个人日计划-->
     <select id="finddayadd"
             resultType="com.first.entity.PersonalFormMap">
         SELECT * FROM cudayplan
@@ -461,7 +483,7 @@ LEFT JOIN (
         </if>
         group by userId
     </select>
-    <!--查看明日计划-->
+    <!--查看个人明日计划-->
     <select id="findnextdayadd"
             resultType="com.first.entity.PersonalFormMap">
         SELECT * FROM cudayplan
@@ -472,7 +494,7 @@ LEFT JOIN (
         </if>
         group by userId
     </select>
-    <!--查看周计划-->
+    <!--查看个人周计划-->
     <select id="findweekadd"
             resultType="com.first.entity.PersonalFormMap">
         SELECT * FROM cuweekplan
@@ -486,7 +508,7 @@ LEFT JOIN (
         </if>
         group by userId
     </select>
-    <!--查看月计划-->
+    <!--查看个人月计划-->
     <select id="findmonthadd"
             resultType="com.first.entity.PersonalFormMap">
         SELECT * FROM cumonthplan
@@ -497,7 +519,7 @@ LEFT JOIN (
         </if>
         group by userId
     </select>
-	<!-- 添加日计划 -->
+	<!-- 添加个人日计划 -->
 	<insert id="addDayPlan">
 		INSERT INTO
 		cudayplan
@@ -511,7 +533,7 @@ LEFT JOIN (
 		#{createDate}
 		)
 	</insert>
-	<!-- 添加周计划 -->
+	<!-- 添加个人周计划 -->
 	<insert id="addWeekPlan">
 		INSERT INTO
 		cuweekplan
@@ -525,7 +547,7 @@ LEFT JOIN (
 		#{createDate}
 		)
 	</insert>
-	<!-- 添加月计划 -->
+	<!-- 添加个人月计划 -->
 	<insert id="addMonthPlan">
 		INSERT INTO
 		cumonthplan
@@ -554,7 +576,7 @@ LEFT JOIN (
 		#{createDate}
 		)
 	</insert>
-	<!-- 添加周计划 -->
+	<!-- 添加部门周计划 -->
 	<insert id="adddeWeekPlan">
 		INSERT INTO
 		cudeweekplan
@@ -569,7 +591,7 @@ LEFT JOIN (
 		#{createDate}
 		)
 	</insert>
-	<!-- 添加月计划 -->
+	<!-- 添加部门月计划 -->
 	<insert id="adddeMonthPlan">
 		INSERT INTO
 		cudemonthplan
@@ -594,7 +616,7 @@ LEFT JOIN (
 		</if>
 		group by deId
 	</select>
-	<!--查看明日计划-->
+	<!--查看部门明日计划-->
 	<select id="finddenextdayadd"
 			resultType="com.first.entity.PersonalFormMap">
 		SELECT * FROM cudedayplan
@@ -605,7 +627,7 @@ LEFT JOIN (
 		</if>
 		group by deId
 	</select>
-	<!--查看周计划-->
+	<!--查看部门周计划-->
 	<select id="finddeweekadd"
 			resultType="com.first.entity.PersonalFormMap">
 		SELECT * FROM cudeweekplan
@@ -619,7 +641,7 @@ LEFT JOIN (
 		</if>
 		group by deId
 	</select>
-	<!--查看月计划-->
+	<!--查看部门月计划-->
 	<select id="finddemonthadd"
 			resultType="com.first.entity.PersonalFormMap">
 		SELECT * FROM cudemonthplan
@@ -649,8 +671,8 @@ LEFT JOIN (
 	ifnull(c.projectName, "") visitproject,
 	ifnull(d.deal, 0) deal,
 	ifnull(d.deaproject, "") dealproject,
-	ifnull(sum(d.price) / 10000, 0) price,
-	ifnull(sum(d.commission) / 10000, 0) commission,
+	ifnull(ROUND(sum(d.price) / 10000,2), 0) price,
+	ifnull(ROUND(sum(d.commission) / 10000,2), 0) commission,
 	DATE_FORMAT(now(), "%Y-%m-%d") days
 FROM
 	(
@@ -754,7 +776,7 @@ LEFT JOIN (
 	SELECT
 		'888' department,
 		COUNT(b.customerId) AS visit,
-		group_concat("", projectName) AS projectName
+		group_concat('\n【', projectName,'】') AS projectName
 	FROM
 		(
 			SELECT
@@ -779,39 +801,60 @@ LEFT JOIN (
 		) AS b
 ) AS c ON a.deId = c.department
 LEFT JOIN (
-	SELECT
-		'888' department,
-		COUNT(b.customerId OR NULL) deal,
-		sum(b.price) price,
-		sum(b.commission) commission,
-		group_concat("", projectName) AS deaproject
-	FROM
-		(
-			SELECT
-				cu_deal.*, oguser.department,
-				CONCAT(
-					cu_deal.userName,
-					"：",
-					projectId,
-					"，总价：",
-					price,
-					"，佣金：",
-					commission
-				) AS projectName
-			FROM
-				cu_deal
-			LEFT JOIN oguser ON cu_deal.userId = oguser.id
-			WHERE
-				DATE_FORMAT(dealDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
-		<if test="departments != null ">
-			and department in
-			<foreach collection="departments" item="item" index="index"
-					 open="(" separator="," close=")">
-				#{item}
-			</foreach>
-		</if>
 
-		) AS b
+        SELECT
+        '888' department,
+        COUNT(b.customerId OR NULL) deal,
+        sum(b.price) price,
+        sum(b.raCommission) commission,
+        group_concat('\n【', projectName,'】') AS deaproject
+        FROM
+        (
+        SELECT userId,
+        ratio,
+        SUM(raCommission) raCommission,
+        price,
+        projectId,
+        commission,
+        dealDate,
+        customerId,GROUP_CONCAT(projectName ,'；\n'  SEPARATOR '') as projectName
+        FROM (
+        SELECT
+        cu_deal_allot.userId,
+        SUM(cu_deal_allot.ratio) ratio,
+        SUM(cu_deal_allot.commission )as  raCommission,
+        cu_deal.price,
+        cu_deal.projectId,
+        cu_deal.commission,
+        cu_deal.dealDate,
+        cu_deal.customerId,
+        CONCAT(
+        oguser.userName,
+        "：",
+        cu_deal.projectId,
+        "，总价：",
+        cu_deal.price,
+        "，佣金：",
+        SUM(cu_deal_allot.commission),
+        "，占比：",
+		ROUND(SUM(cu_deal_allot.ratio*100), 2),
+		"%"
+        ) AS projectName
+        FROM
+        cu_deal_allot LEFT JOIN cu_deal on cu_deal_allot.dealId=cu_deal.id
+        LEFT JOIN oguser ON cu_deal_allot.userId = oguser.id
+        WHERE
+        DATE_FORMAT(dealDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
+        <if test="departments != null ">
+            and cu_deal_allot.deId in
+            <foreach collection="departments" item="item" index="index"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY dealId,userId
+        ) as g GROUP BY customerId
+        ) AS b
 ) AS d ON a.deId = d.department
 
 	</select>
@@ -834,8 +877,8 @@ LEFT JOIN (
 	ifnull(c.projectName, "") visitproject,
 	ifnull(d.deal, 0) deal,
 	ifnull(d.deaproject, "") dealproject,
-	ifnull(sum(d.price) / 10000, 0) price,
-	ifnull(sum(d.commission) / 10000, 0) commission
+	ifnull(ROUND(sum(d.price) / 10000,2), 0) price,
+	ifnull(ROUND(sum(d.commission) / 10000,2), 0) commission
 
 FROM
 	(
@@ -939,7 +982,7 @@ LEFT JOIN (
 	SELECT
 		'888' department,
 		COUNT(b.customerId) AS visit,
-		group_concat("", projectName) AS projectName
+		group_concat('\n【', projectName,'】') AS projectName
 	FROM
 		(
 			SELECT
@@ -964,38 +1007,61 @@ LEFT JOIN (
 		) AS b
 ) AS c ON a.deId = c.department
 LEFT JOIN (
-	SELECT
-		'888' department,
-		COUNT(b.customerId OR NULL) deal,
-		sum(b.price) price,
-		sum(b.commission) commission,
-		group_concat("", projectName) AS deaproject
-	FROM
-		(
-			SELECT
-				cu_deal.*, oguser.department,
-				CONCAT(
-					cu_deal.userName,
-					"：",
-					projectId,
-					"，总价：",
-					price,
-					"，佣金：",
-					commission
-				) AS projectName
-			FROM
-				cu_deal
-			LEFT JOIN oguser ON cu_deal.userId = oguser.id
-			WHERE
-				dealDate  between #{screateDate} and #{ecreateDate}
-		<if test="departments != null ">
-			and department in
-			<foreach collection="departments" item="item" index="index"
-					 open="(" separator="," close=")">
-				#{item}
-			</foreach>
-		</if>
-		) AS b
+
+        SELECT
+        '888' department,
+        COUNT(b.customerId OR NULL) deal,
+        sum(b.price) price,
+        sum(b.raCommission) commission,
+        group_concat('\n【', projectName,'】') AS deaproject
+        FROM
+        (
+        SELECT userId,
+        ratio,
+        SUM(raCommission) raCommission,
+        price,
+        projectId,
+        commission,
+        dealDate,
+        customerId,GROUP_CONCAT(projectName ,'；\n'  SEPARATOR '') as projectName
+        FROM (
+        SELECT
+        cu_deal_allot.userId,
+        SUM(cu_deal_allot.ratio) ratio,
+        SUM(cu_deal_allot.commission )as  raCommission,
+        cu_deal.price,
+        cu_deal.projectId,
+        cu_deal.commission,
+        cu_deal.dealDate,
+        cu_deal.customerId,
+        CONCAT(
+        oguser.userName,
+        "：",
+        cu_deal.projectId,
+        "，总价：",
+        cu_deal.price,
+        "，佣金：",
+        SUM(cu_deal_allot.commission),
+        "，占比：",
+		ROUND(SUM(cu_deal_allot.ratio*100), 2),
+		"%"
+        ) AS projectName
+        FROM
+        cu_deal_allot LEFT JOIN cu_deal on cu_deal_allot.dealId=cu_deal.id
+        LEFT JOIN oguser ON cu_deal_allot.userId = oguser.id
+        WHERE
+        dealDate  between #{screateDate} and #{ecreateDate}
+        <if test="departments != null ">
+            and cu_deal_allot.deId in
+            <foreach collection="departments" item="item" index="index"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY dealId,userId
+        ) as g GROUP BY customerId
+        ) AS b
+
 ) AS d ON a.deId = d.department
 
 	</select>
@@ -1018,8 +1084,8 @@ LEFT JOIN (
 	ifnull(c.projectName, "") visitproject,
 	ifnull(d.deal, 0) deal,
 	ifnull(d.deaproject, "") dealproject,
-	ifnull(sum(d.price) / 10000, 0) price,
-	ifnull(sum(d.commission) / 10000, 0) commission,
+	ifnull(ROUND(sum(d.price) / 10000,2), 0) price,
+	ifnull(ROUND(sum(d.commission) / 10000,2), 0) commission,
 	DATE_FORMAT(now(), "%Y-%m") months
 FROM
 	(
@@ -1123,7 +1189,7 @@ LEFT JOIN (
 	SELECT
 		'888' department,
 		COUNT(b.customerId) AS visit,
-		group_concat("", projectName) AS projectName
+		group_concat('\n【', projectName,'】') AS projectName
 	FROM
 		(
 			SELECT
@@ -1149,40 +1215,617 @@ LEFT JOIN (
 		) AS b
 ) AS c ON a.deId = c.department
 LEFT JOIN (
-	SELECT
+
+        SELECT
+        '888' department,
+        COUNT(b.customerId OR NULL) deal,
+        sum(b.price) price,
+        sum(b.raCommission) commission,
+        group_concat('\n【', projectName,'】') AS deaproject
+        FROM
+        (
+        SELECT userId,
+        ratio,
+        SUM(raCommission) raCommission,
+        price,
+        projectId,
+        commission,
+        dealDate,
+        customerId,GROUP_CONCAT(projectName ,'；\n'  SEPARATOR '') as projectName
+        FROM (
+        SELECT
+        cu_deal_allot.userId,
+        SUM(cu_deal_allot.ratio) ratio,
+        SUM(cu_deal_allot.commission )as  raCommission,
+        cu_deal.price,
+        cu_deal.projectId,
+        cu_deal.commission,
+        cu_deal.dealDate,
+        cu_deal.customerId,
+        CONCAT(
+        oguser.userName,
+        "：",
+        cu_deal.projectId,
+        "，总价：",
+        cu_deal.price,
+        "，佣金：",
+        SUM(cu_deal_allot.commission),
+        "，占比：",
+		ROUND(SUM(cu_deal_allot.ratio*100), 2),
+		"%"
+        ) AS projectName
+        FROM
+        cu_deal_allot LEFT JOIN cu_deal on cu_deal_allot.dealId=cu_deal.id
+        LEFT JOIN oguser ON cu_deal_allot.userId = oguser.id
+        WHERE
+        DATE_FORMAT(dealDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+        <if test="departments != null ">
+            and cu_deal_allot.deId  in
+            <foreach collection="departments" item="item" index="index"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY dealId,userId
+        ) as g GROUP BY customerId
+        ) AS b
+) AS d ON a.deId = d.department
+
+	</select>
+    <!--当天所有销售数据-->
+    <select id="findalldayreport"
+            resultType="com.first.entity.PersonalFormMap">
+		SELECT
+		a.id,
+		a.userName,
+		a.did,
+		a. NAME department,
+		ifnull(b.addw, 0) addw,
+		ifnull(b.adddh, 0) adddh,
+		ifnull(b.addwl, 0) addwl,
+		ifnull(b.addwla, 0) addwla,
+		ifnull(b.addwl5, 0) addwl5,
+		ifnull(b.addwlf, 0) addwlf,
+		ifnull(b.addqt, 0) addqt,
+		ifnull(c.visit, 0) visit,
+		ifnull(c.projectName, "") visitproject,
+		ifnull(d.deal, 0) deal,
+		ifnull(d.deaproject, "") dealproject,
+		ifnull(ROUND(sum(d.price) / 10000,2), 0) price,
+		ifnull(ROUND(sum(d.commission) / 10000,2), 0) commission,
+		DATE_FORMAT(now(), "%Y-%m-%d") days
+		FROM
+		(
+		SELECT
+		'888' deId,
+		oguser.id,
+		oguser.userName,
+		ogdepartment.id AS did,
+		ogdepartment. NAME
+		FROM
+		oguser
+		LEFT JOIN ogdepartment ON ogdepartment.id = oguser.department
+		WHERE
+		oguser.id = 1
+		) AS a
+		LEFT JOIN (
+		SELECT
+		'888' department,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource = 9,
+		TRUE,
+		NULL
+		)
+		) adddh,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource  IN (0,7,8),
+		TRUE,
+		NULL
+		)
+		) addqt,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (1, 2, 3, 4, 5, 6),
+		TRUE,
+		NULL
+		)
+		) addwl,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (1, 4),
+		TRUE,
+		NULL
+		)
+		) addwla,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (2, 5),
+		TRUE,
+		NULL
+		)
+		) addwl5,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (3, 6),
+		TRUE,
+		NULL
+		)
+		) addwlf,
+		COUNT(c.source = 1 OR NULL) addw
+		FROM
+		(
+		SELECT
+	b.*, cudata.cusource ,cudata.telephone
+	FROM
+	cu_add b
+	LEFT JOIN cudata ON cudata.id = b.customerId
+	where 	DATE_FORMAT(addDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d') and source=1 GROUP BY telephone
+		) AS c
+		WHERE
+		1=1
+
+		) AS b ON a.deId = b.department
+		LEFT JOIN (
+		SELECT
+		'888' department,
+		COUNT(b.customerId) AS visit,
+		group_concat('\n【', projectName,'】') AS projectName
+		FROM
+		(
+		SELECT
+		cu_visit.*, oguser.department,
+		CONCAT(
+		cu_visit.userName,
+		"：",
+		projectId
+		) AS projectName
+		FROM
+		cu_visit
+		LEFT JOIN oguser ON cu_visit.userId = oguser.id
+		WHERE
+		DATE_FORMAT(visitDate, '%Y%m%d') = DATE_FORMAT(now(),'%Y%m%d')
+
+
+		) AS b
+		) AS c ON a.deId = c.department
+		LEFT JOIN (
+
+		SELECT
 		'888' department,
 		COUNT(b.customerId OR NULL) deal,
 		sum(b.price) price,
 		sum(b.commission) commission,
-		group_concat("", projectName) AS deaproject
-	FROM
+		group_concat('\n【', projectName,'】') AS deaproject
+		FROM
 		(
-			SELECT
-				cu_deal.*, oguser.department,
-				CONCAT(
-					cu_deal.userName,
-					"：",
-					projectId,
-					"，总价：",
-					price,
-					"，佣金：",
-					commission
-				) AS projectName
-			FROM
-				cu_deal
-			LEFT JOIN oguser ON cu_deal.userId = oguser.id
-			WHERE
-				DATE_FORMAT(dealDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+		SELECT
+		cu_deal.price,
+		cu_deal.projectId,
+		cu_deal.commission,
+		cu_deal.dealDate,
+		cu_deal.customerId	,
+		CONCAT(
+		cu_deal.userName,
+		"：",
+		cu_deal.projectId,
+		"，总价：",
+		ROUND(cu_deal.price/ 10000,2),
+		"，佣金：",
+		ROUND(cu_deal.commission/ 10000,2)
+		) AS projectName
+		FROM
+		cu_deal WHERE DATE_FORMAT(dealDate, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
 
-		<if test="departments != null ">
-		and department in
-		<foreach collection="departments" item="item" index="index"
-				 open="(" separator="," close=")">
-			#{item}
-		</foreach>
-		</if>
 		) AS b
-) AS d ON a.deId = d.department
+		) AS d ON a.deId = d.department
+
+	</select>
+	<!--当周所有销售数据-->
+	<select id="findallweekreport"
+			resultType="com.first.entity.PersonalFormMap">
+		SELECT
+		a.id,
+		a.userName,
+		a.did,
+		a. NAME department,
+		ifnull(b.addw, 0) addw,
+		ifnull(b.adddh, 0) adddh,
+		ifnull(b.addwl, 0) addwl,
+		ifnull(b.addwla, 0) addwla,
+		ifnull(b.addwl5, 0) addwl5,
+		ifnull(b.addwlf, 0) addwlf,
+		ifnull(b.addqt, 0) addqt,
+		ifnull(c.visit, 0) visit,
+		ifnull(c.projectName, "") visitproject,
+		ifnull(d.deal, 0) deal,
+		ifnull(d.deaproject, "") dealproject,
+		ifnull(ROUND(sum(d.price) / 10000,2), 0) price,
+		ifnull(ROUND(sum(d.commission) / 10000,2), 0) commission
+		FROM
+		(
+		SELECT
+		'888' deId,
+		oguser.id,
+		oguser.userName,
+		ogdepartment.id AS did,
+		ogdepartment. NAME
+		FROM
+		oguser
+		LEFT JOIN ogdepartment ON ogdepartment.id = oguser.department
+		WHERE
+		oguser.id = 1
+		) AS a
+		LEFT JOIN (
+		SELECT
+		'888' department,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource = 9,
+		TRUE,
+		NULL
+		)
+		) adddh,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource  IN (0,7,8),
+		TRUE,
+		NULL
+		)
+		) addqt,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (1, 2, 3, 4, 5, 6),
+		TRUE,
+		NULL
+		)
+		) addwl,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (1, 4),
+		TRUE,
+		NULL
+		)
+		) addwla,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (2, 5),
+		TRUE,
+		NULL
+		)
+		) addwl5,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (3, 6),
+		TRUE,
+		NULL
+		)
+		) addwlf,
+		COUNT(c.source = 1 OR NULL) addw
+		FROM
+		(
+		SELECT
+	b.*, cudata.cusource ,cudata.telephone
+	FROM
+	cu_add b
+	LEFT JOIN cudata ON cudata.id = b.customerId
+	where 	addDate  between #{screateDate} and #{ecreateDate} and source=1 GROUP BY telephone
+		) AS c
+		WHERE
+		1=1
+
+		) AS b ON a.deId = b.department
+		LEFT JOIN (
+		SELECT
+		'888' department,
+		COUNT(b.customerId) AS visit,
+		group_concat('\n【', projectName,'】') AS projectName
+		FROM
+		(
+		SELECT
+		cu_visit.*, oguser.department,
+		CONCAT(
+		cu_visit.userName,
+		"：",
+		projectId
+		) AS projectName
+		FROM
+		cu_visit
+		LEFT JOIN oguser ON cu_visit.userId = oguser.id
+		WHERE
+		visitDate   between #{screateDate} and #{ecreateDate}
+
+		) AS b
+		) AS c ON a.deId = c.department
+		LEFT JOIN (
+
+		SELECT
+		'888' department,
+		COUNT(b.customerId OR NULL) deal,
+		sum(b.price) price,
+		sum(b.Commission) commission,
+		group_concat('\n【', projectName,'】') AS deaproject
+		FROM
+		(
+		SELECT
+		cu_deal.price,
+		cu_deal.projectId,
+		cu_deal.commission,
+		cu_deal.dealDate,
+		cu_deal.customerId	,
+		CONCAT(
+		cu_deal.userName,
+		"：",
+		cu_deal.projectId,
+		"，总价：",
+		cu_deal.price,
+		"，佣金：",
+		cu_deal.commission
+
+		) AS projectName
+		FROM
+		cu_deal WHERE dealDate  between #{screateDate} and #{ecreateDate}
+
+		) AS b
+		) AS d ON a.deId = d.department
+	</select>
+	<!--当月所有销售数据-->
+	<select id="findallmonthreport"
+			resultType="com.first.entity.PersonalFormMap">
+		SELECT
+		a.id,
+		a.userName,
+		a.did,
+		a. NAME department,
+		ifnull(b.addw, 0) addw,
+		ifnull(b.adddh, 0) adddh,
+		ifnull(b.addwl, 0) addwl,
+		ifnull(b.addwla, 0) addwla,
+		ifnull(b.addwl5, 0) addwl5,
+		ifnull(b.addwlf, 0) addwlf,
+		ifnull(b.addqt, 0) addqt,
+		ifnull(c.visit, 0) visit,
+		ifnull(c.projectName, "") visitproject,
+		ifnull(d.deal, 0) deal,
+		ifnull(d.deaproject, "") dealproject,
+		ifnull(ROUND(sum(d.price) / 10000,2), 0) price,
+		ifnull(ROUND(sum(d.commission) / 10000,2), 0) commission,
+		DATE_FORMAT(now(), "%Y-%m") months
+		FROM
+		(
+		SELECT
+		'888' deId,
+		oguser.id,
+		oguser.userName,
+		ogdepartment.id AS did,
+		ogdepartment. NAME
+		FROM
+		oguser
+		LEFT JOIN ogdepartment ON ogdepartment.id = oguser.department
+		WHERE
+		oguser.id = 1
+		) AS a
+		LEFT JOIN (
+		SELECT
+		'888' department,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource = 9,
+		TRUE,
+		NULL
+		)
+		) adddh,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource  IN (0,7,8),
+		TRUE,
+		NULL
+		)
+		) addqt,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (1, 2, 3, 4, 5, 6),
+		TRUE,
+		NULL
+		)
+		) addwl,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (1, 4),
+		TRUE,
+		NULL
+		)
+		) addwla,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (2, 5),
+		TRUE,
+		NULL
+		)
+		) addwl5,
+		COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (3, 6),
+		TRUE,
+		NULL
+		)
+		) addwlf,
+		COUNT(c.source = 1 OR NULL) addw
+		FROM
+		(
+		SELECT
+	b.*, cudata.cusource ,cudata.telephone
+	FROM
+	cu_add b
+	LEFT JOIN cudata ON cudata.id = b.customerId
+	where 	DATE_FORMAT(addDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m') and source=1 GROUP BY telephone
+		) AS c
+		WHERE
+		1=1
+
+		) AS b ON a.deId = b.department
+		LEFT JOIN (
+		SELECT
+		'888' department,
+		COUNT(b.customerId) AS visit,
+		group_concat('\n【', projectName,'】') AS projectName
+		FROM
+		(
+		SELECT
+		cu_visit.*, oguser.department,
+		CONCAT(
+		cu_visit.userName,
+		"：",
+		projectId
+		) AS projectName
+		FROM
+		cu_visit
+		LEFT JOIN oguser ON cu_visit.userId = oguser.id
+		WHERE
+		DATE_FORMAT(visitDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+
+
+		) AS b
+		) AS c ON a.deId = c.department
+		LEFT JOIN (
+
+		SELECT
+		'888' department,
+		COUNT(b.customerId OR NULL) deal,
+		sum(b.price) price,
+		sum(b.commission) commission,
+		group_concat('\n【', projectName,'】') AS deaproject
+		FROM
+		(
+		SELECT
+		cu_deal.price,
+		cu_deal.projectId,
+		cu_deal.commission,
+		cu_deal.dealDate,
+		cu_deal.customerId	,
+		CONCAT(
+		cu_deal.userName,
+		"：",
+		cu_deal.projectId,
+		"，总价：",
+		cu_deal.price,
+		"，佣金：",
+		cu_deal.commission
+
+		) AS projectName
+		FROM
+		cu_deal WHERE DATE_FORMAT(dealDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+
+		) AS b
+		) AS d ON a.deId = d.department
+
+	</select>
+
+	<!--查看明日所有计划-->
+	<select id="findallnextdayadd"
+			resultType="com.first.entity.PersonalFormMap">
+		SELECT
+		SUM(visit) visit,
+		group_concat('\n【', visitproject, '】') AS visitproject,
+		createDate
+		FROM
+		(
+		SELECT
+		visit,
+		CONCAT(
+		b.`name`,
+		"：",
+		a.visitproject
+		) AS visitproject,
+		a.createDate
+		FROM
+		cudedayplan a
+		LEFT JOIN ogdepartment b ON a.deId = b.id
+		WHERE
+		 DATE_FORMAT(a.createDate, '%Y%m%d') = DATE_FORMAT(#{nexteDate}, '%Y%m%d')
+
+		GROUP BY
+		deId
+		) a
+	</select>
+	<!--查看个人成交数据-->
+	<select id="peDealPerformance"
+			resultType="java.util.HashMap">
+		SELECT
+		a.id,
+		a.customerId,
+		a.customerName,
+		c.telephone,
+		c.cusource,
+		a.projectId,
+		a.price,
+		a.area,
+		a.roomNumber,
+		a.dealDate,
+		CONCAT(
+		ROUND(SUM(b.ratio*100), 2),
+		"%"
+		) ratio,
+		SUM(b.commission) commission
+		FROM
+		cu_deal a
+		INNER JOIN cudata c ON a.customerId = c.id
+		INNER JOIN cu_deal_allot b ON a.id = b.dealId
+		WHERE
+
+        b.userId =#{userId}
+		<if test="customerName != null and  customerName != ''">
+        AND a.customerName LIKE	CONCAT(CONCAT('%',#{customerName}),'%')
+		</if>
+		<if test="telephone != null and  telephone != ''">
+
+			and c.telephone LIKE CONCAT(CONCAT('%',#{telephone}),'%')
+		</if>
+		<if test="screateDate != null and  screateDate != '' or ecreateDate != null and ecreateDate != ''">
+			and a.dealDate between #{screateDate} and #{ecreateDate}
+		</if>
+
+		GROUP BY
+		dealId
+		ORDER BY
+		a.dealDate DESC
 
 	</select>
 

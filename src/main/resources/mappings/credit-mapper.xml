@@ -1,7 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.first.mapperCreditMapper">
+<mapper namespace="com.first.mapper.CreditMapper">
 
+    <!-- 添加积分账户 -->
+    <insert id="addCredit">
+		INSERT INTO
+		 credit_data
+		VALUES
+		(
+		null,
+		#{userId},
+		#{userName},
+		#{balance},
+		#{status},
+		#{createDate}
+
+		)
+	</insert>
+
+    <select id="findCredit"   resultType="com.first.entity.CreditFormMap">
+             SELECT
+            *
+            FROM
+           credit_data
+           WHERE
+       status =1
+
+    </select>
+    <select id="findUserCredit"   resultType="com.first.entity.CreditFormMap">
+             SELECT
+            *
+            FROM
+           credit_data
+           WHERE
+          userId=#{userId}
+
+    </select>
+    <update id="editCredit">
+        update credit_data
+        <set>
+            <if test="score != null and  score != '' ">
+                <choose>
+                    <when test="type==0">
+                        balance=balance+#{score},
+                    </when>
+                    <otherwise>
+                        balance=balance-#{score},
+                    </otherwise>
+                </choose>
+
+            </if>
+            <if test=" status != null and  status != '' ">
+                status=#{status},
+            </if>
+
+        </set>
+        where  userId=#{userId};
+    </update>
+    <!--积分记录-->
+    <select id="findCreditRecord"   resultType="com.first.entity.CreditFormMap">
+           SELECT
+                a.*, b.operation,
+                b.type
+            FROM
+                credit_record a
+            LEFT JOIN credit_operation b ON a.opId = b.id
+           WHERE
+           1=1
+         <if test="userId != null and  userId != ''and userId != 0">
+            and userId=#{userId}
+        </if>
+        <if test="type != null and type != ''">
+            and type=#{type}
+        </if>
+        <if test="createDate != null and  createDate != ''">
+            and  DATE_FORMAT(a.createDate, '%Y%m' )=DATE_FORMAT(#{createDate}, '%Y%m' )
+        </if>
+    </select>
+    <!-- 添加积分记录 -->
+    <insert id="addCreditRecord">
+		INSERT INTO
+		 credit_record
+		VALUES
+		(
+		null,
+		#{userId},
+		#{id},
+		#{score},
+		#{createDate}
+
+		)
+	</insert>
+    <!-- 查看操作类型 -->
+    <select id="findCreditOperation"   resultType="com.first.entity.CreditFormMap">
+        SELECT
+        *
+        FROM
+        credit_operation
+        WHERE
+        1=1
+        <if test="id != null and id != ''">
+            and id=#{id}
+        </if>
+        <if test="type != null and type != ''">
+            and type=#{type}
+        </if>
+    </select>
+    <!-- 修改分值 -->
+
+    <update id="editCreditOperation">
+        update credit_operation
+        <set>
+            <if test=" score != null and score != '' ">
+                score=#{score},
+            </if>
+
+
+        </set>
+        where  userId=#{userId};
+    </update>
+    <!-- 查看今日跟进积分条数 -->
+    <select id="findFollowCredit"  resultType="java.lang.Integer" >
+        SELECT
+        COUNT(id)
+        FROM
+        credit_record
+        WHERE
+        opId = 2
+        AND DATE_FORMAT(createDate, '%y%m%d') = DATE_FORMAT(NOW(), '%y%m%d')
+        and userId=#{userId}
+
+
+    </select>
 
 </mapper>

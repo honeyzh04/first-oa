@@ -2,6 +2,8 @@ package com.first.mapper;
 
 import com.first.entity.PersonalFormMap;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -109,4 +111,39 @@ public interface PersonalMapper {
      * @return
      */
     public PersonalFormMap  finddemonthreport(Map searchMapMap);
+    /**
+     * 当周所有销售数据
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap  findallweekreport(Map searchMapMap);
+    /**
+     * 当月所有销售数据
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap  findallmonthreport(Map searchMapMap);
+
+
+    /**
+     * 当天所有销售数据
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap  findalldayreport(Map searchMapMap);
+
+    /**
+     * 查看所有明日日计划
+     * @param searchMapMap
+     * @return
+     */
+    public PersonalFormMap findallnextdayadd(Map searchMapMap);
+
+    /**
+     * 查看个人成交业绩
+     * @param searchMapMap
+     * @return
+     */
+    List<HashMap> peDealPerformance(Map searchMapMap);
+
 }

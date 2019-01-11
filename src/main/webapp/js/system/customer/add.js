@@ -47,6 +47,7 @@ $(function() {
 							 */
 							parent.layer.close(parent.pageii);
 							parent.myTable.draw(false);
+                            parent.matchproject();
 							return false;
 						});
 						$("#form")[0].reset();

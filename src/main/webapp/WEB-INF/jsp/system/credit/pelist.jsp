@@ -10,8 +10,6 @@
 <body>
 
 
-
-
 <div class="score-con">
     <div class="score-grow">
         <div class="score-tit"><span class="base-score score-tit-icon"></span>积分成长</div>
@@ -62,13 +60,15 @@
         </div>
         <ul class="score-ul">
             <li>
-                <div class="score-img-box"><img src="//game.gtimg.cn/images/dnf/community2016/images/score/score-a15.png" alt=""></div>
+                <div class="score-img-box"><img
+                        src="//game.gtimg.cn/images/dnf/community2016/images/score/score-a15.png" alt=""></div>
                 <p>卡妮娜的手工面包*1</p>
                 <span>2积分</span>
                 <a href="javascript:exchangeGift(1);">兑换</a>
             </li>
             <li>
-                <div class="score-img-box"><img src="//game.gtimg.cn/images/dnf/community2016/images/score/score-a14.png" alt=""></div>
+                <div class="score-img-box"><img
+                        src="//game.gtimg.cn/images/dnf/community2016/images/score/score-a14.png" alt=""></div>
                 <p>卡妮娜的赫顿玛尔牛奶*1</p>
                 <span>2积分</span>
                 <a href="javascript:exchangeGift(2);">兑换</a>
@@ -82,9 +82,31 @@
                 <li>2.上传违规作品1次扣50积分,3次以上盗图扣光所有积分.(违规作品：非DNF相关作品,非上传者本人作品且无授权)</li>
                 <li>3.Q币每人每月限兑换10个,黑钻7天每人每月限兑换1个.</li>
             </ul>
-            <img src="//game.gtimg.cn/images/dnf/community2016/images/public/score-img.png" width="444" height="190" class="score-img" alt="">
+            <img src="//game.gtimg.cn/images/dnf/community2016/images/public/score-img.png" width="444" height="190"
+                 class="score-img" alt="">
         </div>
     </div>
 </div>
 </body>
 </html>
+<script type="text/javascript">
+    $(function() {
+        find()
+
+    });
+    function find() {
+        $.ajax({
+            "url" : "./credit/findUserCredit.shtml",
+            "date":"",
+            "type" : "GET",
+            "dataType" : "json",
+            "success" : function(obj) {
+                console.log(obj);
+
+            },
+            error : function() {
+                alert("请与管理员联系");
+            }
+        });
+    }
+</script>

@@ -108,6 +108,10 @@ $(function() {
 
 				required : true,
 			},
+            "customerFormMap.money" : {
+
+                required : true,
+            },
 			"customerFormMap.dealprice" : {
 
 				required : true,
@@ -123,9 +127,10 @@ $(function() {
         "customerFormMap.dealCommissiona" : {
 
             required : true,
-        },
+        }, "customerFormMap.dealUserYY" : {
+                number : true,
 
-
+            },
 		},
 
 		messages : {
@@ -178,6 +183,10 @@ $(function() {
 
 				required : "请输入成交佣金",
 			},
+            "customerFormMap.money" : {
+
+                required : "请输入成交现金奖",
+            },
 			"customerFormMap.dealprice" : {
 
 				required : "请输入成交总价",
@@ -193,7 +202,11 @@ $(function() {
             "customerFormMap.dealCommissiona": {
 
                 required : "请输入所得佣金",
+            }, " customerFormMap.dealUserYY": {
+
+                required : "请选择邀约人",
             },
+
 		},
 
 		errorPlacement : function(error, element) {// 自定义提示错误位置

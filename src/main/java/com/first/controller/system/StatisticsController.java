@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
 /**
  * 客户报表统计 Copyright (C), 2018-2022, ChengDu First Real estate agency
  *
@@ -104,28 +105,11 @@ public class StatisticsController extends BaseController {
         return map;
     }
 
-    ;
 
-    /**
-     * 部门周报表
-     *
-     * @param request
-     * @param draw
-     * @param start
-     * @param length
-     * @return
-     * @throws Exception
-     */
-    @ResponseBody
-    @RequestMapping("findBydepartweek")
-    public Object findBydepartweek(HttpServletRequest request, int draw, int start, int length) throws Exception {
 
+    private Map<String, Object> getWeek(String departweek){
         Map<String, Object> searchMap = new HashMap<String, Object>();
-
-        String departweek = request.getParameter("departweek");
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         int week = cal.get(Calendar.DAY_OF_WEEK);
@@ -165,6 +149,28 @@ public class StatisticsController extends BaseController {
             searchMap.put("departweeks", reStr2);
         }
 
+        return searchMap;
+    }
+
+    /**
+     * 部门周报表
+     *
+     * @param request
+     * @param draw
+     * @param start
+     * @param length
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("findBydepartweek")
+    public Object findBydepartweek(HttpServletRequest request, int draw, int start, int length) throws Exception {
+
+        Map<String, Object> searchMap = new HashMap<String, Object>();
+
+        String departweek = request.getParameter("departweek");
+
+        searchMap.putAll(getWeek(departweek));
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findDeweek(searchMap);
@@ -248,7 +254,8 @@ public class StatisticsController extends BaseController {
     @RequestMapping("pedaylist")
     public String pedaylistUI(Model model) throws Exception {
         String id = getPara("id");
-        System.err.println("客户" + id);
+
+
         model.addAttribute("deId", id);
         return Common.BACKGROUND_PATH + "/system/statistics/pedaylist";
     }
@@ -277,7 +284,7 @@ public class StatisticsController extends BaseController {
             searchMap.put("choiceday", ab);
         }
         searchMap.put("deId", deId);
-        System.err.println("adsa" + searchMap);
+
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findpeday(searchMap);
@@ -292,7 +299,7 @@ public class StatisticsController extends BaseController {
 
         }
         // data.add(SumDeday);
-        System.err.println("s12" + data);
+
         map.put("draw", draw);
         map.put("recordsTotal", pageinfo.getTotal());
         map.put("recordsFiltered", pageinfo.getTotal());
@@ -313,7 +320,7 @@ public class StatisticsController extends BaseController {
     @RequestMapping("peweeklist")
     public String peweeklistUI(Model model) throws Exception {
         String id = getPara("id");
-        System.err.println("客户" + id);
+
         model.addAttribute("deId", id);
         return Common.BACKGROUND_PATH + "/system/statistics/peweeklist";
     }
@@ -336,49 +343,10 @@ public class StatisticsController extends BaseController {
         String deId = request.getParameter("deId");
 
         String departweek = request.getParameter("peweek");
+        searchMap.putAll(getWeek(departweek));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        int week = cal.get(Calendar.DAY_OF_WEEK);
-        if (week == 1) {
-            week = 5;
-        } else if (week == 2) {
-            week = 6;
-        } else {
-            week = week - 3;
-        }
-        System.err.println("，阿达1" + week);
-        if (departweek.equals("1")) {
-            searchMap.put("departweeke", new Date());
-            cal.add(Calendar.DAY_OF_YEAR, -week);
-            Date dt1 = cal.getTime();
-            String reStr = sdf.format(dt1);
-            searchMap.put("departweeks", reStr);
-        } else if (departweek.equals("2")) {
-            cal.add(Calendar.DAY_OF_YEAR, -week);
-            Date dt1 = cal.getTime();
-            String reStr = sdf.format(dt1);
-            searchMap.put("departweeke", reStr);
-            cal.setTime(new Date());
-            cal.add(Calendar.DAY_OF_YEAR, -(week + 7));
-            Date dt2 = cal.getTime();
-            String reStr2 = sdf.format(dt2);
-            searchMap.put("departweeks", reStr2);
-        } else {
-            cal.add(Calendar.DAY_OF_YEAR, -(week + 7));
-            Date dt1 = cal.getTime();
-            String reStr = sdf.format(dt1);
-            searchMap.put("departweeke", reStr);
-            cal.setTime(new Date());
-            cal.add(Calendar.DAY_OF_YEAR, -(week + 14));
-            Date dt3 = cal.getTime();
-            String reStr2 = sdf.format(dt3);
-            searchMap.put("departweeks", reStr2);
-        }
         searchMap.put("deId", deId);
-        System.err.println("查询" + searchMap);
+
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findpeweek(searchMap);
@@ -393,7 +361,7 @@ public class StatisticsController extends BaseController {
 
         }
 
-        System.err.println("s12" + data);
+
         map.put("draw", draw);
         map.put("recordsTotal", pageinfo.getTotal());
         map.put("recordsFiltered", pageinfo.getTotal());
@@ -414,7 +382,7 @@ public class StatisticsController extends BaseController {
     @RequestMapping("pemonthlist")
     public String pemonthlistUI(Model model) throws Exception {
         String id = getPara("id");
-        System.err.println("客户1" + id);
+
         model.addAttribute("deId", id);
         return Common.BACKGROUND_PATH + "/system/statistics/pemonthlist";
     }
@@ -432,7 +400,7 @@ public class StatisticsController extends BaseController {
     @ResponseBody
     @RequestMapping("findBypemonth")
     public Object findBypemonth(HttpServletRequest request, int draw, int start, int length) throws Exception {
-        System.err.println("sdasdapp");
+
         UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
         Map<String, Object> searchMap = new HashMap<String, Object>();
         searchMap.put("id", userFormMap.get("id"));
@@ -444,7 +412,7 @@ public class StatisticsController extends BaseController {
             searchMap.put("choicemonth", ab + "-00");
         }
         searchMap.put("deId", deId);
-        System.err.println("adsa" + searchMap);
+
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findpemonth(searchMap);
@@ -460,7 +428,7 @@ public class StatisticsController extends BaseController {
 
         }
         // data.add(SumDeday);
-        System.err.println("s12" + data);
+
         map.put("draw", draw);
         map.put("recordsTotal", pageinfo.getTotal());
         map.put("recordsFiltered", pageinfo.getTotal());
@@ -507,7 +475,6 @@ public class StatisticsController extends BaseController {
             searchMap.put("choiceday", ab);
         }
 
-        System.err.println(searchMap);
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsservice.findSumInday(searchMap);
@@ -522,7 +489,7 @@ public class StatisticsController extends BaseController {
 
         }
 
-        System.err.println("s12" + data);
+
         map.put("draw", draw);
         map.put("recordsTotal", pageinfo.getTotal());
         map.put("recordsFiltered", pageinfo.getTotal());
@@ -550,47 +517,7 @@ public class StatisticsController extends BaseController {
 
         String departweek = request.getParameter("departweek");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        int week = cal.get(Calendar.DAY_OF_WEEK);
-        if (week == 1) {
-            week = 5;
-        } else if (week == 2) {
-            week = 6;
-        } else {
-            week = week - 3;
-        }
-        System.err.println("，阿达" + week);
-        if (departweek.equals("1")) {
-            searchMap.put("departweeke", new Date());
-            cal.add(Calendar.DAY_OF_YEAR, -week);
-            Date dt1 = cal.getTime();
-            String reStr = sdf.format(dt1);
-            searchMap.put("departweeks", reStr);
-        } else if (departweek.equals("2")) {
-            cal.add(Calendar.DAY_OF_YEAR, -week);
-            Date dt1 = cal.getTime();
-            String reStr = sdf.format(dt1);
-            searchMap.put("departweeke", reStr);
-            cal.setTime(new Date());
-            cal.add(Calendar.DAY_OF_YEAR, -(week + 7));
-            Date dt2 = cal.getTime();
-            String reStr2 = sdf.format(dt2);
-            searchMap.put("departweeks", reStr2);
-        } else {
-            cal.add(Calendar.DAY_OF_YEAR, -(week + 7));
-            Date dt1 = cal.getTime();
-            String reStr = sdf.format(dt1);
-            searchMap.put("departweeke", reStr);
-            cal.setTime(new Date());
-            cal.add(Calendar.DAY_OF_YEAR, -(week + 14));
-            Date dt2 = cal.getTime();
-            String reStr2 = sdf.format(dt2);
-            searchMap.put("departweeks", reStr2);
-        }
-        System.err.println("查询" + searchMap);
+        searchMap.putAll(getWeek(departweek));
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsservice.findSumInweek(searchMap);
@@ -605,7 +532,7 @@ public class StatisticsController extends BaseController {
 
         }
 
-        System.err.println("s12" + data);
+
         map.put("draw", draw);
         map.put("recordsTotal", pageinfo.getTotal());
         map.put("recordsFiltered", pageinfo.getTotal());
@@ -633,13 +560,13 @@ public class StatisticsController extends BaseController {
         Map<String, Object> searchMap = new HashMap<String, Object>();
         searchMap.put("id", userFormMap.get("id"));
         String ab = request.getParameter("choicemonth");
-        System.err.println("das" + ab);
+
         if (ab == null || "".equals(ab)) {
             searchMap.put("choicemonth", new Date());
         } else {
             searchMap.put("choicemonth", ab + "-00");
         }
-        System.err.println(searchMap);
+
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsservice.findSumInmonth(searchMap);
@@ -654,7 +581,7 @@ public class StatisticsController extends BaseController {
 
         }
 
-        System.err.println("s13" + data);
+
         map.put("draw", draw);
         map.put("recordsTotal", pageinfo.getTotal());
         map.put("recordsFiltered", pageinfo.getTotal());
@@ -691,14 +618,14 @@ public class StatisticsController extends BaseController {
         } else {
             week = week - 3;
         }
-        System.err.println("，阿达" + week);
+
 
         searchMap.put("departweeke", new Date());
         cal.add(Calendar.DAY_OF_YEAR, -week);
         Date dt1 = cal.getTime();
         String reStr = sdf.format(dt1);
         searchMap.put("departweeks", reStr);
-        System.err.println("，阿达" + searchMap);
+
         return null;
 
     }
@@ -729,7 +656,7 @@ public class StatisticsController extends BaseController {
         } else {
             searchMap.put("monthDate", ab + "-00");
         }
-        System.err.println("查询32131" + searchMap);
+
         PageHelper.startPage((start / length) + 1, length);
 
         List<StatisticsFormMap> p = statisticsservice.findByExtension(searchMap);
@@ -760,12 +687,12 @@ public class StatisticsController extends BaseController {
     @RequestMapping("sourceUI")
     public String sourceUI(Model model) {
         String createDate = getPara("createDate");
-        System.err.println("项目1" + createDate);
+
         String format = "yyyy-MM-dd";
 
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         String c = sdf.format(new Date(Long.valueOf(createDate)));
-        System.err.println(c);
+
         model.addAttribute("createDate", c);
 
         return Common.BACKGROUND_PATH + "/system/statistics/source";
@@ -777,7 +704,7 @@ public class StatisticsController extends BaseController {
         String createDate = getPara("createDate");
 
 
-        System.out.println("DA1" + createDate);
+
         Map<String, Object> source = statisticsservice.findSource(createDate);
         return source;
     }
@@ -798,16 +725,13 @@ public class StatisticsController extends BaseController {
     @RequestMapping("addOther")
     public Map<String, Object> addOther(HttpServletRequest request) throws Exception {
         String createDate = request.getParameter("createDate");
-        System.err.println("SJ" + createDate);
+
         Map<String, Object> sourceMap = statisticsservice.findAddOther(createDate);
         int vis = statisticsservice.findVis(createDate);
         Map<String, Object> deaMap = statisticsservice.findDea(createDate);
         sourceMap.put("vis", vis);
         sourceMap.putAll(deaMap);
-        System.err.println(sourceMap);
-        System.out.println("ASD" + sourceMap);
-        System.out.println("ASD" + vis);
-        System.out.println("ASD" + deaMap);
+
         return sourceMap;
     }
 
@@ -816,7 +740,7 @@ public class StatisticsController extends BaseController {
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
     public String addEntity() throws Exception {
         StatisticsFormMap statisticsFormMap = getFormMap(StatisticsFormMap.class);
-        System.out.println(statisticsFormMap);
+
         statisticsservice.addEntity(statisticsFormMap);
         return "success";
     }
@@ -845,7 +769,7 @@ public class StatisticsController extends BaseController {
         Date date = formater.parse( date1);
         if (screateDate == null || "".equals(screateDate)) {
            Date a= DateUtil.geLastWeekTuesday(date);
-            System.err.println("123"+a);
+
             searchMap.put("screateDate", a);
         } else {
             searchMap.put("screateDate", screateDate);
@@ -853,7 +777,7 @@ public class StatisticsController extends BaseController {
         if (ecreateDate == null || "".equals(ecreateDate)) {
             Date b= DateUtil.getThisWeekTuesday(date);
             searchMap.put("ecreateDate", b);
-            System.err.println("123"+b);
+
         } else {
             searchMap.put("ecreateDate", ecreateDate);
         }
@@ -874,9 +798,9 @@ public class StatisticsController extends BaseController {
         if (SumDeday.get("consume") != null) {
 
 
-            System.err.println("2" + SumDeday);
+
             List<StatisticsFormMap> weekDeal = statisticsservice.findWeekDeal(searchMap);//房发现成交周报表
-            System.err.println("2" + weekDeal);
+
             for (StatisticsFormMap c : weekDeal) {
                 SumDeday.put("dea" + c.get("department"), c.get("dea"));
 
@@ -915,10 +839,11 @@ public class StatisticsController extends BaseController {
             SumDeday.put("commissionr", weekRefund.get("commission"));
 
             data.add(SumDeday);
+
         }
 
 
-        System.err.println("s12" + data);
+
         map.put("draw", draw);
         map.put("recordsTotal", pageinfo.getTotal());
         map.put("recordsFiltered", pageinfo.getTotal());
@@ -945,10 +870,20 @@ public class StatisticsController extends BaseController {
     public String addWeekReports() throws Exception {
         StatisticsFormMap statisticsFormMap = getFormMap(StatisticsFormMap.class);
         statisticsFormMap.put("create_date", new Date());
-        System.err.println("adw"+statisticsFormMap);
         statisticsservice.addWeekReport(statisticsFormMap);
-
         return "success";
     }
+    /**
+     * 个人当月每天数据
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("findDedays")
+    public List  findDedays() throws Exception {
 
+        List<StatisticsFormMap> p =statisticsservice.findDedays();
+
+        return p;
+    }
 }

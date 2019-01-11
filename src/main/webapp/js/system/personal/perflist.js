@@ -295,7 +295,7 @@ $(function () {
           ordering : false,// 排序
           "bStateSave": false,
           ajax : {
-              url : "./customer/findByDealCustomer.shtml",// 数据请求地
+              url : "./personal/peDealPerformance.shtml",// 数据请求地
               type : "POST",
               data : function(params) {
                   // 此处为定义查询条件 传给控制器的参数
@@ -312,30 +312,10 @@ $(function () {
           columns : [
               {
                   data : "id",
-                  sClass : "text-center",
-                  render : function(data, type, full, meta) {
-                      return '<input type="checkbox"  class="checkchild" name="checkchild"  value="'
-                          + data + '" />';
-                  },
-                  bSortable : false
+                  visible : false,
               },
-
               {
                   data : "customerName"
-              },
-
-              {
-                  "data" : "content",
-                  "visible" : false,
-                  sClass : "text-center",
-                  render : function(data, type, row, meta) {
-                      if (data == null) {
-                          return '<span >没有跟进</span>';
-
-                      } else {
-                          return  data;
-                      }
-                  }
               },
               {
                   data : "telephone",
@@ -349,82 +329,13 @@ $(function () {
                   }
               },
               {
-                  data : 'gender',
-                  render : function(data, type, row, meta) {
-                      if (data == 1) {
-                          return '<span>男</span>';
-                      } else if (data == 2) {
-                          return '<span>女</span>';
-                      } else {
-                          return '<span>未知</span>';
-                      }
-                  }
-              },
-
-              {
-                  data : "totalPrice",
+                  data : "projectId",
                   render : function(data, type, row, meta) {
                       if (data == null) {
-                          return '未知';
+                          return '';
 
                       } else {
                           return  data;
-                      }
-                  }
-              },
-              {
-                  data : "purpose",
-                  render : function(data, type, row, meta) {
-                      if (data == 1) {
-                          return '<span >投资</span>';
-                      } else if (data == 2) {
-                          return '<span >自用</span>';
-                      } else {
-                          return '<span >其他</span>';
-                      }
-                  }
-              },
-              {
-                  data : "apartment",
-                  render : function(data, type, row, meta) {
-                      if (data == 1) {
-                          return '<span >商铺</span>';
-                      } else if (data == 2) {
-                          return '<span >公寓</span>';
-                      } else {
-                          return '<span >其他</span>';
-                      }
-                  }
-              },
-              {
-                  data : "intention",
-                  render : function(data, type, row, meta) {
-                      if (data == 1) {
-                          return '<span >A</span>';
-                      } else if (data == 2) {
-                          return '<span >B</span>';
-                      } else if (data == 3) {
-                          return '<span >C</span>';
-                      } else {
-                          return '<span >其他</span>';
-                      }
-                  }
-              },
-              {
-                  data : "state",
-                  render : function(data, type, row, meta) {
-                      if (data == 1) {
-                          return '<span >新增</span>';
-                      } else if (data == 2) {
-                          return '<span  style="font-weight:bold;color:#228B22";>到访</span>';
-                      } else if (data == 3) {
-                          return '<span >排号</span>';
-                      } else if (data == 4) {
-                          return '<span  style="font-weight:bold;color:red">成交</span>';
-                      } else if (data == 5) {
-                          return '<span >退单</span>';
-                      } else {
-                          return '<span >其他</span>';
                       }
                   }
               },
@@ -450,18 +361,7 @@ $(function () {
                       } else if (data == 9) {
                           return '<span >主动T客户</span>';
                       } else {
-                          return '<span >未知</span>';
-                      }
-                  }
-              },
-              {
-                  data : "projectId",
-                  render : function(data, type, row, meta) {
-                      if (data == null) {
-                          return '';
-
-                      } else {
-                          return  data;
+                          return '<span >其他</span>';
                       }
                   }
               },
@@ -475,8 +375,9 @@ $(function () {
                           return  data;
                       }
                   }
-              },   {
-                  data : "commission",
+              },
+              {
+                  data : "area",
                   render : function(data, type, row, meta) {
                       if (data == null) {
                           return '';
@@ -487,7 +388,28 @@ $(function () {
                   }
               },
               {
-                  data : "userName",
+                  data : "roomNumber",
+                  render : function(data, type, row, meta) {
+                      if (data == null) {
+                          return '';
+
+                      } else {
+                          return  data;
+                      }
+                  }
+              },
+              {
+                  data : "ratio",
+                  render : function(data, type, row, meta) {
+                      if (data == null) {
+                          return '';
+
+                      } else {
+                          return  data;
+                      }
+                  }
+              },{
+                  data : "commission",
                   render : function(data, type, row, meta) {
                       if (data == null) {
                           return '';
@@ -511,7 +433,8 @@ $(function () {
                       var s = date.getSeconds();
                       m = m < 10 ? ("0" + m) : m;
                       d = d < 10 ? ("0" + d) : d;
-                      return y + "-" + m + "-" + d ;
+                      return y + "-" + m + "-" + d + " " + h
+                          + ":" + m1;
                   }
               }, {
                   "data" : null
@@ -520,20 +443,7 @@ $(function () {
           ],
           // /操作按钮
           columnDefs : [
-              {
-                  "targets" : 1,
-                  "data" : "customerName",
-                  className : "text-center",
-                  "render" : function(data, type, full) {
-                      // return "<div title='"+data+"'
-                      // >"+data.substring(0,3)+"</div>";//
-                      // 也可以不用a标签，用<span>
-                      // return "<div id='usrName'
-                      // onclick='func(this);'>a</div>";
-                      return  "<div class='btn-group' onclick='funAccount1(this);'>"+ data + "</div>"
-
-                  }
-              }, {
+             {
                   targets: -1,//操作按鈕位置，从0开始数为第几例
                   data: "id",
                   "render": function(data, type, full){
@@ -584,53 +494,7 @@ $(function () {
 
 });
 //分割线。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。表格内置操作按钮
-/**
- * 跟进详情弹窗
- */
-var tmp = "";
-function funAccount(_this) {
 
-	var nRow = $(_this).parents('tr')[0];// 得到这一行
-
-	var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
-
-	var cuId = aData.content;
-
-	if (tmp == "") {
-		tmp = layer.tips(cuId, _this, {
-			tips : [ 2, '#3595CC' ],
-			area: ['400px', 'auto'],
-			time : 10000
-			
-		});
-
-	} else {
-		tmp = layer.close(tmp);
-		tmp = "";
-	}
-}
-var tmp1 = "";
-function funAccount1(_this) {
-
-    var nRow = $(_this).parents('tr')[0];// 得到这一行
-
-    var aData = $("#datatablea").dataTable().fnGetData(nRow);// 得到这一行的json数据
-
-    var cuId = aData.content;
-
-    if (tmp1 == "") {
-        tmp1 = layer.tips(cuId, _this, {
-            tips : [ 2, '#3595CC' ],
-            area: ['400px', 'auto'],
-            time : 10000
-
-        });
-
-    } else {
-        tmp1 = layer.close(tmp1);
-        tmp1 = "";
-    }
-}
 function dealInfo(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
     var aData = $("#datatablea").dataTable().fnGetData(nRow);// 得到这一行的json数据

@@ -2,19 +2,18 @@
 	pageEncoding="UTF-8"%>
  <style type="text/css">
 
-.img{
-  margin: 0 auto;
-}
 
 </style>
 
 
                    
-        <div class="col-lg-12 img">
-        <img class="img-responsive center-block" src="./img/004.png"  />
-       
+        <div  >
+
+            <div id="TwoLineChart" style="width:100%; height:500px;"></div>
+            <div id="TwoLineChart1" style="width:100%; height:500px;"></div>
+            <div id="TwoLineChart2" style="width:100%; height:500px;"></div>
         </div>
-        
+<script type="text/javascript" src="js/system/statistics/echarts_list.js"></script>
         
         
         

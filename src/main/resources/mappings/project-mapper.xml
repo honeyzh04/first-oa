@@ -34,7 +34,7 @@
 		select
 		<include refid="selectId" />
 		from proj_data
-		where 1=1
+		where state !=4
 
 	</select>
 	<!-- 查看项目 -->
@@ -189,12 +189,12 @@
 	</update>
 	<!-- 匹配项目 -->
 	<select id="findcuProject"
-		resultType="com.first.entity.ProjectFormMap" parameterType="hashmap">
+		resultType="com.first.entity.ProjectFormMap" parameterType="com.first.entity.ProjectFormMap">
 		select
 		<include refid="selectId" />
 		from proj_data
 		where 
-		1=1
+		state !=4
 		<choose>
 			<when test="id != null and id !=''">
 				<if test="apartment != null and apartment != '' ">

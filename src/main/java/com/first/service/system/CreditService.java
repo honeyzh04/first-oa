@@ -3,16 +3,26 @@
  */
 package com.first.service.system;
 
-/**
-     *积分实体表
-     * @ClassName:      CreditService
-     * @Description:
-     * @Author:         zhaoh
-     * @CreateDate:     2018/11/29 17:20
-     * @UpdateDate:     2018/11/29 17:20
-     * @Version:        1.0
-     */
-public interface CreditService {
+import com.first.entity.CreditFormMap;
 
+import java.util.HashMap;
+import java.util.List;
+
+public interface CreditService {
+   CreditFormMap findUserCredit(String userId);
+   List<CreditFormMap> findCredit(HashMap searchMap);
+   void addCredit(CreditFormMap creditFormMap);
+
+   void editCredit(HashMap searchMap);
+
+   List<CreditFormMap> findCreditRecord(HashMap searchMap);
+
+   void addCreditRecord(HashMap searchMap);
+
+   List<CreditFormMap> findCreditOperation(HashMap searchMap);
+
+   void editCreditOperation(CreditFormMap creditFormMap);
+   void  editUserCredit(HashMap searchMap);
+  int  findFollowCredit(String userId);
 }
 

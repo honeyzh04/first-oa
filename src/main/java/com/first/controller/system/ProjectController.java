@@ -6,10 +6,8 @@ import com.first.entity.ProjectFormMap;
 import com.first.mapper.ProjectMapper;
 import com.first.service.system.ProjectService;
 import com.first.util.Common;
-import com.first.util.JsonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import net.sf.json.JSONArray;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,10 +54,7 @@ public class ProjectController extends BaseController{
 	@RequestMapping("getProject")
 	@ResponseBody
 	public List<ProjectFormMap>  showProvince(){
-		System.err.println("bumn");
 		List<ProjectFormMap>  projectFormMap = projectMapper.getProject();
-		System.err.println( "项目"+projectFormMap);
-		System.err.println(JSONArray.fromObject(projectFormMap).toString());
 		return   projectFormMap;
 	}
 	/**

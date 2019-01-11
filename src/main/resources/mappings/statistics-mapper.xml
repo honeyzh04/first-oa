@@ -310,6 +310,70 @@ AS d ON
 		=a.customerId) AS c
 
 	</select>
+	<!-- 个人月每天报表 -->
+	<select id="findPedays"
+			resultType="com.first.entity.StatisticsFormMap">
+		SELECT
+		a.id,
+		a.userName,
+		a.department,
+		ifnull(c.adds, 0) adds,
+		ifnull(d.follow, 0) follow,
+		ifnull(b.visit, 0) visit,
+		ifnull(b.projectName, "") projectName,
+		a.days
+		FROM
+		(
+		SELECT
+		a.id,
+		a.userName,
+		a.department,
+		b.days
+		FROM
+		oguser a,
+		cu_day b
+		WHERE
+		b.days &lt;= DAY (NOW())
+		AND a.id =  #{userId}
+		) AS a
+		LEFT JOIN (
+		SELECT
+		COUNT(customerId) visit,
+		GROUP_CONCAT(projectId) projectName,
+		DAY (visitDate) AS days
+		FROM
+		cu_visit
+		WHERE
+		DATE_FORMAT(visitDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+		AND userId = #{userId}
+		GROUP BY
+		days
+		) b ON a.days = b.days
+		LEFT JOIN (
+		SELECT
+		COUNT(customerId) adds,
+		DAY (addDate) AS days
+		FROM
+		cu_add
+		WHERE
+		DATE_FORMAT(addDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+		AND userId =  #{userId}
+		GROUP BY
+		days
+		) c ON a.days = c.days
+		LEFT JOIN (
+		SELECT
+		COUNT(customerId) follow,
+		DAY (CreateDate) AS days
+		FROM
+		cu_follow
+		WHERE
+		DATE_FORMAT(CreateDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+		AND userId = #{userId}
+		GROUP BY
+		days
+		) d ON a.days = d.days
+	</select>
     <!-- 部门当月每天报表 -->
     <select id="findDedays"
             resultType="com.first.entity.StatisticsFormMap">
@@ -1309,7 +1373,7 @@ FROM
 			cu_deal
 		LEFT JOIN cudata ON cu_deal.customerId = cudata.id
 		WHERE
-			state = 5
+			cudata.state = 5
 		AND cusource IN (3, 6)
 		AND cu_deal.dealDate BETWEEN #{screateDate}
 		AND #{ecreateDate}

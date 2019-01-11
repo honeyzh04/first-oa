@@ -8,6 +8,7 @@ import com.first.mapper.CustomerMapper;
 import com.first.mapper.DepartMapper;
 import com.first.mapper.InterlocutionMapper;
 import com.first.mapper.UserMapper;
+import com.first.service.system.CreditService;
 import com.first.service.system.FFXAppService;
 import com.first.service.system.PersonalService;
 import com.first.service.system.ShareCustomerService;
@@ -52,7 +53,8 @@ public class FFXAppController extends BaseController {
     private PersonalService personalService;
     @Inject
     private DepartMapper departMapper;
-
+    @Inject
+    private CreditService creditService;
 
     /**
      * 查找用户信息
@@ -559,7 +561,6 @@ public class FFXAppController extends BaseController {
         Result<Void> rr = null;
 
         try {
-        System.err.println("发送微信");
         SendWeChat sendWeChat=new SendWeChat();
         boolean is_send = sendWeChat.send_info(corpsecret, agentid,info);
         if (is_send){
@@ -569,6 +570,33 @@ public class FFXAppController extends BaseController {
             rr = new Result<Void>(1, "发送失败","");
         }
 
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+        }
+        return rr;
+    }
+
+    /**
+     *发布房源加积分
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("fyCredit")
+    @ResponseBody
+    public   Result<Void> fyCredit(String userName) throws Exception {
+        Result<Void> rr = null;
+        try {
+           if (findByUser(userName)!=null){
+               // 积分系统
+               String userId=findByUser(userName).get("id").toString();
+               HashMap creditMap1 = new HashMap();
+               creditMap1.put("id",6);
+               creditMap1.put("userId",userId);
+               creditService. editUserCredit(creditMap1);
+
+               rr = new Result<Void>(1, "成功",true);
+           }
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
         }

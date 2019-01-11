@@ -3,11 +3,15 @@
  */
 package com.first.service.system.impl;
 
+import com.first.entity.CreditFormMap;
 import com.first.mapper.CreditMapper;
 import com.first.service.system.CreditService;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
      *
@@ -22,6 +26,65 @@ import javax.inject.Inject;
 public class CreditServiceImpl implements CreditService {
     @Inject
     private CreditMapper creditMapper;
+
+    @Override
+    public CreditFormMap findUserCredit(String userId) {
+
+        return creditMapper.findUserCredit(userId);
+    }
+
+    @Override
+    public  List<CreditFormMap> findCredit(HashMap searchMap) {
+        return creditMapper.findCredit(searchMap);
+    }
+
+    @Override
+    public void addCredit(CreditFormMap creditFormMap) {
+        creditMapper.addCredit(creditFormMap);
+    }
+
+    @Override
+    public void editCredit(HashMap searchMap) {
+        creditMapper.editCredit(searchMap);
+    }
+
+    @Override
+    public List<CreditFormMap> findCreditRecord(HashMap searchMap) {
+        return creditMapper.findCreditRecord(searchMap);
+    }
+
+    @Override
+    public void addCreditRecord(HashMap searchMap) {
+        creditMapper.addCreditRecord(searchMap);
+    }
+
+
+
+    @Override
+    public List<CreditFormMap> findCreditOperation(HashMap searchMap) {
+        return creditMapper.findCreditOperation(searchMap);
+    }
+
+    @Override
+    public void editCreditOperation(CreditFormMap creditFormMap) {
+
+    }
+    @Override
+    public void editUserCredit(HashMap searchMap) {
+        List<CreditFormMap> creditFormMap = findCreditOperation(searchMap);
+        if (creditFormMap.size() != 0) {
+            CreditFormMap a = creditFormMap.get(0);
+            searchMap.putAll(a);
+            searchMap.put("createDate",new Date());
+            addCreditRecord(searchMap);
+            editCredit(searchMap);
+        }
+    }
+
+    @Override
+    public int findFollowCredit(String userId) {
+        return creditMapper.findFollowCredit(userId);
+    }
 
 }
 	

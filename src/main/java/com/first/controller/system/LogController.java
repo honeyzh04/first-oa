@@ -1,24 +1,21 @@
 package com.first.controller.system;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
+import com.first.controller.index.BaseController;
+import com.first.entity.LogFormMap;
+import com.first.mapper.LogMapper;
+import com.first.util.Common;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.first.controller.index.BaseController;
-import com.first.entity.LogFormMap;
-import com.first.entity.UserFormMap;
-import com.first.mapper.LogMapper;
-import com.first.util.Common;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 日志操作查询
@@ -62,7 +59,7 @@ public class LogController extends BaseController {
 		        map.put("recordsTotal", pageinfo.getTotal());  
 		        map.put("recordsFiltered", pageinfo.getTotal()); 
 		        map.put("data", data);  
-		        System.err.println(map);
+
 		        return map; 
 		}
 	}

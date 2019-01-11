@@ -2,11 +2,13 @@ package com.first.controller.system;
 
 import com.first.annotation.SystemLog;
 import com.first.controller.index.BaseController;
+import com.first.entity.CreditFormMap;
 import com.first.entity.UserFormMap;
 import com.first.entity.UserRoleFormMap;
 import com.first.exception.SystemException;
 import com.first.mapper.CustomerMapper;
 import com.first.mapper.UserMapper;
+import com.first.service.system.CreditService;
 import com.first.util.Common;
 import com.first.util.PasswordHelper;
 import com.first.util.PostUtil;
@@ -38,7 +40,8 @@ public class UserController extends BaseController {
     private UserMapper userMapper;
     @Inject
     private CustomerMapper customerMapper;
-
+    @Inject
+    private CreditService creditService;
     /**
      * 显示按钮
      *
@@ -160,6 +163,14 @@ public class UserController extends BaseController {
                 PostUtil.httpPost(url, map);
 
             }
+            //创建积分表
+            CreditFormMap creditFormMap=new CreditFormMap();
+            creditFormMap.put("userId",userFormMap.get("id").toString());
+            creditFormMap.put("userName", userFormMap.get("userName").toString());
+            creditFormMap.put("balance",0);
+            creditFormMap.put("status",1);
+            creditFormMap.put("createDate",new Date());
+            creditService.addCredit(creditFormMap);
         } catch (Exception e) {
             throw new SystemException("添加账号异常");
         }

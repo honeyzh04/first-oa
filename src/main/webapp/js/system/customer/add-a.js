@@ -47,7 +47,7 @@ $(function() {
 							 * false);
 							 */
 							layer.close(index);
-
+                            parent.matchproject();
 							return false;
 						});
 						$("#form")[0].reset();

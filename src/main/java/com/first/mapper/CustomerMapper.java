@@ -121,6 +121,8 @@ public interface CustomerMapper {
 	 * @return
 	 */
 	public CustomerFormMap findbydiscardtUI(@Param("id")String id );
+
+
 	/**
 	 *转让客户
 	 * @param formMap
@@ -320,5 +322,18 @@ public interface CustomerMapper {
 	 * @throws Exception
 	 */
 	void addDealAllot(HashMap formMap) throws Exception;
+
+	public  List<HashMap> finddealAllot(@Param("id")String id );
+
+    public  List<HashMap> finddealUserAllot(@Param("id")String id );
+
+     CustomerFormMap  addCumMtch(@Param("userId") String userId);
+
+	/**
+	 * 查看首录
+	 * @param telephone
+	 * @return
+	 */
+	CustomerFormMap  createUser(@Param("telephone") String telephone);
 
 }
