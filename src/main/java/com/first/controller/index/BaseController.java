@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import com.first.mapper.DepartMapper;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -33,7 +34,6 @@ import com.github.pagehelper.PageInfo;
 public class BaseController {
 	@Inject
 	private ResourcesMapper resourcesMapper;
-
 	
 	/**
 	 * 查找资源
@@ -78,7 +78,6 @@ public class BaseController {
 	}
 	/**
 	 *获取操作用户名
-	 * @param key
 	 * @return
 	 */
 	public String getuserName(){
@@ -91,7 +90,6 @@ public class BaseController {
 	}
 	/**
 	 *获取操作用Id
-	 * @param key
 	 * @return
 	 */
 	public String getuserId(){

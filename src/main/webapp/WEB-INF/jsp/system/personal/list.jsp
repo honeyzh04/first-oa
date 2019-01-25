@@ -98,7 +98,7 @@
 
                                 <div class="media-body">
 
-                                    <p style="font-size: 18px; font-weight: bold; padding-top:10px;">个人报表(敬请期待)</p>
+                                    <p style="font-size: 18px; font-weight: bold; padding-top:10px;">本周数据</p>
                                     <div class="media-list">
                                         <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
                                         <div id="main" style="width: 100%;height:400px;"></div>
@@ -182,6 +182,7 @@
 
         showPlan();
         showLine();
+        findPeweeks();
     });
 //个人报表1
     function showLine() {
@@ -227,101 +228,104 @@
             }
             });
     }
+    function  findPeweeks(){
 
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
-
-    // 指定图表的配置项和数据
-
-    var option = {
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: { // 坐标轴指示器，坐标轴触发有效
-                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-            }
-        },
-        legend: {
-            data: ['新增', '到访', '排号', '成交', '退单']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: {
-            type: 'value'
-        },
-        yAxis: {
-            type: 'category',
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        series: [{
-            name: '新增',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'insideRight'
+        var myChart = echarts.init(document.getElementById('main'));
+        //图表显示提示信息
+        myChart.showLoading();
+        //定义图表options
+        option = {
+            tooltip : {
+                trigger : 'axis',
+                axisPointer : { // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow' // 默认为直线，可选为：'line' | 'shadow'
                 }
             },
-            data: [320, 302, 301, 334, 390, 330, 320]
-        },
-            {
-                name: '到访',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [120, 132, 101, 134, 90, 230, 210]
+            legend : {
+                data: ['新增', '跟进','带访']
             },
-            {
-                name: '排号',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [220, 182, 191, 234, 290, 330, 310]
+            grid : {
+                left : '3%',
+                right : '4%',
+                bottom : '3%',
+                containLabel : true
             },
-            {
-                name: '成交',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [150, 212, 201, 154, 190, 330, 410]
+            xAxis : {
+                type : 'value'
             },
-            {
-                name: '退单',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
+            yAxis : {
+                type : 'category',
+                data: ['周二','周三','周四','周五','周六','周日','周一']
+            },
+            series :  []
+        };
+        //通过Ajax获取数据
+        $.ajax({
+            type : "post",
+            async : false, //同步执行
+            url :" ./personal/findPeweeks.shtml",
+            dataType : "json", //返回数据形式为json
+            success : function(serisdata) {
+                if (serisdata) {
+                    //将返回的category和series对象赋值给options对象内的category和series
+                    //因为xAxis是一个数组 这里需要是xAxis[i]的形式
+                    var datas = [];
+                    var data1 = [];
+                    var data2 = [];
+                    var data3 = [];
+                    for ( var i = 0; i < serisdata.length; i++) {
+
+                            data1.push( serisdata[i].adds);
+                        data2.push( serisdata[i].follow);
+                        data3.push( serisdata[i].visit);
+
                     }
-                },
-                data: [820, 832, 901, 934, 1290, 1330, 1320]
+                    datas.push(
+                        {
+                        name: '新增',
+                        type: 'bar',
+                        stack: '总量',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'insideRight'
+                            }
+                        },
+                        data: data1,
+                    }, {
+                            name: '跟进',
+                            type: 'bar',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'insideRight'
+                                }
+                            },
+                            data: data2,
+                        }, {
+                            name: '带访',
+                            type: 'bar',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'insideRight'
+                                }
+                            },
+                            data: data3,
+                        });
+                    option.series = datas;
+                    myChart.hideLoading();
+                    myChart.setOption(option);
+                }
+            },
+            error : function(errorMsg) {
+                alert("图表请求数据失败啦!");
             }
-        ]
-    };
+        });
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-
+    }
 </script>
 </body>
 

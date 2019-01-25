@@ -35,7 +35,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */    
-    @Scheduled(cron = "0 30 01 * * ? ")
+ //   @Scheduled(cron = "0 30 01 * * ? ")
     public void show() throws Exception{
         System.out.println("das");
 		customerMapper.autobDiscard();
@@ -45,7 +45,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */ 
-    @Scheduled(cron = "0  40 01 * * ?")
+//    @Scheduled(cron = "0  40 01 * * ?")
     public void show1() throws Exception{  
     	customerMapper.autoaDiscard(); 
     }  
@@ -55,7 +55,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */ 
-    @Scheduled(cron = "0  10 01 * * ?")   
+//    @Scheduled(cron = "0  10 01 * * ?")
     public void show0() throws Exception{  
     	customerMapper.auto0Discard(); 
     } 
@@ -64,7 +64,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */ 
-    @Scheduled(cron = "0  12 01 * * ?")   
+ //   @Scheduled(cron = "0  12 01 * * ?")
     public void show2() throws Exception{  
     	customerMapper.auto1Discard(); 
     } 
@@ -73,7 +73,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */ 
-    @Scheduled(cron = "0  14 01 * * ?")   
+//    @Scheduled(cron = "0  14 01 * * ?")
     public void show3() throws Exception{  
     	customerMapper.auto2Discard(); 
     } 
@@ -82,7 +82,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */ 
-    @Scheduled(cron = "0  16 01 * * ?")   
+  //  @Scheduled(cron = "0  16 01 * * ?")
     public void show4() throws Exception{  
     	customerMapper.auto3Discard(); 
     } 
@@ -91,7 +91,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */ 
-    @Scheduled(cron = "0  18 01 * * ?")   
+  //  @Scheduled(cron = "0  18 01 * * ?")
     public void show5() throws Exception{  
     	customerMapper.auto4Discard(); 
     } 
@@ -100,7 +100,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */ 
-    @Scheduled(cron = "0  20 01 * * ?")   
+  //  @Scheduled(cron = "0  20 01 * * ?")
     public void show6() throws Exception{  
     	customerMapper.auto5Discard(); 
     } 
@@ -109,7 +109,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */ 
-    @Scheduled(cron = "0  22 01 * * ?")   
+ //   @Scheduled(cron = "0  22 01 * * ?")
     public void show7() throws Exception{  
     	customerMapper.auto6Discard();
         customerMapper.auto6DiscardShare();
@@ -119,13 +119,13 @@ public class Discard {
      * 月初定时任务
      * @throws Exception
      */
-    @Scheduled(cron = "0 00 02 1 * ?")   
+ //   @Scheduled(cron = "0 00 02 1 * ?")
     public void showmonth() throws Exception{  
     	 monthstartMapper.addreportpsum();
     	 monthstartMapper.addreportdsum();
     } 
    
-    @Scheduled(cron = "0 05 02 1 * ??")   
+  //  @Scheduled(cron = "0 05 02 1 * ??")
     public void deletelogin() throws Exception{  
     	 monthstartMapper.deletelogin();
     	 monthstartMapper.deletelog();

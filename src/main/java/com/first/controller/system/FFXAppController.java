@@ -320,7 +320,6 @@ public class FFXAppController extends BaseController {
     @RequestMapping("findQuestion")
     public Result<Void> findQuestionsa(String que, @RequestParam(required = true, defaultValue = "1") Integer page) {
         Result<Void> rr = null;
-        System.err.println("que" + que + "page" + page);
         try {
             PageHelper.startPage(page, 10);
             List<InterlocutionFormMap> p = interlocutionMapper.findQuestions(que);
@@ -577,6 +576,29 @@ public class FFXAppController extends BaseController {
     }
 
     /**
+     * 个人积分
+     * @param userName
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("findUserCredit")
+    public   Result<Void> findUserCredit(String userName) {
+        Result<Void> rr = null;
+        try {
+            if (findByUser(userName)!=null){
+                System.err.println("132");
+                // 积分系统
+                String userId=findByUser(userName).get("id").toString();
+                System.err.println("132"+userId);
+                CreditFormMap creditFormMap=creditService.findUserCredit(userId);
+                rr = new Result<Void>(1, "成功",creditFormMap);
+            }
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+        }
+        return rr;
+    }
+    /**
      *发布房源加积分
      *
      * @param
@@ -584,10 +606,11 @@ public class FFXAppController extends BaseController {
      */
     @RequestMapping("fyCredit")
     @ResponseBody
+    @Transactional(readOnly = false)
     public   Result<Void> fyCredit(String userName) throws Exception {
         Result<Void> rr = null;
         try {
-           if (findByUser(userName)!=null){
+           if (findByUser(userName).get("id") !=null){
                // 积分系统
                String userId=findByUser(userName).get("id").toString();
                HashMap creditMap1 = new HashMap();
@@ -599,6 +622,35 @@ public class FFXAppController extends BaseController {
            }
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
+        }
+        return rr;
+    }
+
+    /**
+     *积分兑换
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("useCredit")
+    @ResponseBody
+    @Transactional(readOnly = false)
+    public   Result<Void> useCredit(String userName,String opId,Integer score) throws Exception {
+        Result<Void> rr = null;
+        try {
+            if (findByUser(userName).get("id")!=null){
+                String userId=findByUser(userName).get("id").toString();
+                HashMap creditMap = new HashMap();
+                creditMap.put("type","1");
+                creditMap.put("id",opId);
+                creditMap.put("userId", userId);
+                creditMap.put("score",score);
+                creditService.editUserCredit(creditMap);
+
+                rr = new Result<Void>(1, "成功","success");
+            }
+        } catch (RuntimeException e) {
+              rr = new Result<Void>(0, e.getMessage(), "");
         }
         return rr;
     }

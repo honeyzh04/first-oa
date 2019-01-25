@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import com.first.mapper.DepartMapper;
 import com.first.util.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,16 @@ public class TVreportController extends BaseController {
     private StatisticsTVMapper statisticsMapper;
     @Inject
     private ProjectMapper projectMapper;
+    @Inject
+    private DepartMapper departMapper;
 
+    /**
+     * 获取销售部门
+     */
+    public    List<String> getdeIds(){
+        List<String> deIds=departMapper.getcudeId();
+        return deIds;
+    }
     /**
      * 当月报表
      *
@@ -54,9 +64,9 @@ public class TVreportController extends BaseController {
         JSONPObject jsonpObject = null;
         try {
             Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("deIds",getdeIds());
             List<StatisticsFormMap> departday = statisticsMapper.findDeday();//部门当月当天报表
             List<StatisticsFormMap> departMonth = statisticsMapper.findDemonth();//部门当月报表
-
             List<StatisticsFormMap> dedays = statisticsMapper.findDedays();//部门当月每天的报表
             List<StatisticsFormMap> denorth1days = new ArrayList<StatisticsFormMap>();//北一当月每天的报表
             List<StatisticsFormMap> desouth1days = new ArrayList<StatisticsFormMap>();//南一当月每天的报表

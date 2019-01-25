@@ -49,6 +49,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         return statisticsMapper.findSumInmonth(searchMap);
     }
 
+    @Override
+    public List<StatisticsFormMap> findPeweeks(Map searchMap) {
+        return statisticsMapper.findPeweeks(searchMap);
+    }
+
     /**
      * 竞价报表
      *

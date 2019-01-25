@@ -192,8 +192,6 @@ public class PersonalController extends BaseController {
 
         PersonalFormMap daynextP = personalService.finddenextdayadd(searchMap);
         PersonalFormMap daylisR = personalService.finddedayreport(searchMap); //日数据
-        System.err.println("daylisR");
-        System.err.println(daylisR);
         SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
         String date1 = formater.format(new Date());
         Date date = formater.parse(date1);
@@ -526,7 +524,7 @@ public class PersonalController extends BaseController {
     /**
      * 定时发送微信
      */
-  @Scheduled(cron = "0 00 22 * * ? ")
+    //  @Scheduled(cron = "0 00 22 * * ? ")
     public void delayedSendWeChat () {
         try {
             personalService.delayedSendWeChat();
@@ -585,6 +583,31 @@ public class PersonalController extends BaseController {
        String userId=getuserId();
 
         List<StatisticsFormMap> p =statisticsservice.findPedays(userId);
+
+        return p;
+    }
+
+
+    /**
+     * 个人当周每天数据
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("findPeweeks")
+    public List  findPeweeks() throws Exception {
+        HashMap searchMap= new HashMap();
+        SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
+        String date1 = formater.format(new Date());
+
+        Date date = formater.parse(date1);
+        Date a = DateUtil.getThisWeekTuesday(date);
+        Date b = DateUtil.getNextWeekTuesday(date);
+        searchMap.put("departweeks", a);
+        searchMap.put("departweeke", b);
+        searchMap.put("userId",getuserId());
+        List<StatisticsFormMap> p =statisticsservice.findPeweeks(searchMap);
+        System.err.println(p);
 
         return p;
     }

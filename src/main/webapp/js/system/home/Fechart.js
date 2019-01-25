@@ -355,7 +355,6 @@ $(function () {
         dataType: "json",
 
         success: function (data) {
-            console.log("ad" + data);
 
             if (data.state == 1) {
                 // console.log(data)
@@ -372,7 +371,7 @@ $(function () {
                     name.push(data.content.rankPerDeaMonth[i].name);
                     dea.push(data.content.rankPerDeaMonth[i].dea);
                 }
-
+                console.log("da"+name)
                 /*====个人带访===*/
                 for (var i = 0; i < data.content.rankPerVisMonth.length; i++) {
                     rankPerVis.push(data.content.rankPerVisMonth[i].vis);
@@ -432,7 +431,7 @@ $(function () {
                         type: "bar",
                         data: dea,
                         label: {normal: {show: true, position: "insideRight"}},
-                        itemStyle: {normal: {color: "#c2c4b5"}},
+                        itemStyle: {normal: {color: "#c43023"}},
                     }]
                 };
                 Perdeav.setOption(option);

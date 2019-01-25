@@ -352,11 +352,11 @@ public class CustomerController extends BaseController {
         Object dealprojectId = customerFormMap.get("dealprojectId");
 
         // 跟进积分系统
-        if (creditService.findFollowCredit(getuserId()) <= 10) {
+        if (creditService.findFollowCredit(getuserId()) < 10) {
             HashMap creditMap = new HashMap();
             creditMap.put("id", 2);
             creditMap.put("userId", getuserId());
-            creditService.editUserCredit(creditMap);
+         creditService.editUserCredit(creditMap);
         }
 
         if (state.equals("2") && visitprojectId != null) {
@@ -365,9 +365,9 @@ public class CustomerController extends BaseController {
             HashMap creditMap1 = new HashMap();
             creditMap1.put("id", 3);
             creditMap1.put("userId", getuserId());
-            creditService.editUserCredit(creditMap1);
+          creditService.editUserCredit(creditMap1);
+        } else if (state.equals("4") && dealprojectId  != null && ! dealprojectId.equals("0")) {
 
-        } else if (state.equals("4") && !dealprojectId.equals("0")) {
             customerMapper.addVisit1(customerFormMap);//成交时到访客户
             customerFormMap.put("cuId", customerFormMap.get("id"));
             customerFormMap.put("dealState", "1");
@@ -385,7 +385,6 @@ public class CustomerController extends BaseController {
             double dealRatioYY=0.25;
             double dealRatioZL=0.3;
             double dealRatioCY=0.25;
-            System.err.println("成交" + customerFormMap);
             HashMap<String, Object> searchMap = new HashMap();
             if (dealRatioKF.equals("0.15") &&  !dealUserKF.equals("0") ) {
                  dealRatioSL=0.05*0.85;

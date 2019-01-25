@@ -30,6 +30,7 @@ public interface StatisticsService {
 	 * 查看网络月报表
 	 */
 	 List<StatisticsFormMap> findSumInmonth( Map searchMap);
+	List<StatisticsFormMap> findPeweeks( Map searchMap);
 
 	/**
 	 * 竞价报表

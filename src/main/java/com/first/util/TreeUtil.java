@@ -38,18 +38,15 @@ public class TreeUtil {
     		  if(parentId==pid){  
                   //递归遍历下一级  
     			  Object vlaue =mu.get("id");
-
     	        	String ids = vlaue.toString();
     	    		int id = Integer.parseInt(ids);
-    	    		System.err.println(id);
 				  childList.add(ids);
 
     	    		 
                   treeMenuList(childList,menuList,id);
                  
               }
-        }  
-        System.err.println(childList);
+        }
 
     }  
 	/**

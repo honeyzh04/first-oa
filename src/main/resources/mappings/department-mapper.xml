@@ -9,6 +9,16 @@
 		parentId
 	</sql>
 	<!-- 销售部门 -->
+	<select id="getcudeId" resultType="java.lang.String">
+			SELECT
+			id
+		FROM
+			ogdepartment
+		WHERE
+			parentId IN (12, 13, 14, 15)
+
+	</select>
+	<!-- 销售部门(包含区) -->
 	<select id="getcuDepart"
 		resultType="com.first.entity.DepartmentFormMap">
 		select

@@ -100,7 +100,7 @@
                 /crossdomain/**=anon
                 /ffxapp/**=anon
                 /home/**=anon
-
+                /credit/**=anon
             </value>
         </property>
     </bean>

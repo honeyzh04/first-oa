@@ -43,6 +43,13 @@ public class HomeController extends BaseController {
     @Inject
     private CustomerMapper customerMapper;
 
+    /**
+     * 获取销售部门
+     */
+    public    List<String> getdeIds(){
+        List<String> deIds=departMapper.getcudeId();
+        return deIds;
+    }
     @ResponseBody
     @RequestMapping("findByWeekExtension")
     public Result<Void> findByWeekExtension(HttpServletRequest request) throws Exception {
@@ -53,17 +60,15 @@ public class HomeController extends BaseController {
             String date1 = formater.format(new Date());
             Date date = formater.parse(date1);
             Date b = DateUtil.getThisWeekTuesday(date);
-            System.out.println(b);
             UserFormMap userFormMap = (UserFormMap) Common.findUserSession(request);
             Map<String, Object> searchMap = new HashMap<String, Object>();
             String depar = userFormMap.get("department").toString();
-            System.err.println("af3" + depar);
             searchMap.put("departweeks", b);
             searchMap.put("departweeke", new Date());
+            searchMap.put("deIds",getdeIds());
             if (depar.equals("1")) {
                 p = statisticsMapper.findDeweek(searchMap);
                 rr = new Result<Void>(1, "成功", p);
-                System.err.println("af" + p);
             } else {
                 int depId = Integer.parseInt(depar);
                 List<DepartmentFormMap> departmentFormMap = departMapper.getDepart();
@@ -73,10 +78,8 @@ public class HomeController extends BaseController {
                 TreeUtil.treeMenuList(idss,departmentFormMap, depId);
                 idss.add(depar);
                 searchMap.put("deId", idss);
-                System.err.println("部门" + idss);
                 p = homeService.findpeweek(searchMap);
                 rr = new Result<Void>(2, "成功", p);
-                System.err.println("zhou"+rr);
 
             }
         } catch (RuntimeException e) {

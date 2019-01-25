@@ -422,7 +422,7 @@ $(function() {
                                 }
                             },
                             {
-                                data : "adds26",
+                                data : "adds17",
                                 render : function(data, type, row, meta) {
                                     if (data == null) {
                                         return '/';
@@ -486,7 +486,7 @@ $(function() {
                                 }
                             },
                             {
-                                data : "visit26",
+                                data : "visit17",
                                 render : function(data, type, row, meta) {
                                     if (data == null) {
                                         return '/';
@@ -551,7 +551,7 @@ $(function() {
                                 }
                             },
                             {
-                                data : "dea26",
+                                data : "dea17",
                                 render : function(data, type, row, meta) {
                                     if (data == null) {
                                         return '/';

@@ -218,20 +218,15 @@ h4:hover{
 		$("#pagea").html("");
 		var que = $("#que").val();
 		var page = $(_this).attr("value");
-		console.log("que" + que);
-		console.log("page" + page);
 		$.ajax({
 					"url" : "./interlocution/findQuestionsa.shtml",
 					"data" : {
 						que : que,
 						page : page
 					},
-
 					"type" : "GET",
 					"dataType" : "json",
 					"success" : function(obj) {
-						console.log(obj);
-
 						for (i = 0; i < obj.list.length; i++) {
 							console.log(obj.list[i].question);
 							var str = '<li id="question"><h4  onclick="seeanswer(this);"   value='+obj.list[i].id+'><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span data-url="b" data-title="选项b"  data-id="45" class="site-demo-active" data-type="tabAdd">'

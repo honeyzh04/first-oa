@@ -9,8 +9,5 @@
         <module name="first-oa" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Activiti-LFP" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
 </project>

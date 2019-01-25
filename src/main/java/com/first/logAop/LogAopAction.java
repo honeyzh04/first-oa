@@ -75,7 +75,7 @@ public  class LogAopAction {
 		try {
 			
 			logMapper.addEntity(logForm);
-
+			System.err.println("adsadad");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

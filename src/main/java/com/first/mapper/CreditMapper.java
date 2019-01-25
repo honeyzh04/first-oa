@@ -19,6 +19,7 @@ import java.util.List;
 public interface CreditMapper {
 
     CreditFormMap findUserCredit(@Param("userId") String userId);
+
     List<CreditFormMap>  findCredit(HashMap searchMap);
 
     void addCredit(CreditFormMap creditFormMap);

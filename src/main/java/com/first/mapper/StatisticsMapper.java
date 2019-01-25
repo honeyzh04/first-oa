@@ -48,6 +48,12 @@ public interface StatisticsMapper {
 	 */
 	public StatisticsFormMap findSumDemonth( Map searchMapMap);
 	/**
+	 * 个人当周每天报表
+	 * @return
+	 */
+	public  List<StatisticsFormMap> findPeweeks(Map searchMapMap);
+
+	/**
 	 * 个人当月每天报表
 	 * @return
 	 */

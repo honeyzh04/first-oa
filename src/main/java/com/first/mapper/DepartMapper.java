@@ -23,6 +23,9 @@ public interface DepartMapper {
 	 * @return
 	 */
 	public  List<DepartmentFormMap> getcuDepart();
+
+	List<String> getcudeId();
+
 	/**
 	 * 查看全部部门
 	 * @return

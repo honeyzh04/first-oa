@@ -7,106 +7,297 @@
 
 
 </head>
+<style>
+    .head{
+        width: 100%;
+        height: 120px;
+        /* border-bottom:2px solid rgb(179, 176, 176);  */
+    }
+    .head div{
+        display: inline-block;
+
+    }
+    .head_img{
+        width: 100px;
+        height: 100px;
+        border-radius:50%;
+        overflow: hidden;
+        margin:10px;
+
+    }
+    .head_img img{
+        width: 100px;
+        height: 100px;
+    }
+    .heigh120{
+        height: 120px;
+        line-height: 120px;
+    }
+    .verticaltop{
+        vertical-align: top;
+    }
+    .aligncenter{
+        text-align: center;
+    }
+    .pad10{
+        padding: 10px;
+    }
+    .box{
+        width: 120px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius:10px;
+        display: inline-block;
+        margin-left: 10px;
+    }
+    .font12{
+        font-size: 12px;
+    }
+    .font14{
+        font-size: 14px;
+    }
+    .line18{
+        line-height: 18px;
+    }
+    .line40{
+        line-height: 40px;
+    }
+    .pad75px{
+        padding-top: 65px;
+    }
+    .marl50{
+        margin-left: 50px;
+    }
+    .magt85{
+        margin-top: 85px;
+    }
+    .padt53{
+        padding-top: 44px;
+    }
+    .btn-warning{
+        height: 23px;
+        line-height: 13px;
+    }
+    .disnone{
+        display:none !important;
+    }
+</style>
+
 <body>
+<div class="wrap">
+    <div class="head">
+        <div class="head_img">  <img class="layadmin-homepage-pad-img" src="./img/tou.png" width="96" height="96"></div>
+        <div class="name heigh120 line18 verticaltop pad75px">
+            <p> 姓名：${creditFormMap.userName}</p>
+        </div>
+        <div class="myint heigh120 verticaltop marl50 padt53"> <span>我的积分：${creditFormMap.balance}</span> </div>
+        <button type="button " class="btn btn-info verticaltop magt85 marl50">使用规则</button>
+        <!-- <div class="rule verticaltop">
+            <p >使用规则</p>
+        </div> -->
+    </div>
+    <div class="content">
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#home" data-toggle="tab">
+                    积分兑换
+                </a>
+            </li>
+            <li><a href="#Exchange" data-toggle="tab">
+                兑换记录
+            </a></li>
+            <li><a href="#receive" data-toggle="tab">
+                获取积分记录
+            </a></li>
 
-
-<div class="score-con">
-    <div class="score-grow">
-        <div class="score-tit"><span class="base-score score-tit-icon"></span>积分成长</div>
-        <ul class="my-score">
-            <li><span class="base-score my-score-icon1"></span>我的积分：<span id="myIntegralNum">-</span></li>
         </ul>
-        <div class="score-grow-line">
-            <ul class="score-stage-num">
-                <li>0</li>
-                <li>100</li>
-                <li>200</li>
-                <li>500</li>
-                <li>1000</li>
-                <li>5000</li>
-                <li>10000</li>
-                <li>50000</li>
-                <li>100000</li>
-            </ul>
-            <div class="score-all-bg">
-                <div class="base-score score-on" id="barScoreW" style="width:0%">
-                    <!-- 改变这个宽度实现进度条效果 -->
-                    <div class="score-num-on" id="barScoreBox">
-                        <span class="base-score score-num-on-icon"></span>
-                        <span class="score-num" id="barScoreNum">0</span>
+        <div id="myTabContent" class="tab-content pad10">
+            <div class="tab-pane fade in active" id="home">
+                <div>
+                    <div class="box pad10">
+                        <img src="image/3.png" alt="">
+                        <p>房源置顶</p>
+                        <div> <span class="font12">1000分</span> <button type="button" class="btn btn-warning" onclick="funExchange('7')">兑换</button></div>
+                    </div>
+                    <div class="box pad10">
+                        <img src="image/3.png" alt="">
+                        <p>精选房源</p>
+                        <div> <span class="font12">1000分</span> <button type="button" class="btn btn-warning" onclick="funExchange('7')">兑换</button></div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!--div class="score-grow-other">积分内测中，后续将可用于多种用途，敬请期待。内测结束后将会清空积分。</div-->
-    </div>
 
-    <div class="medal-change">
-        <div class="score-tit">
-            <div class="score-title">
-                <span class="base-score score-tit-icon"></span>积分兑换
             </div>
-            <div class="bind-info">
-                当前绑定大区：
-                <div id="spanNotBind_389471" class="bind-div">
-                    <a href="javascript:amsInit(101099, 389470);" class="bind-btn">【绑定大区】</a>
-                </div>
-                <div id="spanBind_389471" class="bind-div" style="display:none">
-                    【<span id="area_info_389471"></span>】-【<span id="role_info_389471"></span>】
-                    <a href="javascript:amsInit(101099, 389470);" class="bind-btn">【更改绑定】</a>
-                    <a href="javascript:;" id="button_391314" class="bind-btn">【兑换记录】</a>
-                </div>
-            </div>
-        </div>
-        <ul class="score-ul">
-            <li>
-                <div class="score-img-box"><img
-                        src="//game.gtimg.cn/images/dnf/community2016/images/score/score-a15.png" alt=""></div>
-                <p>卡妮娜的手工面包*1</p>
-                <span>2积分</span>
-                <a href="javascript:exchangeGift(1);">兑换</a>
-            </li>
-            <li>
-                <div class="score-img-box"><img
-                        src="//game.gtimg.cn/images/dnf/community2016/images/score/score-a14.png" alt=""></div>
-                <p>卡妮娜的赫顿玛尔牛奶*1</p>
-                <span>2积分</span>
-                <a href="javascript:exchangeGift(2);">兑换</a>
-            </li>
+            <div class="tab-pane fade" id="Exchange">
 
-        </ul>
-        <div class="medal-tips">
-            <h4>积分规则：</h4>
-            <ul>
-                <li>1.为避免积分数值偏差,积分每一年清零一次.</li>
-                <li>2.上传违规作品1次扣50积分,3次以上盗图扣光所有积分.(违规作品：非DNF相关作品,非上传者本人作品且无授权)</li>
-                <li>3.Q币每人每月限兑换10个,黑钻7天每人每月限兑换1个.</li>
-            </ul>
-            <img src="//game.gtimg.cn/images/dnf/community2016/images/public/score-img.png" width="444" height="190"
-                 class="score-img" alt="">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>商品</th>
+                        <th>时间</th>
+                        <th>消耗积分</th>
+                    </tr>
+                    </thead>
+                    <tbody id="r_tbody">
+                    </tbody>
+                </table>
+                <div class="rpagebtn aligncenter"></div>
+            </div>
+            <div class="tab-pane fade" id="receive">
+
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>操作</th>
+                        <th>时间</th>
+                        <th>积分</th>
+                    </tr>
+                    </thead>
+                    <tbody id="e_tbody">
+
+
+                    </tbody>
+                </table>
+                <div class="epagebtn aligncenter">
+            </div>
+
         </div>
+
     </div>
 </div>
-</body>
-</html>
-<script type="text/javascript">
-    $(function() {
-        find()
 
-    });
-    function find() {
+</body>
+<%--<script src="js/jquery-1.10.2.js"></script>--%>
+<script>
+    function getelist(obj) {
+        var page="";
+        if( $(obj).attr('data-page')!==undefined){
+            page = $(obj).attr('data-page');
+        }
+        else(
+            page=""
+        )
         $.ajax({
-            "url" : "./credit/findUserCredit.shtml",
-            "date":"",
-            "type" : "GET",
-            "dataType" : "json",
-            "success" : function(obj) {
-                console.log(obj);
+            type: "get",
+            url: "./credit/findCreditRecord.shtml",
+            dataType: "json",
+            async: true,
+            data: {
+                page: page,
+                type:0
+            },
+            success: function (data) {
+              console.log(data);
+                var btnhtml = '';
+                btnhtml = '<span class="btn btn-default first" data-page="'+data.firstPage+'"onclick="getelist(this)">首页</span>' +
+                    '<span class="btn btn-default  pre" data-page="'+data.prePage+'" onclick="getelist(this)">上一页</span>' +
+                  '<span class="btn btn-default next next" data-page="'+data.nextPage+'"onclick="getelist(this)">下一页</span>' +
+                   '<span class="btn btn-default last" data-page="'+data.lastPage+'" onclick="getelist(this)">尾页</span>'
+                var e_html = "";
+
+                $(".epagebtn").html(btnhtml)
+                for (var i = 0; i < data.list.length; i++) {
+                    if (data.list[i].type == 0) {
+                        var e_time = getMyDate(data.list[i].createDate);
+                        e_html += '<tr class="warning"><td>'+data.list[i].operation+'</td><td>'+e_time+'</td><td>'+data.list[i].score+'</td></tr>'
+
+                    }
+                }
+                $("#e_tbody").html(e_html);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+    getelist()
+    getrlist()
+    function getrlist(obj) {
+        var page="";
+        if( $(obj).attr('data-page')!==undefined){
+            page = $(obj).attr('data-page');
+        }
+        else(
+            page=""
+        )
+        $.ajax({
+            type: "get",
+            url: "./credit/findCreditRecord.shtml",
+            dataType: "json",
+            async: true,
+            data: {
+                page: page,
+                type:1
+            },
+            success: function (data) {
+
+                var btnhtml = '';
+                btnhtml = '<span class="btn btn-default first" data-page="'+data.firstPage+'"onclick="getrlist(this)">首页</span>' +
+                    '<span class="btn btn-default  pre" data-page="'+data.prePage+'" onclick="getrlist(this)">上一页</span>' +
+                    '<span class="btn btn-default next next" data-page="'+data.nextPage+'"onclick="getrlist(this)">下一页</span>' +
+                    '<span class="btn btn-default last" data-page="'+data.lastPage+'" onclick="getrlist(this)">尾页</span>'
+                var r_html = "";
+                $(".rpagebtn").html(btnhtml)
+                for (var i = 0; i < data.list.length; i++) {
+                    if (data.list[i].type == 1) {
+                        var r_time = getMyDate(data.list[i].createDate);
+                        r_html += '<tr class="danger"><td>'+data.list[i].operation+'</td><td>'+r_time+'</td><td>'+data.list[i].score+'</td></tr>'
+                    }
+                }
+
+                $("#r_tbody").html(r_html);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+    function getMyDate(str, bool) {
+        if (str > 9999999999) { // 这里判断：时间戳为几位数
+            var c_Date = new Date(parseInt(str));
+        } else {
+            var c_Date = new Date(parseInt(str) * 1000);
+        }
+        var c_Year = c_Date.getFullYear(),
+            c_Month = c_Date.getMonth() + 1,
+            c_Day = c_Date.getDate(),
+            c_Hour = c_Date.getHours(),
+            c_Min = c_Date.getMinutes(),
+            c_Sen = c_Date.getSeconds();
+        if (bool) { // 判断是否需要显示秒
+            var c_Time = c_Year + '-' + getzf(c_Month) + '-' + getzf(c_Day) + ' ' + getzf(c_Hour) + ':' + getzf(c_Min) + ':' + getzf(c_Sen);//最后拼接时间
+        } else {
+            var c_Time = c_Year + '-' + getzf(c_Month) + '-' + getzf(c_Day) + ' ' + getzf(c_Hour) + ':' + getzf(c_Min);//最后拼接时间
+        }
+        return c_Time;
+    };
+    function getzf(c_num) {
+        if (parseInt(c_num) < 10) {
+            c_num = '0' + c_num;
+        }
+        return c_num;
+    }
+    function funExchange(opid){
+        $.ajax({
+            type: "get",
+            url: "./credit/useCredit.shtml",
+            dataType: "json",
+            async: true,
+            data: {
+                opId:opid
+            },
+            success: function (data) {
+                if (data=="success"){
+                    layer.alert("兑换成功")
+                } else {
+                    layer.alert("兑换失败")
+                }
 
             },
-            error : function() {
-                alert("请与管理员联系");
+            error: function (e) {
+                console.log(e);
             }
         });
     }
 </script>
+
+</html>

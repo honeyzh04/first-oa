@@ -13,8 +13,13 @@
 		vis,ifnull(d.deal,0)
 		dea,ifnull(e.follow,0) follow,day(#{choiceday})
 		days FROM
-
-		(SELECT * FROM ogdepartment WHERE parentId in (12,13,14,15,4))
+		(SELECT * FROM ogdepartment WHERE
+			 id in
+			<foreach collection="deIds" item="item" index="index"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		)
 		as a left
 		JOIN
 		(SELECT
@@ -112,7 +117,11 @@ AS d ON
 		dea,ifnull(e.follow,0) follow
 		FROM
 
-		(SELECT * FROM ogdepartment WHERE parentId in (12,13,14,15,4))
+		(SELECT * FROM ogdepartment WHERE  id in
+		<foreach collection="deIds" item="item" index="index"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>)
 		as a left
 		JOIN
 		(SELECT
@@ -214,7 +223,11 @@ AS d ON
 		dea,ifnull(e.follow,0) follow,MONTH(#{choicemonth}) months
 		FROM
 
-		(SELECT * FROM ogdepartment WHERE parentId in (12,13,14,15,4))
+		(SELECT * FROM ogdepartment WHERE id in
+		<foreach collection="deIds" item="item" index="index"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>)
 		as a left
 		JOIN
 		(SELECT
@@ -309,6 +322,71 @@ AS d ON
 		cudata.id
 		=a.customerId) AS c
 
+	</select>
+    <!-- 个人周每天报表 -->
+    <select id="findPeweeks" resultType="com.first.entity.StatisticsFormMap">
+	SELECT
+	a.id,
+	a.userName,
+	a.department,
+	c.adds,
+	d.follow,
+	b.visit,
+	ifnull(b.projectName, "") projectName,
+	a.weeks
+FROM
+	(
+		SELECT
+			a.id,
+			a.userName,
+			a.department,
+			b.weeks
+		FROM
+			oguser a,
+			cu_week b
+		WHERE
+		 a.id =  #{userId}
+	) AS a
+LEFT JOIN (
+	SELECT
+		COUNT(customerId) visit,
+		GROUP_CONCAT(projectId) projectName,
+		DAYOFWEEK (visitDate) AS weeks
+	FROM
+		cu_visit
+	WHERE
+		visitDate between
+		#{departweeks} and #{departweeke}
+	AND userId = #{userId}
+	GROUP BY
+		weeks
+) b ON a.weeks = b.weeks
+LEFT JOIN (
+	SELECT
+		COUNT(customerId) adds,
+		DAYOFWEEK (addDate) AS weeks
+	FROM
+		cu_add
+	WHERE
+		addDate between
+		#{departweeks} and #{departweeke}
+	AND userId = #{userId}
+	GROUP BY
+		weeks
+) c ON a.weeks = c.weeks
+LEFT JOIN (
+	SELECT
+		COUNT(customerId) follow,
+		DAYOFWEEK (CreateDate) AS weeks
+	FROM
+		cu_follow
+	WHERE
+		CreateDate between
+		#{departweeks} and #{departweeke}
+	AND userId =  #{userId}
+	GROUP BY
+		weeks
+) d ON a.weeks = d.weeks
 	</select>
 	<!-- 个人月每天报表 -->
 	<select id="findPedays"
@@ -539,24 +617,45 @@ AS d ON
 	</select>
     <select id="findRankPerDeaMonth"
             resultType="com.first.entity.StatisticsFormMap">
-		SELECT * FROM (SELECT a.userName ,a.name,ifnull(b.dea,0)dea
-		FROM
-		(SELECT
-		oguser.id,oguser.userName,ogdepartment.name FROM oguser
-		LEFT JOIN
-		ogdepartment ON ogdepartment.id=oguser.department WHERE
-		oguser.locked=1 and ogdepartment.parentId in (4,12,13,14,15)) as a LEFT
-		JOIN
-
-		(SELECT cu_deal.userId, cu_deal.userName,COUNT( customerId or null)
-		dea FROM
-		cu_deal where DATE_FORMAT(dealDate, '%Y%m' )=DATE_FORMAT(now(),
-		'%Y%m'
-		) GROUP BY userId ) as b
-		ON b.userId=a.id
-
-		ORDER BY dea desc LIMIT
-		5) as a ORDER BY dea asc
+			SELECT
+		*
+	FROM
+		(
+			SELECT
+				a.userName,
+				a. name,
+				ifnull(b.dea, 0) dea
+			FROM
+				(
+					SELECT
+						oguser.id,
+						oguser.userName,
+						ogdepartment.name
+					FROM
+						oguser
+					LEFT JOIN ogdepartment ON ogdepartment.id = oguser.department
+					WHERE
+						oguser.locked = 1
+					AND ogdepartment.parentId IN (4, 12, 13, 14, 15)
+				) AS a
+			LEFT JOIN (
+				SELECT
+					ROUND(SUM(a.commission), 2) dea,
+					a.userId
+				FROM
+					cu_deal_allot a
+				LEFT JOIN cu_deal b ON a.dealId = b.id
+				WHERE
+					DATE_FORMAT(dealDate, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+				GROUP BY
+					a.userId
+			) AS b ON b.userId = a.id
+			ORDER BY
+				dea DESC
+			LIMIT 5
+		) AS a
+	ORDER BY
+		dea ASC
 	</select>
 	<!-- 部门报表月排行榜 -->
     <select id="findRankDeAddMonth"
@@ -1333,7 +1432,7 @@ FROM
 	) AS a
 RIGHT JOIN oguser ON a.userId = oguser.id
 WHERE
-	department IN (16, 18, 20, 21, 24, 26, 28)
+	department IN (16, 17,18, 20, 21, 24,28)
 GROUP BY
 	oguser.department
 	</select>
@@ -1357,7 +1456,7 @@ FROM
 	) AS a
 			RIGHT JOIN oguser ON a.userId = oguser.id
 			WHERE
-	department IN (16, 18, 20, 21, 24, 26, 28)
+	department IN (16, 17,18, 20, 21, 24,28)
 		GROUP BY
 	oguser.department
 	</select>
@@ -1414,7 +1513,7 @@ FROM
 			) AS a
 		RIGHT JOIN oguser ON a.userId = oguser.id
 		WHERE
-			department IN (16, 18, 20, 21, 24, 26,28)
+			department IN (16, 17,18, 20, 21, 24,28)
 		GROUP BY
 			oguser.department
 	) a
@@ -1447,7 +1546,7 @@ LEFT JOIN (
 		) AS a
 	RIGHT JOIN oguser ON a.userId = oguser.id
 	WHERE
-		department IN (16, 18, 20, 21, 24, 26,28)
+		department IN (16, 17,18, 20, 21, 24,28)
 	GROUP BY
 		oguser.department
 ) AS b ON a.department = b.department

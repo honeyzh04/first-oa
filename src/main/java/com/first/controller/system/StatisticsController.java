@@ -3,6 +3,7 @@ package com.first.controller.system;
 import com.first.controller.index.BaseController;
 import com.first.entity.StatisticsFormMap;
 import com.first.entity.UserFormMap;
+import com.first.mapper.DepartMapper;
 import com.first.mapper.StatisticsMapper;
 import com.first.service.system.StatisticsService;
 import com.first.util.Common;
@@ -34,7 +35,17 @@ public class StatisticsController extends BaseController {
     @Inject
     private StatisticsMapper statisticsMapper;
     @Inject
+    private DepartMapper departMapper;
+    @Inject
     private StatisticsService statisticsservice;
+
+    /**
+     * 获取销售部门
+     */
+    public    List<String> getdeIds(){
+        List<String> deIds=departMapper.getcudeId();
+        return deIds;
+    }
 
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
@@ -78,8 +89,7 @@ public class StatisticsController extends BaseController {
             searchMap.put("choiceday", ab);
         }
 
-
-
+        searchMap.put("deIds",getdeIds());
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findDeday(searchMap); //部门日报表
 
@@ -171,7 +181,7 @@ public class StatisticsController extends BaseController {
         String departweek = request.getParameter("departweek");
 
         searchMap.putAll(getWeek(departweek));
-
+        searchMap.put("deIds",getdeIds());
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findDeweek(searchMap);
 
@@ -218,7 +228,7 @@ public class StatisticsController extends BaseController {
         } else {
             searchMap.put("choicemonth", ab + "-00");
         }
-
+        searchMap.put("deIds",getdeIds());
 
         PageHelper.startPage((start / length) + 1, length);
         List<StatisticsFormMap> p = statisticsMapper.findDemonth(searchMap);
@@ -784,7 +794,7 @@ public class StatisticsController extends BaseController {
 
 
         PageHelper.startPage((start / length) + 1, length);
-        List<StatisticsFormMap> p = statisticsMapper.findWeekExtension(searchMap);
+        List<StatisticsFormMap> p = statisticsMapper.findWeekExtension(searchMap); //周竞价数据
         PageInfo<StatisticsFormMap> pageinfo = new PageInfo<StatisticsFormMap>(p);
 
         Map<String, Object> map = new HashMap<String, Object>();
@@ -821,7 +831,7 @@ public class StatisticsController extends BaseController {
                 SumDeday.put("adds" + c.get("department"), c.get("adds"));
             }
 
-            StatisticsFormMap weekFilter = statisticsservice.findWeekFilter(searchMap);
+            StatisticsFormMap weekFilter = statisticsservice.findWeekFilter(searchMap);//去重新增
 
             SumDeday.put("filter_add", weekFilter.get("filter_add"));
             SumDeday.put("filter_visit", weekFilter.get("filter_visit"));
@@ -834,9 +844,10 @@ public class StatisticsController extends BaseController {
 
             SumDeday.put("cost1", String.format("%.2f", consume / fiadd));
 
-            StatisticsFormMap weekRefund = statisticsservice.findWeekRefund(searchMap);
+            StatisticsFormMap weekRefund = statisticsservice.findWeekRefund(searchMap);// 退单周报表
 
             SumDeday.put("commissionr", weekRefund.get("commission"));
+            System.err.println(SumDeday);
 
             data.add(SumDeday);
 

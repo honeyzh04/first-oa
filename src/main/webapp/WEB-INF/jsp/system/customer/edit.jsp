@@ -318,7 +318,7 @@
                         <div class="content-msg mt20 ml50">
                             <label>客服：</label>
                             <select class="selectpicker dealUser " data-style="btn-danger" data-width="170px"
-                                    id="dealUsera"  data-live-search="true" title="请选择经纪人"></select>
+                                    id="dealUsera"  data-live-search="true"></select>
                             <input type="hidden" name="customerFormMap.dealUserKF" id="dealUserKF">
                             <label>比例：</label>
                             <select style="width:80px;" name="customerFormMap.dealRatioKF" id="dealRatioKF">
@@ -569,7 +569,7 @@
             "type": "GET",
             "dataType": "json",
             "success": function (obj) {
-                $("#dealUsera").html("<option value=0> - - - -选择销售- - - - </option>");
+                $("#dealUsera").html("<option value=0>如有客服参与请选择</option>");
                 for (var i = 0; i < obj.length; i++) {
 
                     var str = "<option  value=" + obj[i].id + ":" + obj[i].v + ">"

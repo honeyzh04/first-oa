@@ -7,6 +7,7 @@ import com.first.entity.CreditFormMap;
 import com.first.mapper.CreditMapper;
 import com.first.service.system.CreditService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -70,15 +71,24 @@ public class CreditServiceImpl implements CreditService {
 
     }
     @Override
+
     public void editUserCredit(HashMap searchMap) {
-        List<CreditFormMap> creditFormMap = findCreditOperation(searchMap);
-        if (creditFormMap.size() != 0) {
-            CreditFormMap a = creditFormMap.get(0);
-            searchMap.putAll(a);
-            searchMap.put("createDate",new Date());
-            addCreditRecord(searchMap);
-            editCredit(searchMap);
+        if (searchMap.get("type")==null){
+            List<CreditFormMap> creditFormMap = findCreditOperation(searchMap);
+            if (creditFormMap.size() != 0) {
+                CreditFormMap a = creditFormMap.get(0);
+                System.err.println(a);
+                searchMap.putAll(a);
+                searchMap.put("createDate",new Date());
+                addCreditRecord(searchMap);
+                editCredit(searchMap);
+            } else {
+                searchMap.put("createDate",new Date());
+                addCreditRecord(searchMap);
+                editCredit(searchMap);
+            }
         }
+
     }
 
     @Override
