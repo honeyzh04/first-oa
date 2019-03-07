@@ -4,6 +4,8 @@
 package com.first.service.system;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,7 +30,7 @@ public interface ProjectService {
 	public void addEntity(Map formMap) ;
 	
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
@@ -53,6 +55,49 @@ public interface ProjectService {
 	 */
 
 	public void addproject() throws UnsupportedEncodingException;
+    public void addprojects(ProjectFormMap formMap) ;
+    //项目图片操作
+	List<ProjectFormMap> findImg(Map imgForMap);
 
+	void addImg(HashMap imgFormMap);
+
+	void deleteImg(String id);
+	//查看项目特点
+	List<ProjectFormMap> findFeature();
+	List<ProjectFormMap> findProject(Map searchMapMap);
+
+	List<ProjectFormMap> findProjects(Map searchMapMap);
+
+	void addShops(ProjectFormMap formMap);
+	List<ProjectFormMap> findShopsList(Map searchMap);
+	ProjectFormMap findShops(String id);
+	void deleteShops(String id);
+	List<ProjectFormMap> findShopsImg(String id);
+
+	void addShopsImg(HashMap imgFormMap);
+
+	void deleteShopsImg(String id);
+
+	void addApartment(ProjectFormMap formMap);
+	List<ProjectFormMap> findApartmentList(Map searchMap);
+	ProjectFormMap findApartment(String id);
+	void deleteApartment(String id);
+	List<ProjectFormMap> findApartmentImg(String id);
+
+	void addApartmentImg(HashMap imgFormMap);
+
+	void deleteApartmentImg(String id);
+
+	void addHome(ProjectFormMap formMap);
+	List<ProjectFormMap> findHomeList(Map searchMap);
+	ProjectFormMap findHome(String id);
+	void deleteHome(String id);
+	List<ProjectFormMap> findHomeImg(String id);
+
+	void addHomeImg(HashMap imgFormMap);
+
+	void deleteHomeImg(String id);
+
+	List<HashMap> findProjectSearch(Map searchMap);
 
 }

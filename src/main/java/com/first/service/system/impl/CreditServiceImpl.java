@@ -73,8 +73,9 @@ public class CreditServiceImpl implements CreditService {
     @Override
 
     public void editUserCredit(HashMap searchMap) {
+        System.err.println("jifern"+searchMap);
         if (searchMap.get("type")==null){
-            List<CreditFormMap> creditFormMap = findCreditOperation(searchMap);
+            List<CreditFormMap> creditFormMap = findCreditOperation(searchMap);  //查看操作类型
             if (creditFormMap.size() != 0) {
                 CreditFormMap a = creditFormMap.get(0);
                 System.err.println(a);
@@ -87,6 +88,10 @@ public class CreditServiceImpl implements CreditService {
                 addCreditRecord(searchMap);
                 editCredit(searchMap);
             }
+        }else if(searchMap.get("type").equals("1")){
+            searchMap.put("createDate",new Date());
+            addCreditRecord(searchMap);
+            editCredit(searchMap);
         }
 
     }

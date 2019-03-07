@@ -46,8 +46,9 @@
 		 sres.* 
 		 from 
 		  oguser su,oguser_role sur,ogrole sr,ogrole_res srr,ogresources sres 
-		  WHERE 
-		  su.id=#{userId}
+		  WHERE
+		sres.ishide=0 and
+		su.id=#{userId}
 		  and su.id=sur.userId and 
 		  sr.id=sur.roleId AND 
 		  srr.roleId=sr.id and 

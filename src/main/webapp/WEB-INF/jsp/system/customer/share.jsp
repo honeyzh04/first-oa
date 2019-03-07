@@ -48,19 +48,19 @@
 					</optgroup>
 					<optgroup id="departmente" label="东区一部">
 					</optgroup>
-					<optgroup id="departmente2" label="东区二部">
+					<optgroup id="departmente2" label="东区五部">
 					</optgroup>
-					<optgroup id="departmentw" label="西区一部">
+					<optgroup id="departmentw" label="西区三部">
 					</optgroup>
-					<optgroup id="departments1" label="南区一部">
+					<optgroup id="departmentw2" label="西区七部">
 					</optgroup>
-					<optgroup id="departments2" label="南区二部">
+					<optgroup id="departments1" label="南区二部">
 					</optgroup>
-					<optgroup id="departments3" label="南区三部">
+					<optgroup id="departments2" label="南区六部">
 					</optgroup>
-					<optgroup id="departmentn" label="北区一部">
+					<optgroup id="departmentn" label="北区四部">
 					</optgroup>
-					<optgroup id="departmentk" label="客服部">
+					<optgroup id="departmentk" label="房发现事业部">
 					</optgroup>
 				</select> 
 			</div>
@@ -122,7 +122,11 @@
 							var str = "<option  value="+obj[i].id+">"
 									+ obj[i].userName + "</option>";
 							$("#departmentw").append(str);
-						} else if (obj[i].v == 20) {
+						}else if (obj[i].v == 19) {
+                            var str = "<option  value="+obj[i].id+">"
+                                + obj[i].userName + "</option>";
+                            $("#departmentw2").append(str);
+                        } else if (obj[i].v == 20) {
 							var str = "<option  value="+obj[i].id+">"
 									+ obj[i].userName + "</option>";
 							$("#departments1").append(str);
@@ -130,10 +134,6 @@
 							var str = "<option  value="+obj[i].id+">"
 									+ obj[i].userName + "</option>";
 							$("#departments2").append(str);
-						} else if (obj[i].v == 26) {
-							var str = "<option  value="+obj[i].id+">"
-									+ obj[i].userName + "</option>";
-							$("#departments3").append(str);
 						} else if (obj[i].v == 24) {
 							var str = "<option  value="+obj[i].id+">"
 									+ obj[i].userName + "</option>";

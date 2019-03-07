@@ -17,7 +17,7 @@ $(function() {
 						info : true, //页脚
 						ordering : false,//排序
 						ajax : {
-							url : "./project/findByProject.shtml",// 数据请求地址
+							url : "./project/findHomeList.shtml",// 数据请求地址
 							type : "POST",
 
 							data : function(params) {
@@ -32,138 +32,88 @@ $(function() {
 							}
 						},
 						columns : [
-								{
-									data : "id",
-									sClass : "text-center",
-									render : function(data, type, full, meta) {
-										return '<input type="checkbox"  class="checkchild"  name="checkchild"  value="'
-												+ data + '" />';
-									},
-									bSortable : false
-								},
-								/* {"data": null,"width":"10px"}, */
-								
-								{
-									data : "projectName"
-								},
-								{
-									data : "projectPosition",
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
+                            {
+                                data : "id",
+                                sClass : "text-center",
+                                render : function(data, type, full, meta) {
+                                    return '<input type="checkbox"  class="checkchild"  name="checkchild"  value="'
+                                        + data + '" />';
+                                },
+                                bSortable : false
+                            },
 
-									}
-								},
-								{
-									data : "type",
-									render : function(data, type, row, meta) {
-										if (data == 1) {
-											return '<span >商铺</span>';
-										} else if (data == 2) {
-											return '<span >公寓</span>';
-										} else if (data == 3) {
-											return '<span >写字楼</span>';
-										} else {
-											return '<span >未知</span>';
-										}
+                            {
+                                data : "projectName"
+                            },
+                            {
+                                data : "building",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
 
-									}
-								},
-								{
-									data : "area",
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
+                                }
+                            },	{
+                                data : "floor",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
 
-									}
-								},
-								{
-									data : 'price',
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
+                                }
+                            },{
+                                data : "roomNo",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
 
-									}
-								}, 	{
-									data : 'prices',
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
+                                }
+                            },{
+                                data : "area",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
 
-									}
-								},{
-									data : "region",
-									bSortable : false,
+                                }
+                            },
+                            {
+                                data : "price",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
 
-									className : "text-center",
-									render : function(data, type, row, meta) {
-										if (data == 12) {
-											return '<span >南区</span>';
-										} else if (data == 13) {
-											return '<span >北区</span>';
-										} else if (data == 14) {
-											return '<span >东区</span>';
-										} else if (data == 15) {
-											return '<span >西区</span>';
-										} else {
-											return '<span>未知</span>';
-										}
-									}
-								},{
-                                data : "state",
+                                }
+                            },{
+                                data : "sell",
                                 bSortable : false,
-
                                 className : "text-center",
                                 render : function(data, type, row, meta) {
-                                    if (data == 2) {
-                                        return '<span style="color: #3e8f3e;font-weight:bold" >在售</span>';
-                                    }  else {
-                                        return '<span  style="color: red;font-weight:bold">停售</span>';
+                                    if (data == 1) {
+                                        return '<span >出售</span>';
+                                    } else if (data == 2) {
+                                        return '<span >在售</span>';
+                                    } else if (data == 3) {
+                                        return '<span >认购</span>';
+                                    } else if (data == 4) {
+                                        return '<span >已售</span>';
+                                    } else {
+                                        return '<span>未知</span>';
                                     }
                                 }
                             },{
-									data : "firstPerson",
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
-
-									}
-								},{
-									data : "projectPerson",
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
-
-									}
-								}, {
-									data : "projectTelephone",
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
-
-									}
-								},{
 									data :null
 								}
 					
@@ -178,7 +128,6 @@ $(function() {
 			                        "render": function(data, type, full){  
 			                            return  "<div class='btn-group'>"+
 			    		        				"<button id='editRow' onclick='detailsCustomer(this);' class='btn btn-warning btn-s' type='button'>详情</button>"+
-			    		        				"<button id='editRow' onclick='matchingCustomer(this);' class='btn btn-danger btn-d' type='button'>匹配客户</button>"+
 			    		        				"</div>" 
 			                        }  
 				                },
@@ -226,27 +175,23 @@ $(function() {
 		myTable.ajax.reload();
 	});
 	//添加按钮
-	$("#addAccount").click("click", function() {
-		addAccount();
+	$("#addHome").click("click", function() {
+        addHome();
 	});
 	//修改按钮
-	$("#editAccount").click("click", function() {
-		editAccount();
+	$("#editHome").click("click", function() {
+		editHome();
 
 	});
 	//删除按钮
-	$("#delAccount").click("click", function() {
-		delAccount();
+	$("#delHome").click("click", function() {
+		delHome();
 
 	});
-	//更新项目
-	$("#updateAccount").click("click", function() {
-		updateAccount();
 
-	});
     //图片上传
-    $("#addImg").click("click", function() {
-        addImg();
+    $("#addHomeImg").click("click", function() {
+        addHomeImg();
 
     });
 
@@ -260,23 +205,23 @@ $(function() {
  * 添加
  * @returns
  */
-function addAccount() {
+function addHome() {
 	pageii = layer.open({
 		title : "添加项目",
 		type : 2,
 		area : [ "1000px", "80%" ],
-		content : './project/addUI.shtml'
+		content : './project/addHomeUI.shtml'
 	});
 }
 /**
  * 编辑
  * @returns
  */
-function editAccount() {
+function editHome() {
 	var cbox = $(".checkchild:checked");
 
 	if (cbox.length != 1) {
-		layer.msg('请选择唯一一条项目数据！', {
+		layer.msg('请选择唯一一条住宅数据！', {
 			icon : 2,
 			time : 2000
 		// 2秒关闭（如果不配置，默认是3秒）
@@ -289,7 +234,7 @@ function editAccount() {
 		title : "编辑项目",
 		type : 2,
         area : [ "1000px", "80%" ],
-		content : './project/editUI.shtml?id=' + id,
+		content : './project/editHomeUI.shtml?id=' + id,
 
 	});
 
@@ -298,7 +243,7 @@ function editAccount() {
  * 删除
  * @returns
  */
-function delAccount() {
+function delHome() {
 
 	var id_array = new Array();
 	$('input[name="checkchild"]:checked').each(function() {
@@ -307,7 +252,7 @@ function delAccount() {
 
 	});
 	if (id_array.length < 1) {
-		layer.msg('您没有选择项目！', {
+		layer.msg('您没有选择数据！', {
 			icon : 2,
 			time : 2000
 		//2秒关闭（如果不配置，默认是3秒）
@@ -320,7 +265,7 @@ function delAccount() {
 		layer.confirm('是否删除？', function(index) {
 
 			$.ajax({
-				"url" : './project/deleteEntity.shtml?ids=' + idstr,
+				"url" : './project/deleteHome.shtml?ids=' + idstr,
 
 				"type" : "GET",
 				"datatype" : "json",
@@ -345,42 +290,7 @@ function delAccount() {
 	}
 
 }
-/**
- * 更新
- * @returns
- */
-function updateAccount() {
 
-
-
-		layer.confirm('是否更新？', function(index) {
-
-			$.ajax({
-				"url" : './project/updateEntity.shtml',
-
-				"type" : "GET",
-				"datatype" : "json",
-				"success" : function(s) {
-
-					layer.msg('更新成功', {
-						icon : 1,
-						time : 1000
-					//2秒关闭（如果不配置，默认是3秒）
-					});
-					//myTable.ajax.reload();
-					myTable.draw(false);
-				},
-				error : function(er) {
-					layer.msg('更新失败');
-				}
-
-			});
-			layer.close(index);
-		});
-
-
-
-}
 /**
  *
  * 项目详情
@@ -398,7 +308,7 @@ function detailsCustomer(_this) {
         resize : false,
         type : 2,
         area : [ "1000px", "80%" ],
-        content : './project/housedetail.shtml?id=' + prId+'&state='+state
+        content : './project/findHomeUI.shtml?id=' + prId
 
     });
 
@@ -429,11 +339,11 @@ function matchingCustomer(_this) {
  * 传图
  * @returns
  */
-function addImg() {
+function addHomeImg() {
     var cbox = $(".checkchild:checked");
 
     if (cbox.length != 1) {
-        layer.msg('请选择唯一一条项目数据！', {
+        layer.msg('请选择唯一一条住宅销控数据！', {
             icon : 2,
             time : 2000
             // 2秒关闭（如果不配置，默认是3秒）
@@ -443,10 +353,10 @@ function addImg() {
     var id = $(".checkchild:checked").val();
 
     pageii = layer.open({
-        title : "项目图片",
+        title : "住宅销控图片",
         type : 2,
         area : [ "700px", "80%" ],
-        content : './project/addImgUI.shtml?id=' + id,
+        content : './project/addHomeImgUI.shtml?id=' + id,
 
     });
 

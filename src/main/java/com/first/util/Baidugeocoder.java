@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ import java.util.Map;
    @version 1.00
  */
 public class Baidugeocoder {
-	public static Map<String, BigDecimal> getLatAndLngByAddress(String addr){
+	public static Map<String,String> getLatAndLngByAddress(String addr){
         String address = "";
         String lat = "";
         String lng = "";
@@ -59,9 +60,18 @@ public class Baidugeocoder {
         } catch (IOException e) {
 
         }
-        Map<String, BigDecimal> map = new HashMap<String, BigDecimal>();
+       /* Map<String, BigDecimal> map = new HashMap<String, BigDecimal>();
         map.put("lat", new BigDecimal(lat));
-        map.put("lng", new BigDecimal(lng));
+        map.put("lng", new BigDecimal(lng));*/
+        Map<String,String> map = new HashMap<String, String>();
+        double lats=new Double(lat);
+        double lngs=new Double(lng);
+         DecimalFormat df = new DecimalFormat("#.000000");
+        String a= df.format(lats);
+        String b= df.format(lngs);
+      // String b= String.format("%.2f",a);
+        map.put("lat",a);
+        map.put("lng", b);
         return map;
 }
 }

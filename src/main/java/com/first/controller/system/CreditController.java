@@ -112,7 +112,6 @@ public class CreditController   extends BaseController {
         searchMap.put("type",type);
         PageHelper.startPage(page, 15);
         List< CreditFormMap> creditFormMap=creditService.findCreditRecord(searchMap);
-        System.err.println("asd"+creditFormMap);
         PageInfo< CreditFormMap> pageinfo = new PageInfo< CreditFormMap>(creditFormMap);
 
         return pageinfo;

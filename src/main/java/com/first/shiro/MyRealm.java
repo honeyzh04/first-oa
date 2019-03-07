@@ -45,7 +45,6 @@ public class MyRealm extends AuthorizingRealm {
 			String userId = SecurityUtils.getSubject().getSession().getAttribute("userSessionId").toString();
 			
 			List<ResFormMap> rs = resourcesMapper.findUserResourcess(userId);
-			System.err.println("6.12权限验证"+rs);
 			// 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			// 用户的角色集合

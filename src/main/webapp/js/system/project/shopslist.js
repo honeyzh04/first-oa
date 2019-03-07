@@ -17,7 +17,7 @@ $(function() {
 						info : true, //页脚
 						ordering : false,//排序
 						ajax : {
-							url : "./project/findByProject.shtml",// 数据请求地址
+							url : "./project/findShopsList.shtml",// 数据请求地址
 							type : "POST",
 
 							data : function(params) {
@@ -47,7 +47,7 @@ $(function() {
 									data : "projectName"
 								},
 								{
-									data : "projectPosition",
+									data : "shopNumber",
 									render : function(data, type, row, meta) {
 										if (data == null) {
 											return '';
@@ -58,43 +58,7 @@ $(function() {
 									}
 								},
 								{
-									data : "type",
-									render : function(data, type, row, meta) {
-										if (data == 1) {
-											return '<span >商铺</span>';
-										} else if (data == 2) {
-											return '<span >公寓</span>';
-										} else if (data == 3) {
-											return '<span >写字楼</span>';
-										} else {
-											return '<span >未知</span>';
-										}
-
-									}
-								},
-								{
-									data : "area",
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
-
-									}
-								},
-								{
-									data : 'price',
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
-
-									}
-								}, 	{
-									data : 'prices',
+									data : "acreate",
 									render : function(data, type, row, meta) {
 										if (data == null) {
 											return '';
@@ -104,66 +68,86 @@ $(function() {
 
 									}
 								},{
-									data : "region",
-									bSortable : false,
-
-									className : "text-center",
-									render : function(data, type, row, meta) {
-										if (data == 12) {
-											return '<span >南区</span>';
-										} else if (data == 13) {
-											return '<span >北区</span>';
-										} else if (data == 14) {
-											return '<span >东区</span>';
-										} else if (data == 15) {
-											return '<span >西区</span>';
-										} else {
-											return '<span>未知</span>';
-										}
-									}
-								},{
-                                data : "state",
+                                data : "flue",
                                 bSortable : false,
-
                                 className : "text-center",
                                 render : function(data, type, row, meta) {
-                                    if (data == 2) {
-                                        return '<span style="color: #3e8f3e;font-weight:bold" >在售</span>';
-                                    }  else {
-                                        return '<span  style="color: red;font-weight:bold">停售</span>';
+                                    if (data == 1) {
+                                        return '<span >有</span>';
+                                    } else if (data == 2) {
+                                        return '<span >没有</span>';
+                                    } else {
+                                        return '<span>未知</span>';
                                     }
                                 }
+                            }, {
+                                data : "Rent",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
+
+                                }
+                            }, {
+                                data : "leaseTime",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
+
+                                }
                             },{
-									data : "firstPerson",
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
+                                data : "totalPrice",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
 
-									}
-								},{
-									data : "projectPerson",
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
+                                }
+                            },{
+                                data : "price",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
 
-									}
-								}, {
-									data : "projectTelephone",
-									render : function(data, type, row, meta) {
-										if (data == null) {
-											return '';
-										} else {
-											return data;
-										}
+                                }
+                            },{
+                                data : "sell",
+                                bSortable : false,
+                                className : "text-center",
+                                render : function(data, type, row, meta) {
+                                    if (data == 1) {
+                                        return '<span >待售</span>';
+                                    } else if (data == 2) {
+                                        return '<span >在售</span>';
+                                    } else if (data == 3) {
+                                        return '<span >认购</span>';
+                                    } else if (data == 4) {
+                                        return '<span >已售</span>';
+                                    } else {
+                                        return '<span>未知</span>';
+                                    }
+                                }
+                            }, {
+                                data : "trait",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+                                    } else {
+                                        return data;
+                                    }
 
-									}
-								},{
+                                }
+                            },{
 									data :null
 								}
 					
@@ -178,7 +162,6 @@ $(function() {
 			                        "render": function(data, type, full){  
 			                            return  "<div class='btn-group'>"+
 			    		        				"<button id='editRow' onclick='detailsCustomer(this);' class='btn btn-warning btn-s' type='button'>详情</button>"+
-			    		        				"<button id='editRow' onclick='matchingCustomer(this);' class='btn btn-danger btn-d' type='button'>匹配客户</button>"+
 			    		        				"</div>" 
 			                        }  
 				                },
@@ -187,9 +170,9 @@ $(function() {
 		 	           ],
 						oLanguage : {
 							"sProcessing" :"<img src='./img/loading.gif' /> 努力加载数据中.",
-							"sLengthMenu" : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每页显示 _MENU_ 条项目记录",
+							"sLengthMenu" : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每页显示 _MENU_ 条商铺销控记录",
 							"sZeroRecords" : "抱歉， 没有找到",
-							"sInfo" : "从 _START_ 到 _END_ /共 _TOTAL_ 条项目信息",
+							"sInfo" : "从 _START_ 到 _END_ /共 _TOTAL_ 条商铺销控信息",
 							"sInfoEmpty" : "没有数据",
 							"sInfoFiltered" : "(从 _MAX_ 条数据中检索)",
 							"oPaginate" : {
@@ -205,48 +188,28 @@ $(function() {
 					});
 
 
-	// checkbox全选
-/*	$("#checkAll").on(
-			"click",
-			function() {
-				if ($(this).prop("checked") === true) {
-					var id = $("input[name='checkList']").prop("checked",
-							$(this).prop("checked"));
-					alert(id);
-
-					$(this).hasClass('selected')
-				} else {
-					$("input[name='checkList']").prop("checked", false);
-					$("#dataTable tbody tr").removeClass('selected');
-				}
-			});*/
-
 	//查询
 	$("#search").click("click", function() {// 绑定查询按扭
 		myTable.ajax.reload();
 	});
 	//添加按钮
-	$("#addAccount").click("click", function() {
-		addAccount();
+	$("#addShops").click("click", function() {
+        addShops();
 	});
 	//修改按钮
-	$("#editAccount").click("click", function() {
-		editAccount();
+	$("#editShops").click("click", function() {
+		editShops();
 
 	});
 	//删除按钮
-	$("#delAccount").click("click", function() {
-		delAccount();
+	$("#delShops").click("click", function() {
+		delShops();
 
 	});
-	//更新项目
-	$("#updateAccount").click("click", function() {
-		updateAccount();
 
-	});
     //图片上传
-    $("#addImg").click("click", function() {
-        addImg();
+    $("#addShopsImg").click("click", function() {
+        addShopsImg();
 
     });
 
@@ -260,23 +223,23 @@ $(function() {
  * 添加
  * @returns
  */
-function addAccount() {
+function addShops() {
 	pageii = layer.open({
-		title : "添加项目",
+		title : "添加商铺销控",
 		type : 2,
 		area : [ "1000px", "80%" ],
-		content : './project/addUI.shtml'
+		content : './project/addShopsUI.shtml'
 	});
 }
 /**
  * 编辑
  * @returns
  */
-function editAccount() {
+function editShops() {
 	var cbox = $(".checkchild:checked");
 
 	if (cbox.length != 1) {
-		layer.msg('请选择唯一一条项目数据！', {
+		layer.msg('请选择唯一一条商铺数据！', {
 			icon : 2,
 			time : 2000
 		// 2秒关闭（如果不配置，默认是3秒）
@@ -286,10 +249,10 @@ function editAccount() {
 	var id = $(".checkchild:checked").val();
 
 	pageii = layer.open({
-		title : "编辑项目",
+		title : "编辑商铺",
 		type : 2,
         area : [ "1000px", "80%" ],
-		content : './project/editUI.shtml?id=' + id,
+		content : './project/editShopsUI.shtml?id=' + id,
 
 	});
 
@@ -298,7 +261,7 @@ function editAccount() {
  * 删除
  * @returns
  */
-function delAccount() {
+function delShops() {
 
 	var id_array = new Array();
 	$('input[name="checkchild"]:checked').each(function() {
@@ -307,7 +270,7 @@ function delAccount() {
 
 	});
 	if (id_array.length < 1) {
-		layer.msg('您没有选择项目！', {
+		layer.msg('您没有选择商铺！', {
 			icon : 2,
 			time : 2000
 		//2秒关闭（如果不配置，默认是3秒）
@@ -320,7 +283,7 @@ function delAccount() {
 		layer.confirm('是否删除？', function(index) {
 
 			$.ajax({
-				"url" : './project/deleteEntity.shtml?ids=' + idstr,
+				"url" : './project/deleteShops.shtml?ids=' + idstr,
 
 				"type" : "GET",
 				"datatype" : "json",
@@ -346,42 +309,6 @@ function delAccount() {
 
 }
 /**
- * 更新
- * @returns
- */
-function updateAccount() {
-
-
-
-		layer.confirm('是否更新？', function(index) {
-
-			$.ajax({
-				"url" : './project/updateEntity.shtml',
-
-				"type" : "GET",
-				"datatype" : "json",
-				"success" : function(s) {
-
-					layer.msg('更新成功', {
-						icon : 1,
-						time : 1000
-					//2秒关闭（如果不配置，默认是3秒）
-					});
-					//myTable.ajax.reload();
-					myTable.draw(false);
-				},
-				error : function(er) {
-					layer.msg('更新失败');
-				}
-
-			});
-			layer.close(index);
-		});
-
-
-
-}
-/**
  *
  * 项目详情
  * @param _this
@@ -398,7 +325,7 @@ function detailsCustomer(_this) {
         resize : false,
         type : 2,
         area : [ "1000px", "80%" ],
-        content : './project/housedetail.shtml?id=' + prId+'&state='+state
+        content : './project/findShopsUI.shtml?id=' + prId
 
     });
 
@@ -429,11 +356,11 @@ function matchingCustomer(_this) {
  * 传图
  * @returns
  */
-function addImg() {
+function addShopsImg() {
     var cbox = $(".checkchild:checked");
 
     if (cbox.length != 1) {
-        layer.msg('请选择唯一一条项目数据！', {
+        layer.msg('请选择唯一一条商铺销控数据！', {
             icon : 2,
             time : 2000
             // 2秒关闭（如果不配置，默认是3秒）
@@ -443,10 +370,10 @@ function addImg() {
     var id = $(".checkchild:checked").val();
 
     pageii = layer.open({
-        title : "项目图片",
+        title : "商铺销控图片",
         type : 2,
         area : [ "700px", "80%" ],
-        content : './project/addImgUI.shtml?id=' + id,
+        content : './project/addShopsImgUI.shtml?id=' + id,
 
     });
 

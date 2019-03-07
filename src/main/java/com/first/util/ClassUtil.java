@@ -17,7 +17,7 @@ public class ClassUtil {
 		List<String> classNames = getClassName(packageName, false);
 		if (classNames != null) {
 			for (String className : classNames) {
-				System.out.println(className);
+
 			}
 		}
 	}

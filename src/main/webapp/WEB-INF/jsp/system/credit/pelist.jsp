@@ -117,12 +117,12 @@
                     <div class="box pad10">
                         <img src="image/3.png" alt="">
                         <p>房源置顶</p>
-                        <div> <span class="font12">1000分</span> <button type="button" class="btn btn-warning" onclick="funExchange('7')">兑换</button></div>
+                        <div> <span class="font12">1000分</span> <button type="button" class="btn btn-warning" onclick="funExchange1('7')">兑换</button></div>
                     </div>
                     <div class="box pad10">
                         <img src="image/3.png" alt="">
                         <p>精选房源</p>
-                        <div> <span class="font12">1000分</span> <button type="button" class="btn btn-warning" onclick="funExchange('7')">兑换</button></div>
+                        <div> <span class="font12">1000分</span> <button type="button" class="btn btn-warning" onclick="funExchange1('7')">兑换</button></div>
                     </div>
                 </div>
 

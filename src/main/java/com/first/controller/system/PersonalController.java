@@ -524,7 +524,7 @@ public class PersonalController extends BaseController {
     /**
      * 定时发送微信
      */
-    //  @Scheduled(cron = "0 00 22 * * ? ")
+      @Scheduled(cron = "0 00 22 * * ? ")
     public void delayedSendWeChat () {
         try {
             personalService.delayedSendWeChat();

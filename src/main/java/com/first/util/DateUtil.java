@@ -71,10 +71,7 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date date = sdf.parse("2018-09-25");
-            System.out.println("今天是" + sdf.format(date));
-            System.out.println("上周二" + sdf.format(geLastWeekTuesday(date)));
-            System.out.println("本周二" + sdf.format(getThisWeekTuesday(date)));
-            System.out.println("下周二" + sdf.format(getNextWeekTuesday(date)));
+
         } catch (Exception e) {
             e.printStackTrace();
         }

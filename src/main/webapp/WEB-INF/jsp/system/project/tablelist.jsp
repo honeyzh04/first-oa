@@ -11,7 +11,8 @@
 	text-align: center;
 	vertical-align: middle !important;
 }
-	.btn-s{
+
+ .btn-s{
     width: 43px;
     height: 27px;
     padding: 5px 5px;

@@ -88,16 +88,16 @@ $(function() {
             "projectFormMap.saleStartTime" : {
                 required : true,
             },
-            "projectFormMap.areas" : {
+            "  projectFormMap.areas" : {
                 required : true,
             },
-            "projectFormMap.areae" : {
+            "  projectFormMap.areae" : {
                 required : true,
             },
-            "projectFormMap.areas" : {
+            " projectFormMap.areas" : {
                 required : true,
             },
-            "projectFormMap.areas" : {
+            " projectFormMap.areas" : {
                 required : true,
             },
             "projectFormMap.prices" : {
@@ -133,10 +133,6 @@ $(function() {
             "projectFormMap.RecommendReason" : {
                 required : true,
             },
-            "projectFormMap.prFeature" : {
-                required : true,
-            },
-
             "projectFormMap.prFeature" : {
                 required : true,
             },
@@ -217,9 +213,6 @@ $(function() {
             },
             "projectFormMap.RecommendReason" : {
                 required : "请输入项目推荐",
-            },
-            "projectFormMap.prFeature" : {
-                required : "请选择项目特点大家都在发",
             },
             "projectFormMap.prFeature" : {
                 required : "请输入项目特点",

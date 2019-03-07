@@ -9,23 +9,21 @@ public class UnicodeUtils {
 
 		String str = "是";
 		
-		System.out.println(str);
+
 		
 		str = toUnicode(str, false);
 
-		System.out.println(str);
+
 
 		str = "az";
-		
-		System.out.println(str);
-		
+
 		str = stringToUnicode(str);
 		
-		System.out.println(str);
+
 		
 		str = fromUnicode(str);
 		
-		System.out.println(str);
+
 
 	}
 

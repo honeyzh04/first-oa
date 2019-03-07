@@ -1,5 +1,6 @@
 package com.first.controller.system;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.first.annotation.SystemLog;
 import com.first.controller.index.BaseController;
 import com.first.entity.*;
@@ -8,10 +9,7 @@ import com.first.mapper.CustomerMapper;
 import com.first.mapper.DepartMapper;
 import com.first.mapper.InterlocutionMapper;
 import com.first.mapper.UserMapper;
-import com.first.service.system.CreditService;
-import com.first.service.system.FFXAppService;
-import com.first.service.system.PersonalService;
-import com.first.service.system.ShareCustomerService;
+import com.first.service.system.*;
 import com.first.util.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -55,21 +53,25 @@ public class FFXAppController extends BaseController {
     private DepartMapper departMapper;
     @Inject
     private CreditService creditService;
+    @Inject
+    private ProjectService projectService;
+
 
     /**
      * 查找用户信息
+     *
      * @param userName
      * @return
      */
-    private UserFormMap findByUser(String userName){
-        UserFormMap user=new UserFormMap();
-        if(userName!=null){
+    private UserFormMap findByUser(String userName) {
+        UserFormMap user = new UserFormMap();
+        if (userName != null) {
             UserFormMap a = new UserFormMap();
             a.put("accountName", userName);
-             user = userMapper.findByUser(a);
+            user = userMapper.findByUser(a);
 
         }
-        return  user;
+        return user;
     }
 
     /**
@@ -83,13 +85,14 @@ public class FFXAppController extends BaseController {
     public Result<Void> addUI(String userName) throws Exception {
         Result<Void> rr = null;
         try {
-            UserFormMap user =  findByUser(userName);
+            UserFormMap user = findByUser(userName);
             rr = new Result<Void>(1, "成功", user);
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
         }
         return rr;
     }
+
     @ResponseBody
     @RequestMapping("findCustomer")
     public Result<Void> findCustomer(String userName, String customerName, String telephone, String state, String intention, @RequestParam(required = true, defaultValue = "1") Integer page) {
@@ -330,15 +333,16 @@ public class FFXAppController extends BaseController {
         }
         return rr;
     }
+
     @ResponseBody
     @RequestMapping("findAnswer")
     public Result<Void> findAnswer(String id) {
         Result<Void> rr = null;
 
         try {
-            if(id!=null &id .length()!=0){
+            if (id != null & id.length() != 0) {
                 List<InterlocutionFormMap> p = interlocutionMapper.findanswers(id);
-                rr = new Result<Void>(1, "成功",p);
+                rr = new Result<Void>(1, "成功", p);
             }
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
@@ -364,6 +368,7 @@ public class FFXAppController extends BaseController {
 
     /**
      * 添加个人日报表
+     *
      * @return
      * @throws Exception
      */
@@ -375,6 +380,7 @@ public class FFXAppController extends BaseController {
         personalService.addDayPlan(personalFormMap);
         return "success";
     }
+
     /**
      * 验证计划是否存在
      *
@@ -383,24 +389,25 @@ public class FFXAppController extends BaseController {
      */
     @RequestMapping("isExist")
     @ResponseBody
-    public Result<Void> isExist(String createDate,String userId) throws Exception {
+    public Result<Void> isExist(String createDate, String userId) throws Exception {
         Result<Void> rr = null;
         try {
-        Map<String, Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("createDate", createDate);
-        searchMap.put("userId", userId);
-        PersonalFormMap lis  = personalService.finddayadd(searchMap);
-        if (lis == null) {
-            rr = new Result<Void>(1, "成功",true);
-        } else {
-            rr = new Result<Void>(1, "成功",false);
-        }
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("createDate", createDate);
+            searchMap.put("userId", userId);
+            PersonalFormMap lis = personalService.finddayadd(searchMap);
+            if (lis == null) {
+                rr = new Result<Void>(1, "成功", true);
+            } else {
+                rr = new Result<Void>(1, "成功", false);
+            }
 
-    } catch (RuntimeException e) {
-        rr = new Result<Void>(0, e.getMessage(), "");
-    }
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+        }
         return rr;
-}
+    }
+
     /**
      * 个人报表审核
      *
@@ -409,47 +416,48 @@ public class FFXAppController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("pereport")
-    public  Result<Void> pereportUI(String userName) throws Exception {
+    public Result<Void> pereportUI(String userName) throws Exception {
         Result<Void> rr = null;
 
         try {
             if (userName == null || userName.length() == 0) {
                 rr = new Result<Void>(0, "经纪人用户名不正确", "");
-            }else {
-        UserFormMap user=findByUser(userName);
-        Map<String, Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("createDate", new Date());
-        searchMap.put("userId", user.get("id"));
-        searchMap.put("nexteDate",DateUtil.getnNext());
-        PersonalFormMap daynextP = personalService.findnextdayadd(searchMap);
-        PersonalFormMap daylisR = personalService.finddayreport(searchMap); //日数据
-        System.err.println(daylisR);
-        SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
-        String date1 = formater.format(new Date());
-        Date date = formater.parse(date1);
-        Date a = DateUtil.getThisWeekTuesday(date);
-        Date b = DateUtil.getNextWeekTuesday(date);
-        searchMap.put("screateDate", a);
-        searchMap.put("ecreateDate", b);
-        PersonalFormMap weeklisP = personalService.findweekadd(searchMap); //周计划
-        PersonalFormMap weeklisR = personalService.findweekreport(searchMap);//周数据
-        System.err.println("2"+weeklisP);
-        PersonalFormMap monthlisP = personalService.findmonthadd(searchMap);   //月计划
-        PersonalFormMap monthlisR = personalService.findmonthreport(searchMap);//月数据
-            HashMap<String,PersonalFormMap> p=new HashMap<>();
-            p.put("daynextP",daynextP);
-            p.put("daylisR",daylisR);
-            p.put("weeklisP",weeklisP);
-            p.put("weeklisR",weeklisR);
-            p.put("monthlisP",monthlisP);
-            p.put("monthlisR", monthlisR);
-            rr = new Result<Void>(1, "成功",p);
+            } else {
+                UserFormMap user = findByUser(userName);
+                Map<String, Object> searchMap = new HashMap<String, Object>();
+                searchMap.put("createDate", new Date());
+                searchMap.put("userId", user.get("id"));
+                searchMap.put("nexteDate", DateUtil.getnNext());
+                PersonalFormMap daynextP = personalService.findnextdayadd(searchMap);
+                PersonalFormMap daylisR = personalService.finddayreport(searchMap); //日数据
+                System.err.println(daylisR);
+                SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
+                String date1 = formater.format(new Date());
+                Date date = formater.parse(date1);
+                Date a = DateUtil.getThisWeekTuesday(date);
+                Date b = DateUtil.getNextWeekTuesday(date);
+                searchMap.put("screateDate", a);
+                searchMap.put("ecreateDate", b);
+                PersonalFormMap weeklisP = personalService.findweekadd(searchMap); //周计划
+                PersonalFormMap weeklisR = personalService.findweekreport(searchMap);//周数据
+                System.err.println("2" + weeklisP);
+                PersonalFormMap monthlisP = personalService.findmonthadd(searchMap);   //月计划
+                PersonalFormMap monthlisR = personalService.findmonthreport(searchMap);//月数据
+                HashMap<String, PersonalFormMap> p = new HashMap<>();
+                p.put("daynextP", daynextP);
+                p.put("daylisR", daylisR);
+                p.put("weeklisP", weeklisP);
+                p.put("weeklisR", weeklisR);
+                p.put("monthlisP", monthlisP);
+                p.put("monthlisR", monthlisR);
+                rr = new Result<Void>(1, "成功", p);
             }
-    } catch (RuntimeException e) {
-        rr = new Result<Void>(0, e.getMessage(), "");
-    }
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+        }
         return rr;
-}
+    }
+
     /**
      * 添加部门日计划
      *
@@ -473,24 +481,25 @@ public class FFXAppController extends BaseController {
      */
     @RequestMapping("deisExist")
     @ResponseBody
-    public   Result<Void> deisExist(String createDate,String deId) throws Exception {
+    public Result<Void> deisExist(String createDate, String deId) throws Exception {
         Result<Void> rr = null;
         try {
-        Map<String, Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("createDate", createDate);
-        searchMap.put("deId", deId);
-        PersonalFormMap lis = personalService.finddedayadd(searchMap);
-        if (lis == null) {
-            rr = new Result<Void>(1, "成功",true);
-        } else {
-            rr = new Result<Void>(1, "成功",false);
-        }
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("createDate", createDate);
+            searchMap.put("deId", deId);
+            PersonalFormMap lis = personalService.finddedayadd(searchMap);
+            if (lis == null) {
+                rr = new Result<Void>(1, "成功", true);
+            } else {
+                rr = new Result<Void>(1, "成功", false);
+            }
 
-    } catch (RuntimeException e) {
-        rr = new Result<Void>(0, e.getMessage(), "");
-    }
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+        }
         return rr;
-}
+    }
+
     /**
      * 部门报表审核
      *
@@ -499,25 +508,25 @@ public class FFXAppController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("dereport")
-    public  Result<Void> dereportUI(String userName) throws Exception {
+    public Result<Void> dereportUI(String userName) throws Exception {
         Result<Void> rr = null;
 
         try {
             if (userName == null || userName.length() == 0) {
                 rr = new Result<Void>(0, "经纪人用户名不正确", "");
-            }else {
-                UserFormMap user=findByUser(userName);
+            } else {
+                UserFormMap user = findByUser(userName);
                 Map<String, Object> searchMap = new HashMap<String, Object>();
                 searchMap.put("createDate", new Date());
                 searchMap.put("userId", user.get("id"));
                 searchMap.put("deId", user.get("departmentId"));
-                searchMap.put("nexteDate",DateUtil.getnNext());
+                searchMap.put("nexteDate", DateUtil.getnNext());
 
                 String depar = user.get("departmentId").toString();
                 int depId = Integer.parseInt(depar);
                 List<DepartmentFormMap> departmentFormMap = departMapper.getDepart();
                 List<String> idss = new ArrayList<>();
-                TreeUtil.treeMenuList(idss,departmentFormMap, depId);
+                TreeUtil.treeMenuList(idss, departmentFormMap, depId);
                 idss.add(depar);
                 searchMap.put("departments", idss);
                 PersonalFormMap daynextP = personalService.finddenextdayadd(searchMap);
@@ -534,40 +543,42 @@ public class FFXAppController extends BaseController {
 
                 PersonalFormMap monthlisP = personalService.finddemonthadd(searchMap);   //月计划
                 PersonalFormMap monthlisR = personalService.finddemonthreport(searchMap);//月数据
-                HashMap<String,PersonalFormMap> p=new HashMap<>();
-                p.put("daynextP",daynextP);
-                p.put("daylisR",daylisR);
-                p.put("weeklisP",weeklisP);
-                p.put("weeklisR",weeklisR);
-                p.put("monthlisP",monthlisP);
+                HashMap<String, PersonalFormMap> p = new HashMap<>();
+                p.put("daynextP", daynextP);
+                p.put("daylisR", daylisR);
+                p.put("weeklisP", weeklisP);
+                p.put("weeklisR", weeklisR);
+                p.put("monthlisP", monthlisP);
                 p.put("monthlisR", monthlisR);
-                rr = new Result<Void>(1, "成功",p);
+                rr = new Result<Void>(1, "成功", p);
             }
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
         }
         return rr;
     }
+
     /**
      * 发送微信
+     *
      * @return
      * @throws Exception
      */
     @RequestMapping("sendWeChat")
     @ResponseBody
     @SystemLog(module = "计划制定", methods = "计划制定-发送计划") // 凡需要处理业务逻辑的.都需要记录操作日志
-    public  Result<Void> sendWeChat(String corpsecret, String agentid,String info) throws Exception {
+    public Result<Void> sendWeChat(String corpsecret, String agentid, String info) throws Exception {
         Result<Void> rr = null;
 
         try {
-        SendWeChat sendWeChat=new SendWeChat();
-        boolean is_send = sendWeChat.send_info(corpsecret, agentid,info);
-        if (is_send){
-            rr = new Result<Void>(1, "发送成功","");
+            SendWeChat sendWeChat = new SendWeChat();
+            boolean is_send = sendWeChat.send_info(corpsecret, agentid, info);
+            if (is_send) {
+                rr = new Result<Void>(1, "发送成功", "");
 
-        }else {
-            rr = new Result<Void>(1, "发送失败","");
-        }
+            } else {
+                rr = new Result<Void>(1, "发送失败", "");
+            }
 
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
@@ -577,29 +588,31 @@ public class FFXAppController extends BaseController {
 
     /**
      * 个人积分
+     *
      * @param userName
      * @return
      */
     @ResponseBody
     @RequestMapping("findUserCredit")
-    public   Result<Void> findUserCredit(String userName) {
+    public Result<Void> findUserCredit(String userName) {
         Result<Void> rr = null;
         try {
-            if (findByUser(userName)!=null){
+            if (findByUser(userName) != null) {
                 System.err.println("132");
                 // 积分系统
-                String userId=findByUser(userName).get("id").toString();
-                System.err.println("132"+userId);
-                CreditFormMap creditFormMap=creditService.findUserCredit(userId);
-                rr = new Result<Void>(1, "成功",creditFormMap);
+                String userId = findByUser(userName).get("id").toString();
+                System.err.println("132" + userId);
+                CreditFormMap creditFormMap = creditService.findUserCredit(userId);
+                rr = new Result<Void>(1, "成功", creditFormMap);
             }
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
         }
         return rr;
     }
+
     /**
-     *发布房源加积分
+     * 发布房源加积分
      *
      * @param
      * @return
@@ -607,19 +620,19 @@ public class FFXAppController extends BaseController {
     @RequestMapping("fyCredit")
     @ResponseBody
     @Transactional(readOnly = false)
-    public   Result<Void> fyCredit(String userName) throws Exception {
+    public Result<Void> fyCredit(String userName) throws Exception {
         Result<Void> rr = null;
         try {
-           if (findByUser(userName).get("id") !=null){
-               // 积分系统
-               String userId=findByUser(userName).get("id").toString();
-               HashMap creditMap1 = new HashMap();
-               creditMap1.put("id",6);
-               creditMap1.put("userId",userId);
-               creditService. editUserCredit(creditMap1);
+            if (findByUser(userName).get("id") != null) {
+                // 积分系统
+                String userId = findByUser(userName).get("id").toString();
+                HashMap creditMap1 = new HashMap();
+                creditMap1.put("id", 6);
+                creditMap1.put("userId", userId);
+                creditService.editUserCredit(creditMap1);
 
-               rr = new Result<Void>(1, "成功",true);
-           }
+                rr = new Result<Void>(1, "成功", true);
+            }
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
         }
@@ -627,7 +640,7 @@ public class FFXAppController extends BaseController {
     }
 
     /**
-     *积分兑换
+     * 积分兑换
      *
      * @param
      * @return
@@ -635,24 +648,655 @@ public class FFXAppController extends BaseController {
     @RequestMapping("useCredit")
     @ResponseBody
     @Transactional(readOnly = false)
-    public   Result<Void> useCredit(String userName,String opId,Integer score) throws Exception {
+    public Result<Void> useCredit(String userName, String opId, Integer score) throws Exception {
         Result<Void> rr = null;
         try {
-            if (findByUser(userName).get("id")!=null){
-                String userId=findByUser(userName).get("id").toString();
+            if (findByUser(userName).get("id") != null) {
+                String userId = findByUser(userName).get("id").toString();
                 HashMap creditMap = new HashMap();
-                creditMap.put("type","1");
-                creditMap.put("id",opId);
+                creditMap.put("type", "1");
+                creditMap.put("id", opId);
                 creditMap.put("userId", userId);
-                creditMap.put("score",score);
+                creditMap.put("score", score);
                 creditService.editUserCredit(creditMap);
 
-                rr = new Result<Void>(1, "成功","success");
+                rr = new Result<Void>(1, "成功", "success");
             }
         } catch (RuntimeException e) {
-              rr = new Result<Void>(0, e.getMessage(), "");
+            rr = new Result<Void>(0, e.getMessage(), "");
         }
         return rr;
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "findImg")
+    public Object findImg(String proId, String type, String callback) throws Exception {
+        JSONPObject jsonpObject = null;
+        Result<Void> rr = null;
+        try {
+            HashMap searchImg = new HashMap();
+            searchImg.put("proId", proId);
+            searchImg.put("type", type);
+            List<ProjectFormMap> listImg = projectService.findImg(searchImg);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", listImg);
+            jsonpObject = new JSONPObject(callback, rr);
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+        }
+        return jsonpObject;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "findFFXImg")
+    public Result<Void> findFFXImg(String proId, String type, String callback) throws Exception {
+        Result<Void> rr = null;
+        try {
+            HashMap searchImg = new HashMap();
+            searchImg.put("proId", proId);
+            searchImg.put("type", type);
+            List<ProjectFormMap> listImg = projectService.findImg(searchImg);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", listImg);
+
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+    /**
+     * 查看项目列表
+     *
+     * @param pageSize
+     * @param pageNum
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("findFFXProjectList")
+    public   Result<Void> findByFFXProject(String projectName, String orderBy, String district, String type, String areas, String areae, String prices, String pricee, String pricess, String pricese, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum) throws Exception {
+        Result<Void> rr = null;
+        try {
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("projectName", projectName);
+            searchMap.put("district", district);
+            searchMap.put("type", type);
+            searchMap.put("areas", areas);
+            searchMap.put("areae", areae);
+            searchMap.put("prices", prices);
+            searchMap.put("pricee", pricee);
+            searchMap.put("pricess", pricess);
+            searchMap.put("pricese", pricese);
+            searchMap.put("orderBy", orderBy);
+            System.err.println(searchMap);
+            PageHelper.startPage(pageNum, pageSize);
+            List<ProjectFormMap> p = projectService.findProjects(searchMap);
+            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+
+
+            rr = new Result<Void>(1, "成功", pageinfo);
+
+        } catch (RuntimeException e) {
+
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+
+        }
+        return  rr;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "findFFXProject")
+    public Result<Void> findFFXProject(@RequestParam("id") String id, String callback) throws Exception {
+
+        Result<Void> rr = null;
+        try {
+            ProjectFormMap mps = projectService.findbyProject(id);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", mps);
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+
+    @ResponseBody
+    @RequestMapping("findFFXHomeList")
+    public Result<Void> findFFXHomeList(String proId, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
+
+        Result<Void> rr = null;
+
+        if (callback == null || callback.equals("")) {
+            callback = "callback";
+        }
+        try {
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("proId", proId);
+            PageHelper.startPage(pageNum, pageSize);
+            List<ProjectFormMap> p = projectService.findHomeList(searchMap);
+            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+
+            rr = new Result<Void>(1, "成功", pageinfo);
+
+        } catch (RuntimeException e) {
+
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+
+        }
+        return rr;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("findFFXHome")
+    public Result<Void> findFFXHome(String id, String callback) {
+
+        Result<Void> rr = null;
+        HashMap homeList = new HashMap();
+        try {
+            ProjectFormMap home = projectService.findHome(id);
+            List<ProjectFormMap> homeImg = projectService.findHomeImg(id);
+
+            homeList.put("home", home);
+            homeList.put("homeImg", homeImg);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", homeList);
+
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "findFFXHomeImg")
+    public Result<Void> findFFXHomeImg(String homeId,  String callback) throws Exception {
+        Result<Void> rr = null;
+        try {
+
+            List<ProjectFormMap> listHomeImg = projectService.findHomeImg(homeId);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功",listHomeImg);
+
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+    @ResponseBody
+    @RequestMapping("findFFXApartmentList")
+    public Result<Void> findFFXApartmentList(String proId, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
+        Result<Void> rr = null;
+
+        if (callback == null || callback.equals("")) {
+            callback = "callback";
+        }
+        try {
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("proId", proId);
+            PageHelper.startPage(pageNum, pageSize);
+            List<ProjectFormMap> p = projectService.findApartmentList(searchMap);
+            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+
+            rr = new Result<Void>(1, "成功", pageinfo);
+
+        } catch (RuntimeException e) {
+
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+
+        }
+        return rr;
+    }
+
+    @ResponseBody
+    @RequestMapping("findFFXApartment")
+    public Result<Void> findFFXApartment(String id, String callback) {
+
+        Result<Void> rr = null;
+        HashMap apartmentList = new HashMap();
+        try {
+            ProjectFormMap apartment = projectService.findApartment(id);
+            List<ProjectFormMap> apartmentImg = projectService.findApartmentImg(id);
+            apartmentList.put("apartment", apartment);
+            apartmentList.put("apartmentImg", apartmentImg);
+
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", apartmentList);
+
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+    @ResponseBody
+    @RequestMapping(value = "findFFXApartmentImg")
+    public Result<Void> findFFXApartmentImg(String apartmentId,  String callback) throws Exception {
+
+        Result<Void> rr = null;
+        try {
+
+            List<ProjectFormMap> listApartmentImg = projectService.findApartmentImg(apartmentId);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功",listApartmentImg);
+
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+    @ResponseBody
+    @RequestMapping("findFFXShopsList")
+    public Object findFFXShopsList(String proId, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
+        Result<Void> rr = null;
+
+
+        try {
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("proId", proId);
+            PageHelper.startPage(pageNum, pageSize);
+            List<ProjectFormMap> p = projectService.findShopsList(searchMap);
+            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+            System.err.println("app" + p);
+            rr = new Result<Void>(1, "成功", pageinfo);
+        } catch (RuntimeException e) {
+
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+
+    @ResponseBody
+    @RequestMapping("findFFXShops")
+    public Result<Void> findFFXShops(String id, String callback) {
+
+        Result<Void> rr = null;
+        HashMap shopList = new HashMap();
+        try {
+            ProjectFormMap shops = projectService.findShops(id);
+            List<ProjectFormMap> shopsImg = projectService.findShopsImg(id);
+            shopList.put("shops", shops);
+            shopList.put("shopsImg", shopsImg);
+
+
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", shopList);
+
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+    @ResponseBody
+    @RequestMapping(value = "findFFXShopsImg")
+    public Result<Void> findFFXShopsImg(String shopsId,  String callback) throws Exception {
+
+        Result<Void> rr = null;
+        try {
+            List<ProjectFormMap> listShopsImg = projectService.findShopsImg(shopsId);
+
+            rr = new Result<Void>(1, "成功",listShopsImg);
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+    /**
+     * 查看项目列表
+     *
+     * @param pageSize
+     * @param pageNum
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("findProjectList")
+    public Object findByProject(String projectName, String orderBy, String district, String type, String areas, String areae, String prices, String pricee, String pricess, String pricese, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
+        Result<Void> rr = null;
+        JSONPObject jsonpObject = null;
+        if (callback == null || callback.equals("")) {
+            callback = "callback";
+        }
+
+        try {
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("projectName", projectName);
+            searchMap.put("district", district);
+            searchMap.put("type", type);
+            searchMap.put("areas", areas);
+            searchMap.put("areae", areae);
+            searchMap.put("prices", prices);
+            searchMap.put("pricee", pricee);
+            searchMap.put("pricess", pricess);
+            searchMap.put("pricese", pricese);
+            searchMap.put("orderBy", orderBy);
+            PageHelper.startPage(pageNum, pageSize);
+            List<ProjectFormMap> p = projectService.findProjects(searchMap);
+            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+            rr = new Result<Void>(1, "成功", pageinfo);
+            jsonpObject = new JSONPObject(callback, rr);
+        } catch (RuntimeException e) {
+
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+
+        }
+        return jsonpObject;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "findProject")
+    public Object findProject(@RequestParam("id") String id, String callback) throws Exception {
+        JSONPObject jsonpObject = null;
+        Result<Void> rr = null;
+        try {
+            ProjectFormMap mps = projectService.findbyProject(id);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", mps);
+            jsonpObject = new JSONPObject(callback, rr);
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+        }
+        return jsonpObject;
+    }
+
+    @ResponseBody
+    @RequestMapping("findHomeList")
+    public Object findHomeList(String proId, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
+        System.err.println("sehenm");
+        Result<Void> rr = null;
+        JSONPObject jsonpObject = null;
+        if (callback == null || callback.equals("")) {
+            callback = "callback";
+        }
+        try {
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("proId", proId);
+            PageHelper.startPage(pageNum, pageSize);
+            List<ProjectFormMap> p = projectService.findHomeList(searchMap);
+            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+
+            rr = new Result<Void>(1, "成功", pageinfo);
+            jsonpObject = new JSONPObject(callback, rr);
+        } catch (RuntimeException e) {
+
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+
+        }
+        return jsonpObject;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("findHome")
+    public Object findHome(String id, String callback) {
+        JSONPObject jsonpObject = null;
+        Result<Void> rr = null;
+        HashMap homeList = new HashMap();
+        try {
+            ProjectFormMap home = projectService.findHome(id);
+            List<ProjectFormMap> homeImg = projectService.findHomeImg(id);
+
+            homeList.put("home", home);
+            homeList.put("homeImg", homeImg);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", homeList);
+            jsonpObject = new JSONPObject(callback, rr);
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+        }
+        return jsonpObject;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "findHomeImg")
+    public Object findHomeImg(String homeId,  String callback) throws Exception {
+        JSONPObject jsonpObject = null;
+        Result<Void> rr = null;
+        try {
+
+            List<ProjectFormMap> listHomeImg = projectService.findHomeImg(homeId);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功",listHomeImg);
+            jsonpObject = new JSONPObject(callback, rr);
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+        }
+        return jsonpObject;
+    }
+    @ResponseBody
+    @RequestMapping("findApartmentList")
+    public Object findApartmentList(String proId, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
+        Result<Void> rr = null;
+        JSONPObject jsonpObject = null;
+        if (callback == null || callback.equals("")) {
+            callback = "callback";
+        }
+        try {
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("proId", proId);
+            PageHelper.startPage(pageNum, pageSize);
+            List<ProjectFormMap> p = projectService.findApartmentList(searchMap);
+            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+
+            rr = new Result<Void>(1, "成功", pageinfo);
+            jsonpObject = new JSONPObject(callback, rr);
+        } catch (RuntimeException e) {
+
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+
+        }
+        return jsonpObject;
+    }
+
+    @ResponseBody
+    @RequestMapping("findApartment")
+    public Object findApartment(String id, String callback) {
+        JSONPObject jsonpObject = null;
+        Result<Void> rr = null;
+        HashMap apartmentList = new HashMap();
+        try {
+            ProjectFormMap apartment = projectService.findApartment(id);
+            List<ProjectFormMap> apartmentImg = projectService.findApartmentImg(id);
+            apartmentList.put("apartment", apartment);
+            apartmentList.put("apartmentImg", apartmentImg);
+
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", apartmentList);
+            jsonpObject = new JSONPObject(callback, rr);
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+        }
+        return jsonpObject;
+    }
+    @ResponseBody
+    @RequestMapping(value = "findApartmentImg")
+    public Object findApartmentImg(String apartmentId,  String callback) throws Exception {
+        JSONPObject jsonpObject = null;
+        Result<Void> rr = null;
+        try {
+
+            List<ProjectFormMap> listApartmentImg = projectService.findApartmentImg(apartmentId);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功",listApartmentImg);
+            jsonpObject = new JSONPObject(callback, rr);
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+        }
+        return jsonpObject;
+    }
+    @ResponseBody
+    @RequestMapping("findShopsList")
+    public Object findShopsList(String proId, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
+        Result<Void> rr = null;
+        JSONPObject jsonpObject = null;
+        if (callback == null || callback.equals("")) {
+            callback = "callback";
+        }
+        try {
+            Map<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("proId", proId);
+            PageHelper.startPage(pageNum, pageSize);
+            List<ProjectFormMap> p = projectService.findShopsList(searchMap);
+            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+            rr = new Result<Void>(1, "成功", pageinfo);
+            jsonpObject = new JSONPObject(callback, rr);
+        } catch (RuntimeException e) {
+
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+
+        }
+        return jsonpObject;
+    }
+
+    @ResponseBody
+    @RequestMapping("findShops")
+    public Object findShops(String id, String callback) {
+        JSONPObject jsonpObject = null;
+        Result<Void> rr = null;
+        HashMap shopList = new HashMap();
+        try {
+            ProjectFormMap shops = projectService.findShops(id);
+            List<ProjectFormMap> shopsImg = projectService.findShopsImg(id);
+            shopList.put("shops", shops);
+            shopList.put("shopsImg", shopsImg);
+
+
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", shopList);
+            jsonpObject = new JSONPObject(callback, rr);
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+        }
+        return jsonpObject;
+    }
+    @ResponseBody
+    @RequestMapping(value = "findShopsImg")
+    public Object findShopsImg(String shopsId,  String callback) throws Exception {
+        JSONPObject jsonpObject = null;
+        Result<Void> rr = null;
+        try {
+            List<ProjectFormMap> listShopsImg = projectService.findShopsImg(shopsId);
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功",listShopsImg);
+            jsonpObject = new JSONPObject(callback, rr);
+            return jsonpObject;
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+        }
+        return jsonpObject;
+    }
+    /**
+     * 搜索栏数据
+     *
+     * @param city
+     * @param callback
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("findProjectSearch")
+    public Object findProjectSearch(String city, String callback) {
+        JSONPObject jsonpObject = null;
+        Result<Void> rr = null;
+        Map search = new HashMap();
+        search.put("city", city);
+        try {
+            List<HashMap> projectSearch = projectService.findProjectSearch(search);
+
+            if (callback == null || callback.equals("")) {
+                callback = "callback";
+            }
+            rr = new Result<Void>(1, "成功", projectSearch);
+            jsonpObject = new JSONPObject(callback, rr);
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+            jsonpObject = new JSONPObject(callback, rr);
+        }
+        return jsonpObject;
+    }
+    @ResponseBody
+    @RequestMapping("findFFXProjectSearch")
+    public  Result<Void> findFFXProjectSearch(String city, String callback) {
+
+        Result<Void> rr = null;
+        Map search = new HashMap();
+        search.put("city", city);
+        try {
+            List<HashMap> projectSearch = projectService.findProjectSearch(search);
+
+
+            rr = new Result<Void>(1, "成功", projectSearch);
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+
+        }
+        return rr;
+    }
+
 }
 

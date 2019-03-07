@@ -15,7 +15,7 @@
 		FROM
 			ogdepartment
 		WHERE
-			parentId IN (12, 13, 14, 15)
+			parentId IN (4,12, 13, 14, 15)
 
 	</select>
 	<!-- 销售部门(包含区) -->
@@ -24,7 +24,7 @@
 		select
 		<include refid="selectId" />
 		from ogdepartment
-		where parentId in (2,12,13,14,15)
+		where parentId in (2,4,12,13,14,15)
 
 	</select>
 	<!-- 部门 -->

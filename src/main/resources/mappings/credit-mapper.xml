@@ -39,6 +39,7 @@
           userId=#{userId}
 
     </select>
+    <!--修改积分-->
     <update id="editCredit">
         update credit_data
         <set>

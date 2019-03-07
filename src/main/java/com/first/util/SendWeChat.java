@@ -109,7 +109,7 @@ public class SendWeChat {
             if (result_map.get("errmsg").equals("ok")) {
                 return true;
             } else {
-                System.out.println(result);
+
                 return false;
             }
         } catch (Exception e) {

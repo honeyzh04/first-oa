@@ -59,7 +59,6 @@ public class TVreportController extends BaseController {
     @RequestMapping("shows")
     @ResponseBody
     public Object shows(String callback) throws Exception {
-        System.err.println("sadasd"+1);
         Result<Void> rr = null;
         JSONPObject jsonpObject = null;
         try {
@@ -150,7 +149,7 @@ public class TVreportController extends BaseController {
             searchMap.put("projectFormMap", projectTVshows);
             searchMap.put("monthExtiension", monthExtiension);
 
-            System.err.println("2");
+
             if (callback == null || callback.equals("")) {
                 callback = "callback";
             }
