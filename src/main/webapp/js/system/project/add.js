@@ -75,7 +75,11 @@ $(function() {
 			"projectFormMap.state": {
 				required : true,
 			},
-			"projectFormMap.projectPosition" : {
+            "projectFormMap.city" : {
+                required : true,
+            },
+
+            "projectFormMap.projectPosition" : {
 
 				required : true,
 			},
@@ -137,10 +141,6 @@ $(function() {
                 required : true,
             },
 
-            "projectFormMap.prFeature" : {
-                required : true,
-            },
-
 
 
 
@@ -165,6 +165,10 @@ $(function() {
 			"projectFormMap.state" : {
 				required : "请选择楼盘状态",
 			},
+            "projectFormMap.city" : {
+                required : "请选择楼盘位置",
+            },
+
 			"cprojectFormMap.projectPosition" : {
 
 				required : "请选择具体位置",
@@ -217,9 +221,6 @@ $(function() {
             },
             "projectFormMap.RecommendReason" : {
                 required : "请输入项目推荐",
-            },
-            "projectFormMap.prFeature" : {
-                required : "请选择项目特点大家都在发",
             },
             "projectFormMap.prFeature" : {
                 required : "请输入项目特点",

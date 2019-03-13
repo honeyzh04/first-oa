@@ -9,6 +9,7 @@ import com.first.mapper.ProjectMapper;
 import com.first.service.system.ProjectService;
 import com.first.util.Baidugeocoder;
 import com.first.util.Common;
+import com.first.util.ImageUtil;
 import com.first.util.Result;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -219,8 +220,6 @@ public class ProjectController extends BaseController {
         if (Common.isNotEmpty(id)) {
 
             ProjectFormMap mps = projectService.findbyProject(id);
-            System.err.println("xiangmu" + mps);
-
             model.addAttribute("project", mps);
         }
         return Common.BACKGROUND_PATH + "/system/project/edit";
@@ -230,12 +229,9 @@ public class ProjectController extends BaseController {
     @RequestMapping("editEntity")
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
     @SystemLog(module = "项目管理", methods = "项目管理-修改项目") // 凡需要处理业务逻辑的.都需要记录操作日志
-    public String editEntity(String txtGroupsSelect) throws Exception {
+    public String editEntity() throws Exception {
         ProjectFormMap projectFormMap = getFormMap(ProjectFormMap.class);
-        System.err.println("c测试2" + projectFormMap);
         projectService.editEntity(projectFormMap);
-
-
         return "success";
     }
 
@@ -288,6 +284,7 @@ public class ProjectController extends BaseController {
                 // 设置图片上传路径
                 String url = request.getSession().getServletContext().getRealPath("/img/project/");
                 String imgName = name + "." + ext;
+                String zip=url + proId + "/" + imgName;
                 System.err.println(url);
                 // 以绝对路径保存重名命后的图片
                 File targetFile = new File(url + proId + "/" + imgName);
@@ -296,10 +293,12 @@ public class ProjectController extends BaseController {
                 }
 
                 file.transferTo(targetFile); // 保存文件
+                ImageUtil.zipWidthHeightImageFile(targetFile,targetFile,1200,900,0.7f);
+
 
                 System.err.println(targetFile);
-
-            /*    String url1 ="F:\\idea-workspace\\新建文件夹\\";
+/*
+                String url1 ="C:\\Users\\Administrator\\Desktop\\test";
                 File targetFile1= new File(url1 + imgName);
                 System.err.println(url1);
                 if (targetFile1.getParentFile().exists()) {
@@ -518,7 +517,8 @@ public class ProjectController extends BaseController {
     public String editShops() {
         try {
             ProjectFormMap projectFormMap = getFormMap(ProjectFormMap.class);
-          //  projectService.editShops(projectFormMap);
+
+            projectService.editShops(projectFormMap);
         } catch (Exception e) {
             throw new SystemException("修改异常");
         }
@@ -648,8 +648,9 @@ public class ProjectController extends BaseController {
         return "success";
     }
     @RequestMapping("editApartmentUI")
-    public String editApartmentUI(Model model) throws Exception {
-
+    public String editApartmentUI(Model model,String id) throws Exception {
+        ProjectFormMap apartment = projectService.findApartment(id);
+        model.addAttribute("apartment", apartment);
         return Common.BACKGROUND_PATH + "/system/project/editApartment";
     }
     @ResponseBody
@@ -659,7 +660,7 @@ public class ProjectController extends BaseController {
     public String editApartment() {
         try {
             ProjectFormMap projectFormMap = getFormMap(ProjectFormMap.class);
-            //  projectService.editApartment(projectFormMap);
+              projectService.editApartment(projectFormMap);
         } catch (Exception e) {
             throw new SystemException("修改异常");
         }
@@ -811,8 +812,9 @@ public class ProjectController extends BaseController {
     }
 
     @RequestMapping("editHomeUI")
-    public String editHomeUI(Model model) throws Exception {
-
+    public String editHomeUI(Model model,String id) throws Exception {
+        ProjectFormMap home = projectService.findHome(id);
+        model.addAttribute("home", home);
         return Common.BACKGROUND_PATH + "/system/project/editHome";
     }
     @ResponseBody
@@ -822,7 +824,7 @@ public class ProjectController extends BaseController {
     public String editHome() {
         try {
             ProjectFormMap projectFormMap = getFormMap(ProjectFormMap.class);
-            //  projectService.editHome(projectFormMap);
+             projectService.editHome(projectFormMap);
         } catch (Exception e) {
             throw new SystemException("修改异常");
         }
@@ -948,6 +950,14 @@ public class ProjectController extends BaseController {
         projectService.deleteHomeImg(id);
 
         return "success";
+    }
+    @ResponseBody
+    @RequestMapping(value = "findProjectBusiness")
+    public List<HashMap> findProjectBusiness(String district) throws Exception {
+        Map search = new HashMap();
+        search.put("district", district);
+        List<HashMap> listBusiness = projectService.findProjectBusiness(search);
+        return listBusiness;
     }
 
 }

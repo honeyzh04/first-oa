@@ -186,7 +186,7 @@
 				</table>
 				<div class="upBtn sjimg" style="width:60%;float:left">
 					<span class="btn btn-success">选择多文件</span>
-					<input type='file' name='pictureFile' class="upfile sjbtn " >
+					<input type='file' name='pictureFile' class="upfile sjbtn "  multiple>
 				</div>
 				<input type="hidden" name="type" value="1" class="typeid">
 				<input type="hidden" name="proId" value="${proId}" class="proid">
@@ -224,7 +224,7 @@
 				</table>
 				<div class="upBtn hximg" style="width:60%;float:left">
 					<span class="btn btn-success">选择多文件</span>
-					<input type='file' name='pictureFile' class="upfile hxbtn" >
+					<input type='file' name='pictureFile' class="upfile hxbtn" multiple>
 				</div>
 				<input type="hidden" name="type" value="2" class="typeid">
 				<input type="hidden" name="proId" value="${proId}" class="proid">
@@ -262,7 +262,7 @@
 				</table>
 				<div class="upBtn ptimg" style="width:60%;float:left">
 					<span class="btn btn-success">选择多文件</span>
-					<input type='file' name='pictureFile' class="upfile ptbtn"  >
+					<input type='file' name='pictureFile' class="upfile ptbtn"  multiple >
 				</div>
 				<input type="hidden" name="type" value="3" class="typeid">
 				<input type="hidden" name="proId"value="${proId}" class="proid">
@@ -302,7 +302,7 @@
 				</table>
 				<div class="upBtn xgimg" style="width:60%;float:left">
 					<span class="btn btn-success">选择多文件</span>
-					<input type='file' name='pictureFile' class="upfile xgbtn" >
+					<input type='file' name='pictureFile' class="upfile xgbtn" multiple >
 				</div>
 				<input type="hidden" name="type" value="4" class="typeid">
 				<input type="hidden" name="proId" value="${proId}" class="proid">
@@ -342,7 +342,7 @@
 				</table>
 				<div class="upBtn qtimg" style="width:60%;float:left">
 					<span class="btn btn-success">选择多文件</span>
-					<input type='file' name='pictureFile' class="upfile qtbtn"   >
+					<input type='file' name='pictureFile' class="upfile qtbtn"   multiple>
 				</div>
 				<input type="hidden" name="type" value="5" class="typeid">
 				<input type="hidden" name="proId" value="${proId}" class="proid">

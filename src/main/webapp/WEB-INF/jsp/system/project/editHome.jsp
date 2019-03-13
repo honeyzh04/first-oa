@@ -1,18 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+		 pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@include file="/common/common.jspf"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<script type="text/javascript" src="${ctx}/js/system/project/addhome.js">
-</script>
+	<script type="text/javascript" src="${ctx}/js/system/project/addhome.js">
+	</script>
 	<style>
 		.wrap {
 			width: 1000px;
 			font-size: 14px;
 		}
-
 		.inpw100 {
 			height: 38px;
 			line-height: 38px;
@@ -21,7 +20,6 @@
 			margin-right: 3px;
 			padding-left: 3px;
 		}
-
 		.labw130 {
 			float: left;
 			display: block;
@@ -32,21 +30,17 @@
 			line-height: 20px;
 			text-align: right;
 		}
-
 		.inpdiv190 {
 			float: left;
 			width: 230px;
 			margin-right: 50px;
 		}
-
 		.row {
 			width: 100%;
 			margin-bottom: 15px;
 			margin-top: 20px;
 			clear: both;
 		}
-
-
 		.selw100 {
 			width: 176px;
 		}
@@ -55,8 +49,6 @@
 			height: 38px;
 			line-height: 38px;
 		}
-
-
 		.rowbutton button {
 			width: 100px;
 			height: 38px;
@@ -66,49 +58,38 @@
 			border: 0px;
 		}
 
-
-		.cover .delbtn {
-			color: red;
-			font-size: 20px;
-			z-index: 999;
-
-		}
-
-		.imageDiv:hover .cover {
-			display: block;
-		}
 	</style>
 
 <body>
 <div class="l_err" style="width: 100%; margin-top: 2px;"></div>
-<form class="" id="form" action="${ctx}/project/addHome.shtml" method="get">
+<form class="" id="form" action="${ctx}/project/editHome.shtml" method="get">
 	<div class="wrap" id="wrap">
 		<div class="row">
+			<input type="hidden"  name="projectFormMap.id" value="${home.id}" />
 			<label for="" class="labw130">项目名称</label>
 			<div class="inpdiv190">
-				<select class="selectpicker projectName " data-style="btn-danger" data-width="170px" id="projectNamea"
-						name="projectFormMap.proId" data-live-search="true" title="选择项目"></select>
+				<div class="inpdiv190"><input type="text" class="inpw100"  readonly="readonly"  name="projectFormMap. projectName" value="${home.projectName}"></div>
 			</div>
-			<label for="" class="labw130">栋</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入栋号"
-										  name="projectFormMap.building"></div>
+			<label for="building" class="labw130">栋</label>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入栋号" id="building"  name="projectFormMap.building" value="${home.building}"></div>
 		</div>
 
 		<div class="row">
 
 			<label for="" class="labw130">层</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.floor"
-										  placeholder="请输入层号">m²</div>
+										  placeholder="请输入层号" value="${home.floor}">m²</div>
 			<label for="" class="labw130">房间编号</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.roomNo" placeholder="请输入房间编号">
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.roomNo" placeholder="请输入房间编号" value="${home.roomNo}">
 			</div>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">建面</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入房间面积"
-										  name="projectFormMap.area">m²</div>
+										  name="projectFormMap.area" value="${home.area}">m²</div>
 			<label for="" class="labw130">出售</label>
-			<select class="selw100 inpw100" name="projectFormMap.sell">
+			<input type="hidden" id="sell" value="${apartment.sell}"/>
+			<select class="selw100 inpw100" id="sells" name="projectFormMap.sell">
 				<option value="">请选择</option>
 				<option value="1">待售</option>
 				<option value="2">在售</option>
@@ -120,10 +101,10 @@
 		<div class="row">
 			<label for="" class="labw130">价格</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入价格"
-										  name="projectFormMap.price">万</div>
+										  name="projectFormMap.price" value="${home.price}">万</div>
 		</div>
 		<div class="row rowbutton">
-			<button  type="button" id="btn-test" class="btn-info submitbtn">立即提交</button> <button onclick="reset()">重置</button></div>
+			<button  type="button" id="btn-test" class="btn-info submitbtn">立即提交</button></div>
 	</div>
 </form>
 
@@ -139,49 +120,13 @@
 
     })
     $(document).ready(function () {
-        getprojectName()
+        var sell = $("#sell").val();
+        //根据值让option选中
+        $("#sells option[value='" + sell + "']").attr("selected", "selected");
     });
-    function wordStatic(input) {
-        // 获取要显示已经输入字数文本框对象
-        var content = document.getElementById('num');
-        if (content && input) {
-            // 获取输入框输入内容长度并更新到界面
-            var value = input.value;
-            // 将换行符不计算为单词数
-            value = value.replace(/\n|\r/gi, "");
-            // 更新计数
-            content.innerText = value.length;
-        }
-    }
-    //查看项目
-    function getprojectName() {
-        $.ajax({
-            "url": "../project/getProject.shtml",
-            "data": "",
-            "type": "GET",
-            "dataType": "json",
-            "success": function (obj) {
-                $("#projectNamea").html("<option value=0> - - - -选择项目- - - - </option>");
-                for (var i = 0; i < obj.length; i++) {
-                    var str = "<option value=" + obj[i].id + ">" + obj[i].projectName + "</option>";
-                    $("#projectNamea").append(str);
 
-                }
-                $('.projectName').selectpicker('refresh');
-                $('.projectName').selectpicker('render');
-
-            },
-            error: function () {
-                layer.alert("获取项目出错！请与管理员联系");
-            }
-        });
-    }
-    function reset() {
-        $("#wrap input").val("");
-    }
 
 
 
 </script>
-
 </html>

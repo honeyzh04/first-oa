@@ -90,7 +90,7 @@
         type = 4
         ) b ON a.id = b.proId
         WHERE
-        1 = 1 and
+        a.state != 4 and
         b.img is not null  and
         Another_Name !='Demo'
         <if test="projectName != null and projectName != '' ">
@@ -133,7 +133,7 @@
             </when>
             <!-- 没有激活排序条件时，默认按商品发布时间倒序排序 -->
             <otherwise>
-                order by id desc
+                ORDER BY state asc , id DESC
             </otherwise>
         </choose>
     </select>
@@ -208,7 +208,7 @@
 		#{CommercialArea},
 		#{GreeningRate},
 		#{PlotRatio},
-		#{OrganizationType},
+		#{business},
 		#{description},
 		#{RecommendReason},
 		#{prFeature},
@@ -251,6 +251,27 @@
             </if>
             <if test=" Another_Name != null and Another_Name != '' ">
                 Another_Name=#{Another_Name},
+            </if>
+            <if test=" province != null and province != '' ">
+                province=#{province},
+            </if>
+            <if test=" city != null and city != '' ">
+                city=#{city},
+            </if>
+            <if test=" district != null and district != '' ">
+                district=#{district},
+            </if>
+            <if test="  projectPosition != null and  projectPosition != '' ">
+                projectPosition=#{ projectPosition},
+            </if>
+            <if test="  latitude != null and    latitude != '' ">
+                latitude=#{latitude},
+            </if>
+            <if test="  score != null and    score != '' ">
+                score=#{score},
+            </if>
+            <if test="  sum != null and    sum != '' ">
+                sum=#{sum},
             </if>
             <if test=" Developers != null and Developers != '' ">
                 Developers=#{Developers},
@@ -333,8 +354,8 @@
             <if test=" PlotRatio != null and PlotRatio != ''">
                 PlotRatio=#{PlotRatio},
             </if>
-            <if test=" OrganizationType != null and OrganizationType != ''">
-                OrganizationType=#{OrganizationType},
+            <if test=" business != null and business != ''">
+                business=#{business},
             </if>
             <if test=" description != null and description != ''">
                 description=#{description},
@@ -570,6 +591,69 @@
 		WHERE
 			a.id=#{id}
 	</select>
+    <update id="editShops">
+        update proj_shops
+        <set>
+            <if test=" shopNumber != null and shopNumber != '' ">
+                shopNumber=#{shopNumber},
+            </if>
+            <if test=" forecastBuilding != null and forecastBuilding != '' ">
+                forecastBuilding=#{forecastBuilding},
+            </if>
+            <if test=" acreate != null and acreate != '' ">
+                acreate=#{acreate},
+            </if>
+            <if test=" forecastPublicApportionment != null and forecastPublicApportionment != '' ">
+                forecastPublicApportionment=#{forecastPublicApportionment},
+            </if>
+            <if test=" forecastSet != null and forecastSet != '' ">
+                forecastSet=#{forecastSet},
+            </if>
+            <if test=" totalPrice != null and totalPrice != '' ">
+                totalPrice=#{totalPrice},
+            </if>
+            <if test=" price != null and price != '' ">
+                price=#{price},
+            </if>
+            <if test=" height != null and height != '' ">
+                height=#{height},
+            </if>
+            <if test=" height != null and height != '' ">
+                height=#{height},
+            </if>
+            <if test=" opening != null and opening != '' ">
+                opening=#{opening},
+            </if>
+            <if test=" sell != null and sell != '' ">
+                sell=#{sell},
+            </if>
+            <if test=" store_status != null and store_status != '' ">
+                store_status=#{store_status},
+            </if>
+            <if test=" flue != null and flue != '' ">
+                flue=#{flue},
+            </if>
+            <if test=" trait != null and trait != '' ">
+                trait=#{trait},
+            </if>
+            <if test=" Rent != null and Rent != '' ">
+                Rent=#{Rent},
+            </if>
+            <if test=" leaseTime != null and leaseTime != '' ">
+                leaseTime=#{leaseTime},
+            </if>
+            <if test=" port != null and port != '' ">
+                port=#{port},
+            </if>
+            <if test=" intro != null and intro != '' ">
+                intro=#{intro},
+            </if>
+            <if test=" RecommendReason != null and RecommendReason != '' ">
+                RecommendReason=#{RecommendReason},
+            </if>
+        </set>
+        where id=#{id};
+    </update>
     <delete id="deleteShops">
 		delete from proj_shops where
 		id=#{id}
@@ -648,9 +732,53 @@
 			proj_apartment a
 		LEFT JOIN proj_data b ON a.prId = b.id
 		WHERE
-			a.id ==#{id}
+			a.id =#{id}
 	</select>
-
+    <update id="editApartment">
+        update proj_apartment
+        <set>
+            <if test=" building != null and building != '' ">
+                building=#{building},
+            </if>
+            <if test=" floor != null and floor != '' ">
+                floor=#{floor},
+            </if>
+            <if test=" roomNo != null and roomNo != '' ">
+                roomNo=#{roomNo},
+            </if>
+            <if test=" nature != null and nature != '' ">
+                nature=#{nature},
+            </if>
+            <if test=" sell != null and sell != '' ">
+                sell=#{sell},
+            </if>
+            <if test=" noodles != null and noodles != '' ">
+                noodles=#{noodles},
+            </if>
+            <if test=" shockDiscount != null and shockDiscount != '' ">
+                shockDiscount=#{shockDiscount},
+            </if>
+            <if test=" originalPrice != null and originalPrice != '' ">
+                originalPrice=#{originalPrice},
+            </if>
+            <if test=" originalUnitPrice != null and originalUnitPrice != '' ">
+                originalUnitPrice=#{originalUnitPrice},
+            </if>
+            <if test=" currentPrice != null and currentPrice != '' ">
+                currentPrice=#{currentPrice},
+            </if>
+            <if test=" currentUnitPrice != null and currentUnitPrice != '' ">
+                currentUnitPrice=#{currentUnitPrice},
+            </if>
+            <if test=" discountLowPrice != null and discountLowPrice != '' ">
+                discountLowPrice=#{discountLowPrice},
+            </if>
+            <if test=" discountUnitPrice != null and discountUnitPrice != '' ">
+                discountUnitPrice=#{discountUnitPrice},
+            </if>
+        </set>
+        where id=#{id};
+    </update>
     <delete id="deleteApartment">
 		delete from proj_apartment where
 		id=#{id}
@@ -725,6 +853,31 @@
 		WHERE
 	a.id=#{id}
 	</select>
+    <update id="editHome">
+        update proj_home
+        <set>
+            <if test=" building != null and building != '' ">
+                building=#{building},
+            </if>
+            <if test=" floor != null and floor != '' ">
+                floor=#{floor},
+            </if>
+            <if test=" roomNo != null and roomNo != '' ">
+                roomNo=#{roomNo},
+            </if>
+            <if test="area != null and area != '' ">
+                area=#{area},
+            </if>
+            <if test=" sell != null and sell != '' ">
+                sell=#{sell},
+            </if>
+            <if test=" price != null and price != '' ">
+                price=#{price},
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+
     <delete id="deleteHome">
 		delete from proj_home where
 		id=#{id}
@@ -758,5 +911,15 @@
 		from proj_search
 		where	city=#{city}
 		and status=1
+	</select>
+    <select id="findProjectBusiness" resultType="java.util.HashMap">
+		select
+		*
+		from proj_business
+		where
+		status=1
+        <if test="district != null and district != '' ">
+          and  district=#{district}
+        </if>
 	</select>
 </mapper>

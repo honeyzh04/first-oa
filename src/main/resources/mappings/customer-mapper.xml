@@ -372,6 +372,7 @@
     <!--客户查看 -->
     <select id="findCustomerPage"
             resultType="com.first.entity.CustomerFormMap">
+        SELECT * from (
         select
         <include refid="selectId"/>
 
@@ -388,10 +389,6 @@
         </if>
         <if test="telephone != null and  telephone != ''">
             and telephone=#{telephone}
-
-        </if>
-        <if test="followa != null and  followa != ''">
-            and content LIKE CONCAT(CONCAT('%',#{followa}),'%')
 
         </if>
         <if
@@ -425,9 +422,12 @@
             <!-- cusource in <foreach item="item" index="index" collection="array"
                 open="(" separator="," close=")"> #{cusource} </foreach> -->
         </if>
-
-
         order by ${date} asc,createDate desc
+        ) a where 1=1
+        <if test="followa != null and  followa != ''">
+            and content LIKE CONCAT(CONCAT('%',#{followa}),'%')
+
+        </if>
 
     </select>
     <!-- <if test="followb != null and followb != '' and followb==1" > and (SELECT

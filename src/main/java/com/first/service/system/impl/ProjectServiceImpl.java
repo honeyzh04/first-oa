@@ -135,6 +135,11 @@ public class ProjectServiceImpl implements ProjectService  {
 	}
 
 	@Override
+	public void editShops(ProjectFormMap formMap) {
+		projectMapper.editShops(formMap);
+	}
+
+	@Override
 	public void deleteShops(String id) {
 		projectMapper.deleteShops(id);
 	}
@@ -168,6 +173,11 @@ public class ProjectServiceImpl implements ProjectService  {
 	@Override
 	public ProjectFormMap findApartment(String id) {
 		return projectMapper.findApartment(id);
+	}
+
+	@Override
+	public void editApartment(ProjectFormMap formMap) {
+ 			projectMapper.editApartment(formMap);
 	}
 
 	@Override
@@ -206,6 +216,11 @@ public class ProjectServiceImpl implements ProjectService  {
 	}
 
 	@Override
+	public void editHome(ProjectFormMap formMap) {
+		projectMapper.editHome(formMap);
+	}
+
+	@Override
 	public void deleteHome(String id) {
 		projectMapper.deleteHome(id);
 	}
@@ -229,7 +244,9 @@ public class ProjectServiceImpl implements ProjectService  {
 	public List<HashMap> findProjectSearch(Map searchMap) {
 		return projectMapper.findProjectSearch(searchMap);
 	}
-
+	public	List<HashMap> findProjectBusiness(Map searchMap) {
+		return projectMapper.findProjectBusiness(searchMap);
+	}
 }
 	
 

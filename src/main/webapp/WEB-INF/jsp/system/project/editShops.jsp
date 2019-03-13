@@ -82,6 +82,7 @@
 <div class="l_err" style="width: 100%; margin-top: 2px;"></div>
 <form class="" id="form" action="${ctx}/project/editShops.shtml" method="get">
 	<div class="wrap" id="wrap">
+        <input type="hidden"  name="projectFormMap.id" value="${shops.id}" />
 		<div class="row">
 			<label for="" class="labw130">项目名称</label>
 			<div class="inpdiv190"><input type="text" class="inpw100"  readonly="readonly"  name="projectFormMap. projectName" value="${shops.projectName}"></div>
@@ -223,18 +224,6 @@
 
 
     });
-    function wordStatic(input) {
-        // 获取要显示已经输入字数文本框对象
-        var content = document.getElementById('num');
-        if (content && input) {
-            // 获取输入框输入内容长度并更新到界面
-            var value = input.value;
-            // 将换行符不计算为单词数
-            value = value.replace(/\n|\r/gi, "");
-            // 更新计数
-            content.innerText = value.length;
-        }
-    }
     function reset(){
         $("#wrap input").val("");
     }

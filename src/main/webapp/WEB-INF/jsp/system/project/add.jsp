@@ -85,13 +85,13 @@
         <input type="hidden" id="score"name="projectFormMap.score" >
         <input type="hidden" id="sum"name="projectFormMap.sum" >
 		<div class="row">
-			<label for="" class="labw130">项目名称</label>
+			<label for="" class="labw130">项目名称 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入项目名称" name="projectFormMap.projectName"></div>
-			<label for="" class="labw130">项目别名</label>
+			<label for="" class="labw130">项目别名 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入项目别名" name="projectFormMap.Another_Name"></div>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">是否带租约</label>
+			<label for="" class="labw130">是否带租约 *</label>
 			<div class="inpdiv190">
 				<select class="selw100 inpw100" name="projectFormMap.lease">
 					<option value="">请选择</option>
@@ -100,31 +100,33 @@
 					<option value="3">部分带租约</option>
 				</select>
 			</div>
-			<label for="" class="labw130">状态</label>
+			<label for="" class="labw130">状态 *</label>
 			<div class="inpdiv190">
 				<select class="selw100 inpw100" name="projectFormMap.state">
 					<option value="">请选择</option>
+					<option value="0">热销</option>
 					<option value="1">待售</option>
 					<option value="2">在售</option>
 					<option value="3">认购</option>
 					<option value="4">售罄</option>
+
 				</select>
 			</div>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">项目位置</label>
+			<label for="" class="labw130">项目位置 *</label>
 			<div class="inpdiv190">
 				<select class="form-control selw70 inpw100" id="cmbProvince" name="projectFormMap.province"></select>
 				<select class="form-control selw70 inpw100" id="cmbCity" name="projectFormMap.city"></select>
 				<select class="form-control selw70 inpw100" id="cmbArea" name="projectFormMap.district"></select>
 			</div>
-			<label for="" class="labw130">具体位置</label>
+			<label for="" class="labw130">具体位置 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入具体位置" onchange="contactposition(this)"></div>
 			<input type="hidden" name="projectFormMap.projectPosition" id="cmbposition">
 			<input type="hidden" class="inpw100" placeholder="默认" id="latitude" name="projectFormMap.latitude" readonly="readonly">
 		</div>
 		<div class="row">
-			<label for="" class="labw130">项目分类</label>
+			<label for="" class="labw130">项目分类 *</label>
 			<div class="inpdiv190">
 				<select class="selw100 inpw100" name="projectFormMap.type">
 					<option value="">请选择</option>
@@ -134,7 +136,7 @@
 					<option value="4">住宅小区</option>
 				</select>
 			</div>
-			<label for="" class="labw130">项目类型</label>
+			<label for="" class="labw130">项目类型 *</label>
 			<div class="inpdiv190">
 				<select class="selw100 inpw100" name="projectFormMap.projectType">
 					<option value="">请选择</option>
@@ -155,7 +157,7 @@
 		</div>
 
 		<div class="row">
-			<label for="" class="labw130">区域</label>
+			<label for="" class="labw130">区域 *</label>
 			<div class="inpdiv190"><select class="selw100 inpw100" name="projectFormMap.region">
 				<option value="">请选择</option>
 				<option value="12">南区</option>
@@ -163,22 +165,24 @@
 				<option value="14">东区</option>
 				<option value="15">西区</option>
 			</select></div>
-			<label for="" class="labw130">开盘时间</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="开盘时间"  id="saleStartTime" name="projectFormMap.saleStartTime"></div>
+			<label for="" class="labw130">所属商圈 *</label>
+            <select class="selectpicker projecBusiness " data-style="btn-danger" data-width="239px" id="projecBusiness"
+                    name="projectFormMap.business" data-live-search="true" title="选择项目"></select>
+
 		</div>
 		<div class="row">
-			<label for="" class="labw130">面积区间</label>
+			<label for="" class="labw130">面积区间 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100 inpw80" placeholder="最小面积" name="projectFormMap.areas">--
 				<input type="text" class="inpw100 inpw80" placeholder="最大面积" name="projectFormMap.areae">㎡</div>
-			<label for="" class="labw130">单价区间</label>
+			<label for="" class="labw130">单价区间 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100 inpw80" placeholder="最低单价" name="projectFormMap.prices">--
 				<input type="text" class="inpw100 inpw80" placeholder="最高单价" name="projectFormMap.pricee">元</div>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">总价区间</label>
+			<label for="" class="labw130">总价区间 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100 inpw80" placeholder="最低总价" name="projectFormMap.pricess">--
 				<input type="text" class="inpw100 inpw80" placeholder="最高总价" name="projectFormMap.pricese">万元</div>
-			<label for="" class="labw130">项目佣金</label>
+			<label for="" class="labw130">项目佣金 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="项目佣金" name="projectFormMap.commission"></div>
 		</div>
 		<div class="row">
@@ -200,8 +204,9 @@
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="容积率" name="projectFormMap.PlotRatio">%</div>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">机构类型</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.OrganizationType"></div>
+			<label for="" class="labw130">开盘时间 *</label>
+            <div class="inpdiv190"><input type="text" class="inpw100" placeholder="开盘时间"  id="saleStartTime" name="projectFormMap.saleStartTime"></div>
+
 			<label for="" class="labw130">预测类型</label>
 			<div class="inpdiv190"><select class="selw100 inpw100" name="projectFormMap.DataType">
 				<option value="">请选择</option>
@@ -216,29 +221,29 @@
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="商铺总数"  name="projectFormMap.ShopCount"></div>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">公司负责人</label>
+			<label for="" class="labw130">公司负责人 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="公司负责人姓名" name="projectFormMap.firstPerson"></div>
-			<label for="" class="labw130">联系电话</label>
+			<label for="" class="labw130">联系电话 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="公司负责人联系电话号码" name="projectFormMap.firstTelephone"></div>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">项目负责人</label>
+			<label for="" class="labw130">项目负责人 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="项目负责人姓名" name="projectFormMap.projectPerson"></div>
-			<label for="" class="labw130">联系电话</label>
+			<label for="" class="labw130">联系电话 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="项目负责人联系电话" name="projectFormMap.projectTelephone"></div>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">项目描述</label>
+			<label for="" class="labw130">项目描述 *</label>
 			<textarea name="projectFormMap.description" id="" cols="80" rows="5" placeholder="请输入内容" onkeyup="wordStatic(this);"
 					  maxlength="500"></textarea>
 			<div class="sum">已输入<span id="num">0</span>/500</div>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">项目推荐</label>
+			<label for="" class="labw130">项目推荐 *</label>
 			<textarea name="projectFormMap.RecommendReason" id="" cols="80" rows="5" placeholder="请输入内容"></textarea>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">项目特点&项目卖点</label>
+			<label for="" class="labw130">项目特点&项目卖点 *</label>
             <select class="selectpicker  inpw100 selw680 dealUser " data-style="btn-info" data-width="581px"
                     id="feature" multiple data-live-search="true" title="请选择项目特点&项目卖点"></select>
                <input type="hidden" id="features"name="projectFormMap.prFeature" >
@@ -326,17 +331,17 @@
         //自定义格式
         laydate.render({
             elem: '#saleStartTime'
-            ,format: 'yyyy年MM月dd日'
+            , type: 'datetime'
         });
         //自定义格式
         laydate.render({
             elem: '#StartDate'
-            ,format: 'yyyy年MM月dd日'
+            , type: 'datetime'
         });
         //自定义格式
         laydate.render({
             elem: '#DeliveryDate'
-            ,format: 'yyyy年MM月dd日'
+            , type: 'datetime'
         });
 
     });
@@ -355,12 +360,13 @@
     $(document).ready(function () {
         getFeature();
         addressInit('cmbProvince', 'cmbCity', 'cmbArea');
+        getProjectBusiness()
     });
     var position = "";
     var Province = "";
     var city = "";
     var Area = "";
-    var geo="104.124269,30.606302";
+    var geo="";
     function contactposition(obj) {
         Province = $('#cmbProvince').val();
         city = $('#cmbCity').val()
@@ -430,7 +436,29 @@
                 }
             },
             error: function () {
-                layer.alert("获取销售人员出错，请与管理员联系");
+                layer.alert("获取出错，请与管理员联系");
+            }
+        });
+    }
+    function getProjectBusiness() {
+        $.ajax({
+            "url": "../project/findProjectBusiness.shtml",
+            "data": "",
+            "type": "GET",
+            "dataType": "json",
+            "success": function (obj) {
+                $("#projecBusiness").html("<option value=0> - - - -选择商圈- - - - </option>");
+                for (var i = 0; i < obj.length; i++) {
+                    var str = "<option value=" + obj[i].business + ">" + obj[i].business + "</option>";
+                    $("#projecBusiness").append(str);
+
+                }
+                $('.projectBusiness').selectpicker('refresh');
+                $('.projectBusiness').selectpicker('render');
+
+            },
+            error: function () {
+                layer.alert("获取项目出错！请与管理员联系");
             }
         });
     }

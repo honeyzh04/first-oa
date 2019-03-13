@@ -93,6 +93,7 @@ public interface ProjectMapper {
 	void addShops(ProjectFormMap formMap);
 	List<ProjectFormMap> findShopsList(Map searchMap);
 	ProjectFormMap findShops(String id);
+	void editShops(ProjectFormMap formMap);
 	void deleteShops(String id);
 	List<ProjectFormMap> findShopsImg(String id);
 
@@ -103,6 +104,7 @@ public interface ProjectMapper {
 	void addApartment(ProjectFormMap formMap);
 	List<ProjectFormMap> findApartmentList(Map searchMap);
 	ProjectFormMap findApartment(String id);
+	void editApartment(ProjectFormMap formMap);
 	void deleteApartment(String id);
 	List<ProjectFormMap> findApartmentImg(String id);
 
@@ -113,6 +115,7 @@ public interface ProjectMapper {
 	void addHome(ProjectFormMap formMap);
 	List<ProjectFormMap> findHomeList(Map searchMap);
 	ProjectFormMap findHome(String id);
+	void editHome(ProjectFormMap formMap);
 	void deleteHome(String id);
 	List<ProjectFormMap> findHomeImg(String id);
 
@@ -121,5 +124,6 @@ public interface ProjectMapper {
 	void deleteHomeImg(String id);
 
 	List<HashMap> findProjectSearch(Map searchMap);
+	List<HashMap> findProjectBusiness(Map searchMap);
 
 }

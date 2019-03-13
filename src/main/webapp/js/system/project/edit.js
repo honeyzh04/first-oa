@@ -133,9 +133,7 @@ $(function() {
             "projectFormMap.RecommendReason" : {
                 required : true,
             },
-            "projectFormMap.prFeature" : {
-                required : true,
-            },
+
 
 
 
@@ -213,9 +211,6 @@ $(function() {
             },
             "projectFormMap.RecommendReason" : {
                 required : "请输入项目推荐",
-            },
-            "projectFormMap.prFeature" : {
-                required : "请输入项目特点",
             },
 
 		},

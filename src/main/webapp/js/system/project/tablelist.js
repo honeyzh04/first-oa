@@ -127,8 +127,14 @@ $(function() {
 
                                 className : "text-center",
                                 render : function(data, type, row, meta) {
-                                    if (data == 2) {
+                                    if (data == 0) {
+                                        return '<span style="color: #c43023;font-weight:bold" >热销</span>';
+                                    } else if (data == 1) {
+                                        return '<span style="color: #3e8f3e;font-weight:bold" >待售</span>';
+                                    } else if (data == 2) {
                                         return '<span style="color: #3e8f3e;font-weight:bold" >在售</span>';
+                                    } else if (data == 3) {
+                                        return '<span style="color: #68b5ff;font-weight:bold" >认购</span>';
                                     }  else {
                                         return '<span  style="color: red;font-weight:bold">停售</span>';
                                     }

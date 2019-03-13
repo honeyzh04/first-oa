@@ -83,6 +83,7 @@
 
 	<div class="wrap" id="wrap">
         <input type="hidden" id="score"name="projectFormMap.score" >
+        <input type="hidden"  name="projectFormMap.id" value="${project.id}" />
         <input type="hidden" id="sum"name="projectFormMap.sum" >
 		<div class="row">
 			<label for="" class="labw130">项目名称</label>
@@ -107,6 +108,7 @@
 			<div class="inpdiv190">
 				<select class="selw100 inpw100"  id="selstate" name="projectFormMap.state">
 					<option value="">请选择</option>
+                    <option value="0">热销</option>
 					<option value="1">待售</option>
 					<option value="2">在售</option>
 					<option value="3">认购</option>
@@ -117,12 +119,13 @@
 		<div class="row">
 			<label for="" class="labw130">项目位置</label>
 			<div class="inpdiv190">
+
 				<input type="text" class="selw70 inpw100" name="projectFormMap.province" id="province" value="${project.province}" readonly="readonly">
-				<input type="text" class="selw70 inpw100" name="projectFormMap.city" id="city" value="${project.city}" readonly="readonly">
-				<input type="text" class="selw70 inpw100" name="projectFormMap.district" id="district" value="${project.district}" readonly="readonly">
+				<input type="text" class="selw70 inpw100" name="projectFormMap.city" id="city" value="${project.city}" >
+				<input type="text" class="selw70 inpw100" name="projectFormMap.district" id="district" value="${project.district}" >
 			</div>
 			<label for="" class="labw130">具体位置</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" value="${project.projectPosition}"  readonly="readonly"></div>
+			<div class="inpdiv190"><input type="text" class="inpw100" value="${project.projectPosition}" onchange="contactposition(this)" ></div>
 			<input type="hidden" name="projectFormMap.projectPosition" id="cmbposition">
 			<input type="hidden" class="inpw100" placeholder="默认" id="latitude" name="projectFormMap.latitude" readonly="readonly">
 		</div>
@@ -169,8 +172,13 @@
 				<option value="14">东区</option>
 				<option value="15">西区</option>
 			</select></div>
-			<label for="" class="labw130">开盘时间</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="开盘时间"  id="saleStartTime" value="${project.saleStartTime}" name="projectFormMap.saleStartTime"></div>
+			<label for="" class="labw130">所属商圈</label>
+			<input type="hidden" id="business" value="${project.business}"/>
+			<select class="selw100 inpw100"  id="projecBusiness"	name="projectFormMap.business" >
+			</select>
+			<%--<select class="selectpicker projecBusiness " data-style="btn-danger" data-width="239px" id="projecBusiness"
+					name="projectFormMap.business" data-live-search="true" title="选择商圈"></select>
+--%>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">面积区间</label>
@@ -207,12 +215,12 @@
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="容积率" name="projectFormMap.PlotRatio" value="${project.PlotRatio}"> %</div>
 		</div>
 		<div class="row">
-			<label for="" class="labw130">机构类型</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.OrganizationType" value="${project.OrganizationType}"></div>
+			<label for="" class="labw130">开盘时间</label>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="开盘时间"  id="saleStartTime" value="${project.saleStartTime}" name="projectFormMap.saleStartTime"></div>
 			<label for="" class="labw130">预测类型</label>
 			<input type="hidden" id="DataType" value="${project.DataType}"/>
 			<div class="inpdiv190"><select class="selw100 inpw100"  id="selDataType" name="projectFormMap.DataType">
-				<option value="">请选择</option>
+				<option value=""> 请选择</option>
 				<option value="1">项目本身</option>
 				<option value="2">在建或待建</option>
 			</select></div>
@@ -237,9 +245,8 @@
 		</div>
 		<div class="row">
 			<label for="" class="labw130">项目描述</label>
-			<textarea name="projectFormMap.description" id="" cols="80" rows="5" placeholder="请输入内容" onkeyup="wordStatic(this);"
-					  maxlength="500"> ${project.description}</textarea>
-			<div class="sum">已输入<span id="num">0</span>/500</div>
+			<textarea name="projectFormMap.description" id="" cols="80" rows="5" placeholder="请输入内容"	> ${project.description}</textarea>
+
 		</div>
 		<div class="row">
 			<label for="" class="labw130">项目推荐</label>
@@ -247,11 +254,12 @@
 		</div>
 		<div class="row">
 			<label for="" class="labw130">项目特点&项目卖点</label>
-            <select class="selectpicker  inpw100 selw680 dealUser " data-style="btn-info" data-width="581px"
+			<div class="inpdiv190"><input type="text" class="inpw100" style="width: 580px;" placeholder="户数" id="features" name="projectFormMap.prFeature" value="${project.prFeature}"  readonly="readonly"></div>
+       <%--     <select class="selectpicker  inpw100 selw680 dealUser " data-style="btn-info" data-width="581px"
                     id="feature" multiple data-live-search="true" title="请选择项目特点&项目卖点"></select>
                <input type="hidden" id="features"name="projectFormMap.prFeature" >
 				<option value=""></option>
-			</select>
+			</select>--%>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">项目说辞</label>
@@ -314,14 +322,14 @@
 
     $("#btn-test").click(function(){
 
-        var o = document.getElementById("feature");//获取多选内容
+       /* var o = document.getElementById("feature");//获取多选内容
         var str = [];
         for(var i=0;i<o.length;i++){
             if(o.options[i].selected){
                 str.push(o.options[i].value);
             }
         }
-        $("#features").val(str);
+        $("#features").val(str);*/
 
         $(this).attr("disabled","true"); //设置变灰按钮
         $("#form").submit();//提交表单
@@ -348,27 +356,21 @@
         });
 
     });
-    function wordStatic(input) {
-        // 获取要显示已经输入字数文本框对象
-        var content = document.getElementById('num');
-        if (content && input) {
-            // 获取输入框输入内容长度并更新到界面
-            var value = input.value;
-            // 将换行符不计算为单词数
-            value = value.replace(/\n|\r/gi, "");
-            // 更新计数
-            content.innerText = value.length;
-        }
-    }
+
     $(document).ready(function () {
-        getFeature();
+       // getFeature();
+
+        getProjectBusiness()
        var lease = $("#lease").val();
         var state = $("#state").val();
         var type = $("#type").val();
         var projectType = $("#projectType").val();
         var region = $("#region").val();
         var DataType = $("#DataType").val();
+
+
         //根据值让option选中
+
         $("#sellease option[value='" + lease + "']").attr("selected", "selected");
         $("#selstate option[value='" + state + "']").attr("selected", "selected");
         $("#seltype option[value='" + type + "']").attr("selected", "selected");
@@ -377,15 +379,14 @@
         $("#selDataType option[value='" +  DataType + "']").attr("selected", "selected");
 
     });
-    var position = "";
     var Province = "";
     var city = "";
     var Area = "";
-    var geo="104.124269,30.606302";
+    var geo="";
     function contactposition(obj) {
-        Province = $('#cmbProvince').val();
-        city = $('#cmbCity').val()
-        Area = $("#cmbArea").val();
+        Province = $('#province').val();
+        city = $('#city').val()
+        Area = $("#district").val();
         var p = $(obj).val();
         if (Area !== "" && p !== "") {
             $("#cmbposition").val(Area + p);
@@ -416,7 +417,7 @@
                                                 $("#sum").val(res.ext.now_year.sum);
 
                                             }
-                                            console.log(res)
+                                            console.log("yaya"+res)
                                             $("#latitude").val(geo)
 
 
@@ -432,6 +433,31 @@
             })
 
         }
+
+    }
+    function getProjectBusiness() {
+        $.ajax({
+            "url": "../project/findProjectBusiness.shtml",
+            "data": "",
+            "type": "GET",
+            "dataType": "json",
+            "success": function (obj) {
+                $("#projecBusiness").html("<option value=0> - - - -选择商圈- - - - </option>");
+                for (var i = 0; i < obj.length; i++) {
+                    var str = "<option value=" + obj[i].business + ">" + obj[i].business + "</option>";
+                    $("#projecBusiness").append(str);
+
+                }
+                // $('.projectBusiness').selectpicker('refresh');
+                // $('.projectBusiness').selectpicker('render');
+                console.log("Dada223")
+                let business = $("#business").val();
+                $("#projecBusiness option[value='" +  business + "']").attr("selected",  "selected");
+            },
+            error: function () {
+                layer.alert("获取项目出错！请与管理员联系");
+            }
+        });
 
     }
     function getFeature() {
@@ -455,32 +481,6 @@
             }
         });
     }
-    // $(function() {
-    //     $(".submitbtn").click(function() {
-    //         // var mycheck = myCheck();
-    //         // console.log(mycheck);
-    //         if (mycheck) {
-    //             var options = {
-    //                 url: firstjiaurl+"editEntity.shtml",
-    //                 target: "#targetbox",
-    //                 success: function(data) {
-    //                     alert("提交成功")
-    //                     // alert(data)
-    //                     api.closeWin();
-    //                 },
-    //                 error: function(request) {  //失败的话
-    //                       alert(request);
-    //                  },
-    //                 resetForm: true
-    //             };
-    //             $("#form1").ajaxForm(options);
-    //         }
-    //         else {
-    //           alert("还有未完成项，请完善")
-    //         }
-
-    //     })
-    // })
 
 </script>
 
