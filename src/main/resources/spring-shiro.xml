@@ -101,7 +101,6 @@
                 /ffxapp/**=anon
                 /home/**=anon
                 /credit/**=anon
-                /project/**=anon
             </value>
         </property>
     </bean>

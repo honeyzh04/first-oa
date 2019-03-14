@@ -28,7 +28,6 @@
 						style="text-align: center; vertical-align: middle !important">
 					 <thead>
 					 <tr>
-
 						 <th>客户姓名</th>
 						 <th>联系方式</th>
 						 <th>性别</th>
@@ -38,7 +37,6 @@
 						 <th>信息来源</th>
 						 <th>最新跟进时间</th>
 						 <th>跟进</th>
-
 					 </tr>
 					 </thead>
 				 </table>
@@ -50,7 +48,7 @@
 
 
 	</body>
-<
+
 </html>
 
 

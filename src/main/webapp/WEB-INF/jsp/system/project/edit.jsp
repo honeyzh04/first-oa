@@ -254,7 +254,7 @@
 		</div>
 		<div class="row">
 			<label for="" class="labw130">项目特点&项目卖点</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" style="width: 580px;" placeholder="户数" id="features" name="projectFormMap.prFeature" value="${project.prFeature}"  readonly="readonly"></div>
+			<div class="inpdiv190"><input type="text" class="inpw100" style="width: 580px;"  id="features" name="projectFormMap.prFeature" value="${project.prFeature}"  readonly="readonly"></div>
        <%--     <select class="selectpicker  inpw100 selw680 dealUser " data-style="btn-info" data-width="581px"
                     id="feature" multiple data-live-search="true" title="请选择项目特点&项目卖点"></select>
                <input type="hidden" id="features"name="projectFormMap.prFeature" >

@@ -77,6 +77,11 @@
             <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="gzh"  disabled="disabled">
             <span class="input-group-addon">位</span>
                 </div>
+            <div class="input-group form-group">
+                <span class="input-group-addon">360推广：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="360"  disabled="disabled">
+                <span class="input-group-addon">位</span>
+            </div>
                     <div class="input-group form-group">
             <span class="input-group-addon">其他途径：：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="qttj"  disabled="disabled">
@@ -101,7 +106,6 @@
             "type" : "GET",
             "dataType" : "json",
             "success" : function(obj) {
-                console.log("fa"+obj);
 
 
                // console.log(obj.alls);
@@ -114,6 +118,7 @@
                 $("#lxb").val(obj.lxb);
                 $("#gzh").val(obj.gzh);
                 $("#qttj").val(obj.qttj);
+                $("#sln").val(obj.sln);
 
 
 

@@ -640,7 +640,7 @@ public class StatisticsController extends BaseController {
 
     }
 
-    ;
+
 
     /**
      * 竞价日报表

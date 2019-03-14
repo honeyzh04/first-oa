@@ -1344,7 +1344,8 @@ WHERE
 	COUNT(ffxsource = 6 OR NULL) sgsm,
 	COUNT(ffxsource = 7 OR NULL) lxb,
 	COUNT(ffxsource = 8 OR NULL) gzh,
-	COUNT(ffxsource =9 OR NULL) qttj
+	COUNT(ffxsource =9 OR NULL) qttj,
+	COUNT(ffxsource =11 OR NULL) sln
 FROM (SELECT * FROM ( SELECT
  *
 FROM

@@ -128,7 +128,7 @@
 		<div class="row">
 			<label for="" class="labw130">项目分类 *</label>
 			<div class="inpdiv190">
-				<select class="selw100 inpw100" name="projectFormMap.type">
+				<select class="selw100 inpw100" name="projectFormMap.type" onchange="homeAdd(this)">
 					<option value="">请选择</option>
 					<option value="1">商铺</option>
 					<option value="2">公寓</option>
@@ -149,6 +149,34 @@
 			</div>
 
 		</div>
+		<!--住宅补充-->
+		<div style="display: none;" id="home" >
+		<div class="row">
+			<label for="" class="labw130">物业公司</label>
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.Developers"></div>
+			<label for="" class="labw130">物业费用</label>
+			<div class="inpdiv190"><input type="text" class="inpw100"   name="projectFormMap.StartDate"></div>
+		</div>
+			<div class="row">
+				<label for="" class="labw130">水电燃气</label>
+				<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.Developers"></div>
+				<label for="" class="labw130">梯户比例</label>
+				<div class="inpdiv190"><input type="text" class="inpw100"    name="projectFormMap.StartDate"></div>
+			</div>
+			<div class="row">
+				<label for="" class="labw130">车位情况</label>
+				<div class="inpdiv190"><input type="text" class="inpw100"name="projectFormMap.Developers"></div>
+				<label for="" class="labw130">装修状况</label>
+				<div class="inpdiv190"><input type="text" class="inpw100"    name="projectFormMap.StartDate"></div>
+			</div>
+			<div class="row">
+				<label for="" class="labw130">产权年限</label>
+				<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.Developers"></div>
+				<label for="" class="labw130">楼盘户型</label>
+				<div class="inpdiv190"><input type="text" class="inpw100"   name="projectFormMap.StartDate"></div>
+			</div>
+		</div>
+
 		<div class="row">
 			<label for="" class="labw130">开发商</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="开发商" name="projectFormMap.Developers"></div>
@@ -465,32 +493,15 @@
     function reset(){
         $("#wrap input").val("");
     }
-    // $(function() {
-    //     $(".submitbtn").click(function() {
-    //         // var mycheck = myCheck();
-    //         // console.log(mycheck);
-    //         if (mycheck) {
-    //             var options = {
-    //                 url: firstjiaurl+"editEntity.shtml",
-    //                 target: "#targetbox",
-    //                 success: function(data) {
-    //                     alert("提交成功")
-    //                     // alert(data)
-    //                     api.closeWin();
-    //                 },
-    //                 error: function(request) {  //失败的话
-    //                       alert(request);
-    //                  },
-    //                 resetForm: true
-    //             };
-    //             $("#form1").ajaxForm(options);
-    //         }
-    //         else {
-    //           alert("还有未完成项，请完善")
-    //         }
+    function homeAdd(obj){
+        var a = $(obj).find('option:selected').val();
+        if(a==4){
+            $("#home").show();
+        }else {
+            $("#home").hide();
+        }
+    }
 
-    //     })
-    // })
 
 </script>
 
