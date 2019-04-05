@@ -582,7 +582,7 @@
         var inpimg = inpform.getElementsByClassName("imgtr");
         if (inpimg.length !== 0) {
             var options = {
-                url: "../project/addImgEntity.shtml",
+                url: "../projectApartment/addImg.shtml",
                 target: "#targetbox",
                 success: function (data) {
                    layer.alert("提交成功");
@@ -590,7 +590,7 @@
 
                     // if (data == "success") {
                         $.ajax({
-                            url: "../project/findImg.shtml?proId=" + proid + "&type=" + type,
+                            url: "../projectApartment/findImg.shtml?proId=" + proid + "&type=" + type,
                             type: 'get',
                             dataType: 'json',
                             success: function (res, error) {
@@ -598,7 +598,7 @@
                                 if (res !== null) {
                                     var imghtml = "";
                                     for (var i = 0; i < res.length; i++) {
-                                        imghtml += '<tr> <td class="imgtd"><img src="../img/project/' + proid+'/'+res[i].img + '"></td> <td>' + res[i].img + '</td> <td onclick="Delimg(this,' + res[i].id + ')"><button class="btn btn-danger">删除</button></td>'
+                                        imghtml += '<tr> <td class="imgtd"><img src="../img/project/apartment/' + proid+'/'+res[i].img + '"></td> <td>' + res[i].img + '</td> <td onclick="Delimg(this,' + res[i].id + ')"><button class="btn btn-danger">删除</button></td>'
                                     }
                                     $(imgbox).html(imghtml)
                                 }
@@ -628,7 +628,7 @@
         if (con == true) {
             $(obj).parent("tr").remove()
             $.ajax({
-                url: "../project/deleteImg.shtml?id=" + id,
+                url: "../projectApartment/deleteImg.shtml?id=" + id,
                 type: 'get',
                 dataType: 'json',
                 success: function (res, error) {
@@ -641,7 +641,7 @@
     function Setshowimg(imgbox, proid, type) {
 
         $.ajax({
-            url: "../project/findImg.shtml?proId=" + proid + "&type=" + type,
+            url: "../projectApartment/findImg.shtml?proId=" + proid + "&type=" + type,
             type: 'get',
             dataType: 'json',
             success: function (res, error) {
@@ -650,7 +650,7 @@
                     var imghtml = "";
                     for (var i = 0; i < res.length; i++) {
 
-                        imghtml += '<tr> <td class="imgtd"><img src="../img/project/'  + proid+'/'+ res[i].img + '"></td>  <td>' + res[i].img + '</td>  <td onclick="Delimg(this,' + res[i].id + ')"><button class="btn btn-danger">删除</button></td>'
+                        imghtml += '<tr> <td class="imgtd"><img src="../img/project/apartment/'  + proid+'/'+ res[i].img + '"></td>  <td>' + res[i].img + '</td>  <td onclick="Delimg(this,' + res[i].id + ')"><button class="btn btn-danger">删除</button></td>'
 
                     }
                     $(imgbox).html(imghtml)

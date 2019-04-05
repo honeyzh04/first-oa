@@ -48,7 +48,7 @@
 				
 			
 			   <label class="control-label">项目名：  
-                        <input type="text" class="form-control" id="projectName" name="ProjectFormMap.projectName" placeholder="请输入项目名">
+                        <input type="text" class="form-control" id="projectName" name="ProjectApartmentFormMap.projectName" placeholder="请输入项目名">
                     </label>     
                 
 			<button id="search" type="button" class="btn btn-info">搜索 &nbsp;&nbsp;<span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>

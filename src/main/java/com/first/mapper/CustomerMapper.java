@@ -142,6 +142,7 @@ public interface CustomerMapper {
 	public void deleteEntity(@Param("id")String id ) ;
 	public void deleteFollow(@Param("id")String id ) ;
 	public void deletExtend(@Param("id")String id ) ;
+	public void deleteAdd(@Param("id")String id ) ;
 	public void deletePreparation(@Param("id")String id ) ;
 	
 
@@ -335,5 +336,7 @@ public interface CustomerMapper {
 	 * @return
 	 */
 	CustomerFormMap  createUser(@Param("telephone") String telephone);
+
+	List<HashMap>  findFFXSource();
 
 }

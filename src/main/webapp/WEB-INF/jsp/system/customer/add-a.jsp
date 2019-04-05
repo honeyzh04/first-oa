@@ -117,20 +117,7 @@
 						</div>
 						<div class="form-group" style="display: none;" id="ffxccusources" >
 							<label for="">具体来源：</label>
-							<select name="customerFormMap.ffxcusource" id="ffxccusource" >
-								<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请选择</option>
-								<option value="1">百度商桥</option>
-								<option value="2">百度推广电话</option>
-								<option value="3">房发现电话</option>
-								<option value="4">房发现微聊</option>
-								<option value="5">信息流</option>
-								<option value="6">搜狗神马</option>
-								<option value="7">离线宝</option>
-								<option value="8">公众号</option>
-								<option value="9">其他途径</option>
-								<option value="10">页面留言</option>
-								<option value="11">360推广</option>
-							</select>
+							<select   name="customerFormMap.ffxcusource" id="ffxccusource" ></select>
 						</div>
 						<div class="form-group">
 							<label for="">&nbsp;&nbsp;&nbsp;市场部：</label>
@@ -230,7 +217,7 @@
 		     
 		});
 		$(function() {
-
+			getFFXSource();
             function today() {
                 var date = new Date();
                 var seperator1 = "-";
@@ -253,13 +240,30 @@
 		});
         function getCusource(obj){
             var a = $(obj).find('option:selected').val();
-            console.log("asd"+ a);
             if(a==3||a==6){
                 $("#ffxccusources").show();
-                console.log("as5");
             }else {
                 $("#ffxccusources").hide();
             }
+        }
+        function getFFXSource(){
+            $.ajax({
+                "url":"./customer/findFFXSource.shtml",
+                "data":"",
+                "type":"GET",
+                "dataType":"json",
+                "success":function(obj){
+                    for(var i = 0;i<obj.length;i++){
+                        var str="<option value="+obj[i].id+">"+obj[i].sourceName+"</option>";
+                        $("#ffxccusource").append(str);
+                    }
+
+                },
+                error : function() {
+                    alert("获取客户来源出错！请与管理员联系");
+                }
+            });
+
         }
 		</script>
 

@@ -187,7 +187,7 @@
 <script>
     var homeId=$("#homeId").val();
     $.ajax({
-        url: "../project/findHome.shtml?id="+homeId,
+        url: "../projectHome/findHome.shtml?id="+homeId,
         type: 'get',
         dataType: 'json',
         success: function (res, error) {

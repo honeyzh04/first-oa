@@ -81,34 +81,34 @@
 
 <body>
 <div class="l_err" style="width: 100%; margin-top: 2px;"></div>
-<form class="" id="form" action="${ctx}/project/addHome.shtml" method="get">
+<form class="" id="form" action="${ctx}/projectHome/addHome.shtml" method="get">
 	<div class="wrap" id="wrap">
 		<div class="row">
 			<label for="" class="labw130">项目名称</label>
 			<div class="inpdiv190">
 				<select class="selectpicker projectName " data-style="btn-danger" data-width="170px" id="projectNamea"
-						name="projectFormMap.proId" data-live-search="true" title="选择项目"></select>
+						name="projectHomeFormMap.proId" data-live-search="true" title="选择项目"></select>
 			</div>
 			<label for="" class="labw130">栋</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入栋号"
-										  name="projectFormMap.building"></div>
+										  name="projectHomeFormMap.building"></div>
 		</div>
 
 		<div class="row">
 
 			<label for="" class="labw130">层</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.floor"
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectHomeFormMap.floor"
 										  placeholder="请输入层号">m²</div>
 			<label for="" class="labw130">房间编号</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.roomNo" placeholder="请输入房间编号">
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectHomeFormMap.roomNo" placeholder="请输入房间编号">
 			</div>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">建面</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入房间面积"
-										  name="projectFormMap.area">m²</div>
+										  name="projectHomeFormMap.area">m²</div>
 			<label for="" class="labw130">出售</label>
-			<select class="selw100 inpw100" name="projectFormMap.sell">
+			<select class="selw100 inpw100" name="projectHomeFormMap.sell">
 				<option value="">请选择</option>
 				<option value="1">待售</option>
 				<option value="2">在售</option>
@@ -120,7 +120,7 @@
 		<div class="row">
 			<label for="" class="labw130">价格</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入价格"
-										  name="projectFormMap.price">万</div>
+										  name="projectHomeFormMap.price">万</div>
 		</div>
 		<div class="row rowbutton">
 			<button  type="button" id="btn-test" class="btn-info submitbtn">立即提交</button> <button onclick="reset()">重置</button></div>
@@ -156,7 +156,7 @@
     //查看项目
     function getprojectName() {
         $.ajax({
-            "url": "../project/getProject.shtml",
+            "url": "../projectHome/getProject.shtml",
             "data": "",
             "type": "GET",
             "dataType": "json",

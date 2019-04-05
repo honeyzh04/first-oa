@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.mapper.ProjectHomeMapper">
+
+    <sql id="selectId">
+		id,
+		projectName,
+		projectPosition,
+		region,
+		type,
+		concat (
+		areas,'-',areae,'㎡') as area,
+		concat (
+		prices,'-',pricee,'元') as
+		price,
+		concat (
+		pricess,'-',pricese,'万') as
+		prices,
+		latitude ,
+		state,
+		firstPerson,
+		projectPerson,
+		projectTelephone,
+		createDate,
+		description
+
+	</sql>
+
+
+
+    <!-- 项目选择 -->
+    <select id="getProject"
+            resultType="com.first.entity.ProjectHomeFormMap">
+        SELECT id,projectName  FROM proj_home_data
+
+    </select>
+    <!-- 查看项目 -->
+    <select id="findProjectHome"
+            resultType="com.first.entity.ProjectHomeFormMap" parameterType="hashmap">
+
+        select
+        <include refid="selectId"/>
+        from proj_home_data
+        where 1=1
+        <if test="projectName != null and projectName != '' ">
+            AND projectName LIKE
+            CONCAT(CONCAT('%',#{projectName}),'%')
+
+        </if>
+        <if test="region != null and region != '' ">
+            and region=#{region}
+        </if>
+        <if test="state != null and state != '' ">
+            and state !=4
+        </if>
+        <if
+                test="areas != null and  areas != '' and areae != null and  areae != ''">
+            and ((${areas} &lt;= areas AND areas &lt;= ${areae})
+
+            or (${areas}
+            &lt;= areae AND areas &lt;= ${areae}))
+
+        </if>
+        <if
+                test="pricess != null and pricess != '' and pricese != null and pricese != ''">
+            and ( (${pricess} &lt;= pricess AND pricess &lt;= ${pricese})
+            or
+            (${pricess} &lt;= pricese AND pricese &lt;= ${pricese}))
+        </if>
+        ORDER BY state asc , id DESC
+    </select>
+    <!-- 查看项目2 -->
+    <select id="findProjects"
+            resultType="com.first.entity.ProjectHomeFormMap" parameterType="hashmap">
+        SELECT
+        a.*, b.img
+        FROM
+        proj_home_data a
+        LEFT JOIN (
+        SELECT
+        id,img,type,proId
+        FROM
+        proj_img
+        WHERE
+        type = 4
+        ) b ON a.id = b.proId
+        WHERE
+        a.state != 4 and
+        b.img is not null  and
+        Another_Name !='Demo'
+        <if test="projectName != null and projectName != '' ">
+            AND projectName LIKE
+            CONCAT(CONCAT('%',#{projectName}),'%')
+
+        </if>
+        <if test="district != null and district != '' ">
+            and district=#{district}
+        </if>
+        <if test=" business != null and  business != '' ">
+            and  business=#{business}
+        </if>
+        <if test="type != null and type != '' ">
+            AND a.type=#{type}
+
+        </if>
+        <if
+                test="areas != null and  areas != '' and areae != null and  areae != ''">
+            and ((${areas} &lt;= areas AND areas &lt;= ${areae})
+
+            or (${areas} &lt;= areae AND areas &lt;= ${areae}))
+
+        </if>
+        <if
+                test="prices != null and prices != '' and pricee != null and pricee != ''">
+            and ( (${prices} &lt;= prices AND prices &lt;= ${pricee})
+            or
+            (${prices} &lt;= pricee AND pricee &lt;= ${pricee}))
+        </if>
+        <if
+                test="pricess != null and pricess != '' and pricese != null and pricese != ''">
+            and ( (${pricess} &lt;= pricess AND pricess &lt;= ${pricese})
+            or
+            (${pricess} &lt;= pricese AND pricese &lt;= ${pricese}))
+        </if>
+        GROUP BY
+        a.id
+        <choose>
+            <when test="orderBy != null and orderBy!= ''">
+                order by ${orderBy}
+            </when>
+            <!-- 没有激活排序条件时，默认按商品发布时间倒序排序 -->
+            <otherwise>
+                ORDER BY state asc , weight asc, id DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <!-- 添加项目 -->
+    <insert id="addProjects">
+		INSERT INTO
+		proj_home_data
+		VALUES
+		(
+		null,
+		#{projectName},
+		#{Another_Name},
+		#{province},
+		#{city},
+		#{district},
+		#{projectPosition},
+		#{Developers},
+		#{region},
+		#{type},
+		#{elevator},
+		#{propertyCompany},
+        #{propertyCost},
+        #{park},
+        #{renovation},
+		#{areas},
+		#{areae},
+		#{prices},
+		#{pricee},
+		#{pricess},
+		#{pricese},
+		#{weight},
+		#{latitude},
+		#{commission},
+		#{firstPerson},
+		#{firstTelephone},
+		#{projectPerson},
+		#{projectTelephone},
+		#{state},
+		#{createDate},
+		#{StartDate},
+		#{DeliveryDate},
+		#{FloorArea},
+		#{CoveredArea},
+		#{CommercialArea},
+		#{GreeningRate},
+		#{PlotRatio},
+		#{business},
+		#{description},
+		#{RecommendReason},
+		#{prFeature},
+		#{delFlag},
+		#{modifyDate},
+		#{modifyPerson},
+		#{rhetoric},
+		#{oneA},
+		#{oneB},
+		#{oneC},
+		#{twoA},
+		#{twoB},
+		#{twoC},
+		#{twoE},
+		#{propaganda},
+		#{advantage},
+		#{resistanceAndMeasures},
+		#{attributeFormat},
+		#{saleStartTime},
+		#{score},
+		#{sum},
+		#{result}
+)
+	</insert>
+    <!-- 项目修改 -->
+    <select id="findbyProject"
+            resultType="com.first.entity.ProjectHomeFormMap">
+		select
+		*
+		from proj_home_data
+		where  id=#{id}
+
+	</select>
+    <!-- 修改项目 -->
+    <update id="editProject">
+        update proj_home_data
+        <set>
+            <if test=" projectName != null and projectName != '' ">
+                projectName=#{projectName},
+            </if>
+            <if test=" Another_Name != null and Another_Name != '' ">
+                Another_Name=#{Another_Name},
+            </if>
+            <if test=" province != null and province != '' ">
+                province=#{province},
+            </if>
+            <if test=" city != null and city != '' ">
+                city=#{city},
+            </if>
+            <if test=" district != null and district != '' ">
+                district=#{district},
+            </if>
+            <if test="  projectPosition != null and  projectPosition != '' ">
+                projectPosition=#{ projectPosition},
+            </if>
+            <if test="  latitude != null and    latitude != '' ">
+                latitude=#{latitude},
+            </if>
+            <if test="  score != null and    score != '' ">
+                score=#{score},
+            </if>
+            <if test="  sum != null and    sum != '' ">
+                sum=#{sum},
+            </if>
+            <if test=" Developers != null and Developers != '' ">
+                Developers=#{Developers},
+            </if>
+            <if test=" region != null and region != '' ">
+                region=#{region},
+            </if>
+            <if test=" elevator != null and elevator != ''">
+                elevator=#{elevator},
+            </if>
+            <if test=" propertyCompany != null and propertyCompany != ''">
+                propertyCompany= #{propertyCompany},
+            </if>
+            <if test=" propertyCost != null and propertyCost != ''">
+                propertyCost= #{propertyCost},
+            </if>
+            <if test=" park != null and park != ''">
+                park= #{park},
+            </if>
+            <if test=" parenovation != null and parenovation != ''">
+                parenovation= #{renovation},
+            </if>
+            <if test=" areas != null and areas != ''">
+                areas=#{areas},
+            </if>
+            <if test=" areae != null and areae != ''">
+                areae=#{areae},
+            </if>
+            <if test=" prices != null and prices != ''">
+                prices=#{prices},
+            </if>
+            <if test=" pricee != null and pricee != ''">
+                pricee=#{pricee},
+            </if>
+            <if test=" pricess != null and pricess != ''">
+                pricess=#{pricess},
+            </if>
+            <if test=" pricese != null and pricese != ''">
+                pricese=#{pricese},
+            </if>
+            <if test=" weight != null and weight != ''">
+                weight=#{weight},
+            </if>
+
+            <if test=" commission != null and commission != ''">
+                commission=#{commission},
+            </if>
+            <if test=" firstPerson != null and  firstPerson != ''">
+                firstPerson=#{firstPerson},
+            </if>
+            <if test=" projectPerson != null and projectPerson != ''">
+                projectPerson=#{projectPerson},
+            </if>
+            <if test=" projectTelephone != null and projectTelephone != ''">
+                projectTelephone=#{projectTelephone},
+            </if>
+            <if test=" state != null and state != ''">
+                state=#{state},
+            </if>
+            <if test=" StartDate != null and StartDate != ''">
+                StartDate=#{StartDate},
+            </if>
+            <if test=" DeliveryDate != null and DeliveryDate != ''">
+                DeliveryDate=#{DeliveryDate},
+            </if>
+            <if test=" FloorArea != null and FloorArea != ''">
+                FloorArea=#{FloorArea},
+            </if>
+            <if test=" CoveredArea != null and CoveredArea != ''">
+                CoveredArea=#{CoveredArea},
+            </if>
+            <if test=" CommercialArea != null and CommercialArea != ''">
+                CommercialArea=#{CommercialArea},
+            </if>
+            <if test=" GreeningRate != null and GreeningRate != ''">
+                GreeningRate=#{GreeningRate},
+            </if>
+            <if test=" PlotRatio != null and PlotRatio != ''">
+                PlotRatio=#{PlotRatio},
+            </if>
+            <if test=" business != null and business != ''">
+                business=#{business},
+            </if>
+            <if test=" description != null and description != ''">
+                description=#{description},
+            </if>
+            <if test=" RecommendReason != null and RecommendReason != ''">
+                RecommendReason=#{RecommendReason},
+            </if>
+            <if test=" prFeature != null and prFeature != ''">
+                prFeature=#{prFeature},
+            </if>
+            <if test=" delFlag != null and delFlag != ''">
+                delFlag=#{delFlag},
+            </if>
+            <if test=" modifyDate != null and modifyDate != ''">
+                modifyDate=#{modifyDate},
+            </if>
+            <if test=" modifyPerson != null and modifyPerson != ''">
+                modifyPerson=#{modifyPerson},
+            </if>
+            <if test=" rhetoric != null and rhetoric != ''">
+                rhetoric=#{rhetoric},
+            </if>
+            <if test=" oneA != null and oneA != ''">
+                oneA=#{oneA},
+            </if>
+            <if test=" oneB != null and oneB != ''">
+                oneB=#{oneB},
+            </if>
+            <if test=" oneC != null and oneC != ''">
+                oneC=#{oneC},
+            </if>
+            <if test=" twoA != null and twoA != ''">
+                twoA=#{twoA},
+            </if>
+            <if test=" twoB != null and twoB != ''">
+                twoB=#{twoB},
+            </if>
+            <if test=" twoC != null and twoC != ''">
+                twoC=#{twoC},
+            </if>
+            <if test=" twoD != null and twoD != ''">
+                twoD=#{twoD},
+            </if>
+            <if test=" twoE != null and twoE != ''">
+                twoE=#{twoE},
+            </if>
+            <if test=" propaganda != null and propaganda != ''">
+                propaganda=#{propaganda},
+            </if>
+            <if test=" advantage != null and advantage != ''">
+                advantage=#{advantage},
+            </if>
+            <if test=" resistanceAndMeasures != null and resistanceAndMeasures != ''">
+                resistanceAndMeasures=#{resistanceAndMeasures},
+            </if>
+            <if test=" attributeFormat != null and attributeFormat != ''">
+                attributeFormat=#{attributeFormat},
+            </if>
+            <if test=" saleStartTime != null and saleStartTime != ''">
+                saleStartTime=#{saleStartTime},
+            </if>
+            <if test=" result != null and result != ''">
+                result=#{result},
+            </if>
+
+        </set>
+        where id=#{id};
+    </update>
+    <!-- 删除项目 -->
+    <delete id="deleteEntity">
+		delete from proj_home_data where
+		id=#{id}
+
+	</delete>
+    <!-- 删除所有项目 -->
+    <update id="deletesEntity">
+		truncate TABLE  proj_home_data
+	</update>
+    <!-- 匹配项目 -->
+    <select id="findcuProject"
+            resultType="com.first.entity.ProjectHomeFormMap" parameterType="com.first.entity.ProjectHomeFormMap">
+        select
+        <include refid="selectId"/>
+        from proj_home_data
+        where
+        state !=4
+        <choose>
+            <when test="id != null and id !=''">
+                <if test="apartment != null and apartment != '' ">
+                    AND type=#{apartment}
+
+                </if>
+
+                <if test="totalPrice != null and totalPrice != '' ">
+                    and (pricess &lt;= ${totalPrice} AND ${totalPrice} &lt;= pricese)
+
+                </if>
+            </when>
+            <otherwise>
+                and 1=0
+            </otherwise>
+        </choose>
+
+
+    </select>
+
+
+    <!-- 添加项目图片 -->
+    <insert id="addImg">
+		INSERT INTO
+		proj_home_dataimg
+		VALUES
+		(
+		null,
+		#{proId},
+		#{type},
+		#{img},
+		#{createDate}
+		)
+	</insert>
+    <select id="findImg" resultType="com.first.entity.ProjectHomeFormMap">
+        select
+        *
+        from proj_home_dataimg
+        where 1=1
+        <if test=" proId != null and proId != ''">
+            and proId=#{proId}
+        </if>
+        <if test=" type != null and type != ''">
+            and type=#{type}
+        </if>
+    </select>
+
+
+    <delete id="deleteImg">
+		delete from proj_home_dataimg where
+		id=#{id}
+	</delete>
+
+    <!--查看项目特点-->
+    <select id="findFeature"
+            resultType="com.first.entity.ProjectHomeFormMap">
+		select
+		*
+		from proj_feature
+		where state =1
+	</select>
+
+
+    <!--查看商铺销控 -->
+    <insert id="addHome">
+		INSERT INTO
+		proj_home
+		VALUES
+		(
+	  null,
+		#{proId},
+        #{building},
+        #{floor},
+        #{roomNo},
+        #{area},
+        #{sell},
+        #{price},
+        #{CreationDate},
+        #{delFlag}
+
+
+
+		)
+	</insert>
+    <select id="findHomeList" resultType="com.first.entity.ProjectHomeFormMap">
+        SELECT a.*,b.projectName,b.type,b.firstPerson FROM (SELECT
+        a.*,
+        b.img
+        FROM
+        proj_home a
+        LEFT JOIN proj_home_img b ON a.id = b.homeId
+        WHERE
+        1 = 1
+        <if test=" proId != null and proId != ''">
+            and prId=#{proId}
+        </if>
+        GROUP BY
+        a.id) a LEFT JOIN proj_home_data b on a.prId=b.id
+    </select>
+    <select id="findHome" resultType="com.first.entity.ProjectHomeFormMap">
+				SELECT
+			a.*,
+			b.firstPerson,
+			b.projectName
+		FROM
+			proj_home a
+		LEFT JOIN proj_home_data b ON a.prId = b.id
+		WHERE
+			a.id=#{id}
+	</select>
+    <update id="editHome">
+        update proj_home
+        <set>
+
+            <if test=" proId != null and building != '' ">
+                building=#{building},
+            </if>
+            <if test=" floor != null and floor != '' ">
+                floor=#{floor},
+            </if>
+            <if test=" roomNo != null and roomNo != '' ">
+                roomNo=#{roomNo},
+            </if>
+            <if test=" area != null and area != '' ">
+                area=#{area},
+            </if>
+            <if test=" sell != null and sell != '' ">
+                sell=#{sell},
+            </if>
+            <if test=" price != null and price != '' ">
+                price=#{price},
+            </if>
+
+        </set>
+        where id=#{id};
+    </update>
+    <delete id="deleteHome">
+		delete from proj_home where
+		id=#{id}
+	</delete>
+    <select id="findHomeImg" resultType="com.first.entity.ProjectHomeFormMap">
+		select
+		*
+		from proj_home_img
+		where	homeId=#{id}
+	</select>
+    <insert id="addHomeImg">
+		INSERT INTO
+		proj_home_img
+		VALUES
+		(
+		null,
+		#{homeId},
+		#{img},
+		#{createDate}
+		)
+	</insert>
+    <delete id="deleteHomeImg">
+		delete from proj_home_img where
+		id=#{id}
+	</delete>
+
+    <select id="findProjectSearch" resultType="java.util.HashMap">
+		select
+		*
+		from proj_search
+		where	city=#{city}
+		and status=1
+	</select>
+    <select id="findProjectBusiness" resultType="java.util.HashMap">
+		select
+		*
+		from proj_business
+		where
+		status=1
+        <if test="district != null and district != '' ">
+          and  district=#{district}
+        </if>
+	</select>
+</mapper>

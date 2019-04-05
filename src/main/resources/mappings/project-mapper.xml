@@ -32,10 +32,8 @@
     <!-- 项目选择 -->
     <select id="getProject"
             resultType="com.first.entity.ProjectFormMap">
-        select
-        <include refid="selectId"/>
-        from proj_data
-        where state !=4
+        SELECT * FROM (SELECT projectName,type  FROM proj_shops_data union SELECT projectName,type FROM proj_apartment_data ) a  union
+        SELECT * FROM (SELECT projectName,type  FROM proj_office_data union SELECT projectName,type FROM proj_home_data ) a
 
     </select>
     <!-- 查看项目 -->
@@ -334,8 +332,6 @@
             <if test=" StartDate != null and StartDate != ''">
                 StartDate=#{StartDate},
             </if>
-
-
             <if test=" DeliveryDate != null and DeliveryDate != ''">
                 DeliveryDate=#{DeliveryDate},
             </if>
@@ -462,15 +458,6 @@
 
 
     </select>
-
-    <select id="findMaxId"
-            resultType="String">
-		
-		select
-		max(id) id
-		from proj_data
-
-	</select>
     <select id="findProjecttest"
             resultType="com.first.entity.ProjectFormMap">
 		select

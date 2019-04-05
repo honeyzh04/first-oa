@@ -5,7 +5,7 @@ $(function() {
 		submitHandler : function(form) {// 必须写在验证前面，否则无法ajax提交
 			ly.ajaxSubmit(form, {// 验证新增是否成功
 				type : "post",
-				dataType : "json",
+				elevator : "json",
 				success : function(data) {
 					if (data == "success") {
 						layer.confirm('添加成功!是否关闭窗口?', {

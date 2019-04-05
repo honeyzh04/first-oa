@@ -81,31 +81,31 @@
 
 <body>
 <div class="l_err" style="width: 100%; margin-top: 2px;"></div>
-<form class="" id="form" action="${ctx}/project/editApartment.shtml" method="get">
+<form class="" id="form" action="${ctx}/projectApartment/editApartment.shtml" method="get">
 	<div class="wrap" id="wrap">
-		<input type="hidden"  name="projectFormMap.id" value="${apartment.id}" />
+		<input type="hidden"  name="projectApartmentFormMap.id" value="${apartment.id}" />
 		<div class="row">
 			<label for="" class="labw130">项目名称</label>
-			<div class="inpdiv190"><input type="text" class="inpw100"  readonly="readonly"  name="projectFormMap. projectName" value="${apartment.projectName}"></div>
+			<div class="inpdiv190"><input type="text" class="inpw100"  readonly="readonly"  name="projectApartmentFormMap. projectName" value="${apartment.projectName}"></div>
 			<label for="" class="labw130">栋</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入栋"
-										  name="projectFormMap.building" value="${apartment.building}"></div>
+										  name="projectApartmentFormMap.building" value="${apartment.building}"></div>
 		</div>
 
 		<div class="row">
 
 			<label for="" class="labw130">层</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.floor"
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectApartmentFormMap.floor"
 										  placeholder="请输入在哪一层" value="${apartment.floor}">m²</div>
 			<label for="" class="labw130">房间编号</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.roomNo" placeholder="请输入房间编号" value="${apartment.roomNo}">
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectApartmentFormMap.roomNo" placeholder="请输入房间编号" value="${apartment.roomNo}">
 			</div>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">性质</label>
 			<input type="hidden" id="nature" value="${apartment.nature}"/>
 			<div class="inpdiv190">
-				<select class="selw100 inpw100" id="natures" name="projectFormMap.nature">
+				<select class="selw100 inpw100" id="natures" name="projectApartmentFormMap.nature">
 					<option value="">请选择</option>
 					<option value="1">商用</option>
 					<option value="2">自用</option>
@@ -113,7 +113,7 @@
 			</div>
 			<label for="" class="labw130">出售</label>
 			<input type="hidden" id="sell" value="${apartment.sell}"/>
-			<select class="selw100 inpw100" id="shells"name="projectFormMap.sell">
+			<select class="selw100 inpw100" id="shells"name="projectApartmentFormMap.sell">
 				<option value="">请选择</option>
 				<option value="1">待售</option>
 				<option value="2">在售</option>
@@ -125,36 +125,36 @@
 		<div class="row">
 			<label for="" class="labw130">建面</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入建面 "
-										  name="projectFormMap.noodles" value="${apartment.noodles}">m²</div>
+										  name="projectApartmentFormMap.noodles" value="${apartment.noodles}">m²</div>
 			<label for="" class="labw130">惊爆折扣</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入惊爆折扣" name="projectFormMap.shockDiscount" value="${apartment.shockDiscount}">
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入惊爆折扣" name="projectApartmentFormMap.shockDiscount" value="${apartment.shockDiscount}">
 			</div>
 
 		</div>
 		<div class="row">
 			<label for="" class="labw130">原总价</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入原总价" name="projectFormMap.originalPrice" value="${apartment.originalPrice}">万
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入原总价" name="projectApartmentFormMap.originalPrice" value="${apartment.originalPrice}">万
 			</div>
 			<label for="" class="labw130">原单价</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入原单价" name="projectFormMap.originalUnitPrice" value="${apartment.originalUnitPrice}">万
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入原单价" name="projectApartmentFormMap.originalUnitPrice" value="${apartment.originalUnitPrice}">万
 			</div>
 		</div>
 
 		<div class="row">
 			<label for="" class="labw130">现总价</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入现总价" name="projectFormMap.currentPrice" value="${apartment.currentPrice}">万
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入现总价" name="projectApartmentFormMap.currentPrice" value="${apartment.currentPrice}">万
 			</div>
 			<label for="" class="labw130">现单价</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入现单价" name="projectFormMap.currentUnitPrice" value="${apartment.currentUnitPrice}">万
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入现单价" name="projectApartmentFormMap.currentUnitPrice" value="${apartment.currentUnitPrice}">万
 			</div>
 		</div>
 
 		<div class="row">
 			<label for="" class="labw130">折扣低价</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入折扣低价" name="projectFormMap.discountLowPrice" value="${apartment.discountLowPrice}">万
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入折扣低价" name="projectApartmentFormMap.discountLowPrice" value="${apartment.discountLowPrice}">万
 			</div>
 			<label for="" class="labw130">折扣单价</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入折扣单价" name="projectFormMap.discountUnitPrice" value="${apartment.discountUnitPrice}">万
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入折扣单价" name="projectApartmentFormMap.discountUnitPrice" value="${apartment.discountUnitPrice}">万
 			</div>
 		</div>
 		<div class="row rowbutton">

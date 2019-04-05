@@ -227,7 +227,7 @@
 <script>
     var shopsId=$("#shopsId").val();
     $.ajax({
-        url: "../project/findShops.shtml?id="+shopsId,
+        url: "../projectShops/findShops.shtml?id="+shopsId,
         type: 'get',
         dataType: 'json',
         success: function (res, error) {

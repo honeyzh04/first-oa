@@ -394,7 +394,7 @@
     function Setshowimg(imgbox, shopsId) {
 
         $.ajax({
-            url: "../project/findShopsImg.shtml?shopsId=" + shopsId,
+            url: "../projectShops/findShopsImg.shtml?shopsId=" + shopsId,
             type: 'get',
             dataType: 'json',
             success: function (res, error) {

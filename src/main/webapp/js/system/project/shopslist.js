@@ -17,17 +17,13 @@ $(function() {
 						info : true, //页脚
 						ordering : false,//排序
 						ajax : {
-							url : "./project/findShopsList.shtml",// 数据请求地址
+							url : "./projectShops/findShopsList.shtml",// 数据请求地址
 							type : "POST",
 
 							data : function(params) {
 								// 此处为定义查询条件 传给控制器的参数
 								// 角色名称
 								params.projectName = $("#projectName").val();
-								params.type = $("input[name='ProjectFormMap.type']:checked").val();
-								params.region = $("input[name='ProjectFormMap.region']:checked").val();
-								params.prices = $("input[name='ProjectFormMap.prices']:checked").val();
-								params.area = $("input[name='ProjectFormMap.area']:checked").val();
 						
 							}
 						},
@@ -228,7 +224,7 @@ function addShops() {
 		title : "添加商铺销控",
 		type : 2,
 		area : [ "1000px", "80%" ],
-		content : './project/addShopsUI.shtml'
+		content : './projectShops/addShopsUI.shtml'
 	});
 }
 /**
@@ -252,7 +248,7 @@ function editShops() {
 		title : "编辑商铺",
 		type : 2,
         area : [ "1000px", "80%" ],
-		content : './project/editShopsUI.shtml?id=' + id,
+		content : './projectShops/editShopsUI.shtml?id=' + id,
 
 	});
 
@@ -283,7 +279,7 @@ function delShops() {
 		layer.confirm('是否删除？', function(index) {
 
 			$.ajax({
-				"url" : './project/deleteShops.shtml?ids=' + idstr,
+				"url" : './projectShops/deleteShops.shtml?ids=' + idstr,
 
 				"type" : "GET",
 				"datatype" : "json",
@@ -325,7 +321,7 @@ function detailsCustomer(_this) {
         resize : false,
         type : 2,
         area : [ "1000px", "80%" ],
-        content : './project/findShopsUI.shtml?id=' + prId
+        content : './projectShops/findShopsUI.shtml?id=' + prId
 
     });
 
@@ -373,7 +369,7 @@ function addShopsImg() {
         title : "商铺销控图片",
         type : 2,
         area : [ "700px", "80%" ],
-        content : './project/addShopsImgUI.shtml?id=' + id,
+        content : './projectShops/addShopsImgUI.shtml?id=' + id,
 
     });
 

@@ -922,6 +922,11 @@
 		id=#{id}
 
 	</delete>
+    <delete id="deleteAdd">
+		delete from cu_add where
+		customerId=#{id}
+
+	</delete>
     <delete id="deleteFollow">
 		delete from cu_follow where
 		customerId=#{id}
@@ -1390,4 +1395,9 @@ WHERE
         ) b ON a.createBy = b.accountName
 
     </select>
+    <select id="findFFXSource" resultType="java.util.HashMap">
+    SELECT * FROM cu_source where parentId=3
+    </select>
+
+
 </mapper>

@@ -62,34 +62,34 @@
 
 <body>
 <div class="l_err" style="width: 100%; margin-top: 2px;"></div>
-<form class="" id="form" action="${ctx}/project/editHome.shtml" method="get">
+<form class="" id="form" action="${ctx}/projectHome/editHome.shtml" method="get">
 	<div class="wrap" id="wrap">
 		<div class="row">
-			<input type="hidden"  name="projectFormMap.id" value="${home.id}" />
+			<input type="hidden"  name="projectHomeFormMap.id" value="${home.id}" />
 			<label for="" class="labw130">项目名称</label>
 			<div class="inpdiv190">
-				<div class="inpdiv190"><input type="text" class="inpw100"  readonly="readonly"  name="projectFormMap. projectName" value="${home.projectName}"></div>
+				<div class="inpdiv190"><input type="text" class="inpw100"  readonly="readonly"  name="projectHomeFormMap. projectName" value="${home.projectName}"></div>
 			</div>
 			<label for="building" class="labw130">栋</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入栋号" id="building"  name="projectFormMap.building" value="${home.building}"></div>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入栋号" id="building"  name="projectHomeFormMap.building" value="${home.building}"></div>
 		</div>
 
 		<div class="row">
 
 			<label for="" class="labw130">层</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.floor"
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectHomeFormMap.floor"
 										  placeholder="请输入层号" value="${home.floor}">m²</div>
 			<label for="" class="labw130">房间编号</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.roomNo" placeholder="请输入房间编号" value="${home.roomNo}">
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectHomeFormMap.roomNo" placeholder="请输入房间编号" value="${home.roomNo}">
 			</div>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">建面</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入房间面积"
-										  name="projectFormMap.area" value="${home.area}">m²</div>
+										  name="projectHomeFormMap.area" value="${home.area}">m²</div>
 			<label for="" class="labw130">出售</label>
 			<input type="hidden" id="sell" value="${apartment.sell}"/>
-			<select class="selw100 inpw100" id="sells" name="projectFormMap.sell">
+			<select class="selw100 inpw100" id="sells" name="projectHomeFormMap.sell">
 				<option value="">请选择</option>
 				<option value="1">待售</option>
 				<option value="2">在售</option>
@@ -101,7 +101,7 @@
 		<div class="row">
 			<label for="" class="labw130">价格</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入价格"
-										  name="projectFormMap.price" value="${home.price}">万</div>
+										  name="projectHomeFormMap.price" value="${home.price}">万</div>
 		</div>
 		<div class="row rowbutton">
 			<button  type="button" id="btn-test" class="btn-info submitbtn">立即提交</button></div>

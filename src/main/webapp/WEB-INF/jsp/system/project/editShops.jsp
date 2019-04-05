@@ -80,48 +80,48 @@
 
 <body>
 <div class="l_err" style="width: 100%; margin-top: 2px;"></div>
-<form class="" id="form" action="${ctx}/project/editShops.shtml" method="get">
+<form class="" id="form" action="${ctx}/projectShops/editShops.shtml" method="get">
 	<div class="wrap" id="wrap">
-        <input type="hidden"  name="projectFormMap.id" value="${shops.id}" />
+        <input type="hidden"  name="projectShopsFormMap.id" value="${shops.id}" />
 		<div class="row">
 			<label for="" class="labw130">项目名称</label>
-			<div class="inpdiv190"><input type="text" class="inpw100"  readonly="readonly"  name="projectFormMap. projectName" value="${shops.projectName}"></div>
+			<div class="inpdiv190"><input type="text" class="inpw100"  readonly="readonly"  name="projectShopsFormMap. projectName" value="${shops.projectName}"></div>
 			<label for="" class="labw130">商铺编号</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入商铺编号" name="projectFormMap.shopNumber" value="${shops.shopNumber}"></div>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入商铺编号" name="projectShopsFormMap.shopNumber" value="${shops.shopNumber}"></div>
 		</div>
 
 		<div class="row">
 
 			<label for="" class="labw130">预测建筑</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.forecastBuilding" placeholder="请输入预测建筑" value="${shops.forecastBuilding}">m²</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectShopsFormMap.forecastBuilding" placeholder="请输入预测建筑" value="${shops.forecastBuilding}">m²</div>
 			<label for="" class="labw130">商铺面积</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.acreate" placeholder="请输入商铺面积" value="${shops.acreate}">m²</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectShopsFormMap.acreate" placeholder="请输入商铺面积" value="${shops.acreate}">m²</div>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">预测公摊</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入预测公摊" name="projectFormMap.forecastPublicApportionment" value="${shops.forecastPublicApportionment}">m²</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入预测公摊" name="projectShopsFormMap.forecastPublicApportionment" value="${shops.forecastPublicApportionment}">m²</div>
 			<label for="" class="labw130">预测套内</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入预测套内" name="projectFormMap.forecastSet" value="${shops.forecastSet}">m²</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入预测套内" name="projectShopsFormMap.forecastSet" value="${shops.forecastSet}">m²</div>
 
 		</div>
 		<div class="row">
 			<label for="" class="labw130">商铺总价</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入商铺总价" name="projectFormMap.totalPrice" value="${shops.totalPrice}">万</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入商铺总价" name="projectShopsFormMap.totalPrice" value="${shops.totalPrice}">万</div>
 			<label for="" class="labw130">商铺单价</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入商铺单价" name="projectFormMap.price" value="${shops.price}">万</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入商铺单价" name="projectShopsFormMap.price" value="${shops.price}">万</div>
 
 		</div>
 		<div class="row">
 			<label for="" class="labw130">层高</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入层高" name="projectFormMap.height" value="${shops.height}">m</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入层高" name="projectShopsFormMap.height" value="${shops.height}">m</div>
 			<label for="" class="labw130">开间</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入开间" name="projectFormMap.opening" value="${shops.opening}">m</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入开间" name="projectShopsFormMap.opening" value="${shops.opening}">m</div>
 		</div>
 
 		<div class="row">
 			<label for="" class="labw130">出售</label>
 			<input type="hidden" id="sell" value="${shops.sell}"/>
-			<div class="inpdiv190"><select class="selw100 inpw100" id="sells" name="projectFormMap.sell">
+			<div class="inpdiv190"><select class="selw100 inpw100" id="sells" name="projectShopsFormMap.sell">
 				<option value="">请选择</option>
 				<option value="1">待售</option>
 				<option value="2">在售</option>
@@ -130,7 +130,7 @@
 			</select></div>
 			<label for="" class="labw130">经营状态</label>
 			<input type="hidden" id="store_status" value="${shops.store_status}"/>
-			<div class="inpdiv190"><select class="selw100 inpw100" id="store_statuss" name="projectFormMap.store_status">
+			<div class="inpdiv190"><select class="selw100 inpw100" id="store_statuss" name="projectShopsFormMap.store_status">
 				<option value="">请选择</option>
 				<option value="1">营业中</option>
 				<option value="2">空铺</option>
@@ -141,14 +141,14 @@
 		<div class="row">
 			<label for="" class="labw130">是否有烟道</label>
 			<input type="hidden" id="flue" value="${shops.flue}"/>
-			<div class="inpdiv190"><select class="selw100 inpw100"  id="flues"name="projectFormMap.flue">
+			<div class="inpdiv190"><select class="selw100 inpw100"  id="flues"name="projectShopsFormMap.flue">
 				<option value="">请选择</option>
 				<option value="1">是</option>
 				<option value="2">否</option>
 			</select></div>
 			<label for="" class="labw130">项目特点</label>
 			<input type="hidden" id="trait" value="${shops.trait}"/>
-			<div class="inpdiv190"><select class="selw100 inpw100" id="traits" name="projectFormMap.trait" >
+			<div class="inpdiv190"><select class="selw100 inpw100" id="traits" name="projectShopsFormMap.trait" >
 				<option value="">请选择</option>
 				<option value="临街">临街</option>
 				<option value="转角">转角</option>
@@ -160,24 +160,24 @@
 		</div>
 		<div class="row">
 			<label for="" class="labw130">租金</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.Rent" placeholder="请输入租金" value="${shops.Rent}">元/月m²</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectShopsFormMap.Rent" placeholder="请输入租金" value="${shops.Rent}">元/月m²</div>
 			<label for="" class="labw130">租约时间</label>
-			<div class="inpdiv190"><input type="text" class="inpw100" name="projectFormMap.leaseTime"  placeholder="请输入租约时间" value="${shops.leaseTime}">年</div>
+			<div class="inpdiv190"><input type="text" class="inpw100" name="projectShopsFormMap.leaseTime"  placeholder="请输入租约时间" value="${shops.leaseTime}">年</div>
 		</div>
 
 		<div class="row">
 			<label for="" class="labw130">口岸</label>
-			<textarea id="port1" name="projectFormMap.port" cols="80" rows="5" placeholder="请输入内容"
+			<textarea id="port1" name="projectShopsFormMap.port" cols="80" rows="5" placeholder="请输入内容"
 					  maxlength="500"> ${shops.port}</textarea>
 			<div class="sum">已输入<span id="num">0</span>/500</div>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">描述</label>
-			<textarea name="projectFormMap.intro" id="" cols="80" rows="5" placeholder="请输入描述内容">${shops.intro}</textarea>
+			<textarea name="projectShopsFormMap.intro" id="" cols="80" rows="5" placeholder="请输入描述内容">${shops.intro}</textarea>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">项目推荐</label>
-			<textarea name="projectFormMap.RecommendReason" id="" cols="80" rows="5" placeholder="请输入项目推荐">${shops.RecommendReason}</textarea>
+			<textarea name="projectShopsFormMap.RecommendReason" id="" cols="80" rows="5" placeholder="请输入项目推荐">${shops.RecommendReason}</textarea>
 		</div>
 		<div class="row rowbutton">
 			<button  type="button" id="btn-test" class="btn-info submitbtn">立即提交</button> <button onclick="reset()">重置</button></div>

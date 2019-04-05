@@ -9,14 +9,6 @@ jQuery.validator
 					return this.optional(element)
 							|| (length == 11 && mobile.test(value));
 				}, "手机号码格式错误");
-jQuery.validator.addMethod(
-		"content",
-		function(value, element) {
-			var length = value.length;
-			
-			return this.optional(element)
-					|| (length >10);
-		}, "跟进内容不得小于十个字");
 $(function() {
 
 	$("form").validate({
@@ -33,7 +25,7 @@ $(function() {
 						});
 						return false;
 					}else */	if (data == "success") {
-						layer.confirm('添加成功!是否关闭窗口?', {
+						layer.confirm('编辑成功!是否关闭窗口?', {
 							icon : 6,
 							title : '提示'
 						}, function(index) {
@@ -45,13 +37,13 @@ $(function() {
 							 * parent.$("#datatable").dataTable().ajax.reload(null,
 							 * false);
 							 */
-							parent.layer.close(parent.pageii);
-							parent.myTable.draw(false);
+							parent.layer.close(parent.pagea);
+							parent.myTablea.draw(false);
 							return false;
 						});
 						$("#form")[0].reset();
 					} else {
-						layer.msg('客户添加失败！', {
+						layer.msg('商铺编辑失败！', {
 							icon : 2,
 							time : 2000
 						// 2秒关闭（如果不配置，默认是3秒）
@@ -62,84 +54,78 @@ $(function() {
 		},
 		rules : {
 
-			"projectFormMap.projectName" : {
+			"projectShopsFormMap.projectName" : {
 				required : true
 			},
-			"projectFormMap.Another_Name" : {
+			"projectShopsFormMap.Another_Name" : {
 
                 required : true
 			},
-			"projectFormMap.lease" : {
+			"projectShopsFormMap.lease" : {
 				required : true
 			},
-			"projectFormMap.state": {
+			"projectShopsFormMap.state": {
 				required : true,
 			},
-            "projectFormMap.city" : {
-                required : true,
-            },
-
-            "projectFormMap.projectPosition" : {
+			"projectShopsFormMap.projectPosition" : {
 
 				required : true,
 			},
-            "projectFormMap.type" : {
+            "projectShopsFormMap.type" : {
                 required : true,
             },
-            "projectFormMap.region" : {
+            "projectShopsFormMap.region" : {
                 required : true,
             },
-            "projectFormMap.saleStartTime" : {
+            "projectShopsFormMap.saleStartTime" : {
                 required : true,
             },
-            "projectFormMap.areas" : {
+            "  projectShopsFormMap.areas" : {
                 required : true,
             },
-            "projectFormMap.areae" : {
+            "  projectShopsFormMap.areae" : {
                 required : true,
             },
-            "projectFormMap.areas" : {
+            " projectShopsFormMap.areas" : {
                 required : true,
             },
-            "projectFormMap.areas" : {
+            " projectShopsFormMap.areas" : {
                 required : true,
             },
-            "projectFormMap.prices" : {
+            "projectShopsFormMap.prices" : {
                 required : true,
             },
-            "projectFormMap.pricee" : {
+            "projectShopsFormMap.pricee" : {
                 required : true,
             },
-            "projectFormMap.pricess" : {
+            "projectShopsFormMap.pricess" : {
                 required : true,
             },
-            "projectFormMap.pricese" : {
+            "projectShopsFormMap.pricese" : {
                 required : true,
             },
-            "projectFormMap.commission" : {
+            "projectShopsFormMap.commission" : {
                 required : true,
             },
-            "projectFormMap.firstPerson" : {
+            "projectShopsFormMap.firstPerson" : {
                 required : true,
             },
-            "projectFormMap.firstTelephone" : {
+            "projectShopsFormMap.firstTelephone" : {
                 required : true,
             },
-            "projectFormMap.projectPerson" : {
+            "projectShopsFormMap.projectPerson" : {
                 required : true,
             },
-            "projectFormMap.projectTelephone" : {
+            "projectShopsFormMap.projectTelephone" : {
                 required : true,
             },
-            "projectFormMap.description" : {
+            "projectShopsFormMap.description" : {
                 required : true,
             },
-            "projectFormMap.RecommendReason" : {
+            "projectShopsFormMap.RecommendReason" : {
                 required : true,
             },
-            "projectFormMap.prFeature" : {
-                required : true,
-            },
+
 
 
 
@@ -149,81 +135,74 @@ $(function() {
 
 		messages : {
 
-			"projectFormMap.projectName" : {
+			"projectShopsFormMap.projectName" : {
 				required : "请输入项目名"
 
 			},
 
-			"projectFormMap.Another_Name" : {
+			"projectShopsFormMap.Another_Name" : {
 				required : "请输入项目昵称",
 
 			},
-			"projectFormMap.lease" : {
+			"projectShopsFormMap.lease" : {
                 required : "请选择是否带租约",
 
 			},
-			"projectFormMap.state" : {
+			"projectShopsFormMap.state" : {
 				required : "请选择楼盘状态",
 			},
-            "projectFormMap.city" : {
-                required : "请选择楼盘位置",
-            },
-
-			"cprojectFormMap.projectPosition" : {
+			"cprojectShopsFormMap.projectPosition" : {
 
 				required : "请选择具体位置",
 			},
-            "projectFormMap.type" : {
+            "projectShopsFormMap.type" : {
 
                 required : "请选择项目分类",
             },
-            "projectFormMap.region" : {
+            "projectShopsFormMap.region" : {
                 required : "请选择项目区域",
             },
-            "projectFormMap.saleStartTime" : {
+            "projectShopsFormMap.saleStartTime" : {
                 required : "请选择开盘时间",
             },
-            " projectFormMap.areas" : {
+            " projectShopsFormMap.areas" : {
                 required : "请选择最小面积",
             },
-            " projectFormMap.areas" : {
+            " projectShopsFormMap.areas" : {
                 required : "请选择最大面积",
             },
-            "projectFormMap.prices" : {
+            "projectShopsFormMap.prices" : {
                 required : "请选择最小单价",
             },
-            "projectFormMap.pricee" : {
+            "projectShopsFormMap.pricee" : {
                 required : "请选择最大单价",
             },
-            "projectFormMap.pricess" : {
+            "projectShopsFormMap.pricess" : {
                 required : "请选择最小总价",
             },
-            "projectFormMap.pricese" : {
+            "projectShopsFormMap.pricese" : {
                 required : "请选择最大总价",
             },
-            "projectFormMap.commission" : {
+            "projectShopsFormMap.commission" : {
                 required : "请输入项目佣金",
             },
-            "projectFormMap.firstPerson" : {
+            "projectShopsFormMap.firstPerson" : {
                 required : "请输入公司负责人",
             },
-            "projectFormMap.firstTelephone" : {
+            "projectShopsFormMap.firstTelephone" : {
                 required : "请输入公司负责人电话",
             },
-            "projectFormMap.projectPerson" : {
+            "projectShopsFormMap.projectPerson" : {
                 required : "请输入项目负责人",
             },
-            "projectFormMap.projectTelephone" : {
+            "projectShopsFormMap.projectTelephone" : {
                 required : "请输入项目负责人电话",
             },
-            "projectFormMap.description" : {
+            "projectShopsFormMap.description" : {
                 required : "请输入项目描述",
             },
-            "projectFormMap.RecommendReason" : {
+            "projectShopsFormMap.RecommendReason" : {
                 required : "请输入项目推荐",
-            },
-            "projectFormMap.prFeature" : {
-                required : "请输入项目特点",
             },
 
 		},

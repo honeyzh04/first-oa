@@ -506,7 +506,7 @@ table.dataTable tbody tr:hover {
             "url":"./match/addcumatch.shtml",
             "data":"",
             "type":"post",
-            "dataType":"json",
+            "elevator":"json",
             "success":function(obj) {
 
                 var a=new Array();
@@ -544,7 +544,7 @@ table.dataTable tbody tr:hover {
 			"url":"./dict/showUser.shtml",
 			"data":"departCode="+userCode,
 			"type":"GET",
-			"dataType":"json",
+			"elevator":"json",
 			"success":function(obj){
 				$("#userId").html("<option class='form-control m-b-10' value=0> - - - -选择销售- - - - </option>");
 				for(i=0;i<obj.length;i++){
@@ -567,7 +567,7 @@ table.dataTable tbody tr:hover {
 			"url":"./dict/showDepart.shtml",
 			"data":"",
 			"type":"GET",
-			"dataType":"json",
+			"elevator":"json",
 			"success":function(obj){
 					$("#department").html("<option class='form-control m-b-10' value=0> - - - -选择部门- - - - </option>");
 				

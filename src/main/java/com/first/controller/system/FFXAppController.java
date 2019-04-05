@@ -55,8 +55,14 @@ public class FFXAppController extends BaseController {
     private CreditService creditService;
     @Inject
     private ProjectService projectService;
-
-
+    @Inject
+    private ProjectShopsService projectShopsService;
+    @Inject
+    private ProjectApartmentService projectApartmentService;
+    @Inject
+    private ProjectOfficeService projectOfficeService;
+    @Inject
+    private ProjectHomeService projectHomeService;
     /**
      * 查找用户信息
      *
@@ -668,22 +674,45 @@ public class FFXAppController extends BaseController {
         return rr;
     }
 
+    /**
+     * 查看项目图片
+     * @param proId
+     * @param callback
+     * @return
+     * @throws Exception
+     */
 
     @ResponseBody
     @RequestMapping(value = "findImg")
-    public Object findImg(String proId, String type, String callback) throws Exception {
+    public Object findImg(String proId, String proType,String ImgType, String callback) throws Exception {
         JSONPObject jsonpObject = null;
         Result<Void> rr = null;
+        if (callback == null || callback.equals("")) {
+            callback = "callback";
+        }
         try {
             HashMap searchImg = new HashMap();
             searchImg.put("proId", proId);
-            searchImg.put("type", type);
-            List<ProjectFormMap> listImg = projectService.findImg(searchImg);
-            if (callback == null || callback.equals("")) {
-                callback = "callback";
+            searchImg.put("type", ImgType);
+            if(proType.equals("1")){
+                List<ProjectShopsFormMap> listImg = projectShopsService.findImg(searchImg);
+                rr = new Result<Void>(1, "成功", listImg);
+                jsonpObject = new JSONPObject(callback, rr);
+            }else  if (proType.equals("2")){
+                List<ProjectApartmentFormMap> listImg = projectApartmentService.findImg(searchImg);
+                rr = new Result<Void>(1, "成功", listImg);
+                jsonpObject = new JSONPObject(callback, rr);
+
+            }else  if (proType.equals("3")){
+                List<ProjectOfficeFormMap> listImg = projectOfficeService.findImg(searchImg);
+                rr = new Result<Void>(1, "成功", listImg);
+                jsonpObject = new JSONPObject(callback, rr);
+            }else  if (proType.equals("4")){
+                List<ProjectHomeFormMap> listImg = projectHomeService.findImg(searchImg);
+                rr = new Result<Void>(1, "成功", listImg);
+                jsonpObject = new JSONPObject(callback, rr);
             }
-            rr = new Result<Void>(1, "成功", listImg);
-            jsonpObject = new JSONPObject(callback, rr);
+
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
             jsonpObject = new JSONPObject(callback, rr);
@@ -693,19 +722,28 @@ public class FFXAppController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "findFFXImg")
-    public Result<Void> findFFXImg(String proId, String type, String callback) throws Exception {
+    public Result<Void> findFFXImg(String proId, String proType,String ImgType,String callback) throws Exception {
         Result<Void> rr = null;
         try {
             HashMap searchImg = new HashMap();
             searchImg.put("proId", proId);
-            searchImg.put("type", type);
-            List<ProjectFormMap> listImg = projectService.findImg(searchImg);
-            if (callback == null || callback.equals("")) {
-                callback = "callback";
+            searchImg.put("type", ImgType);
+            if(proType.equals("1")){
+                List<ProjectShopsFormMap> listImg = projectShopsService.findImg(searchImg);
+                rr = new Result<Void>(1, "成功", listImg);
+
+            }else  if (proType.equals("2")){
+                List<ProjectApartmentFormMap> listImg = projectApartmentService.findImg(searchImg);
+                rr = new Result<Void>(1, "成功", listImg);
+
+            }else  if (proType.equals("3")){
+                List<ProjectOfficeFormMap> listImg = projectOfficeService.findImg(searchImg);
+                rr = new Result<Void>(1, "成功", listImg);
+
+            }else  if (proType.equals("4")){
+                List<ProjectHomeFormMap> listImg = projectHomeService.findImg(searchImg);
+                rr = new Result<Void>(1, "成功", listImg);
             }
-            rr = new Result<Void>(1, "成功", listImg);
-
-
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
 
@@ -728,7 +766,6 @@ public class FFXAppController extends BaseController {
             Map<String, Object> searchMap = new HashMap<String, Object>();
             searchMap.put("projectName", projectName);
             searchMap.put("district", district);
-            searchMap.put("type", type);
             searchMap.put("areas", areas);
             searchMap.put("areae", areae);
             searchMap.put("prices", prices);
@@ -736,13 +773,27 @@ public class FFXAppController extends BaseController {
             searchMap.put("pricess", pricess);
             searchMap.put("pricese", pricese);
             searchMap.put("orderBy", orderBy);
-            System.err.println(searchMap);
-            PageHelper.startPage(pageNum, pageSize);
-            List<ProjectFormMap> p = projectService.findProjects(searchMap);
-            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
-
-
-            rr = new Result<Void>(1, "成功", pageinfo);
+            if(type.equals("1")){
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProjectShopsFormMap> p = projectShopsService.findProjects(searchMap);
+                PageInfo<ProjectShopsFormMap> pageinfo = new PageInfo<ProjectShopsFormMap>(p);
+                rr = new Result<Void>(1, "成功", pageinfo);
+            }else  if (type.equals("2")){
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProjectApartmentFormMap> p1 = projectApartmentService.findProjects(searchMap);
+                PageInfo<ProjectApartmentFormMap> pageinfo = new PageInfo<ProjectApartmentFormMap>(p1);
+                rr = new Result<Void>(1, "成功", pageinfo);
+            }else  if (type.equals("3")){
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProjectOfficeFormMap> p1 = projectOfficeService.findProjects(searchMap);
+                PageInfo<ProjectOfficeFormMap> pageinfo = new PageInfo<ProjectOfficeFormMap>(p1);
+                rr = new Result<Void>(1, "成功", pageinfo);
+            }else  if (type.equals("4")){
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProjectHomeFormMap> p1 = projectHomeService.findProjects(searchMap);
+                PageInfo<ProjectHomeFormMap> pageinfo = new PageInfo<ProjectHomeFormMap>(p1);
+                rr = new Result<Void>(1, "成功", pageinfo);
+            }
 
         } catch (RuntimeException e) {
 
@@ -755,15 +806,25 @@ public class FFXAppController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "findFFXProject")
-    public Result<Void> findFFXProject(@RequestParam("id") String id, String callback) throws Exception {
+    public Result<Void> findFFXProject(@RequestParam("id") String id,String type) throws Exception {
 
         Result<Void> rr = null;
         try {
-            ProjectFormMap mps = projectService.findbyProject(id);
-            if (callback == null || callback.equals("")) {
-                callback = "callback";
+            if(type.equals("1")){
+                ProjectShopsFormMap mps = projectShopsService.findbyProject(id);
+                rr = new Result<Void>(1, "成功", mps);
+            }else  if (type.equals("2")){
+                ProjectApartmentFormMap mps = projectApartmentService.findbyProject(id);
+                rr = new Result<Void>(1, "成功", mps);
+            }else  if (type.equals("3")){
+                ProjectOfficeFormMap mps = projectOfficeService.findbyProject(id);
+
+                rr = new Result<Void>(1, "成功", mps);
+            }else  if (type.equals("4")){
+                ProjectHomeFormMap mps = projectHomeService.findbyProject(id);
+                rr = new Result<Void>(1, "成功", mps);
             }
-            rr = new Result<Void>(1, "成功", mps);
+
 
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
@@ -774,22 +835,15 @@ public class FFXAppController extends BaseController {
 
     @ResponseBody
     @RequestMapping("findFFXHomeList")
-    public Result<Void> findFFXHomeList(String proId, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
-
+    public Result<Void> findFFXHomeList(String proId, int pageSize,@RequestParam(required = true, defaultValue = "1") Integer pageNum) throws Exception {
         Result<Void> rr = null;
-
-        if (callback == null || callback.equals("")) {
-            callback = "callback";
-        }
         try {
             Map<String, Object> searchMap = new HashMap<String, Object>();
             searchMap.put("proId", proId);
-            PageHelper.startPage(pageNum, pageSize);
-            List<ProjectFormMap> p = projectService.findHomeList(searchMap);
-            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
-
-            rr = new Result<Void>(1, "成功", pageinfo);
-
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProjectHomeFormMap> p1 = projectHomeService.findHomeList(searchMap);
+                PageInfo<ProjectHomeFormMap> pageinfo = new PageInfo<ProjectHomeFormMap>(p1);
+                rr = new Result<Void>(1, "成功", pageinfo);
         } catch (RuntimeException e) {
 
             rr = new Result<Void>(0, e.getMessage(), "");
@@ -802,23 +856,17 @@ public class FFXAppController extends BaseController {
 
     @ResponseBody
     @RequestMapping("findFFXHome")
-    public Result<Void> findFFXHome(String id, String callback) {
+    public Result<Void> findFFXHome(String id) {
 
         Result<Void> rr = null;
         HashMap homeList = new HashMap();
         try {
-            ProjectFormMap home = projectService.findHome(id);
-            List<ProjectFormMap> homeImg = projectService.findHomeImg(id);
-
+            ProjectHomeFormMap home = projectHomeService.findHome(id);
+            List<ProjectHomeFormMap> homeImg = projectHomeService.findHomeImg(id);
             homeList.put("home", home);
             homeList.put("homeImg", homeImg);
-            if (callback == null || callback.equals("")) {
-                callback = "callback";
-            }
-            rr = new Result<Void>(1, "成功", homeList);
-
-
-        } catch (RuntimeException e) {
+           rr = new Result<Void>(1, "成功", homeList);
+  } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
 
         }
@@ -827,14 +875,12 @@ public class FFXAppController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "findFFXHomeImg")
-    public Result<Void> findFFXHomeImg(String homeId,  String callback) throws Exception {
+    public Result<Void> findFFXHomeImg(String homeId) throws Exception {
         Result<Void> rr = null;
         try {
 
-            List<ProjectFormMap> listHomeImg = projectService.findHomeImg(homeId);
-            if (callback == null || callback.equals("")) {
-                callback = "callback";
-            }
+            List<ProjectHomeFormMap> listHomeImg = projectHomeService.findHomeImg(homeId);
+
             rr = new Result<Void>(1, "成功",listHomeImg);
 
 
@@ -856,8 +902,8 @@ public class FFXAppController extends BaseController {
             Map<String, Object> searchMap = new HashMap<String, Object>();
             searchMap.put("proId", proId);
             PageHelper.startPage(pageNum, pageSize);
-            List<ProjectFormMap> p = projectService.findApartmentList(searchMap);
-            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+            List<ProjectApartmentFormMap> p = projectApartmentService.findApartmentList(searchMap);
+            PageInfo<ProjectApartmentFormMap> pageinfo = new PageInfo<ProjectApartmentFormMap>(p);
 
             rr = new Result<Void>(1, "成功", pageinfo);
 
@@ -877,8 +923,8 @@ public class FFXAppController extends BaseController {
         Result<Void> rr = null;
         HashMap apartmentList = new HashMap();
         try {
-            ProjectFormMap apartment = projectService.findApartment(id);
-            List<ProjectFormMap> apartmentImg = projectService.findApartmentImg(id);
+            ProjectApartmentFormMap apartment = projectApartmentService.findApartment(id);
+            List<ProjectApartmentFormMap> apartmentImg = projectApartmentService.findApartmentImg(id);
             apartmentList.put("apartment", apartment);
             apartmentList.put("apartmentImg", apartmentImg);
 
@@ -896,15 +942,13 @@ public class FFXAppController extends BaseController {
     }
     @ResponseBody
     @RequestMapping(value = "findFFXApartmentImg")
-    public Result<Void> findFFXApartmentImg(String apartmentId,  String callback) throws Exception {
+    public Result<Void> findFFXApartmentImg(String apartmentId) throws Exception {
 
         Result<Void> rr = null;
         try {
 
-            List<ProjectFormMap> listApartmentImg = projectService.findApartmentImg(apartmentId);
-            if (callback == null || callback.equals("")) {
-                callback = "callback";
-            }
+            List<ProjectApartmentFormMap> listApartmentImg = projectApartmentService.findApartmentImg(apartmentId);
+
             rr = new Result<Void>(1, "成功",listApartmentImg);
 
 
@@ -924,8 +968,8 @@ public class FFXAppController extends BaseController {
             Map<String, Object> searchMap = new HashMap<String, Object>();
             searchMap.put("proId", proId);
             PageHelper.startPage(pageNum, pageSize);
-            List<ProjectFormMap> p = projectService.findShopsList(searchMap);
-            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+            List<ProjectShopsFormMap> p = projectShopsService.findShopsList(searchMap);
+            PageInfo<ProjectShopsFormMap> pageinfo = new PageInfo<ProjectShopsFormMap>(p);
             System.err.println("app" + p);
             rr = new Result<Void>(1, "成功", pageinfo);
         } catch (RuntimeException e) {
@@ -938,20 +982,16 @@ public class FFXAppController extends BaseController {
 
     @ResponseBody
     @RequestMapping("findFFXShops")
-    public Result<Void> findFFXShops(String id, String callback) {
+    public Result<Void> findFFXShops(String id) {
 
         Result<Void> rr = null;
         HashMap shopList = new HashMap();
         try {
-            ProjectFormMap shops = projectService.findShops(id);
-            List<ProjectFormMap> shopsImg = projectService.findShopsImg(id);
+            ProjectShopsFormMap shops = projectShopsService.findShops(id);
+            List<ProjectShopsFormMap> shopsImg = projectShopsService.findShopsImg(id);
             shopList.put("shops", shops);
             shopList.put("shopsImg", shopsImg);
 
-
-            if (callback == null || callback.equals("")) {
-                callback = "callback";
-            }
             rr = new Result<Void>(1, "成功", shopList);
 
 
@@ -963,11 +1003,11 @@ public class FFXAppController extends BaseController {
     }
     @ResponseBody
     @RequestMapping(value = "findFFXShopsImg")
-    public Result<Void> findFFXShopsImg(String shopsId,  String callback) throws Exception {
+    public Result<Void> findFFXShopsImg(String shopsId) throws Exception {
 
         Result<Void> rr = null;
         try {
-            List<ProjectFormMap> listShopsImg = projectService.findShopsImg(shopsId);
+            List<ProjectShopsFormMap> listShopsImg = projectShopsService.findShopsImg(shopsId);
 
             rr = new Result<Void>(1, "成功",listShopsImg);
 
@@ -987,7 +1027,7 @@ public class FFXAppController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("findProjectList")
-    public Object findByProject(String projectName, String orderBy, String district, String type, String areas, String areae, String prices, String pricee, String pricess, String pricese, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
+    public Object findByProject(String projectName, String orderBy, String business,String district, String type, String areas, String areae, String prices, String pricee, String pricess, String pricese, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
         Result<Void> rr = null;
         JSONPObject jsonpObject = null;
         if (callback == null || callback.equals("")) {
@@ -998,7 +1038,6 @@ public class FFXAppController extends BaseController {
             Map<String, Object> searchMap = new HashMap<String, Object>();
             searchMap.put("projectName", projectName);
             searchMap.put("district", district);
-            searchMap.put("type", type);
             searchMap.put("areas", areas);
             searchMap.put("areae", areae);
             searchMap.put("prices", prices);
@@ -1006,11 +1045,33 @@ public class FFXAppController extends BaseController {
             searchMap.put("pricess", pricess);
             searchMap.put("pricese", pricese);
             searchMap.put("orderBy", orderBy);
-            PageHelper.startPage(pageNum, pageSize);
-            List<ProjectFormMap> p = projectService.findProjects(searchMap);
-            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
-            rr = new Result<Void>(1, "成功", pageinfo);
-            jsonpObject = new JSONPObject(callback, rr);
+            searchMap.put("business", business);
+            if(type.equals("1")){
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProjectShopsFormMap> p = projectShopsService.findProjects(searchMap);
+                PageInfo<ProjectShopsFormMap> pageinfo = new PageInfo<ProjectShopsFormMap>(p);
+                rr = new Result<Void>(1, "成功", pageinfo);
+                jsonpObject = new JSONPObject(callback, rr);
+            }else  if (type.equals("2")){
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProjectApartmentFormMap> p1 = projectApartmentService.findProjects(searchMap);
+                PageInfo<ProjectApartmentFormMap> pageinfo = new PageInfo<ProjectApartmentFormMap>(p1);
+                rr = new Result<Void>(1, "成功", pageinfo);
+                jsonpObject = new JSONPObject(callback, rr);
+            }else  if (type.equals("3")){
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProjectOfficeFormMap> p1 = projectOfficeService.findProjects(searchMap);
+                PageInfo<ProjectOfficeFormMap> pageinfo = new PageInfo<ProjectOfficeFormMap>(p1);
+                rr = new Result<Void>(1, "成功", pageinfo);
+                jsonpObject = new JSONPObject(callback, rr);
+            }else  if (type.equals("4")){
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProjectHomeFormMap> p1 = projectHomeService.findProjects(searchMap);
+                PageInfo<ProjectHomeFormMap> pageinfo = new PageInfo<ProjectHomeFormMap>(p1);
+                rr = new Result<Void>(1, "成功", pageinfo);
+                jsonpObject = new JSONPObject(callback, rr);
+            }
+
         } catch (RuntimeException e) {
 
             rr = new Result<Void>(0, e.getMessage(), "");
@@ -1022,16 +1083,37 @@ public class FFXAppController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "findProject")
-    public Object findProject(@RequestParam("id") String id, String callback) throws Exception {
+    public Object findProject(@RequestParam("id") String id, String type,String callback) throws Exception {
         JSONPObject jsonpObject = null;
         Result<Void> rr = null;
+        if (callback == null || callback.equals("")) {
+            callback = "callback";
+        }
         try {
-            ProjectFormMap mps = projectService.findbyProject(id);
-            if (callback == null || callback.equals("")) {
-                callback = "callback";
+            if(type.equals("1")){
+                ProjectShopsFormMap mps = projectShopsService.findbyProject(id);
+
+                rr = new Result<Void>(1, "成功", mps);
+                jsonpObject = new JSONPObject(callback, rr);
+            }else  if (type.equals("2")){
+                ProjectApartmentFormMap mps = projectApartmentService.findbyProject(id);
+
+                rr = new Result<Void>(1, "成功", mps);
+                jsonpObject = new JSONPObject(callback, rr);
+            }else  if (type.equals("3")){
+                ProjectOfficeFormMap mps = projectOfficeService.findbyProject(id);
+
+
+                rr = new Result<Void>(1, "成功", mps);
+                jsonpObject = new JSONPObject(callback, rr);
+            }else  if (type.equals("4")){
+                ProjectHomeFormMap mps = projectHomeService.findbyProject(id);
+
+                rr = new Result<Void>(1, "成功", mps);
+                jsonpObject = new JSONPObject(callback, rr);
             }
-            rr = new Result<Void>(1, "成功", mps);
-            jsonpObject = new JSONPObject(callback, rr);
+
+
         } catch (RuntimeException e) {
             rr = new Result<Void>(0, e.getMessage(), "");
             jsonpObject = new JSONPObject(callback, rr);
@@ -1052,8 +1134,8 @@ public class FFXAppController extends BaseController {
             Map<String, Object> searchMap = new HashMap<String, Object>();
             searchMap.put("proId", proId);
             PageHelper.startPage(pageNum, pageSize);
-            List<ProjectFormMap> p = projectService.findHomeList(searchMap);
-            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+            List<ProjectHomeFormMap> p = projectHomeService.findHomeList(searchMap);
+            PageInfo<ProjectHomeFormMap> pageinfo = new PageInfo<ProjectHomeFormMap>(p);
 
             rr = new Result<Void>(1, "成功", pageinfo);
             jsonpObject = new JSONPObject(callback, rr);
@@ -1074,8 +1156,8 @@ public class FFXAppController extends BaseController {
         Result<Void> rr = null;
         HashMap homeList = new HashMap();
         try {
-            ProjectFormMap home = projectService.findHome(id);
-            List<ProjectFormMap> homeImg = projectService.findHomeImg(id);
+            ProjectHomeFormMap home = projectHomeService.findHome(id);
+            List<ProjectHomeFormMap> homeImg = projectHomeService.findHomeImg(id);
 
             homeList.put("home", home);
             homeList.put("homeImg", homeImg);
@@ -1099,7 +1181,7 @@ public class FFXAppController extends BaseController {
         Result<Void> rr = null;
         try {
 
-            List<ProjectFormMap> listHomeImg = projectService.findHomeImg(homeId);
+            List<ProjectHomeFormMap> listHomeImg = projectHomeService.findHomeImg(homeId);
             if (callback == null || callback.equals("")) {
                 callback = "callback";
             }
@@ -1123,8 +1205,8 @@ public class FFXAppController extends BaseController {
             Map<String, Object> searchMap = new HashMap<String, Object>();
             searchMap.put("proId", proId);
             PageHelper.startPage(pageNum, pageSize);
-            List<ProjectFormMap> p = projectService.findApartmentList(searchMap);
-            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+            List<ProjectApartmentFormMap> p = projectApartmentService.findApartmentList(searchMap);
+            PageInfo<ProjectApartmentFormMap> pageinfo = new PageInfo<ProjectApartmentFormMap>(p);
 
             rr = new Result<Void>(1, "成功", pageinfo);
             jsonpObject = new JSONPObject(callback, rr);
@@ -1144,8 +1226,8 @@ public class FFXAppController extends BaseController {
         Result<Void> rr = null;
         HashMap apartmentList = new HashMap();
         try {
-            ProjectFormMap apartment = projectService.findApartment(id);
-            List<ProjectFormMap> apartmentImg = projectService.findApartmentImg(id);
+            ProjectApartmentFormMap apartment = projectApartmentService.findApartment(id);
+            List<ProjectApartmentFormMap> apartmentImg = projectApartmentService.findApartmentImg(id);
             apartmentList.put("apartment", apartment);
             apartmentList.put("apartmentImg", apartmentImg);
 
@@ -1168,7 +1250,7 @@ public class FFXAppController extends BaseController {
         Result<Void> rr = null;
         try {
 
-            List<ProjectFormMap> listApartmentImg = projectService.findApartmentImg(apartmentId);
+            List<ProjectApartmentFormMap> listApartmentImg = projectApartmentService.findApartmentImg(apartmentId);
             if (callback == null || callback.equals("")) {
                 callback = "callback";
             }
@@ -1192,8 +1274,8 @@ public class FFXAppController extends BaseController {
             Map<String, Object> searchMap = new HashMap<String, Object>();
             searchMap.put("proId", proId);
             PageHelper.startPage(pageNum, pageSize);
-            List<ProjectFormMap> p = projectService.findShopsList(searchMap);
-            PageInfo<ProjectFormMap> pageinfo = new PageInfo<ProjectFormMap>(p);
+            List<ProjectShopsFormMap> p = projectShopsService.findShopsList(searchMap);
+            PageInfo<ProjectShopsFormMap> pageinfo = new PageInfo<ProjectShopsFormMap>(p);
             rr = new Result<Void>(1, "成功", pageinfo);
             jsonpObject = new JSONPObject(callback, rr);
         } catch (RuntimeException e) {
@@ -1212,8 +1294,8 @@ public class FFXAppController extends BaseController {
         Result<Void> rr = null;
         HashMap shopList = new HashMap();
         try {
-            ProjectFormMap shops = projectService.findShops(id);
-            List<ProjectFormMap> shopsImg = projectService.findShopsImg(id);
+            ProjectShopsFormMap shops = projectShopsService.findShops(id);
+            List<ProjectShopsFormMap> shopsImg = projectShopsService.findShopsImg(id);
             shopList.put("shops", shops);
             shopList.put("shopsImg", shopsImg);
 
@@ -1236,7 +1318,7 @@ public class FFXAppController extends BaseController {
         JSONPObject jsonpObject = null;
         Result<Void> rr = null;
         try {
-            List<ProjectFormMap> listShopsImg = projectService.findShopsImg(shopsId);
+            List<ProjectShopsFormMap> listShopsImg = projectShopsService.findShopsImg(shopsId);
             if (callback == null || callback.equals("")) {
                 callback = "callback";
             }
@@ -1280,7 +1362,7 @@ public class FFXAppController extends BaseController {
     }
     @ResponseBody
     @RequestMapping("findFFXProjectSearch")
-    public  Result<Void> findFFXProjectSearch(String city, String callback) {
+    public  Result<Void> findFFXProjectSearch(String city) {
 
         Result<Void> rr = null;
         Map search = new HashMap();

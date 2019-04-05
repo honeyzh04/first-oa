@@ -91,7 +91,7 @@ public class PersonalController extends BaseController {
     @ResponseBody
     public  Map<String,PersonalFormMap> showPlan() throws Exception {
         Map<String, Object> searchMap = new HashMap<String, Object>();
-        System.err.println("lalal那");
+
         searchMap.put("createDate", new Date());
         searchMap.put("userId", getuserId());
         searchMap.put("nexteDate",DateUtil.getnNext());

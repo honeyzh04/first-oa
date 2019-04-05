@@ -333,7 +333,7 @@
         var inpimg = inpform.getElementsByClassName("imgtr");
         if (inpimg.length !== 0) {
             var options = {
-                url: "../project/addHomeImg.shtml",
+                url: "../projectHome/addHomeImg.shtml",
                 target: "#targetbox",
                 success: function (data) {
                     console.log(data)
@@ -342,7 +342,7 @@
 
                     // if (data == "success") {
                     $.ajax({
-                        url: "../project/findHomeImg.shtml?homeId=" + homeId,
+                        url: "../projectHome/findHomeImg.shtml?homeId=" + homeId,
                         type: 'get',
                         dataType: 'json',
                         success: function (res, error) {
@@ -380,7 +380,7 @@
         if (con == true) {
             $(obj).parent("tr").remove()
             $.ajax({
-                url: "../project/deleteHomeImg.shtml?id=" + id,
+                url: "../projectHome/deleteHomeImg.shtml?id=" + id,
                 type: 'get',
                 dataType: 'json',
                 success: function (res, error) {

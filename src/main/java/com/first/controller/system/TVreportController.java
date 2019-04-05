@@ -240,14 +240,4 @@ public class TVreportController extends BaseController {
         return searchMap;
     }
 
-    @RequestMapping("test1")
-    @ResponseBody
-    public Object test1(String callback) throws Exception {
-
-
-        List<ProjectFormMap> p = projectMapper.findProjecttest();
-
-
-        return p;
-    }
 }

@@ -56,6 +56,9 @@
 		<if test="parentId != null and parentId != '' and parentId != 0">
 			and sres.parentId = #{parentId}
 		</if>
+		<if test="icon != null and icon != '' and icon != 0">
+			and sres.icon = #{icon}
+		</if>
 		GROUP BY id
 		<!--  order by level asc -->
 	</select>

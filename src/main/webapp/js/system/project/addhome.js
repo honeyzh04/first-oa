@@ -35,27 +35,27 @@ $(function () {
         },
         rules: {
 
-            "projectFormMap.proId": {
+            "projectHomeFormMap.proId": {
                 required: true
             },
-            "projectFormMap.building": {
+            "projectHomeFormMap.building": {
 
                 required: true
             },
-            "projectFormMap.floor": {
+            "projectHomeFormMap.floor": {
                 required: true
             },
-            "projectFormMap.roomNo": {
+            "projectHomeFormMap.roomNo": {
                 required: true,
             },
-            "projectFormMap.area": {
+            "projectHomeFormMap.area": {
 
                 required: true,
             },
-            "projectFormMap.sell": {
+            "projectHomeFormMap.sell": {
                 required: true,
             },
-            "projectFormMap.price": {
+            "projectHomeFormMap.price": {
                 required: true,
             },
 
@@ -66,26 +66,26 @@ $(function () {
 
         messages: {
 
-            "projectFormMap.proId": {
+            "projectHomeFormMap.proId": {
                 required: "请选择项目"
 
             },
-            "projectFormMap.building": {
+            "projectHomeFormMap.building": {
                 required: "请输入楼栋单元",
             },
-            "projectFormMap.floor": {
+            "projectHomeFormMap.floor": {
                 required: "请输入楼层",
             },
-            "projectFormMap.roomNo": {
+            "projectHomeFormMap.roomNo": {
                 required: "请输入房号",
             },
-            "projectFormMap.area": {
+            "projectHomeFormMap.area": {
                 required: "请输入建面",
             },
-            "projectFormMap.sell": {
+            "projectHomeFormMap.sell": {
                 required: "请选择销售状态",
             },
-            "  projectFormMap.price": {
+            "  projectHomeFormMap.price": {
                 required: "请输入住宅价格",
             },
 

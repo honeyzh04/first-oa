@@ -17,17 +17,13 @@ $(function() {
 						info : true, //页脚
 						ordering : false,//排序
 						ajax : {
-							url : "./project/findHomeList.shtml",// 数据请求地址
+							url : "./projectHome/findHomeList.shtml",// 数据请求地址
 							type : "POST",
 
 							data : function(params) {
 								// 此处为定义查询条件 传给控制器的参数
 								// 角色名称
 								params.projectName = $("#projectName").val();
-								params.type = $("input[name='ProjectFormMap.type']:checked").val();
-								params.region = $("input[name='ProjectFormMap.region']:checked").val();
-								params.prices = $("input[name='ProjectFormMap.prices']:checked").val();
-								params.area = $("input[name='ProjectFormMap.area']:checked").val();
 						
 							}
 						},
@@ -210,7 +206,7 @@ function addHome() {
 		title : "添加项目",
 		type : 2,
 		area : [ "1000px", "80%" ],
-		content : './project/addHomeUI.shtml'
+		content : './projectHome/addHomeUI.shtml'
 	});
 }
 /**
@@ -234,7 +230,7 @@ function editHome() {
 		title : "编辑项目",
 		type : 2,
         area : [ "1000px", "80%" ],
-		content : './project/editHomeUI.shtml?id=' + id,
+		content : './projectHome/editHomeUI.shtml?id=' + id,
 
 	});
 
@@ -265,7 +261,7 @@ function delHome() {
 		layer.confirm('是否删除？', function(index) {
 
 			$.ajax({
-				"url" : './project/deleteHome.shtml?ids=' + idstr,
+				"url" : './projectHome/deleteHome.shtml?ids=' + idstr,
 
 				"type" : "GET",
 				"datatype" : "json",
@@ -308,7 +304,7 @@ function detailsCustomer(_this) {
         resize : false,
         type : 2,
         area : [ "1000px", "80%" ],
-        content : './project/findHomeUI.shtml?id=' + prId
+        content : './projectHome/findHomeUI.shtml?id=' + prId
 
     });
 
@@ -356,7 +352,7 @@ function addHomeImg() {
         title : "住宅销控图片",
         type : 2,
         area : [ "700px", "80%" ],
-        content : './project/addHomeImgUI.shtml?id=' + id,
+        content : './projectHome/addHomeImgUI.shtml?id=' + id,
 
     });
 

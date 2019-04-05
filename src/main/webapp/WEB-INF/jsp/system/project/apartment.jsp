@@ -225,7 +225,7 @@
 <script>
 	var apartmentId=$("#apartmentId").val();
     $.ajax({
-        url: "../project/findApartment.shtml?id="+apartmentId,
+        url: "../projectApartment/findApartment.shtml?id="+apartmentId,
         type: 'get',
         dataType: 'json',
         success: function (res, error) {

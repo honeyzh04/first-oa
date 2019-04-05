@@ -661,6 +661,7 @@ public class CustomerController extends BaseController {
             customerMapper.deleteFollow(id);// 跟进信息
             customerMapper.deletExtend(id);// 扩展信息
             customerMapper.deletePreparation(id);// 报备信息
+            customerMapper.deleteAdd(id);  //新增信息
         }
         return "success";
     }
@@ -714,7 +715,7 @@ public class CustomerController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(" findByDealCustomer")
+    @RequestMapping("findByDealCustomer")
     public Object findByDealCustomer(HttpServletRequest request, int draw, int start, int length) throws Exception {
         Map<String, Object> searchMap = new HashMap<String, Object>();
         searchMap.put("customerName", request.getParameter("customerName"));
@@ -931,5 +932,17 @@ public class CustomerController extends BaseController {
         return map;
     }
 
+    /**
+     * 查看房发现收客来源
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("findFFXSource")
+    public List<HashMap> findFFXSource()  {
+
+       List<HashMap> p = customerMapper.findFFXSource();
+
+        return p;
+    }
 
 }

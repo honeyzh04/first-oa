@@ -72,10 +72,6 @@ public interface ProjectMapper {
 	 */
 	public List<ProjectFormMap> findcuProject(Map searchMapMap);
 	public List<ProjectFormMap> findProjecttest();
-	/**
-	 * 查询项目最大id
-	 */
-	public String findMaxId();
 
 	/**
 	 * 查看项目图片

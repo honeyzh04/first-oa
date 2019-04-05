@@ -342,7 +342,7 @@
 
                     // if (data == "success") {
                     $.ajax({
-                        url: "../project/findApartmentImg.shtml?apartmentId=" + apartmentId,
+                        url: "../projectApartment/findApartmentImg.shtml?apartmentId=" + apartmentId,
                         type: 'get',
                         dataType: 'json',
                         success: function (res, error) {
@@ -380,7 +380,7 @@
         if (con == true) {
             $(obj).parent("tr").remove()
             $.ajax({
-                url: "../project/deleteApartmentImg.shtml?id=" + id,
+                url: "../projectApartment/deleteApartmentImg.shtml?id=" + id,
                 type: 'get',
                 dataType: 'json',
                 success: function (res, error) {
@@ -394,7 +394,7 @@
     function Setshowimg(imgbox, apartmentId) {
 
         $.ajax({
-            url: "../project/findApartmentImg.shtml?apartmentId=" + apartmentId,
+            url: "../projectApartment/findApartmentImg.shtml?apartmentId=" + apartmentId,
             type: 'get',
             dataType: 'json',
             success: function (res, error) {
