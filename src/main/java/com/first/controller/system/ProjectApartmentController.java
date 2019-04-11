@@ -108,6 +108,21 @@ public class ProjectApartmentController extends BaseController {
         List<ProjectApartmentFormMap> projectApartmentFormMap =projectApartmentService.getProject();
         return projectApartmentFormMap;
     }
+
+    /**
+     * 楼盘详情
+     *
+     * @param model
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "projectDetails")
+    public String projectDetailsUI(Model model, @RequestParam("id") String id) {
+
+        model.addAttribute("IDs", id);
+        return Common.BACKGROUND_PATH + "/system/project/apartmentDetails";
+    }
     /**
      * 查看项目具体
      * @param id

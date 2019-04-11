@@ -168,27 +168,31 @@ $(function() {
                             {
                                 data : "ffxsource",
                                 render : function(data, type, row, meta) {
-                                    if (data == 1) {
+                                    if (data == 10) {
                                         return '<span >百度商桥</span>';
-                                    } else if (data == 2) {
+                                    } else if (data == 11) {
                                         return '<span >百度推广电话</span>';
-                                    } else if (data == 3) {
+                                    } else if (data == 12) {
                                         return '<span >房发现电话</span>';
-                                    } else if (data == 4) {
+                                    } else if (data == 13) {
                                         return '<span >房发现微聊</span>';
-                                    } else if (data == 5) {
+                                    } else if (data == 14) {
                                         return '<span >信息流</span>';
-                                    } else if (data == 6) {
+                                    } else if (data == 15) {
                                         return '<span >搜狗神马</span>';
-                                    }else if (data == 7) {
+                                    }else if (data == 16) {
                                         return '<span >离线宝</span>';
-                                    } else if (data == 8) {
+                                    } else if (data == 17) {
                                         return '<span >公众号</span>';
-                                    } else if (data == 9) {
+                                    } else if (data ==21) {
                                         return '<span >其他途径</span>';
-                                    } else if (data == 10) {
+                                    } else if (data == 18) {
                                         return '<span >页面留言</span>';
-                                    } else {
+                                    } else if (data == 19) {
+                                        return '<span >360推广</span>';
+                                    }else if (data == 20) {
+                                        return '<span >今日头条</span>';
+                                    }else {
                                         return '<span >未知</span>';
                                     }
                                 }

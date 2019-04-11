@@ -73,7 +73,9 @@
                         <select class="form-control" id="sltWebSite" name="statisticsFormMap.platform">
                             <option value="">选择推广平台</option>
                             <option value="电脑端:fangfaxian.com">电脑端:fangfaxian.com</option>
+                            <option value="电脑端:fangfaxian.cn">电脑端:fangfaxian.cn</option>
                             <option value="移动端:m.fangfaxian.com">移动端:m.fangfaxian.com</option>
+                            <option value="移动端:m.fangfaxian.cn">移动端:m.fangfaxian.cn</option>
                             <option value="wangjinpu.com">wangjinpu.com</option>
                             <option value="m.wangjinpu.com">m.wangjinpu.com</option>
                             <option value="信息流营销页">信息流营销页</option>
@@ -91,6 +93,7 @@
                             <option  value="百度">百度</option>
                             <option  value="搜狗">搜狗</option>
                             <option   value="神马">神马</option>
+                            <option   value="360">360推广</option>
                         </select>
                     </div>
                 </div>

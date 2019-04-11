@@ -46,7 +46,7 @@
 
 
                             <label class="control-label">项目名：
-                                <input type="text" class="form-control" id="projectShopsName" name="ProjectShopsFormMap.projectName" placeholder="请输入项目名">
+                                <input type="text" class="form-control" id="projectShopsName" name="ProjectShopsFormMap.projectName" placeholder="请输入商铺项目名">
                             </label>
 
                             <button id="searchShops" type="button" class="btn btn-info">搜索 &nbsp;&nbsp;<span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
@@ -143,7 +143,7 @@
 
 
 								<label class="control-label">项目名：
-									<input type="text" class="form-control" id="projectApartmentName" name="ProjectApartmentFormMap.projectName" placeholder="请输入项目名">
+									<input type="text" class="form-control" id="projectApartmentName" name="ProjectApartmentFormMap.projectName" placeholder="请输入公寓项目名">
 								</label>
 
 								<button id="searchApartment" type="button" class="btn btn-info">搜索 &nbsp;&nbsp;<span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>

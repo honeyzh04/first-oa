@@ -79,7 +79,17 @@
                 </div>
             <div class="input-group form-group">
                 <span class="input-group-addon">360推广：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="360"  disabled="disabled">
+                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="sln"  disabled="disabled">
+                <span class="input-group-addon">位</span>
+            </div>
+            <div class="input-group form-group">
+                <span class="input-group-addon">页面留言：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="ymll"  disabled="disabled">
+                <span class="input-group-addon">位</span>
+            </div>
+            <div class="input-group form-group">
+                <span class="input-group-addon">今日头条：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="jrtt"  disabled="disabled">
                 <span class="input-group-addon">位</span>
             </div>
                     <div class="input-group form-group">
@@ -119,6 +129,8 @@
                 $("#gzh").val(obj.gzh);
                 $("#qttj").val(obj.qttj);
                 $("#sln").val(obj.sln);
+                $("#jrtt").val(obj.jrtt);
+                $("#ymly").val(obj.ymly);
 
 
 

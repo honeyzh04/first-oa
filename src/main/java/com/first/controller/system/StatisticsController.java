@@ -1,6 +1,7 @@
 package com.first.controller.system;
 
 import com.first.controller.index.BaseController;
+import com.first.entity.ProjectHomeFormMap;
 import com.first.entity.StatisticsFormMap;
 import com.first.entity.UserFormMap;
 import com.first.mapper.DepartMapper;
@@ -753,6 +754,12 @@ public class StatisticsController extends BaseController {
 
         statisticsservice.addEntity(statisticsFormMap);
         return "success";
+    }
+    @RequestMapping("editUI")
+    public String editUI(Model model,String id) throws Exception {
+       // statisticsservice.editEntity(statisticsFormMap);
+       // model.addAttribute("home", home);
+        return Common.BACKGROUND_PATH + "/system/statistics/edit";
     }
 
 

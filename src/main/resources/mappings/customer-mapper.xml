@@ -167,7 +167,7 @@
     <insert id="addSource">
 
 			INSERT INTO
-		cuffxsource
+		cu_ffxsource
 		VALUES
 		(
 		null,
@@ -999,10 +999,10 @@
         state,
         communicate,
         description,
-        cuffxsource.ffxsource
+        cu_ffxsource.ffxsource
         FROM
         cudata
-        LEFT JOIN cuffxsource ON cudata.id = cuffxsource.customerId
+        LEFT JOIN cu_ffxsource ON cudata.id = cu_ffxsource.customerId
         WHERE
         cusource IN (3, 6)
 

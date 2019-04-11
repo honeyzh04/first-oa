@@ -119,7 +119,18 @@ $(function() {
                                 }
                             },
                             {
-                                data : "shenma_price",
+                                    data : "shenma_price",
+                                    render : function(data, type, row, meta) {
+                                        if (data == null) {
+                                            return '';
+
+                                        } else {
+                                            return  data;
+                                        }
+                                    }
+                                },
+                            {
+                                data : "shenma_click",
                                 render : function(data, type, row, meta) {
                                     if (data == null) {
                                         return '';
@@ -130,7 +141,40 @@ $(function() {
                                 }
                             },
                             {
-                                data : "shenma_click",
+                                data : "sanliuning_price",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+
+                                    } else {
+                                        return  data;
+                                    }
+                                }
+                            },
+                            {
+                                data : "sanliuning_click",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+
+                                    } else {
+                                        return  data;
+                                    }
+                                }
+                            },
+                            {
+                                data : "newmedia_price",
+                                render : function(data, type, row, meta) {
+                                    if (data == null) {
+                                        return '';
+
+                                    } else {
+                                        return  data;
+                                    }
+                                }
+                            },
+                            {
+                                data : "newmedia_click",
                                 render : function(data, type, row, meta) {
                                     if (data == null) {
                                         return '';
@@ -252,7 +296,7 @@ $(function() {
 						// /操作按钮
 						columnDefs : [
                             {
-                                targets :12,// 操作按鈕位置，从0开始数为第几例
+                                targets :16,// 操作按鈕位置，从0开始数为第几例
                                 data : "id",
 
                                 "render" : function(data, type, full) {
@@ -286,9 +330,7 @@ $(function() {
 
 					});
 
-	/**
-	 * 查询客户
-	 */
+
 	$("#btn-test").click("click", function() {
 
 		myTable.ajax.reload();
@@ -313,12 +355,7 @@ $(function() {
 });// 加载完执行Js end
 
 // 分割线。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。表格内置操作按钮
-/**
- * 客户扩展
- *
- * @param _this
- * @returns
- */
+
 function check(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
     var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据

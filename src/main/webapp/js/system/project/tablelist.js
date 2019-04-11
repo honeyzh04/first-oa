@@ -1308,7 +1308,7 @@ function addProjectHomeImg() {
  */
 function projectShopsDetails(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
-    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var aData = $("#datatableShops").dataTable().fnGetData(nRow);// 得到这一行的json数据
     var prId = aData.id;
     pageii = layer.open({
         title : "楼盘详情",
@@ -1320,7 +1320,7 @@ function projectShopsDetails(_this) {
 }
 function projectApartmentDetails(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
-    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var aData = $("#datatableApartment").dataTable().fnGetData(nRow);// 得到这一行的json数据
     var prId = aData.id;
     pageii = layer.open({
         title : "楼盘详情",
@@ -1331,7 +1331,7 @@ function projectApartmentDetails(_this) {
     });
 }function projectOfficeDetails(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
-    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var aData = $("#datatableOffice").dataTable().fnGetData(nRow);// 得到这一行的json数据
     var prId = aData.id;
     pageii = layer.open({
         title : "楼盘详情",
@@ -1342,7 +1342,7 @@ function projectApartmentDetails(_this) {
     });
 }function projectHomeDetails(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
-    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var aData = $("#datatableHome").dataTable().fnGetData(nRow);// 得到这一行的json数据
     var prId = aData.id;
     pageii = layer.open({
         title : "楼盘详情",
@@ -1359,7 +1359,7 @@ function projectApartmentDetails(_this) {
  */
 function matchShopsCustomer(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
-    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var aData = $("#datatableShops").dataTable().fnGetData(nRow);// 得到这一行的json数据
     var Id = aData.id;
     pageii = layer.open({
         title : "匹配客户",
@@ -1373,7 +1373,7 @@ function matchShopsCustomer(_this) {
 
 function matchApartmentCustomer(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
-    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var aData = $("#datatableApartment").dataTable().fnGetData(nRow);// 得到这一行的json数据
     var Id = aData.id;
     pageii = layer.open({
         title : "匹配客户",
@@ -1386,7 +1386,7 @@ function matchApartmentCustomer(_this) {
 }
 function matchOfficeCustomer(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
-    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var aData = $("#datatableOffice").dataTable().fnGetData(nRow);// 得到这一行的json数据
     var Id = aData.id;
     pageii = layer.open({
         title : "匹配客户",
@@ -1399,7 +1399,7 @@ function matchOfficeCustomer(_this) {
 }
 function matchHomeCustomer(_this) {
     var nRow = $(_this).parents('tr')[0];// 得到这一行
-    var aData = $("#datatable").dataTable().fnGetData(nRow);// 得到这一行的json数据
+    var aData = $("#datatableHome").dataTable().fnGetData(nRow);// 得到这一行的json数据
     var Id = aData.id;
     pageii = layer.open({
         title : "匹配客户",

@@ -760,7 +760,7 @@ public class FFXAppController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("findFFXProjectList")
-    public   Result<Void> findByFFXProject(String projectName, String orderBy, String district, String type, String areas, String areae, String prices, String pricee, String pricess, String pricese, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum) throws Exception {
+    public   Result<Void> findByFFXProject(String projectName, String orderBy, String district, String type, String areas, String areae, String city,String prices, String pricee, String pricess, String pricese, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum) throws Exception {
         Result<Void> rr = null;
         try {
             Map<String, Object> searchMap = new HashMap<String, Object>();
@@ -772,6 +772,7 @@ public class FFXAppController extends BaseController {
             searchMap.put("pricee", pricee);
             searchMap.put("pricess", pricess);
             searchMap.put("pricese", pricese);
+            searchMap.put("city",city);
             searchMap.put("orderBy", orderBy);
             if(type.equals("1")){
                 PageHelper.startPage(pageNum, pageSize);

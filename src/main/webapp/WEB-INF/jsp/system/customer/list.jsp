@@ -267,9 +267,8 @@ table.dataTable tbody tr:hover {
 				<div class="col-lg-12 mt10">
 
 					<label for="exampleInputPassword1" class="pad"
-						style="margin-left: 20px;">事业部：</label> <select
-						class="form-control" id="department"
-						name="customerFormMap.department" onchange="getUsera(this.value)"></select>
+						style="margin-left: 20px;">事业部：</label>
+					<select	class="form-control" id="department"	name="customerFormMap.department" onchange="getUsera(this.value)"></select>
 					<label for="exampleInputPassword1" class="pad">&nbsp;&nbsp;&nbsp;销售顾问：</label>
 					<select class="form-control" id="userId"
 						name="customerFormMap.userId"></select> <label
@@ -543,8 +542,8 @@ table.dataTable tbody tr:hover {
 		$.ajax({
 			"url":"./dict/showUser.shtml",
 			"data":"departCode="+userCode,
-			"type":"GET",
-			"elevator":"json",
+            "type":"GET",
+            "dataType":"json",
 			"success":function(obj){
 				$("#userId").html("<option class='form-control m-b-10' value=0> - - - -选择销售- - - - </option>");
 				for(i=0;i<obj.length;i++){
@@ -566,13 +565,15 @@ table.dataTable tbody tr:hover {
 		$.ajax({
 			"url":"./dict/showDepart.shtml",
 			"data":"",
-			"type":"GET",
-			"elevator":"json",
+            "type":"GET",
+            "dataType":"json",
 			"success":function(obj){
+
 					$("#department").html("<option class='form-control m-b-10' value=0> - - - -选择部门- - - - </option>");
-				
-				for(var i = 0;i<obj.length;i++){
+
+			for(var i = 0;i<obj.length;i++){
 					var str="<option class='form-control m-b-10' value="+obj[i].id+">"+obj[i].name+"</option>";
+					console.log("3"+obj[i])
 					$("#department").append(str);
 				}
 				if(departCode!=-1){

@@ -1184,10 +1184,14 @@ LEFT JOIN (
         sougou_click,
         shenma_price,
         shenma_click,
-        ifnull(convert((baiduss_price+baiduxxl_price+sougou_price+shenma_price)/adds,decimal(10,2)),0) as cost,
-        ifnull(convert(adds/(baiduss_click+baiduxxl_click+sougou_click+shenma_click),decimal(10,4)),0) as
+		sanliuning_price,
+		sanliuning_click,
+		newmedia_price,
+		newmedia_click,
+        ifnull(convert((baiduss_price+baiduxxl_price+sougou_price+shenma_price+sanliuning_price+newmedia_price)/adds,decimal(10,2)),0) as cost,
+        ifnull(convert(adds/(baiduss_click+baiduxxl_click+sougou_click+shenma_click+sanliuning_click+newmedia_click),decimal(10,4)),0) as
         add_conversion,
-        ifnull(convert(dea/(baiduss_click+baiduxxl_click+sougou_click+shenma_click),decimal(10,4)),0) as dea_conversion,
+        ifnull(convert(dea/(baiduss_click+baiduxxl_click+sougou_click+shenma_click+sanliuning_click+newmedia_click),decimal(10,4)),0) as dea_conversion,
         createDate,
         ifnull(b.dea, 0) dea,
         ifnull(b.price, 0) price,
@@ -1253,7 +1257,7 @@ LEFT JOIN (
         SELECT
         *
         FROM
-        cuffxsource
+        cu_ffxsource
         GROUP BY
         telephone
         ) AS b
@@ -1276,14 +1280,20 @@ LEFT JOIN (
             resultType="java.util.HashMap">
 		SELECT
 	COUNT(*) AS alls,
-	COUNT(ffxsource = 1 OR NULL) AS bdsq,
-	COUNT(ffxsource = 2 OR NULL) AS batg,
-	COUNT(ffxsource = 3 OR NULL) AS ffxdh,
-	COUNT(ffxsource = 4 OR NULL) AS ffxwl,
-	COUNT(ffxsource = 5 OR NULL) AS xxl,
-	COUNT(ffxsource = 6 OR NULL) AS sm
+	COUNT(ffxsource = 10 OR NULL) baidusq,
+	COUNT(ffxsource = 11 OR NULL) baidudh,
+	COUNT(ffxsource = 12 OR NULL) ffxdh,
+	COUNT(ffxsource = 13 OR NULL) ffxwl,
+	COUNT(ffxsource = 14 OR NULL) xxl,
+	COUNT(ffxsource = 15 OR NULL) sgsm,
+	COUNT(ffxsource = 16 OR NULL) lxb,
+	COUNT(ffxsource = 17 OR NULL) gzh,
+	COUNT(ffxsource =21 OR NULL) qttj,
+	COUNT(ffxsource =18 OR NULL) ymly,
+	COUNT(ffxsource =19 OR NULL) sln,
+	COUNT(ffxsource =20 OR NULL) jrtt
 FROM
-	cuffxsource
+	cu_ffxsource
 WHERE
 	DATE_FORMAT(createDate, '%Y%m%d') =DATE_FORMAT(#{createDate},'%Y%m%d')
 
@@ -1328,6 +1338,10 @@ WHERE
 		#{sougou_click},
 		#{shenma_price},
 		#{shenma_click},
+		#{sanliuning_price},
+		#{sanliuning_click},
+		#{newmedia_price},
+		#{newmedia_click},
 		#{createDate}
 
 		)
@@ -1336,20 +1350,22 @@ WHERE
     <select id="findSource"
             resultType="java.util.HashMap">
 			SELECT
-	COUNT(ffxsource = 1 OR NULL) baidusq,
-	COUNT(ffxsource = 2 OR NULL) baidudh,
-	COUNT(ffxsource = 3 OR NULL) ffxdh,
-	COUNT(ffxsource = 4 OR NULL) ffxwl,
-	COUNT(ffxsource = 5 OR NULL) xxl,
-	COUNT(ffxsource = 6 OR NULL) sgsm,
-	COUNT(ffxsource = 7 OR NULL) lxb,
-	COUNT(ffxsource = 8 OR NULL) gzh,
-	COUNT(ffxsource =9 OR NULL) qttj,
-	COUNT(ffxsource =11 OR NULL) sln
+	COUNT(ffxsource = 10 OR NULL) baidusq,
+	COUNT(ffxsource = 11 OR NULL) baidudh,
+	COUNT(ffxsource = 12 OR NULL) ffxdh,
+	COUNT(ffxsource = 13 OR NULL) ffxwl,
+	COUNT(ffxsource = 14 OR NULL) xxl,
+	COUNT(ffxsource = 15 OR NULL) sgsm,
+	COUNT(ffxsource = 16 OR NULL) lxb,
+	COUNT(ffxsource = 17 OR NULL) gzh,
+	COUNT(ffxsource =21 OR NULL) qttj,
+	COUNT(ffxsource =18 OR NULL) ymly,
+	COUNT(ffxsource =19 OR NULL) sln,
+	COUNT(ffxsource =20 OR NULL) jrtt
 FROM (SELECT * FROM ( SELECT
  *
 FROM
-	cuffxsource
+	cu_ffxsource
 WHERE 1=1
 	GROUP BY telephone) as a where DATE_FORMAT(createDate, '%Y%m%d') = DATE_FORMAT(#{createDate}, '%Y%m%d') ) as a
 	</select>

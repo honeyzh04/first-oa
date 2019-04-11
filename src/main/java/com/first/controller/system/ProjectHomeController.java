@@ -108,6 +108,20 @@ public class ProjectHomeController extends BaseController {
         return projectHomeFormMap;
     }
     /**
+     * 楼盘详情
+     *
+     * @param model
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "projectDetails")
+    public String projectDetailsUI(Model model, @RequestParam("id") String id) {
+
+        model.addAttribute("IDs", id);
+        return Common.BACKGROUND_PATH + "/system/project/homeDetails";
+    }
+    /**
      * 查看项目具体
      * @param id
      * @return

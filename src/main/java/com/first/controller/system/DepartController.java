@@ -98,7 +98,7 @@ public class DepartController extends BaseController {
 	public List<DepartmentFormMap>  showProvince(){
 
 		List<DepartmentFormMap>   departmentFormMap =  dictMapper.getDepart();
-
+		System.err.println(departmentFormMap);
 		return  departmentFormMap;
 	}
 	/**

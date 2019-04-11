@@ -97,6 +97,9 @@
         <if test="district != null and district != '' ">
             and district=#{district}
         </if>
+        <if test=" city != null and city != '' ">
+            and city=#{city}
+        </if>
         <if test=" business != null and  business != '' ">
             and  business=#{business}
         </if>

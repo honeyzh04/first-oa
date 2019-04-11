@@ -108,6 +108,21 @@ public class ProjectShopsController extends BaseController {
         List<ProjectShopsFormMap> projectShopsFormMap = projectShopsService.getProject();
         return projectShopsFormMap;
     }
+
+    /**
+     * 楼盘详情
+     *
+     * @param model
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "projectDetails")
+    public String projectDetailsUI(Model model, @RequestParam("id") String id) {
+
+        model.addAttribute("IDs", id);
+        return Common.BACKGROUND_PATH + "/system/project/shopsDetails";
+    }
     /**
      * 查看项目具体
      * @param id

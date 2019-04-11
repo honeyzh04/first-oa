@@ -108,6 +108,20 @@ public class ProjectOfficeController extends BaseController {
         return projectOfficeFormMap;
     }
     /**
+     * 楼盘详情
+     *
+     * @param model
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "projectDetails")
+    public String projectDetailsUI(Model model, @RequestParam("id") String id) {
+
+        model.addAttribute("IDs", id);
+        return Common.BACKGROUND_PATH + "/system/project/officeDetails";
+    }
+    /**
      * 查看项目具体
      * @param id
      * @return
