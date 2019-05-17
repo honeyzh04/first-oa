@@ -7,6 +7,8 @@ $(function() {
 				type : "post",
 				dataType : "json",
 				success : function(data) {
+                    console.log(data);
+                    console.log(data ==  "success")
 					if (data == "success") {
 						layer.confirm('添加成功!是否关闭窗口?', {
 							icon : 6,

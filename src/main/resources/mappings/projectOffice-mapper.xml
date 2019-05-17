@@ -81,7 +81,7 @@
         SELECT
         id,img,type,proId
         FROM
-        proj_img
+        proj_office_dataimg
         WHERE
         type = 4
         ) b ON a.id = b.proId
@@ -447,8 +447,6 @@
             and type=#{type}
         </if>
     </select>
-
-
     <delete id="deleteImg">
 		delete from proj_office_dataimg where
 		id=#{id}
@@ -620,6 +618,236 @@
 	</insert>
     <delete id="deleteOfficeImg">
 		delete from proj_office_img where
+		id=#{id}
+	</delete>
+
+    <!--经纪人小程序接口-->
+    <!-- 查看项目列表 -->
+    <select id="findAgentProjects"
+            resultType="com.first.entity.ProjectOfficeFormMap" parameterType="hashmap">
+        SELECT
+        a.*, b.img
+        FROM
+        agent_office_data a
+        LEFT JOIN agent_office_img b ON a.id = b.proId
+        WHERE
+        a.state != 4
+        AND b.img IS NOT NULL
+        <if test="projectName != null and projectName != '' ">
+            AND projectName LIKE
+            CONCAT(CONCAT('%',#{projectName}),'%')
+
+        </if>
+        <if test="district != null and district != '' ">
+            and district=#{district}
+        </if>
+        <if test=" city != null and city != '' ">
+            and city=#{city}
+        </if>
+        <if test=" business != null and  business != '' ">
+            and  business=#{business}
+        </if>
+        <if test="type != null and type != '' ">
+            AND a.type=#{type}
+
+        </if>
+        <if   test="commissions != null and  commissions != '' and commissione != null and  commissione != ''">
+            and ((${commissions} &lt;= commission AND commission &lt;= ${commission})
+        </if>
+        <if  test="areas != null and  areas != '' and areae != null and  areae != ''">
+            and ((${areas} &lt;= areas AND areas &lt;= ${areae})
+
+            or (${areas} &lt;= areae AND areas &lt;= ${areae}))
+        </if>
+        <if     test="prices != null and prices != '' and pricee != null and pricee != ''">
+            and ( (${prices} &lt;= prices AND prices &lt;= ${pricee})
+            or
+            (${prices} &lt;= pricee AND pricee &lt;= ${pricee}))
+        </if>
+        <if    test="pricess != null and pricess != '' and pricese != null and pricese != ''">
+            and ( (${pricess} &lt;= pricess AND pricess &lt;= ${pricese})
+            or
+            (${pricess} &lt;= pricese AND pricese &lt;= ${pricese}))
+        </if>
+        GROUP BY
+        a.id
+        <choose>
+            <when test="orderBy != null and orderBy!= ''">
+                order by ${orderBy}
+            </when>
+            <!-- 没有激活排序条件时，默认按商品发布时间倒序排序 -->
+            <otherwise>
+                ORDER BY state asc , id DESC
+            </otherwise>
+        </choose>
+    </select>
+    <!-- 添加项目 -->
+    <insert id="addAgentProject">
+		INSERT INTO
+		agent_office_data
+		VALUES
+		(
+            null,
+            #{projectName},
+             #{province},
+             #{city},
+             #{district},
+             #{projectPosition},
+             #{type},
+             #{lease},
+             #{state},
+             #{developers},
+             #{elevator},
+             #{propertyCompany},
+             #{propertyCost},
+             #{areas},
+             #{areae},
+             #{prices},
+             #{pricee},
+             #{pricess},
+             #{pricese},
+             #{createDate},
+             #{startDate},
+             #{deliveryDate},
+             #{floorArea},
+             #{coveredArea},
+             #{business},
+             #{description},
+             #{feature},
+             #{commission},
+             #{userId},
+              #{latitude}
+
+)
+	</insert>
+    <!-- 查看项目具体 -->
+    <select id="findbyAgentProject"
+            resultType="com.first.entity.ProjectOfficeFormMap">
+		select
+		*
+		from agent_office_data
+		where  id=#{id}
+
+	</select>
+    <!-- 修改项目 -->
+    <update id="editAgentProject">
+        update agent_office_data
+        <set>
+            <if test=" projectName != null and projectName != '' ">
+                projectName=#{projectName},
+            </if>
+            <if test=" province != null and province != '' ">
+                province=#{province},
+            </if>
+            <if test=" city != null and city != '' ">
+                city=#{city},
+            </if>
+            <if test=" district != null and district != '' ">
+                district=#{district},
+            </if>
+            <if test=" projectPosition != null and projectPosition != '' ">
+                projectPosition=#{projectPosition},
+            </if>
+            <if test=" lease != null and lease != '' ">
+                lease=#{lease},
+            </if>
+            <if test=" state != null and state != '' ">
+                state=#{state},
+            </if>
+            <if test=" developers != null and developers != '' ">
+                developers=#{developers},
+            </if>
+            <if test=" elevator != null and elevator != '' ">
+                elevator=#{elevator},
+            </if>
+            <if test=" propertyCompany != null and propertyCompany != '' ">
+                propertyCompany=#{propertyCompany},
+            </if>
+            <if test=" propertyCost != null and propertyCost != '' ">
+                propertyCost=#{propertyCost},
+            </if>
+            <if test=" areas != null and areas != '' ">
+                areas=#{areas},
+            </if>
+            <if test=" areae != null and areae != '' ">
+                areae=#{areae},
+            </if>
+            <if test=" prices != null and prices != '' ">
+                prices=#{prices},
+            </if>
+            <if test=" pricee != null and pricee != '' ">
+                pricee=#{pricee},
+            </if>
+            <if test=" pricess != null and pricess != '' ">
+                pricess=#{pricess},
+            </if>
+            <if test=" pricese != null and pricese != '' ">
+                pricese=#{pricese},
+            </if>
+            <if test=" startDate != null and startDate != '' ">
+                startDate=#{startDate},
+            </if>
+            <if test=" deliveryDate != null and deliveryDate != '' ">
+                deliveryDate=#{deliveryDate},
+            </if>
+            <if test=" floorArea != null and floorArea != '' ">
+                floorArea=#{floorArea},
+            </if>
+            <if test=" coveredArea != null and coveredArea != '' ">
+                coveredArea=#{coveredArea},
+            </if>
+            <if test=" business != null and business != '' ">
+                business=#{business},
+            </if>
+            <if test=" description != null and description != '' ">
+                description=#{description},
+            </if>
+            <if test=" feature != null and feature != '' ">
+                feature=#{feature},
+            </if>
+            <if test=" commission != null and commission != '' ">
+                commission=#{commission},
+            </if>
+            <if test=" userId != null and userId != '' ">
+                userId=#{userId},
+            </if>
+            <if test=" latitude != null and latitude != '' ">
+                latitude=#{latitude},
+            </if>
+
+        </set>
+        where id=#{id};
+    </update>
+    <!-- 删除项目 -->
+    <delete id="deleteAgentProject">
+		delete from agent_office_data where
+		id=#{id}
+
+	</delete>
+
+    <!-- 添加项目图片 -->
+    <insert id="addAgentImg">
+		INSERT INTO
+		agent_office_img
+		VALUES
+		(
+		null,
+		#{proId},
+		#{img},
+		#{createDate}
+		)
+	</insert>
+    <select id="findAgentImg" resultType="com.first.entity.ProjectOfficeFormMap">
+        select
+        *
+        from agent_office_img
+        where 1=1
+        <if test=" proId != null and proId != ''">
+            and proId=#{proId}
+        </if>
+    </select>
+    <delete id="deleteAgentImg">
+		delete from agent_office_img where
 		id=#{id}
 	</delete>
 </mapper>

@@ -4,6 +4,7 @@
 package com.first.service.system.impl;
 
 import com.first.entity.ProjectOfficeFormMap;
+import com.first.entity.ProjectShopsFormMap;
 import com.first.mapper.ProjectOfficeMapper;
 import com.first.service.system.ProjectOfficeService;
 import org.springframework.stereotype.Service;
@@ -133,6 +134,46 @@ public class ProjectOfficeServiceImpl implements ProjectOfficeService {
 	public List<HashMap> findProjectBusiness(Map searchMap) {
 
 		return  projectOfficeMapper.findProjectBusiness(searchMap);
+	}
+
+	//经纪人小程序接口
+	@Override
+	public List<ProjectOfficeFormMap> findAgentProjects(Map searchMapMap) {
+		return  projectOfficeMapper.findAgentProjects(searchMapMap);
+	}
+
+	@Override
+	public ProjectOfficeFormMap findbyAgentProject(String id) {
+		return projectOfficeMapper.findbyAgentProject(id);
+	}
+	@Override
+	public void addAgentProjects( HashMap formMap) {
+
+		projectOfficeMapper.addAgentProject(formMap);
+	}
+	@Override
+	public void editAgentProject( HashMap formMap) {
+		projectOfficeMapper.editAgentProject(formMap);
+	}
+
+	@Override
+	public void deleteAgentEntity(String id) {
+		projectOfficeMapper.deleteAgentProject(id);
+	}
+
+	@Override
+	public List<ProjectOfficeFormMap> findAgentImg(Map imgForMap) {
+		return projectOfficeMapper.findAgentImg(imgForMap);
+	}
+
+	@Override
+	public void addAgentImg(HashMap imgFormMap) {
+		projectOfficeMapper.addAgentImg(imgFormMap);
+	}
+
+	@Override
+	public void deleteAgentImg(String id) {
+		projectOfficeMapper.deleteAgentImg(id);
 	}
 }
 	

@@ -5,6 +5,7 @@ package com.first.service.system.impl;
 
 import com.first.entity.ProjectHomeFormMap;
 import com.first.entity.ProjectHomeFormMap;
+import com.first.entity.ProjectShopsFormMap;
 import com.first.mapper.ProjectHomeMapper;
 import com.first.service.system.ProjectHomeService;
 import org.springframework.stereotype.Service;
@@ -136,6 +137,45 @@ public class ProjectHomeServiceImpl implements ProjectHomeService {
 	public List<HashMap> findProjectBusiness(Map searchMap) {
 
 		return  projectHomeMapper.findProjectBusiness(searchMap);
+	}
+	//经纪人小程序接口
+	@Override
+	public List<ProjectHomeFormMap> findAgentProjects(Map searchMapMap) {
+		return  projectHomeMapper.findAgentProjects(searchMapMap);
+	}
+
+	@Override
+	public ProjectHomeFormMap findbyAgentProject(String id) {
+		return projectHomeMapper.findbyAgentProject(id);
+	}
+	@Override
+	public void addAgentProjects(HashMap formMap) {
+
+		projectHomeMapper.addAgentProject(formMap);
+	}
+	@Override
+	public void editAgentProject(HashMap formMap) {
+		projectHomeMapper.editAgentProject(formMap);
+	}
+
+	@Override
+	public void deleteAgentEntity(String id) {
+		projectHomeMapper.deleteAgentProject(id);
+	}
+
+	@Override
+	public List<ProjectHomeFormMap> findAgentImg(Map imgForMap) {
+		return projectHomeMapper.findAgentImg(imgForMap);
+	}
+
+	@Override
+	public void addAgentImg(HashMap imgFormMap) {
+		projectHomeMapper.addAgentImg(imgFormMap);
+	}
+
+	@Override
+	public void deleteAgentImg(String id) {
+		projectHomeMapper.deleteAgentImg(id);
 	}
 }
 	

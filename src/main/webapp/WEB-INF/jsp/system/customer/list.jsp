@@ -307,6 +307,7 @@ table.dataTable tbody tr:hover {
 						<option value="6">网络（房发现供客）</option>
 						<option value="7">自身（打街霸）</option>
 						<option value="8">自身（朋友推荐）</option>
+						<option value="22">欢姐资源</option>
 					</select>
 
 
@@ -461,8 +462,8 @@ table.dataTable tbody tr:hover {
 						style="text-align: center; vertical-align: middle !important">
 						<thead>
 							<tr>
+								 <th ><input type="checkbox" id="checkAll"></th>
 
-								<th>选择</th>
 								<th>客户姓名</th>
 								<th>客户姓名</th>
 								<th>联系方式</th>

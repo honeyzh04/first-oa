@@ -184,10 +184,10 @@ public class PersonalServiceImpl implements PersonalService {
       //  PersonalFormMap weeklisR = findallweekreport(searchMap);//周数据
 
         PersonalFormMap monthlisR = findallmonthreport(searchMap);//月数据
-        String info = "公司日报表\n\n" + date1 + "工作情况：\n=================\n\n新增总数：" + daylisR.get("addw") + "组,\n电话新增：" + daylisR.get("adddh") + "组,\n网络新增：" + daylisR.get("addwl") + "组\n(安居客：" + daylisR.get("addwla") + "，58：" + daylisR.get("addwl5") + "，房发现：" + daylisR.get("addwlf") + ")组,\n其他新增：" + daylisR.get("addqt") +
-                "组,\n今日带看数：" + daylisR.get("visit") + "组,\n今天带看项目：" + daylisR.get("visitproject") + ",\n今日成交价格：" + daylisR.get("price") + "万元,\n今日成交佣金：" + daylisR.get("commission") + "万元,\n今天成交项目：" + daylisR.get("dealproject") + " \n\n=================\n\n明日预计到访：" + daylisP.get("visit") + "组,\n明日预计到访项目："+  daylisP.get("visitproject")+"\n\n=================\n\n" +
-                "\n\n=================\n\n本月工作情况：\n新增总数：" + monthlisR.get("addw") + "组,\n网络新增：" + monthlisR.get("addwl") +
-                "组\n(安居客：" + monthlisR.get("addwla") + "，58：" + monthlisR.get("addwl5") + "，房发现：" + monthlisR.get("addwlf") + ")组;\n到访项目：" + monthlisR.get("addwlf") + "组,\n成交：" + monthlisR.get("deal") + "组;\n成交佣金：" + monthlisR.get("commission") + "万元\n成交价格：" + monthlisR.get("price") + "万元,";
+        String info =  date1 + "工作情况：\n=================\n\n新增：" + daylisR.get("addw") + "组,\n电话：" + daylisR.get("adddh") + "组,\n欢姐：" + daylisR.get("addhj") + "组,\n网络：" + daylisR.get("addwl") + "组\n(安：" + daylisR.get("addwla") + "，58：" + daylisR.get("addwl5") + "，房：" + daylisR.get("addwlf") + ")组,\n其他：" + daylisR.get("addqt") +
+                "组,\n今日带看：" + daylisR.get("visit") + "组,\n带看项目：" + daylisR.get("visitproject") + ",\n成交总价：" + daylisR.get("price") + "万元,\n成交佣金：" + daylisR.get("commission") + "万元,\n成交项目：" + daylisR.get("dealproject") + " \n\n=================\n\n明日预计到访：" + daylisP.get("visit") + "组,\n预计到访项目："+  daylisP.get("visitproject")+"\n\n=================\n\n" +
+                "本月工作情况：\n新增：" + monthlisR.get("addw") + "组,\n欢姐:" + monthlisR.get("addhj") + "组,\n网络：" + monthlisR.get("addwl") +
+                "组\n(安：" + monthlisR.get("addwla") + "，58：" + monthlisR.get("addwl5") + "，房：" + monthlisR.get("addwlf") + ")组;\n到访项目：" + monthlisR.get("visit") + "组,\n成交：" + monthlisR.get("deal") + "组;\n成交佣金：" + monthlisR.get("commission") + "万元\n成交价格：" + monthlisR.get("price") + "万元,";
 
 
  /*       String info = "公司日报表\n\n" + date1 + "工作情况：\n=================\n\n新增总数：" + daylisR.get("addw") + "组,\n电话新增：" + daylisR.get("adddh") + "组,\n网络新增：" + daylisR.get("addwl") + "组\n(安居客：" + daylisR.get("addwla") + "，58：" + daylisR.get("addwl5") + "，房发现：" + daylisR.get("addwlf") + ")组,\n其他新增：" + daylisR.get("addqt") +

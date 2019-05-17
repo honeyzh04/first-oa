@@ -3,11 +3,11 @@
 $(function() {
 	$("form").validate({
 		submitHandler : function(form) {// 必须写在验证前面，否则无法ajax提交
-			ly.ajaxSubmit(form, {// 验证新增是否成功
-				type : "post",
-				elevator : "json",
+            ly.ajaxSubmit(form, {// 验证新增是否成功
+                type : "post",
+                dataType : "json",
 				success : function(data) {
-					if (data == "success") {
+					if (data  == "success") {
 						layer.confirm('添加成功!是否关闭窗口?', {
 							icon : 6,
 							title : '提示'
@@ -21,7 +21,7 @@ $(function() {
 						});
 
 					} else {
-						layer.alert('添加失败！', 3);
+						layer.alert('添加失败1！', 3);
 					}
 				}
 			});

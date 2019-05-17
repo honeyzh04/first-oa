@@ -1397,6 +1397,7 @@ WHERE
     </select>
     <select id="findFFXSource" resultType="java.util.HashMap">
     SELECT * FROM cu_source where parentId=3
+    order  by orderNum asc
     </select>
 
 

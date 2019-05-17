@@ -251,10 +251,9 @@ public class PersonalController extends BaseController {
     public String dayadd() throws Exception {
         getuserId();
         PersonalFormMap personalFormMap = getFormMap(PersonalFormMap.class);
-        System.err.println(personalFormMap);
         personalFormMap.put("userId", getuserId());
         personalService.addDayPlan(personalFormMap);
-        return "success";
+        return  "success";
     }
 
     /**
@@ -277,7 +276,6 @@ public class PersonalController extends BaseController {
     public String weekadd() throws Exception {
         getuserId();
         PersonalFormMap personalFormMap = getFormMap(PersonalFormMap.class);
-        System.err.println(personalFormMap);
         personalFormMap.put("userId", getuserId());
         personalService.addWeekPlan(personalFormMap);
         return "success";

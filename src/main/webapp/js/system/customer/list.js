@@ -183,7 +183,9 @@ $(function() {
 											return '<span >自身（朋友推荐）</span>';
 										} else if (data == 9) {
 											return '<span >主动T客户</span>';
-										} else {
+										} else if (data == 22) {
+                                            return '<span >欢姐资源</span>';
+                                        }else {
 											return '<span >未知</span>';
 										}
 									}
@@ -324,6 +326,19 @@ $(function() {
 					 */
 
 					});
+    $("#checkAll").on(
+        "click",
+        function() {
+            if ($(this).prop("checked") === true) {
+                var id = $("input[name='checkchild']").prop("checked",
+                    $(this).prop("checked"));
+
+                $(this).hasClass('selected')
+            } else {
+                $("input[name='checkchild']").prop("checked", false);
+                $("#dataTable tbody tr").removeClass('selected');
+            }
+        });
 
 	/**
 	 * 查询客户

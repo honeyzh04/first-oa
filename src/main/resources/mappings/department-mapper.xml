@@ -44,8 +44,9 @@
 		userName
 		from oguser
 		where
+		locked=1
 		<if test=" departCode != null">
-			department=#{departCode}
+			and department=#{departCode}
 		</if>
 	</select>
 	<!-- 部门列表 -->

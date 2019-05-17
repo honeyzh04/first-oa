@@ -1,6 +1,5 @@
 package com.first.mapper;
 
-import com.first.entity.ProjectApartmentFormMap;
 import com.first.entity.ProjectHomeFormMap;
 import org.apache.ibatis.annotations.Param;
 
@@ -101,5 +100,41 @@ public interface ProjectHomeMapper {
 
 	List<HashMap> findProjectSearch(Map searchMap);
 	List<HashMap> findProjectBusiness(Map searchMap);
+	//经纪人小程序项目接口
 
+	/**
+	 * 查看项目列表
+	 * @param searchMapMap
+	 * @return
+	 */
+	public List<ProjectHomeFormMap> findAgentProjects(Map searchMapMap);
+	/**
+	 * 添加项目
+	 */
+	public void addAgentProject( HashMap formMap);
+	/**
+	 * 查看项目
+	 *
+	 * @return
+	 */
+	public ProjectHomeFormMap findbyAgentProject(@Param("id") String id);
+
+	/**
+	 * 修改项目
+	 */
+	public void editAgentProject( HashMap formMap);
+
+	/**
+	 * 删除项目
+	 *
+	 * @param id
+	 */
+	public void deleteAgentProject(String id);
+
+
+	List<ProjectHomeFormMap> findAgentImg(Map imgForMap);
+
+	void addAgentImg(HashMap imgFormMap);
+
+	void deleteAgentImg(String id);
 }

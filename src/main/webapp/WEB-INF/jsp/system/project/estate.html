@@ -1,0 +1,1876 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="房发现，<%=CityName%>商铺，<%=CityName%>商铺出售，<%=CityName%>商铺投资，<%=CityName%>公寓，<%=CityName%>商铺出租，<%=CityName%>房产网" />
+    <meta id="metaD" name="description" content="" />
+    <meta name="author" content="房发现-开启精准智能找房时代" />
+    <title class="titleEst"></title>
+    <script type="text/javascript">
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r !== null) return unescape(r[2]); return null;
+        }
+        var _IDs = GetQueryString("proId");
+        var _types = GetQueryString("type");
+
+        function IsPC() {
+
+            var userAgentInfo = navigator.userAgent;
+
+            var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
+
+            var flag = true;
+
+            for (var v = 0; v < Agents.length; v++) {
+
+                if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                    flag = false;
+                    break;
+                }
+
+            }
+
+            return flag;
+
+        }
+
+        if (!IsPC()) {
+
+            var windowUrl = window.location.href;
+            windowUrl = windowUrl.replace("www.", "");
+
+            var windowUrls = windowUrl.split("//");
+            var newUrl = windowUrls[1].split(".");
+
+            if (newUrl[0] === "fangfaxian" || newUrl[0] === "wangjinpu") {
+                window.location.href = "http://m." + windowUrls[1];
+            } else {
+                window.location.href = "http://m" + windowUrls[1];
+            }
+
+        }
+        accPageInfoID = "";
+        //cityName = "<%=CityName%>";
+        //cityId = "<%=CityID%>";
+        cityName = "成都";
+        cityId = "1";
+    </script>
+    <!--bootstrap-css-->
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" />
+    <!-- Font Awesome -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            color: #333;
+            font-weight: normal;
+        }
+
+            a:hover {
+                color: #333;
+            }
+
+        .mar30 {
+            margin-left: 30px;
+        }
+
+        .mar10 {
+            margin-right: 10px;
+        }
+
+        .mapOut {
+            position: relative;
+        }
+
+        .mapBox {
+            width: 380px;
+            height: 395px;
+            position: absolute;
+            bottom: 0px;
+            right: -10px;
+            border: 1px solid #fff;
+            background-color: rgba(255,255,255,0.8)
+        }
+
+        .mapBoxhide {
+            width: 40px;
+            height: 400px;
+            position: absolute;
+            bottom: 0px;
+            right: -10px;
+            border: 1px solid #fff;
+            background-color: rgba(255,255,255,0.8)
+        }
+
+        .tab-title {
+            font-size: 16px;
+            line-height: 50px;
+            text-align: center;
+            padding-left: 0px;
+            padding-right: 0px;
+            border: 1px solid #eee;
+        }
+
+        .fz24 {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .borderAll li {
+            border: 1px solid #ccc;
+            line-height: 30px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .scall {
+            overflow-y: scroll;
+            width: auto;
+            height: 308px;
+        }
+
+        .scalls {
+            overflow-y: scroll;
+            width: auto;
+            height: 300px;
+        }
+
+        .facilities {
+            clear: both;
+            margin: 15px 5px;
+        }
+
+            .facilities div {
+                float: left;
+                padding: 7px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+            }
+
+        .padding-right40 {
+            padding-right: 40px;
+        }
+
+        .maiginLeft5 {
+            margin-left: 22px;
+        }
+
+        .scanBtn {
+            width: 20px;
+            height: 40px;
+            line-height: 40px;
+            background-color: #ccc;
+            color: #fff;
+            font-size: 20px;
+            position: absolute;
+            top: 160px;
+            left: 0px;
+        }
+
+        .scanBtnhide {
+            width: 20px;
+            height: 40px;
+            line-height: 40px;
+            background-color: #ccc;
+            position: absolute;
+            top: 160px;
+            left: 0px;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        #submenuList {
+            width: 357px !important;
+        }
+
+        #navbs-fixt-top {
+            width: 1200px;
+            height: auto;
+            background-color: #fff;
+        }
+
+        .btn-border {
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+
+        .fiex {
+            position: fixed;
+            top: 6%;
+            z-index: 1031;
+        }
+
+        table th {
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .text-color {
+            color: #337ab7 !important;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .border {
+            border-bottom: 1px solid #ccc;
+        }
+
+        hr {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+
+        .one-text {
+            color: #c9302c;
+        }
+
+        .linH2 {
+            line-height: 2;
+            text-align: justify;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        .zrjg div {
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .divBorder {
+            border-bottom: 2px solid #337ab7;
+        }
+
+        .bg {
+            display: inline-block;
+            padding: 5px;
+            font-size: 12px;
+            color: #5ebadc;
+            border: 1px solid #5ebadc;
+        }
+
+        .bg-dan {
+            border: 1px solid #d49d85;
+            color: #d49d85;
+        }
+
+
+        .rowMargin {
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+        }
+
+        .PopupClose {
+            position: fixed;
+            top: 12%;
+            right: 32%;
+            cursor: pointer;
+        }
+
+        .mar {
+            margin: 15px !important;
+        }
+
+        .imgTextOut {
+            position: relative;
+            top: -312px;
+        }
+
+        .imgTextFT {
+            position: absolute;
+            top: 82px;
+            left: -6px;
+            width: 242px;
+            height: 180px;
+            text-align: left;
+            background: rgba(51,49,49,0.5);
+            color: #fff;
+            margin-left: 5px;
+            padding-left: 5px;
+            padding-top: 6px;
+            display: none;
+        }
+
+        /*扫二维码获取纸质报表*/
+        .grewm {
+            width: 200px;
+            position: absolute;
+            right: -17px;
+            z-index: 1031;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .listRecom {
+            width: 410px;
+            height: 115px;
+            overflow: hidden;
+            line-height: 23px;
+        }
+
+        button.list-group-item {
+            text-align: left;
+        }
+
+
+
+        .textP {
+            text-indent: 2em;
+            padding: 15px 10px 0px 10px;
+            text-align: justify;
+            color: #999;
+        }
+
+        #msg .thumbnail {
+            border: none;
+            border-bottom: 1px solid #eee;
+        }
+
+        .list-group-item {
+            border: 1px solid #fafafa;
+        }
+
+        .titleP {
+            display: block !important;
+        }
+
+        .row-crumb .crumb {
+            clear: both;
+        }
+            .row-crumb .crumb li.icon {
+                margin-right: 5px;
+            }
+            .row-crumb .crumb li {
+                float: left;
+                height: 24px;
+                line-height: 24px;
+            }
+        .cont {
+            padding-right: 0;
+            padding-left: 0;
+        }
+        .fz14 {
+            font-size: 14px;
+        }
+        .mt30 {
+            margin-top: 30px;
+        }
+        .borderBottom {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0px !important;
+        }
+        .mar-b {
+            margin-bottom: 0;
+        }
+        .bold {
+            font-weight: 600;
+        }
+        .fz18 {
+            font-size: 18px;
+        }
+        .red {
+            color: #f03a22;
+        }
+        .fz16 {
+            font-size: 16px;
+        }
+        .linH2 {
+            line-height: 2;
+            text-align: justify;
+        }
+        .mt15 {
+            margin-top: 15px;
+        }
+        .cursor {
+            cursor: pointer;
+        }
+        .label {
+            display: inline;
+            padding: .6em .6em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25em;
+        }
+        .display {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!--内容开始-->
+
+    <div class="container cont">
+        <div class="row">
+            <div class="row-crumb">
+                <ul class="crumb">
+                    <li class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></li>
+                    <li><a href="index.html" target="_blank">房发现</a></li>
+                    <li>&nbsp;&gt;&nbsp;</li>
+                    <li><a href="estatelist.html" target="_blank">商业新盘</a></li>
+                    <li>&nbsp;&gt;&nbsp;</li>
+                    <li><a class="projectName"></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <!-- 导航开始 -->
+            <div id="navbs-fixt-top">
+                <div class="mt15">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <p class="titleP" style="margin:0px 0px 5px 0px; font-weight:400;font-family:'Hiragino Sans GB','微软雅黑','Microsoft YaHei',SimHei,Tahoma,'宋体b8b体',SimSun,sans-serif;">
+                                <span style="font-size:28px;padding-right:15px; padding-top:5px;" class="projectName"></span>
+                                <small class="bg-dan mar10 bg" style="border:1px solid #ff6d6f;color:#ff6d6f;">保真房源</small>
+                                <small class="bg-dan state mar10 bg">在售</small>
+                                <small class="bg-war type mar10 bg">商铺</small>
+                                <span class="tese"></span>
+                            </p>
+                            <p style="color:#888;">别名：<span class="Another_Name"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="navbar navbar-default mt10">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbs cursor">
+                                <li class=""><a style="font-size:16px;" class="why">楼盘详情 </a></li>
+                                <li><a style="font-size:16px;" class="contact">在售房源</a></li>
+                                <li><a style="font-size:16px;" class="how">楼盘价值</a></li>
+                                <!--<li><a style="font-size:16px;" class="pro">户型介绍</a></li>-->
+                                <li><a style="font-size:16px;" class="about">周边配套</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+            </div>
+            <!-- 导航结束 -->
+            <div class="mt15">
+                <div class="panel-body">
+                    <div class="row">
+
+                        <div class="col-lg-7">
+                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox" id="detailPics">
+                                    <div class="item active" id="detailActive">
+
+                                        <img class="img-responsive" src="images/zwimg.png" />
+                                    </div>
+
+                                </div>
+
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <ul class="list-group" id="listGroup"></ul>
+                            <hr />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 楼盘 -->
+        <div class="row mt30">
+            <!-- 楼盘详情 -->
+            <div class="row">
+                <div class="col-lg-9">
+                    <!-- 楼盘详情 -->
+                    <div>
+                        <div class="" style="min-height:273px;">
+                            <div class="panel-body">
+                                <ul class="list-group" id="listGrouplast"></ul>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 楼盘详情 -->
+                    <div id="why">
+                        <div class="" style="min-height:273px;">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-building red" aria-hidden="true"></i> 楼盘详情 </p></div>
+                            <div class="panel-body">
+                                <p class="description linH2 fz16"></p>
+                                <p class="linH2 fz16" id="attributeFormat"></p>
+                                <p class="linH2 fz16" id="propaganda"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 销控 -->
+                    <div id="contact">
+                        <div class="mt30">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-university red" aria-hidden="true"></i> 在售房源 </p></div>
+                            <div class="panel-body">
+                                <div id="contacts">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+
+                    </div>
+                    <!-- 楼盘价值 -->
+                    <div id="how">
+                        <!--区域地段地标价值-->
+                        <div class="mt30" id="oneA">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-building red" aria-hidden="true"></i> 区域地段地标价值 </p></div>
+                            <div class="panel-body">
+                                <p class="linH2"><span class="oneA fz16"></span></p>
+
+                            </div>
+                        </div>
+                        <!-- 立体交通网络价值 -->
+                        <div class="mt30" id="oneB">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-building red" aria-hidden="true"></i> 立体交通网络价值 </p></div>
+                            <div class="panel-body">
+                                <p class="linH2 fz16"><span class="oneB fz16"></span></p>
+                            </div>
+                        </div>
+                        <!-- 商圈价值与人力消费价值 -->
+                        <div class="mt30" id="oneC">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-building red" aria-hidden="true"></i> 商圈价值与人力消费价值 </p></div>
+                            <div class="panel-body">
+                                <p class="linH2 fz16"><span class="oneC fz16"></span></p>
+                            </div>
+                        </div>
+                        <!-- 商业规划价值 -->
+                        <div class="mt30" id="twoA">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-building red" aria-hidden="true"></i> 商业规划价值 </p></div>
+                            <div class="panel-body">
+                                <p class="linH2 fz16"><span class="twoA fz16"></span></p>
+                            </div>
+                        </div>
+                        <!-- 业态价值 -->
+                        <div class="mt30" id="twoB">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-building red" aria-hidden="true"></i> 业态价值 </p></div>
+                            <div class="panel-body">
+                                <p class="linH2 fz16"><span class="twoB fz16"></span></p>
+                            </div>
+                        </div>
+                        <!-- 自然资源价值 -->
+                        <div class="mt30" id="twoC">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-building red" aria-hidden="true"></i> 自然资源价值 </p></div>
+                            <div class="panel-body">
+                                <p class="linH2 fz16"><span class="twoC fz16"></span></p>
+                            </div>
+                        </div>
+                        <!-- 投资保障价值 -->
+                        <div class="mt30" id="twoE">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-building red" aria-hidden="true"></i> 投资保障价值 </p></div>
+                            <div class="panel-body">
+                                <p class="linH2 fz16"><span class="twoE fz16"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 周边配套 -->
+                    <div id="about">
+                        <div class="mt30">
+                            <div class="panel-heading borderBottom"><p class="fz18 mar-b bold"><i class="fa fa-building red" aria-hidden="true"></i> 周边配套 </p></div>
+                            <div class="panel-body">
+                                <div>
+                                    <div id="allmap" style="width: 100%; height: 395px; overflow: hidden; margin: 0; font-family: '微软雅黑';"></div>
+                                    <div class="mapOut">
+                                        <div class="mapBox ">
+                                            <div class="btn-group maiginLeft5" role="group" aria-label="...">
+                                                <button type="button" class="btn btn-default" id="traffMenu">交通</button>
+                                                <button type="button" class="btn btn-default" id="storeMenu">商场</button>
+                                                <button type="button" class="btn btn-default" id="apartMenu">小区</button>
+                                                <button type="button" class="btn btn-default" id="hosptiolMenu">医院</button>
+                                                <button type="button" class="btn btn-default" id="schoolMenu">学校</button>
+                                                <button type="button" class="btn btn-default" id="sceneryMenu">景区</button>
+                                            </div>
+                                            <div class="submenu mt15 cursor maiginLeft5">
+                                                <span class="label label-danger" id="traffMenubus">公交</span>
+                                                <span class="label label-primary" id="traffMenusub">地铁</span>
+                                                <span class="label label-success" id="traffMenucar">汽车</span>
+                                                <span class="label label-info" id="traffMenutrainkeyun">火车客运站</span>
+                                                <span class="label label-warning" id="traffMenutrainhuoyun">火车货运站</span>
+                                            </div>
+                                            <div class="submenus mt15 maiginLeft5 cursor">
+                                                <span class="label label-danger" id="schoolMenuyou">幼儿园</span>
+                                                <span class="label label-primary" id="schoolMenuxiao">小学</span>
+                                                <span class="label label-success" id="schoolMenuzhong">中学</span>
+                                                <span class="label label-info" id="schoolMenuda">大学</span>
+                                            </div>
+                                            <div class="mt15 clearfix">
+                                                <div class="list-group scall pull-right" id="submenuList"></div>
+                                            </div>
+                                            <div class="scanBtn">
+                                                <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mapBoxhide display">
+                                            <div class="scanBtnhide">
+                                                <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <!--内容结束-->
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+
+
+    <!-- 模板 -->
+    <script src="js/art-template-web.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/html" id="listemp">
+        {{if content}}
+        <li class="list-group-item fz14" style="color: #888;">参考单价：<span id="price" style="font-weight:700;font-size:22px;color:#ff6d6f;">{{content.prices}}元/㎡起</span></li>
+        <li class="list-group-item fz14" style="color: #888;">参考总价：<span style="color:#333;" id="prices">{{content.pricess}}万起</span></li>
+        <li class="list-group-item fz14" style="color: #888;">面积区间：<span class="fz16 red" id="area">{{content.areas}}㎡--{{content.areae}}㎡</span></li>
+        <li class="list-group-item fz14" style="color: #888;">
+            项目状态：
+            {{if content.state===2}}
+            <span class="state red fz16">在售</span>
+            {{else if content.state===1}}
+            <span class="state red fz16">待售</span>
+            {{else if content.state===3}}
+            <span class="state red fz16">认购</span>
+            {{else if content.state===4}}
+            <span class="state red fz16">售罄</span>
+            {{else if content.state===0}}
+            <span class="state red fz16">热销</span>
+            {{/if}}
+        </li>
+        <li class="list-group-item fz14" style="color: #888;">项目位置：<span class="fz16" id="projectPosition">{{content.province}}{{content.city}}{{content.projectPosition}}</span></li>
+        <li class="list-group-item fz14" style="color: #888;">开发商：<span class="fz16">{{content.Developers}}</span></li>
+        <li class="list-group-item fz14" style="color: #888;">
+            区域：
+            {{if content.region===12}}
+            <span class="fz16">南区事业部</span>
+            {{else if content.region===13}}
+            <span class="fz16">北区事业部</span>
+            {{else if content.region===14}}
+            <span class="fz16">东区事业部</span>
+            {{else if content.region===15}}
+            <span class="fz16">西区事业部</span>
+            {{/if}}
+        </li>
+
+        <li class="list-group-item fz14" style="color: #888;">
+            类型：{{if content.type===1}}
+            <span class="fz16">商铺</span>
+            {{else if content.type===2}}
+            <span class="fz16">公寓</span>
+            {{else if content.type===3}}
+            <span class="fz16">写字楼</span>
+            {{else if content.type===15}}
+            <span class="fz16">西区事业部</span>
+            {{/if}}
+        </li>
+        <li class="list-group-item fz14" style="color: #888;">类型分类：<span class="fz16">{{content.projectType}}</span></li>
+        <li class="list-group-item fz14" style="color: #888;">项目佣金：<span class="fz16">{{content.commission}}</span></li>
+        <li class="list-group-item fz14" style="color: #888;">
+            是否带租约：
+            {{if content.lease===1}}
+            <span class="fz16">带租约</span>
+            {{else if content.lease===2}}
+            <span class="fz16">不带租约</span>
+            {{else if content.lease===3}}
+            <span class="fz16">部分带租约</span>
+            {{/if}}
+        </li>
+        {{/if}}
+    </script>
+
+    <script type="text/html" id="listemplast">
+        {{if content}}
+        <li class="list-group-item fz14" style="color: #333;">菲斯特项目联系人：{{content.firstPerson}}（{{content.firstTelephone}}）</li>
+        <li class="list-group-item fz14" style="color: #333;">项目联系人：{{content.projectPerson}}（{{content.projectTelephone}}）</li>
+        <li class="list-group-item fz14" style="color: #333;">项目创建日期：{{content.createDate}}</li>
+        <li class="list-group-item fz14" style="color: #333;">修改人：{{content.modifyPerson}}</li>
+        <li class="list-group-item fz14" style="color: #333;">修改日期：{{content.modifyDate}}</li>
+        <li class="list-group-item fz14" style="color: #333;">出售时间：{{content.saleStartTime}}</li>
+        <li class="list-group-item fz14" style="color: #333;">项目说辞：{{content.rhetoric}}</li>
+        <li class="list-group-item fz14" style="color: #333;">项目优势：{{content.advantage}}</li>
+        <li class="list-group-item fz14" style="color: #333;">项目抗性&应对措施：{{content.resistanceAndMeasures}}</li>
+        {{/if}}
+    </script>
+
+    <!-- 推荐楼盘 -->
+    <script type="text/html" id="mytemple1">
+        {{if content.list!==""}}
+        {{if content.list}}{{each content.list value i}}
+        <a target="_blank" href="estate.html?proId={{content.list[i].id}}&type={{content.list[i].type}}">
+            <div class="mb10">
+                <div class="thumbnail thumbnailHover">
+                    {{if content.list[i].img===""||content.list[i].img===null}}
+                    <img class="img-responsive" src="images/zwimg.png" alt="房发现">
+                    {{else}}
+                    <img id="imgPathP" class="img-responsive" src="http://win.firstjia.com/img/project/shops/{{content.list[i].id}}/{{content.list[i].img}}" alt="房发现">
+                    {{/if}}
+                    <div class="caption">
+                        <p class="clearfix"><span class="bold">{{content.list[i].projectName}}</span><span class="pull-right fz16 bold red">{{content.list[i].pricess}}万起</span></p>
+
+                    </div>
+                    <div class="imgTextOut">
+                        <div class="imgTextFT">
+                            {{if content.list[i].RecommendReason!==null}}
+                            <div class="mt12 textDisplay"> {{content.list[i].RecommendReason.replace(/\n|\r\n/g, "<br>")}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {{/each}}{{/if}}
+        {{/if}}
+    </script>
+    <!-- 在售房源 -->
+    <script type="text/html" id="mytemple1F">
+        {{if content.list}}{{each content.list value i}}
+        {{if content.list[i].RecommendReason!==null}}
+        <a class="cursor tarHref" target="_blank" href="http://www.wangjinpu.com/product.html?proId={{content.list[i].prId}}&shopId={{content.list[i].id}}&type={{content.list[i].type}}">
+            <div class="row  border-b mb15">
+                <div class="col-lg-3 mb20">
+                    {{if content.list[i].img!==null}}
+                    <img class="img-thumbnail" src="http://win.firstjia.com/img/pro_shops/{{content.list[i].id}}/{{content.list[i].img}}" />
+                    {{else}}
+                    <img class="img-thumbnail" src="images/zwimg.png" />
+                    {{/if}}
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4 style="margin-top:0px;margin-bottom:0px;color:#f03a22;font-weight:bold;">
+                                {{content.list[i].projectName}}{{content.list[i].shopNumber}}&nbsp;&nbsp;&nbsp;&nbsp;<samll>
+                                    <i class="fa fa-yen"></i>&nbsp;&nbsp;{{content.list[i].totalPrice}} 万&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-home"></i>&nbsp;&nbsp;{{content.list[i].forecastBuilding}} ㎡&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{if content.list[i].AnnualRent==="正在采集中"}}
+                                    预计年收：{{content.list[i].AnnualRent}}
+                                    {{else}}
+                                    预计年收：{{content.list[i].AnnualRent}} 万
+                                    {{/if}}
+                                </samll>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <p class="fz14"></p>
+                            <p class="fz14"></p>
+                            {{if content.list[i].RecommendReason!==null}}
+                            <p class="textDisplay listRecom">推荐理由：<br />{{content.list[i].RecommendReason.replace(/\n|\r\n/g, "<br>")}}</p>
+                            {{/if}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+        {{/if}}{{/each}}{{/if}}
+    </script>
+
+    <script type="text/html" id="mytemple2F">
+        {{if content.list}}{{each content.list value i}}
+        {{if content.list[i].RecommendReason!==null}}
+        <a class="cursor tarHref" target="_blank" href="product.html?proId={{content.list[i].prId}}&shopId={{content.list[i].id}}&type={{content.list[i].type}}">
+            <div class="row  border-b mb15">
+                <div class="col-lg-3 mb20">
+                    {{if content.list[i].img!==null}}
+                    <img class="img-thumbnail" src="http://win.firstjia.com/img/pro_apartment/{{content.list[i].id}}/{{content.list[i].img}}" />
+                    {{else}}
+                    <img class="img-thumbnail" src="images/zwimg.png" />
+                    {{/if}}
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4 style="margin-top:0px;margin-bottom:0px;color:#f03a22;font-weight:bold;">
+                                {{content.list[i].projectName}}{{content.list[i].shopNumber}}&nbsp;&nbsp;&nbsp;&nbsp;<samll>
+                                    <i class="fa fa-yen"></i>&nbsp;&nbsp;{{content.list[i].totalPrice}} 万&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-home"></i>&nbsp;&nbsp;{{content.list[i].forecastBuilding}} ㎡&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{if content.list[i].AnnualRent==="正在采集中"}}
+                                    预计年收：{{content.list[i].AnnualRent}}
+                                    {{else}}
+                                    预计年收：{{content.list[i].AnnualRent}} 万
+                                    {{/if}}
+                                </samll>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <p class="fz14"></p>
+                            <p class="fz14"></p>
+                            {{if content.list[i].RecommendReason!==null}}
+                            <p class="textDisplay listRecom">推荐理由：<br />{{content.list[i].RecommendReason.replace(/\n|\r\n/g, "<br>")}}</p>
+                            {{/if}}
+                        </div>
+                        <div class="col-lg-3 mt15">
+                            <a onclick="ListChat()" class="btn pull-right" role="button" style="padding: 5px 40px; color:#d9534f;"><i class="fa fa-commenting" aria-hidden="true"></i> 在线咨询</a>
+                            <a target="_blank" href="product.html?proId={{content.list[i].prId}}&shopId={{content.list[i].id}}&type={{content.list[i].type}}" class="btn pull-right" role="button" style="padding: 5px 40px; margin-top:20px; color:#337ab7;"><i class="fa fa-mouse-pointer" aria-hidden="true"></i> 查看详情</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+        {{/if}}{{/each}}{{/if}}
+    </script>
+
+    <script type="text/html" id="mytemple3F">
+        {{if content.list}}{{each content.list value i}}
+        {{if content.list[i].RecommendReason!==null}}
+        <a class="cursor tarHref" target="_blank" href="product.html?proId={{content.list[i].prId}}&shopId={{content.list[i].id}}&type={{content.list[i].type}}">
+            <div class="row  border-b mb15">
+                <div class="col-lg-3 mb20">
+                    {{if content.list[i].img!==null}}
+                    <img class="img-thumbnail" src="http://win.firstjia.com/img/pro_office/{{content.list[i].id}}/{{content.list[i].img}}" />
+                    {{else}}
+                    <img class="img-thumbnail" src="images/zwimg.png" />
+                    {{/if}}
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4 style="margin-top:0px;margin-bottom:0px;color:#f03a22;font-weight:bold;">
+                                {{content.list[i].projectName}}{{content.list[i].shopNumber}}&nbsp;&nbsp;&nbsp;&nbsp;<samll>
+                                    <i class="fa fa-yen"></i>&nbsp;&nbsp;{{content.list[i].totalPrice}} 万&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-home"></i>&nbsp;&nbsp;{{content.list[i].forecastBuilding}} ㎡&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{if content.list[i].AnnualRent==="正在采集中"}}
+                                    预计年收：{{content.list[i].AnnualRent}}
+                                    {{else}}
+                                    预计年收：{{content.list[i].AnnualRent}} 万
+                                    {{/if}}
+                                </samll>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <p class="fz14"></p>
+                            <p class="fz14"></p>
+                            {{if content.list[i].RecommendReason!==null}}
+                            <p class="textDisplay listRecom">推荐理由：<br />{{content.list[i].RecommendReason.replace(/\n|\r\n/g, "<br>")}}</p>
+                            {{/if}}
+                        </div>
+                        <div class="col-lg-3 mt15">
+                            <a onclick="ListChat()" class="btn pull-right" role="button" style="padding: 5px 40px; color:#d9534f;"><i class="fa fa-commenting" aria-hidden="true"></i> 在线咨询</a>
+                            <a target="_blank" href="product.html?proId={{content.list[i].prId}}&shopId={{content.list[i].id}}&type={{content.list[i].type}}" class="btn pull-right" role="button" style="padding: 5px 40px; margin-top:20px; color:#337ab7;"><i class="fa fa-mouse-pointer" aria-hidden="true"></i> 查看详情</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+        {{/if}}{{/each}}{{/if}}
+    </script>
+
+    <script type="text/html" id="mytemple3F">
+        {{if content.list}}{{each content.list value i}}
+        {{if content.list[i].RecommendReason!==null}}
+        <a class="cursor tarHref" target="_blank" href="product.html?proId={{content.list[i].prId}}&shopId={{content.list[i].id}}&type={{content.list[i].type}}">
+            <div class="row  border-b mb15">
+                <div class="col-lg-3 mb20">
+                    {{if content.list[i].img!==null}}
+                    <img class="img-thumbnail" src="http://win.firstjia.com/img/pro_home/{{content.list[i].id}}/{{content.list[i].img}}" />
+                    {{else}}
+                    <img class="img-thumbnail" src="images/zwimg.png" />
+                    {{/if}}
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4 style="margin-top:0px;margin-bottom:0px;color:#f03a22;font-weight:bold;">
+                                {{content.list[i].projectName}}{{content.list[i].shopNumber}}&nbsp;&nbsp;&nbsp;&nbsp;<samll>
+                                    <i class="fa fa-yen"></i>&nbsp;&nbsp;{{content.list[i].totalPrice}} 万&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-home"></i>&nbsp;&nbsp;{{content.list[i].forecastBuilding}} ㎡&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{if content.list[i].AnnualRent==="正在采集中"}}
+                                    预计年收：{{content.list[i].AnnualRent}}
+                                    {{else}}
+                                    预计年收：{{content.list[i].AnnualRent}} 万
+                                    {{/if}}
+                                </samll>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <p class="fz14"></p>
+                            <p class="fz14"></p>
+                            {{if content.list[i].RecommendReason!==null}}
+                            <p class="textDisplay listRecom">推荐理由：<br />{{content.list[i].RecommendReason.replace(/\n|\r\n/g, "<br>")}}</p>
+                            {{/if}}
+                        </div>
+                        <div class="col-lg-3 mt15">
+                            <a onclick="ListChat()" class="btn pull-right" role="button" style="padding: 5px 40px; color:#d9534f;"><i class="fa fa-commenting" aria-hidden="true"></i> 在线咨询</a>
+                            <a target="_blank" href="product.html?proId={{content.list[i].prId}}&shopId={{content.list[i].id}}&type={{content.list[i].type}}" class="btn pull-right" role="button" style="padding: 5px 40px; margin-top:20px; color:#337ab7;"><i class="fa fa-mouse-pointer" aria-hidden="true"></i> 查看详情</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+        {{/if}}{{/each}}{{/if}}
+    </script>
+
+    <!-- 报表--店铺 -->
+
+    <script type="text/html" id="mytemple6">
+        {{if ext.list}} {{each ext.list value i}}
+        <li class="list-group-item border-none">
+            <span class="badge"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+            <label class="liT cursor" data-id="{{ext.list[i].class_id}}">&gt; {{ext.list[i].name}}：{{ext.list[i].count}}</label>
+            <ul class="list-group mar-b display subUl"></ul>
+        </li>
+        {{/each}} {{/if}}
+    </script>
+
+    <script type="text/html" id="mytemple7">
+        {{if ext.list}} {{each ext.list value i}}
+        <li class="list-group-item border-none">
+            <span class="badge"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+            <label class="liTt cursor" data-id="{{ext.list[i].class_id}}" data-leaf="{{ext.list[i].leaf_node}}">&gt; {{ext.list[i].name}}：{{ext.list[i].count}}</label>
+            <ul class="list-group mar-b display subbUl"></ul>
+        </li>
+        {{/each}} {{/if}}
+    </script>
+
+    <script type="text/html" id="mytemple8">
+        {{if ext.list}} {{each ext.list value i}}
+        <li class="list-group-item border-none">
+            <span class="badge"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+            <label class="liTt cursor" data-id="{{ext.list[i].class_id}}">{{ext.list[i].name}}：{{ext.list[i].count}}</label>
+            <ul class="list-group mar-b display subbUl"></ul>
+        </li>
+        {{/each}} {{/if}}
+    </script>
+    <!-- 报表--交通 -->
+    <script type="text/html" id="mytemple9">
+        {{if ext.list}} {{each ext.list value i}}
+        <li class="list-group-item border-none">
+            <span class="badge"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+            <label class="liTra cursor">{{ext.list[i].tag}}：{{ext.list[i].p}}</label>
+        </li>
+        {{/each}} {{/if}}
+    </script>
+
+    <!-- 报表--机构 -->
+    <script type="text/html" id="mytemple10">
+        {{if ext.list}} {{each ext.list value i}}
+        <li class="list-group-item border-none">
+            <span class="badge"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+            <label class="liJo cursor" data-id="{{ext.list[i].class_id}}" data-leaf="{{ext.list[i].left_node}}" data-name="{{ext.list[i].name}}">&gt; {{ext.list[i].name}}：{{ext.list[i].count}}</label>
+            <ul class="list-group mar-b display JsubUl"></ul>
+        </li>
+        {{/each}} {{/if}}
+    </script>
+    <script type="text/html" id="mytemple11">
+        {{if ext.list}} {{each ext.list value i}}
+        <li class="list-group-item border-none">
+            <label class="liJob cursor" data-id="{{ext.list[i].class_id}}">{{ext.list[i].name}}：{{ext.list[i].count}}</label>
+        </li>
+        {{/each}} {{/if}}
+    </script>
+
+
+    <!-- 更多报表--区域医疗数据报告 -->
+    <script type="text/html" id="mytemple24">
+        {{if ext}} {{each ext value i}}{{each ext[i].data value j}}
+        <a class="list-group-item">
+            <span class="badge">{{ext[i].data[j].distance}} m</span>
+            {{ext[i].data[j].name}}
+        </a>
+        {{/each}}{{/each}} {{/if}}
+    </script>
+    <script type="text/html" id="mytemple25">
+        {{if ext}} {{each ext value i}}
+        <a class="list-group-item">
+            <span class="badge">{{ext[i].distance}} m</span>
+            {{ext[i].name}}
+        </a>
+        {{/each}} {{/if}}
+    </script>
+
+    <!--地图-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=x0baOoLE2m6N9QKwHcZv8e53"></script>
+    <script type="text/javascript">
+        var Purl = "http://win.firstjia.com/ffxapp/";//项目管理
+        
+        $(".navbs li a").click(function () {
+            var el = $(this).attr('class');
+            $('html, body').animate({
+                scrollTop: $("#" + el).offset().top - 60
+            }, 300);
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        _http = "http://fbd.fangqianli.com/FBD_FFX/";
+        //经纬度
+        var latitude = ""; //维度
+        var longitude = ""; //经度
+        //http://win.firstjia.com/ffxapp/findProject.shtml
+        var adurl = Purl + "findProject.shtml";
+        $.ajax({
+            type: "GET",
+            url: adurl,
+            data: {
+                id: _IDs,
+                type: _types
+            },
+            async: true,
+            dataType: "jsonp",
+            jsonp: "callback",
+            success: function (datas) {
+                //console.log(datas);
+
+                if (datas.state === 1) {
+                    var latitudes = datas.content.latitude;
+                    //console.log(latitudes);
+                    //经纬度
+                    longitude = (latitudes.split(","))[0];//纬度
+                    latitude = (latitudes.split(","))[1];//经度
+                    //console.log(latitude);
+                    //console.log(longitude);
+                    projectName = datas.content.projectName;//获取项目别名
+                    Another_Name = datas.content.Another_Name;//获取项目别名
+                    $(".projectName").html(projectName);
+                    $(".Another_Name").html(Another_Name);
+
+                    $(".titleEst").html("发现-<%=CityName%>楼盘-" + projectName + "，房发现，找房放心好平台，囊括商铺出售，商铺投资，公寓出售等商业地产业务！");
+                    $("#metaD").attr("content", "房发现(fangfaxian.com)为您提供（" + projectName + "）的项目参数、数据报表、周边配套等信息。");
+
+                    var type = datas.content.type;//项目类型
+                    if (type === 1) {
+                        $(".type").html("商铺");
+                    }
+                    else if (type === 2) {
+                        $(".type").html("公寓");
+                    }
+                    else if (type === 3) {
+                        $(".type").html("写字楼");
+                    } else {
+                        $(".type").hide();
+                    }
+
+                    var state = datas.content.state;//项目状态
+
+                    if (state === 2) {
+                        $(".state").html("在售");
+                    } else if (state === 1) {
+                        $(".state").html("待售");
+                    } else if (state === 3) {
+                        $(".state").html("认购");
+                    } else if (state === 4) {
+                        $(".state").html("售罄");
+                    } else if (state === 0) {
+                        $(".state").html("热销");
+                    }
+                    else {
+                        $(".state").parent().hide();
+                    }
+                    //console.log($(".state").parent());
+
+                    var prices = datas.content.prices;//最低单价
+                    var pricee = datas.content.pricee;//最高单价
+                    $("#price").html(prices + "元/㎡起");
+
+                    var pricess = datas.content.pricess;//最低总价
+                    var pricese = datas.content.pricese;//最高总价
+                    $("#prices").html(pricess + "万起");
+
+                    var areas = datas.content.areas;//最低面积
+                    var areae = datas.content.areae;//最高面积
+                    $("#area").html(areas + "㎡--" + areae + "㎡");
+
+                    var projectPosition = datas.content.projectPosition;//项目位置
+                    // $("#projectPosition").html(projectPosition.slice(0, 9));
+                    $("#projectPosition").html(projectPosition);
+
+                    var description = datas.content.description;//项目描述
+                    $(".description").html(description);
+
+                    var RecommendReason = datas.content.RecommendReason;//项目描述
+                    $(".RecommendReason").html(RecommendReason.replace(/\n|\r\n/g, "<br>"));
+
+
+                    var prFeature = datas.content.prFeature;//项目特点
+                    $("#prFeature").html(prFeature);
+                    if (prFeature !== null) {
+                        var arrprFeature = prFeature.split(",");
+                        //console.log(arrprFeature);
+                        for (var i = 0; i < arrprFeature.length && i < 3; i++) {
+                            //console.log(arrprFeature[i]);
+                            $(".tese").append("<span class='label label-danger state'style='margin-right:10px; padding:5px; font-size:12px;border: 1px solid #bababa;color: #fa6340; background:none; border-radius:0px; font-weight:inherit'>" + arrprFeature[i] + "</span>");
+                        }
+                    } else {
+                        $("#prFeature").hide();
+                    }
+                    var text = template("listemp", datas);
+                    $("#listGroup").html(text);
+                    var textlast = template("listemplast", datas);
+                    $("#listGrouplast").html(textlast);
+                    var rhetoric = datas.content.rhetoric;//项目说辞
+                    $(".rhetoric").html(rhetoric);
+                    var propaganda = datas.content.propaganda;//噱头式的宣传(楼盘详情)
+                    $("#propaganda").html(propaganda);
+                    var advantage = datas.content.advantage;//项目优势
+                    $(".advantage").html(advantage);
+                    var resistanceAndMeasures = datas.content.resistanceAndMeasures;//项目抗性&应对措施
+                    $(".resistanceAndMeasures").html(resistanceAndMeasures);
+                    var saleStartTime = datas.content.saleStartTime;//出售时间
+                    $(".saleStartTime").html(saleStartTime);
+
+                    //楼盘价值
+                    var oneA = datas.content.oneA;
+                    var oneB = datas.content.oneB;
+                    var oneC = datas.content.oneC;
+                    var twoA = datas.content.twoA;
+                    var twoB = datas.content.twoB;
+                    var twoC = datas.content.twoC;
+                    var twoD = datas.content.twoD;
+                    var twoE = datas.content.twoE;
+                    if (oneA === "" || oneA === null) {
+                        //$(".oneA").html("资料整理中...");
+                        $("#oneA").hide();
+                    } else {
+                        $(".oneA").html(oneA);
+                    }
+                    if (oneB === "" || oneB === null) {
+                        //$(".oneB").html("资料整理中...");
+                        $("#oneB").hide();
+                    } else {
+                        $(".oneB").html(oneB);
+                    }
+                    if (oneC === "" || oneC === null) {
+                        //$(".oneC").html("资料整理中...");
+                        $("#oneC").hide();
+                    } else {
+                        $(".oneC").html(oneC);
+                    }
+                    if (twoA === "" || twoA === null) {
+                        //$(".twoA").html("资料整理中...");
+                        $("#twoA").hide();
+                    } else {
+                        $(".twoA").html(twoA);
+                    }
+                    if (twoB === "" || twoB === null) {
+                        //$(".twoB").html("资料整理中...");
+                        $("#twoB").hide();
+                    } else {
+                        $(".twoB").html(twoB);
+                    }
+                    if (twoC === "" || twoC === null) {
+                        //$(".twoC").html("资料整理中...");
+                        $("#twoC").hide();
+                    } else {
+                        $(".twoC").html(twoC);
+                    }
+                    if (twoD === "" || twoD === null) {
+                        //$(".twoD").html("资料整理中...");
+                        $("#twoD").hide();
+                    } else {
+                        $(".twoD").html(twoD);
+                    }
+                    if (twoE === "" || twoE === null) {
+                        // $(".twoE").html("资料整理中...");
+                        $("#twoE").hide();
+                    } else {
+                        $(".twoE").html(twoE);
+                    }
+
+
+
+
+                    var attributeFormat = datas.content.attributeFormat;//项目属性适合业态
+                    $("#attributeFormat").html(attributeFormat);
+
+                    
+
+
+
+
+                    //图片
+                    imgAll();
+
+
+
+
+
+
+                    _firstPerson = datas.content.firstPerson;//项目负责人
+                    $(".firstPerson").html(_firstPerson);
+                    $(".firstPersons").html(_firstPerson);
+
+                    if (_types === "1") {
+                        find("findShopsList.shtml");//商铺
+                    } else if (_types === "2") {
+                        find("findApartmentList.shtml");//公寓
+                    } else if (_types === "4") {
+                        find("findHomeList.shtml");//住宅
+                    } else if (_types === "3") {
+                        find("findOfficeList.shtml");//写字楼
+                    }
+                    else {
+                        $("#contact").hide();
+                    }
+
+
+
+                    quMap();//区域地段地标价值
+
+                    var result = datas.content.result;//总评估
+                    if (result === null || result === "") {
+                        $("#result").html("资料整理中...");
+                    } else {
+                        $("#result").html(result);
+                    }
+
+                    //map();
+
+
+
+                } else {
+                    console.log(message);
+                }
+
+
+            }, error: function (err) {
+                //console.log(err);
+            }
+        });
+
+        //图片分类
+        function imgAll(findImg) {
+            $.ajax({
+                type: "GET",
+                url: Purl + "findImg.shtml",
+                async: true,
+                data: {
+                    proId: _IDs,//项目id
+                    proType: _types
+                },
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.state === 1) {
+                        var imgArr = data.content;
+                        //console.log(imgArr[0]);
+                        var imgArrContent = "";
+                        if (_types === "1") {
+                            $("#detailActive").html("<img src='http://win.firstjia.com/img/project/shops/" + imgArr[0].proId + "/" + imgArr[0].img + "'>"); //封面图
+                            for (var d = 0; d < imgArr.length; d++) {
+                                imgArrContent = "<div class='item'><img src='http://win.firstjia.com/img/project/shops/" + imgArr[d].proId + "/" + imgArr[d].img + "'></div>";
+
+                            }
+                        }
+                        else if (_types === "2") {
+                            $("#detailActive").html("<img src='http://win.firstjia.com/img/project/apartment/" + imgArr[0].proId + "/" + imgArr[0].img + "'>"); //封面图
+                            for (var e = 0; e < imgArr.length; e++) {
+                                imgArrContent = "<div class='item'><img src='http://win.firstjia.com/img/project/apartment/" + imgArr[e].proId + "/" + imgArr[e].img + "'></div>";
+                            }
+                        }
+                        else if (_types === "3") {
+                            $("#detailActive").html("<img src='http://win.firstjia.com/img/project/office/" + imgArr[0].proId + "/" + imgArr[0].img + "'>"); //封面图
+                            for (var c = 0; c < imgArr.length; c++) {
+                                imgArrContent = "<div class='item'><img src='http://win.firstjia.com/img/project/office/" + imgArr[c].proId + "/" + imgArr[c].img + "'></div>";
+                            }
+                        }
+                        else if (_types === "4") {
+                            $("#detailActive").html("<img src='http://win.firstjia.com/img/project/home/" + imgArr[0].proId + "/" + imgArr[0].img + "'>"); //封面图
+                            for (var b = 0; b < imgArr.length; b++) {
+                                imgArrContent = "<div class='item'><img src='http://win.firstjia.com/img/project/home/" + imgArr[b].proId + "/" + imgArr[b].img + "'></div>";
+                            }
+                        }
+
+                        $("#detailPics").append(imgArrContent);
+
+                    }
+                }
+            });
+        }
+        var _pageSize = 10;
+        var _pageNum = 1;
+        //销控分类
+        function find(finds) {
+            $.ajax({
+                type: "GET",
+                url: Purl + finds,
+                async: true,
+                data: {
+                    proId: _IDs,//项目id
+                    pageSize: _pageSize,
+                    pageNum: _pageNum
+                },
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (datas) {
+                    // console.log(datas);
+
+                    if (datas.state === 1) {
+                        if (datas.content.list.length === 0) {
+                            $("#contact").hide();
+                        } else {
+                            template.defaults.escape = false;//不转义的问题
+                            var html2 = "";
+                            if (_types === "1") {
+                                html2 = template('mytemple1F', datas);
+                            }
+                            else if (_types === "2") {
+                                html2 = template('mytemple2F', datas);
+                            }
+                            else if (_types === "3") {
+                                html2 = template('mytemple3F', datas);
+                            }
+                            else if (_types === "4") {
+                                html2 = template('mytemple4F', datas);
+                            }
+
+                            $("#contacts").html(html2);
+                        }
+                    } else {
+                        $(".divfang1").addClass("display");
+                    }
+
+
+                }, error: function (err) {
+                    //console.log(err);
+                }
+            });
+        }
+
+
+
+        /*区域地段地标价值*/
+        function quMap() {
+            _urls = _http + "";
+            _method = "";
+            _parent = "";
+            _dis = "";
+            //地图
+            $(".submenus").hide();
+            var allurl = _http + "Traffic";
+            var allmethod = "get_traffic_info";
+            var allicon = "./images/bus.png";
+            var alltype = "1";
+            allMap(allurl, allmethod, alltype, allicon);
+
+            //点击交通
+            $("#traffMenu").click(function () {
+                $(".submenus").hide();
+                $(".submenu").show();
+                var allurl = _http + "Traffic";
+                var allmethod = "get_traffic_info";
+                var allicon = "./images/bus.png";
+                var alltype = "1";
+                allMap(allurl, allmethod, alltype, allicon);
+            });
+            //点击交通-公交
+            $("#traffMenubus").click(function () {
+                var allurl = _http + "Traffic";
+                var allmethod = "get_traffic_info";
+                var allicon = "./images/bus.png";
+                var alltype = "1";
+                allMap(allurl, allmethod, alltype, allicon);
+            });
+            //点击交通-地铁
+            $("#traffMenusub").click(function () {
+                var allurl = _http + "Traffic";
+                var allmethod = "get_traffic_info";
+                var allicon = "./images/sub.png";
+                var alltype = "2";
+                allMap(allurl, allmethod, alltype, allicon);
+            });
+            //点击交通-汽车
+            $("#traffMenucar").click(function () {
+                var allurl = _http + "Traffic";
+                var allmethod = "get_traffic_info";
+                var allicon = "./images/sub.png";
+                var alltype = "4";
+                allMap(allurl, allmethod, alltype, allicon);
+            });
+            //点击交通-火车客运
+            $("#traffMenutrainkeyun").click(function () {
+                var allurl = _http + "Traffic";
+                var allmethod = "get_traffic_info";
+                var allicon = "./images/train.png";
+                var alltype = "5";
+                allMap(allurl, allmethod, alltype, allicon);
+            });
+            //点击交通-火车客运
+            $("#traffMenutrainhuoyun").click(function () {
+                var allurl = _http + "Traffic";
+                var allmethod = "get_traffic_info";
+                var allicon = "./images/train.png";
+                var alltype = "6";
+                allMap(allurl, allmethod, alltype, allicon);
+            });
+
+            //点击商场
+            $("#storeMenu").click(function () {
+                $(".submenu").hide();
+                $(".submenus").hide();
+                var allurl1 = _http + "Agent";
+                var allmethod1 = "get_inner_info";
+                var allicon1 = "./images/shop.png";
+                var allid = "17";
+                allMap2(allurl1, allmethod1, allid, allicon1);
+            });
+            //点击小区
+            $("#apartMenu").click(function () {
+                $(".submenu").hide();
+                $(".submenus").hide();
+                var allurl1 = _http + "Neighbourhood";
+                var allmethod1 = "get_all_info";
+                var allicon1 = "./images/xiaoqu.png";
+                var allid = "17";
+                allMap2(allurl1, allmethod1, allid, allicon1);
+            });
+            //点击医院
+            $("#hosptiolMenu").click(function () {
+                $(".submenu").hide();
+                $(".submenus").hide();
+                var allurl1 = _http + "Agent";
+                var allmethod1 = "get_inner_info";
+                var allicon1 = "./images/yiyuan.png";
+                var allid = "5";
+                allMap2(allurl1, allmethod1, allid, allicon1);
+            });
+            //点击学校
+            $("#schoolMenu").click(function () {
+                $(".submenu").hide();
+                $(".submenus").show();
+                var allurl1 = _http + "Agent";
+                var allmethod1 = "get_inner_info";
+                var allicon1 = "./images/youeryuan.png";
+                var allid = "7";
+                allMap2(allurl1, allmethod1, allid, allicon1);
+            });
+            //点击学校-幼儿园
+            $("#schoolMenuyou").click(function () {
+                $(".submenu").hide();
+                $(".submenus").show();
+                var allurl1 = _http + "Agent";
+                var allmethod1 = "get_inner_info";
+                var allicon1 = "./images/youeryuan.png";
+                var allid = "7";
+                allMap2(allurl1, allmethod1, allid, allicon1);
+            });
+            //点击学校-小学
+            $("#schoolMenuxiao").click(function () {
+                $(".submenu").hide();
+                $(".submenus").show();
+                var allurl1 = _http + "Agent";
+                var allmethod1 = "get_inner_info";
+                var allicon1 = "./images/xiaoxue.png";
+                var allid = "7";
+                allMap2(allurl1, allmethod1, allid, allicon1);
+            });
+            //点击学校-中学
+            $("#schoolMenuzhong").click(function () {
+                $(".submenu").hide();
+                $(".submenus").show();
+                var allurl1 = _http + "Agent";
+                var allmethod1 = "get_inner_info";
+                var allicon1 = "./images/zhongxue.png";
+                var allid = "7";
+                allMap2(allurl1, allmethod1, allid, allicon1);
+            });
+            //点击学校-大学
+            $("#schoolMenuda").click(function () {
+                $(".submenu").hide();
+                $(".submenus").show();
+                var allurl1 = _http + "Agent";
+                var allmethod1 = "get_inner_info";
+                var allicon1 = "./images/daxue.png";
+                var allid = "7";
+                allMap2(allurl1, allmethod1, allid, allicon1);
+            });
+
+            //点击景区
+            $("#sceneryMenu").click(function () {
+                $(".submenu").hide();
+                $(".submenus").hide();
+                var allurl1 = _http + "Agent";
+                var allmethod1 = "get_inner_info";
+                var allicon1 = "./images/jingqu.png";
+                var allid = "9";
+                allMap2(allurl1, allmethod1, allid, allicon1);
+            });
+
+            //交通
+            function allMap(_urls, _method, _type, _icon) {
+                var map = new BMap.Map("allmap");
+                map.centerAndZoom(new BMap.Point(longitude, latitude), 14);  // 初始化地图,设置中心点坐标和地图级别
+                //map.enableScrollWheelZoom(false); // 开启鼠标滚轮缩放
+                map.addControl(new BMap.NavigationControl());
+                map.addControl(new BMap.NavigationControl());
+                map.addControl(new BMap.OverviewMapControl());
+                map.addControl(new BMap.ScaleControl);
+                map.setCurrentCity("<%=CityName%>");
+                var new_points = new BMap.Point(longitude, latitude);
+                var markers = new BMap.Marker(new_points);  // 创建标注
+                map.addOverlay(markers);              // 将标注添加到地图中
+                map.panTo(new_points);
+
+                $.ajax({
+                    type: "get",
+                    url: _urls,
+                    data: {
+                        method: _method,
+                        geo: longitude + "," + latitude,
+                        dis: "1000",
+                        type: _type
+                    },
+                    //返回数据的格式
+                    datatype: "json",
+                    //成功返回之后调用的函数
+                    success: function (data) {
+                        //console.log(data);
+
+                        if (data.state === true) {
+                            var html24 = template('mytemple24', data);
+                            $("#submenuList").html(html24);
+                            /*===============3==*/
+                            var myIcons = new BMap.Icon(_icon, new BMap.Size(40, 45)),
+                                opts = {
+                                    width: 250,     // 信息窗口宽度
+                                    height: 80,     // 信息窗口高度
+                                    title: "地点:", // 信息窗口标题
+                                    //                          distance:'距离:',
+                                    enableMessage: true//设置允许信息窗发送短息
+                                };
+
+
+                            for (var x = 0; x < data.ext[0].data.length; x++) {
+                                var lng = data.ext[0].data[x].lat;
+                                var lat = data.ext[0].data[x].lon;
+                                var marker = new BMap.Marker(new BMap.Point(lat, lng), { icon: myIcons });  // 创建标注
+                                var content = data.ext[0].data[x].name;
+                                map.addOverlay(marker);// 将标注添加到地图中
+                                addClickHandler(content, marker);
+
+
+                            }
+
+
+                            /*================12=*/
+                        }
+                        else {
+                            console.log(data.message);
+                            $("#about").hide();
+                        }
+                    },
+                    error: function () {
+                        //            console.log(data.message)
+                    }
+                });
+            }
+        }
+        function addClickHandler(content, marker) {
+            marker.addEventListener("mouseover", function (e) {
+                openInfo(content, e);
+            });
+        }
+
+        function openInfo(content, e) {
+            var p = e.target;
+            var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+            var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+            map.openInfoWindow(infoWindow, point); //开启信息窗口
+        }
+
+
+
+        $(".scanBtn").click(function () {
+            //alert("000");
+            $(".mapBox").hide();
+            $(".mapBoxhide").show();
+        });
+        $(".mapBoxhide").click(function () {
+            //alert("000");
+            $(".mapBox").show();
+            $(".mapBoxhide").hide();
+        });
+
+
+
+        //其他
+        function allMap2(_urls, _method, _id, _icon) {
+            var map = new BMap.Map("allmap");
+            map.centerAndZoom(new BMap.Point(longitude, latitude), 14);  // 初始化地图,设置中心点坐标和地图级别
+            // map.enableScrollWheelZoom(false); // 开启鼠标滚轮缩放
+            map.addControl(new BMap.NavigationControl());
+            map.addControl(new BMap.NavigationControl());
+            map.addControl(new BMap.OverviewMapControl());
+            map.addControl(new BMap.ScaleControl);
+            map.setCurrentCity("<%=CityName%>");
+            var new_points = new BMap.Point(longitude, latitude);
+            var markers = new BMap.Marker(new_points);  // 创建标注
+            map.addOverlay(markers);              // 将标注添加到地图中
+            map.panTo(new_points);
+
+            $.ajax({
+                type: "get",
+                url: _urls,
+                data: {
+                    method: _method,
+                    geo: longitude + "," + latitude,
+                    dis: "1000",
+                    password: '123',
+                    parent_id: _id
+                },
+                //返回数据的格式
+                datatype: "json",
+                //成功返回之后调用的函数
+                success: function (data) {
+                    //console.log(data);
+
+                    if (data.state === true) {
+                        var html25 = template('mytemple25', data);
+                        $("#submenuList").html(html25);
+                        /*===============3==*/
+                        var myIcons = new BMap.Icon(_icon, new BMap.Size(40, 45)),
+                            opts = {
+                                width: 250,     // 信息窗口宽度
+                                height: 80,     // 信息窗口高度
+                                title: "地点:", // 信息窗口标题
+                                //                          distance:'距离:',
+                                enableMessage: true//设置允许信息窗发送短息
+                            };
+                        // console.log(data.ext);
+                        for (var x = 0; x < data.ext.length; x++) {
+
+                            var lng = data.ext[x].lat;
+                            var lat = data.ext[x].lon;
+                            //console.log(lng);
+                            // console.log(lat);
+                            var marker = new BMap.Marker(new BMap.Point(lat, lng), { icon: myIcons });  // 创建标注
+                            var content = data.ext[x].name;
+                            map.addOverlay(marker);// 将标注添加到地图中
+                            addClickHandler(content, marker);
+
+                            function addClickHandler(content, marker) {
+                                marker.addEventListener("mouseover", function (e) {
+                                    openInfo(content, e);
+                                }
+                                );
+                            }
+
+                            function openInfo(content, e) {
+                                var p = e.target;
+                                var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                                var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+                                map.openInfoWindow(infoWindow, point); //开启信息窗口
+                            }
+                        }
+
+
+
+                        /*================12=*/
+                    }
+                    else {
+                        // alert(data.message);
+                    }
+                },
+                error: function () {
+                    //            console.log(data.message)
+                }
+            });
+        }
+        //店铺
+        function statistics(_urls, _method, _parent, _dis) {
+            $.ajax({
+                type: "get",
+                url: _urls,
+                data: {
+                    "method": _method,
+                    "geo": longitude + "," + latitude,
+                    "parent": _parent,
+                    "dis": _dis
+                },
+                async: true,
+                dataType: "json",
+                success: function (data) {
+                    //console.log(data);
+                    var html6 = template('mytemple6', data);
+                    $("#ulBox").html(html6);
+
+
+                    //点击获取class_id--二级菜单
+
+                    $(".liT").click(function () {
+                        _class_id = $(this).attr("data-id");
+                        //console.log(_class_id);
+                        $.ajax({
+                            type: "get",
+                            url: _urls,
+                            data: {
+                                "method": _method,
+                                "geo": longitude + "," + latitude,
+                                "parent": _class_id,
+                                "dis": _dis
+                            },
+                            async: true,
+                            dataType: "json",
+                            success: function (data) {
+                                //console.log(data);
+                                //获取子菜单
+
+                                var html7 = template('mytemple7', data);
+                                $(".subUl").html(html7);
+
+                                var arrSub = [];
+                                var arrSubNum = [];
+                                var arrSubPie = [];
+                                for (var i = 0; i < data.ext.list.length; i++) {
+                                    arrSub.push(data.ext.list[i].name);
+                                    arrSubNum.push(data.ext.list[i].count);
+                                    arrSubPie.push({ value: data.ext.list[i].count, name: data.ext.list[i].name });
+                                }
+                                chart(arrSub, arrSubNum, arrSubPie);
+
+
+
+                                //三级菜单
+                                $(".liTt").click(function () {
+                                    _class_id = $(this).attr("data-id");
+                                    _leaf_node = $(this).attr("data-leaf");
+                                    //console.log(_leaf_node);
+                                    $.ajax({
+                                        type: "get",
+                                        url: _urls,
+                                        data: {
+                                            "method": _method,
+                                            "geo": longitude + "," + latitude,
+                                            "parent": _class_id,
+                                            "dis": _dis
+                                        },
+                                        async: true,
+                                        dataType: "json",
+                                        success: function (data) {
+                                            //console.log(data);
+                                            //获取子菜单
+
+                                            var html8 = template('mytemple8', data);
+                                            $(".subbUl").html(html8);
+
+                                            if (_leaf_node === "0") {
+                                                var arrSubb = [];
+                                                var arrSubbNum = [];
+                                                var arrSubbPie = [];
+                                                for (var i = 0; i < data.ext.list.length; i++) {
+                                                    arrSubb.push(data.ext.list[i].name);
+                                                    arrSubbNum.push(data.ext.list[i].count);
+                                                    arrSubbPie.push({ value: data.ext.list[i].count, name: data.ext.list[i].name });
+                                                }
+                                                chart(arrSubb, arrSubbNum, arrSubbPie);
+                                            }
+
+
+                                        }
+                                    });
+                                    if ($(this).siblings(".subbUl").hasClass("display")) {
+                                        $(this).siblings(".subbUl").removeClass("display");
+                                    } else {
+                                        $(this).siblings(".subbUl").addClass("display");
+                                    }
+                                });
+                            }
+                        });
+                        if ($(this).siblings(".subUl").hasClass("display")) {
+                            $(this).siblings(".subUl").removeClass("display");
+                        } else {
+                            $(this).siblings(".subUl").addClass("display");
+                        }
+                    });
+
+                    var shop = data.ext.list;
+                    //console.log(shop);
+
+                    //获取数据展现到报表上
+                    var arr = [];
+                    var arrNum = [];
+                    var arrPie = [];
+                    for (var i = 0; i < shop.length; i++) {
+                        arr.push(shop[i].name);
+                        arrNum.push(shop[i].count);
+                        arrPie.push({ value: shop[i].count, name: shop[i].name });
+                    }
+
+                    //console.log(arrPie);
+
+                    chart(arr, arrNum, arrPie);//店铺
+
+                }, error: function (err) {
+                    //console.log(err);
+                    $("#msg").hide();
+                }
+            });
+        }
+
+       
+
+        
+
+      
+
+       
+    </script>
+
+    <!--bootstrap-js-->
+    <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+
+
+</body>
+
+</html>

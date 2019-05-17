@@ -233,6 +233,10 @@
 			<div class="inpdiv190"><input type="text"  class="inpw100" id="elevator" value="${projectApartment.elevator}" name="projectApartmentFormMap.elevator"/></div>
 		</div>
 		<div class="row">
+			<label for="" class="labw130">层高</label>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="层高" name="projectApartmentFormMap.storeyHeight" value="${projectApartment.storeyHeight}">m</div>
+		</div>
+		<div class="row">
 			<label for="" class="labw130">公司负责人</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="公司负责人姓名" name="projectApartmentFormMap.firstPerson" value="${projectApartment.firstPerson}"></div>
 			<label for="" class="labw130">联系电话</label>

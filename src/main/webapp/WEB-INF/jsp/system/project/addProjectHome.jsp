@@ -120,7 +120,7 @@
 			<div class="inpdiv190">
 				<select class="form-control selw70 inpw100" id="cmbProvince" name="projectHomeFormMap.province"></select>
 				<select class="form-control selw70 inpw100" id="cmbCity" name="projectHomeFormMap.city"></select>
-				<select class="form-control selw70 inpw100" id="cmbArea" name="projectHomeFormMap.district"></select>
+				<select class="form-control selw70 inpw100" id="cmbArea" name="projectHomeFormMap.district" onchange="bao(this.options[this.options.selectedIndex].value)"></select>
 			</div>
 			<label for="" class="labw130">具体位置 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入具体位置" name="projectHomeFormMap.projectPositions"    onchange="contactposition(this)"></div>
@@ -331,7 +331,6 @@
         }
     }
     $(document).ready(function () {
-        getProjectBusiness()
         addressInit('cmbProvince', 'cmbCity', 'cmbArea');
 
     });
@@ -392,27 +391,34 @@
         }
 
     }
-    function getProjectBusiness() {
+    function getProjectBusiness(district) {
+
         $.ajax({
-            "url": "../project/findProjectBusiness.shtml",
+            "url": "../project/findProjectBusiness.shtml?district="+district,
             "data": "",
-            "type": "GET",
+            "type": "POST",
             "dataType": "json",
             "success": function (obj) {
-                $("#projecBusiness").html("<option value=0> - - - -选择商圈- - - - </option>");
+
                 for (var i = 0; i < obj.length; i++) {
                     var str = "<option value=" + obj[i].business + ">" + obj[i].business + "</option>";
                     $("#projecBusiness").append(str);
 
+
                 }
-                $('.projectBusiness').selectpicker('refresh');
-                $('.projectBusiness').selectpicker('render');
+                $("#projecBusiness").selectpicker('refresh');
+                $("#projecBusiness").selectpicker('render');
 
             },
             error: function () {
                 layer.alert("获取项目出错！请与管理员联系");
             }
         });
+    }
+    function bao(district) {
+        $("#projecBusiness").html("");
+        getProjectBusiness(district)
+
     }
     function reset(){
         $("#wrap input").val("");

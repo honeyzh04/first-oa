@@ -136,6 +136,47 @@ public class ProjectShopsServiceImpl implements ProjectShopsService {
 
 		return  projectShopsMapper.findProjectBusiness(searchMap);
 	}
+
+
+	//经纪人小程序接口
+	@Override
+	public List<ProjectShopsFormMap> findAgentProjects(Map searchMapMap) {
+		return  projectShopsMapper.findAgentProjects(searchMapMap);
+	}
+
+	@Override
+	public ProjectShopsFormMap findbyAgentProject(String id) {
+		return projectShopsMapper.findbyAgentProject(id);
+	}
+	@Override
+	public void addAgentProjects( HashMap formMap) {
+
+			projectShopsMapper.addAgentProject(formMap);
+	}
+	@Override
+	public void editAgentProject( HashMap formMap) {
+		projectShopsMapper.editAgentProject(formMap);
+	}
+
+	@Override
+	public void deleteAgentEntity(String id) {
+		projectShopsMapper.deleteAgentProject(id);
+	}
+
+	@Override
+	public List<ProjectShopsFormMap> findAgentImg(Map imgForMap) {
+		return projectShopsMapper.findAgentImg(imgForMap);
+	}
+
+	@Override
+	public void addAgentImg(HashMap imgFormMap) {
+		projectShopsMapper.addShopsImg(imgFormMap);
+	}
+
+	@Override
+	public void deleteAgentImg(String id) {
+		projectShopsMapper.deleteAgentImg(id);
+	}
 }
 	
 

@@ -112,6 +112,7 @@
 								<option value="6">网络（房发现供客）</option>
 								<option value="7">自身（打街霸）</option>
 								<option value="8">自身（朋友推荐）</option>
+								<option value="22">欢姐资源</option>
 								<option value="0">其他</option>
 							</select>
 						</div>

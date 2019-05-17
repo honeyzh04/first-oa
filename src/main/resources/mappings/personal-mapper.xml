@@ -1281,6 +1281,7 @@ LEFT JOIN (
 		a.did,
 		a. NAME department,
 		ifnull(b.addw, 0) addw,
+		ifnull(b.addhj, 0) addhj,
 		ifnull(b.adddh, 0) adddh,
 		ifnull(b.addwl, 0) addwl,
 		ifnull(b.addwla, 0) addwla,
@@ -1365,6 +1366,15 @@ LEFT JOIN (
 		NULL
 		)
 		) addwlf,
+	COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (22),
+		TRUE,
+		NULL
+		)
+		) addhj,
 		COUNT(c.source = 1 OR NULL) addw
 		FROM
 		(
@@ -1603,6 +1613,7 @@ LEFT JOIN (
 		a.did,
 		a. NAME department,
 		ifnull(b.addw, 0) addw,
+	ifnull(b.addhj, 0) addhj,
 		ifnull(b.adddh, 0) adddh,
 		ifnull(b.addwl, 0) addwl,
 		ifnull(b.addwla, 0) addwla,
@@ -1687,6 +1698,15 @@ LEFT JOIN (
 		NULL
 		)
 		) addwlf,
+COUNT(
+
+		IF (
+		c.source = 1
+		AND c.cusource IN (22),
+		TRUE,
+		NULL
+		)
+		) addhj,
 		COUNT(c.source = 1 OR NULL) addw
 		FROM
 		(

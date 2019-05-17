@@ -199,7 +199,7 @@ public class FFXAppController extends BaseController {
     @SystemLog(module = "客户管理", methods = "客户管理-添加客户") // 凡需要处理业务逻辑的.都需要记录操作日志
     @Transactional(readOnly = false) // 需要事务操作必须加入此注解
     public String addCustomer() {
-
+        System.err.println("adsdas1");
         try {
             CustomerFormMap customerFormMap = getFormMap(CustomerFormMap.class);
 
@@ -1028,7 +1028,7 @@ public class FFXAppController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("findProjectList")
-    public Object findByProject(String projectName, String orderBy, String business,String district, String type, String areas, String areae, String prices, String pricee, String pricess, String pricese, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
+    public Object findByProject(String projectName, String orderBy,String city, String business,String district, String type, String areas, String areae, String prices, String pricee, String pricess, String pricese, int pageSize, @RequestParam(required = true, defaultValue = "1") Integer pageNum, String callback) throws Exception {
         Result<Void> rr = null;
         JSONPObject jsonpObject = null;
         if (callback == null || callback.equals("")) {
@@ -1046,6 +1046,7 @@ public class FFXAppController extends BaseController {
             searchMap.put("pricess", pricess);
             searchMap.put("pricese", pricese);
             searchMap.put("orderBy", orderBy);
+            searchMap.put("city",city);
             searchMap.put("business", business);
             if(type.equals("1")){
                 PageHelper.startPage(pageNum, pageSize);

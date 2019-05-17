@@ -120,7 +120,8 @@
 			<div class="inpdiv190">
 				<select class="form-control selw70 inpw100" id="cmbProvince" name="projectApartmentFormMap.province"></select>
 				<select class="form-control selw70 inpw100" id="cmbCity" name="projectApartmentFormMap.city"></select>
-				<select class="form-control selw70 inpw100" id="cmbArea" name="projectApartmentFormMap.district"></select>
+				<select class="form-control selw70 inpw100" id="cmbArea" name="projectApartmentFormMap.district" onchange="bao(this.options[this.options.selectedIndex].value)">
+				</select>
 			</div>
 			<label for="" class="labw130">具体位置 *</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="请输入具体位置" name="projectApartmentFormMap.projectPositions"    onchange="contactposition(this)"></div>
@@ -179,7 +180,7 @@
 			</select></div>
 			<label for="" class="labw130">所属商圈 *</label>
             <select class="selectpicker projecBusiness " data-style="btn-danger" data-width="239px" id="projecBusiness"
-                    name="projectApartmentFormMap.business" data-live-search="true" title="选择项目"></select>
+                    name="projectApartmentFormMap.business" data-live-search="true" title="选择商圈"></select>
 
 		</div>
 		<div class="row">
@@ -214,6 +215,10 @@
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="绿化率" name="projectApartmentFormMap.GreeningRate">%</div>
 			<label for="" class="labw130">容积率</label>
 			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="容积率" name="projectApartmentFormMap.PlotRatio">%</div>
+		</div>
+		<div class="row">
+			<label for="" class="labw130">层高</label>
+			<div class="inpdiv190"><input type="text" class="inpw100" placeholder="层高" name="projectApartmentFormMap.storeyHeight">m</div>
 		</div>
 		<div class="row">
 			<label for="" class="labw130">开盘时间 *</label>
@@ -348,7 +353,6 @@
         }
     }
     $(document).ready(function () {
-        getProjectBusiness()
         getFeature();
         addressInit('cmbProvince', 'cmbCity', 'cmbArea');
 
@@ -431,21 +435,23 @@
             }
         });
     }
-    function getProjectBusiness() {
+    function getProjectBusiness(district) {
+
         $.ajax({
-            "url": "../project/findProjectBusiness.shtml",
+            "url": "../project/findProjectBusiness.shtml?district="+district,
             "data": "",
-            "type": "GET",
+            "type": "POST",
             "dataType": "json",
             "success": function (obj) {
-                $("#projecBusiness").html("<option value=0> - - - -选择商圈- - - - </option>");
+
                 for (var i = 0; i < obj.length; i++) {
                     var str = "<option value=" + obj[i].business + ">" + obj[i].business + "</option>";
                     $("#projecBusiness").append(str);
 
+
                 }
-                $('.projectBusiness').selectpicker('refresh');
-                $('.projectBusiness').selectpicker('render');
+                $("#projecBusiness").selectpicker('refresh');
+                $("#projecBusiness").selectpicker('render');
 
             },
             error: function () {
@@ -453,6 +459,12 @@
             }
         });
     }
+    function bao(district) {
+        $("#projecBusiness").html("");
+        getProjectBusiness(district)
+
+    }
+
     function reset(){
         $("#wrap input").val("");
     }

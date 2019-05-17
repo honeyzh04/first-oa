@@ -1449,7 +1449,7 @@ FROM
 	) AS a
 RIGHT JOIN oguser ON a.userId = oguser.id
 WHERE
-	department IN (16, 17,18, 20, 21, 24,28)
+	department IN (16, 17,18, 20, 21, 24,28,29,30,31,32)
 GROUP BY
 	oguser.department
 	</select>
@@ -1473,7 +1473,7 @@ FROM
 	) AS a
 			RIGHT JOIN oguser ON a.userId = oguser.id
 			WHERE
-	department IN (16, 17,18, 20, 21, 24,28)
+	department IN (16, 17,18, 20, 21, 24,28,29,30,31,32)
 		GROUP BY
 	oguser.department
 	</select>
@@ -1530,7 +1530,7 @@ FROM
 			) AS a
 		RIGHT JOIN oguser ON a.userId = oguser.id
 		WHERE
-			department IN (16, 17,18, 20, 21, 24,28)
+			department IN (16, 17,18, 20, 21, 24,28,29,30,31,32)
 		GROUP BY
 			oguser.department
 	) a
@@ -1563,7 +1563,7 @@ LEFT JOIN (
 		) AS a
 	RIGHT JOIN oguser ON a.userId = oguser.id
 	WHERE
-		department IN (16, 17,18, 20, 21, 24,28)
+		department IN (16, 17,18, 20, 21, 24,28,29,30,31,32)
 	GROUP BY
 		oguser.department
 ) AS b ON a.department = b.department
