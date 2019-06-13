@@ -9,7 +9,6 @@ package com.first.controller.system;
  * @date 2018/11/2917:12
  */
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.first.annotation.SystemLog;
 import com.first.controller.index.BaseController;
 import com.first.entity.CreditFormMap;
@@ -39,11 +38,34 @@ public class CreditController   extends BaseController {
 
     @RequestMapping("ListUI")
     public String ListUI(HttpServletRequest request, Model model) throws Exception {
-
+        model.addAttribute("res", findByRes());
         return Common.BACKGROUND_PATH + "/system/credit/list";
     }
 
+    /**
+     * 充值积分
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("addCreditUI")
+    public String addUI(Model model) throws Exception {
+        return Common.BACKGROUND_PATH + "/system/credit/add";
+    }
+    @ResponseBody
+    @RequestMapping("addCredit")
+    @Transactional(readOnly = false)
+   @SystemLog(module = "积分管理", methods = "积分管理-积分充值") // 凡需要处理业务逻辑的.都需要记录操作日志
+    public Object addCredit( ) throws Exception {
+       CreditFormMap creditFormMap = getFormMap(CreditFormMap.class);
+        HashMap searchMap = new HashMap();
+        searchMap.put("id",creditFormMap.get("credit"));
+        searchMap.put("userId",  creditFormMap.get("userId"));
+        creditService.editUserCredit(searchMap);
+        System.err.println("ADdsa"+creditFormMap);
+        return "success" ;
 
+    }
     /**
      * 积分列表
      * @return

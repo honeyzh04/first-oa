@@ -99,10 +99,20 @@ $(function() {
 
 		myTable.ajax.reload();
 	});
-
+    //添加按钮
+    $("#addCredit").click("click", function() {
+        addCredit();
+    });
 });// 加载完执行Js end
 
-
+function  addCredit() {
+    pageii = layer.open({
+        title : "充值积分",
+        type : 2,
+        area : [ "620px", "300px" ],
+        content : './credit/addCreditUI.shtml',
+    });
+}
 $.fn.dataTable.ext.errMode = 'none'; //不显示任何错误信息
 
 //以下为发生错误时的事件处理，如不处理，可不管。

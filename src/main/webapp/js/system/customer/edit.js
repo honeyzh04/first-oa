@@ -11,7 +11,7 @@ jQuery.validator
 				"telephone",
 				function(value, element) {
 					var length = value.length;
-					var mobile = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
+					var mobile = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[0-9])\d{8}$/
 					return this.optional(element)
 							|| (length == 11 && mobile.test(value));
 				}, "手机号码格式错误");
