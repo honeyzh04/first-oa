@@ -20,14 +20,20 @@
 	</insert>
 
     <select id="findCredit"   resultType="com.first.entity.CreditFormMap">
-                 SELECT
-            a.*
-        FROM
-            credit_data a
-        LEFT JOIN oguser b ON a.userId = b.id
-        WHERE
-            b.locked = 1
-        AND b.department IN (16, 17, 18, 20, 21, 24, 28)
+            SELECT
+                a.*
+            FROM
+                credit_data a
+            RIGHT JOIN (
+                SELECT
+                    a.*
+                FROM
+                    oguser a
+                LEFT JOIN ogdepartment b ON a.department = b.id
+                WHERE
+                    a.locked = 1
+                AND b.parentId IN (12, 13, 14, 15)
+            ) b ON a.userId = b.id
 
     </select>
     <select id="findUserCredit"   resultType="com.first.entity.CreditFormMap">

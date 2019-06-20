@@ -107,7 +107,6 @@ public class FFXAppController extends BaseController {
         System.err.println("loginIP" + session.getHost());
         Result<Void> rr = null;
         try {
-            System.err.println("que" + userName + "page" + page);
             if (userName == null || userName.length() == 0) {
                 rr = new Result<Void>(0, "请输入经纪人姓名", "");
 
@@ -126,6 +125,7 @@ public class FFXAppController extends BaseController {
                     searchMap.put("telephone", telephone);
                     searchMap.put("state", state);
                     searchMap.put("intention", intention);
+                    searchMap.put("date", "trackDate");
                     System.err.println("app" + searchMap);
                     PageHelper.startPage(page, 10);
                     List<CustomerFormMap> p = ffxAppService.findCustomerPage(searchMap);
@@ -142,7 +142,35 @@ public class FFXAppController extends BaseController {
 
 
     }
+    @ResponseBody
+    @RequestMapping("findCustomers")
+    public Result<Void> findCustomers(String customerName, String telephone, String state, String intention,@RequestParam(required = true, defaultValue = "trackDate") String date, @RequestParam(required = true, defaultValue = "1") Integer page,@RequestParam(required = true, defaultValue = "10") Integer pageSize) {
+        Session session = SecurityUtils.getSubject().getSession();
+        System.err.println("loginIP" + session.getHost());
+        Result<Void> rr = null;
+        try {
+                    Map<String, Object> searchMap = new HashMap<>();
+                    searchMap.put("customerName", customerName);
+                    searchMap.put("telephone", telephone);
+                    searchMap.put("state", state);
+                    searchMap.put("intention", intention);
+                      searchMap.put("date", date);
+                    System.err.println("app" + searchMap);
+                    PageHelper.startPage(page, pageSize);
+                    List<CustomerFormMap> p = ffxAppService.findCustomerPage(searchMap);
+                    PageInfo<CustomerFormMap> pageinfo = new PageInfo<CustomerFormMap>(p);
+                    System.err.println("app" + p);
+                    rr = new Result<Void>(1, "成功", pageinfo);
 
+
+
+        } catch (RuntimeException e) {
+            rr = new Result<Void>(0, e.getMessage(), "");
+        }
+        return rr;
+
+
+    }
     /**
      * 客户共享
      *

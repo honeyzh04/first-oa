@@ -77,7 +77,6 @@ public class MyRealm extends AuthorizingRealm {
 		UserFormMap userFormMap = new UserFormMap();
 		userFormMap.put("accountName", "" + username + "");
 		List<UserFormMap> userFormMaps = userMapper.findByNames(userFormMap);
-		System.err.println(userFormMaps);
 		if (userFormMaps.size() != 0) {
 			String locked= userFormMaps.get(0).get("locked").toString();
 			System.err.println("0".equals(locked));

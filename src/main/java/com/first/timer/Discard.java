@@ -35,7 +35,7 @@ public class Discard {
      * 定时计算。每天凌晨1:00 执行一次  
      * @throws Exception 
      */    
-    @Scheduled(cron = "0 30 01 * * ? ")
+   // @Scheduled(cron = "0 30 01 * * ? ")
     public void show() throws Exception{
         System.out.println("das");
 		customerMapper.autobDiscard();

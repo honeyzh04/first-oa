@@ -14,7 +14,6 @@ import com.first.util.FormMap;
 @TableSeg(tableName = "", id="")
 public class HomeFormMap extends FormMap<String,Object>{
 
-	
 	private static final long serialVersionUID = 1L;
 	
 

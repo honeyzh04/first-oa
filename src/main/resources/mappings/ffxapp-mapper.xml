@@ -93,8 +93,8 @@
 			and cusource= #{cusource}
 		</if>
 
+		order by ${date} asc,createDate desc
 
-		order by trackDate asc,createDate desc
 
 	</select>
 
